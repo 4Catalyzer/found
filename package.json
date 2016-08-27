@@ -1,0 +1,28 @@
+{
+  "name": "found",
+  "version": "0.0.0",
+  "description": "Extensible route-based routing for React applications",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/4Catalyzer/found.git"
+  },
+  "keywords": [
+    "react",
+    "router",
+    "routes",
+    "routing"
+  ],
+  "author": "4Catalyzer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/found/issues"
+  },
+  "homepage": "https://github.com/4Catalyzer/found#readme"
+}
