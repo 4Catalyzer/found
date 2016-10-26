@@ -26,6 +26,9 @@ function createElements(match, Components, matchData) {
     const data = matchData[i];
     const routeParams = matchRouteParams[i];
 
+    const isComponentResolved = isResolved(Component);
+    const isDataResolved = isResolved(data);
+
     const routeMatch = {
       ...match,
       route,
@@ -35,15 +38,16 @@ function createElements(match, Components, matchData) {
     if (route.render) {
       // Perhaps undefined here would be more correct for "not ready", but
       // Relay uses null in RelayReadyStateRenderer, so let's follow that
-      // example.
+      // convention.
       return route.render({
-        Component: isResolved(Component) ? Component : null,
-        props: isResolved(data) ? { ...routeMatch, data } : null,
+        Component: isComponentResolved ? Component : null,
+        props: isDataResolved ? { ...routeMatch, data } : null,
         match: routeMatch,
+        data: isDataResolved ? data : null,
       });
     }
 
-    if (!isResolved(Component) || !isResolved(data)) {
+    if (!isComponentResolved || !isDataResolved) {
       // Can't render.
       return undefined;
     }
