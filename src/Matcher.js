@@ -113,4 +113,8 @@ export default class Matcher {
         isEqual(matchQuery[key], value)
     ));
   }
+
+  format(pattern, params) {
+    return pathToRegexp.compile(pattern)(params);
+  }
 }

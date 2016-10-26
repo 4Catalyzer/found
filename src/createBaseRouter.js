@@ -4,7 +4,7 @@ import getRoutes from './getRoutes';
 import HttpError from './HttpError';
 import RedirectException from './RedirectException';
 
-export default function createBaseRouter({ routeConfig }) {
+export default function createBaseRouter({ routeConfig, matcher }) {
   const propTypes = {
     match: React.PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
     matchContext: React.PropTypes.any, // eslint-disable-line react/no-unused-prop-types
@@ -41,7 +41,7 @@ export default function createBaseRouter({ routeConfig }) {
     }) {
       const currentMatchIndex = this.matchIndex;
       const routes = getRoutes(routeConfig, match);
-      const fullMatch = { ...match, routes, context: matchContext };
+      const fullMatch = { ...match, routes, matcher, context: matchContext };
 
       try {
         // ESLint doesn't handle for-await yet.
