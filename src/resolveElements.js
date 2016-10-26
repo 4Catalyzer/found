@@ -45,7 +45,7 @@ function createElements(match, Components, matchData) {
 
     if (!isResolved(Component) || !isResolved(data)) {
       // Can't render.
-      return null;
+      return undefined;
     }
 
     if (!Component) {
@@ -55,7 +55,7 @@ function createElements(match, Components, matchData) {
       );
 
       // Nothing to render.
-      return undefined;
+      return null;
     }
 
     return (
@@ -89,8 +89,8 @@ export default async function* resolveElements(match) {
   const earlyData = await Promise.all(data.map(checkResolved));
 
   const earlyElements = createElements(match, earlyComponents, earlyData);
-  yield earlyElements.every(element => element !== null) ?
-    earlyElements : null;
+  yield earlyElements.every(element => element !== undefined) ?
+    earlyElements : undefined;
 
   if (earlyComponents.every(isResolved) && earlyData.every(isResolved)) {
     // We're done if all promises were resolved.
