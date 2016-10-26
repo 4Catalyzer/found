@@ -1,6 +1,6 @@
 import createBrowserRouter from 'found/lib/createBrowserRouter';
 import Link from 'found/lib/Link';
-import RedirectException from 'found/lib/RedirectException';
+import Redirect from 'found/lib/Redirect';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -79,10 +79,10 @@ const BrowserRouter = createBrowserRouter({
             )
           ),
         },
-        {
-          path: 'baz',
-          render: () => { throw new RedirectException('/foo'); },
-        },
+        new Redirect({
+          from: 'baz',
+          to: '/foo',
+        }),
       ],
     },
   ],

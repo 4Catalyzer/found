@@ -12,7 +12,11 @@ import matchReducer from './matchReducer';
 export default function createFarceRouter({
   historyProtocol, historyMiddlewares = [], routeConfig, ...options
 }) {
-  const ConnectedRouter = createConnectedRouter({ ...options, routeConfig });
+  const matcher = new Matcher(routeConfig);
+
+  const ConnectedRouter = createConnectedRouter({
+    ...options, routeConfig, matcher,
+  });
 
   class FarceRouter extends React.Component {
     constructor(props, context) {
@@ -24,7 +28,7 @@ export default function createFarceRouter({
         }),
         compose(
           createHistoryEnhancer(historyProtocol, historyMiddlewares),
-          createMatchEnhancer(new Matcher(routeConfig)),
+          createMatchEnhancer(matcher),
         ),
       );
 
