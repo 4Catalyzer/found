@@ -1,9 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 import createBrowserRouter from 'found/lib/createBrowserRouter';
 import Link from 'found/lib/Link';
 import RedirectException from 'found/lib/RedirectException';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 function LinkItem(props) {
   // TODO: Remove the pragma once evcohen/eslint-plugin-jsx-a11y#81 lands.
