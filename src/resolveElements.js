@@ -2,8 +2,6 @@ import isPromise from 'is-promise';
 import React from 'react';
 import warning from 'warning';
 
-import HttpError from './HttpError';
-
 const UNRESOLVED = {};
 
 function checkResolved(value) {
@@ -73,9 +71,6 @@ function createElements(match, Components, matchData) {
 
 export default async function* resolveElements(match) {
   const { routes } = match;
-  if (!routes) {
-    throw new HttpError(404);
-  }
 
   const Components = routes.map(route => (
     route.getComponent ? route.getComponent(match) : route.Component
