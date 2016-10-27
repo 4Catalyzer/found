@@ -2,19 +2,7 @@ import isPromise from 'is-promise';
 import React from 'react';
 import warning from 'warning';
 
-const UNRESOLVED = {};
-
-function checkResolved(value) {
-  if (!isPromise(value)) {
-    return value;
-  }
-
-  return Promise.race([value, UNRESOLVED]);
-}
-
-function isResolved(value) {
-  return value !== UNRESOLVED;
-}
+import { checkResolved, isResolved } from './PromiseUtils';
 
 function createElements(match, Components, matchData) {
   const { routes, routeParams: matchRouteParams } = match;
