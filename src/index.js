@@ -13,7 +13,7 @@ export HttpError from './HttpError';
 export Link from './Link';
 export Matcher from './Matcher';
 export matchReducer from './matchReducer';
-export PromiseUtils from './PromiseUtils';
 export Redirect from './Redirect';
 export RedirectException from './RedirectException';
 export resolveElements from './resolveElements';
+export ResolverUtils from './ResolverUtils';
