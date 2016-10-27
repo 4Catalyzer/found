@@ -2,33 +2,28 @@ import isPromise from 'is-promise';
 import React from 'react';
 import warning from 'warning';
 
-import { checkResolved, isResolved } from './PromiseUtils';
+import {
+  checkResolved, getComponents, getRouteMatches, getRouteValues, isResolved,
+} from './ResolverUtils';
 
-function createElements(match, Components, matchData) {
-  const { routes, routeParams: matchRouteParams } = match;
+function createElements(routeMatches, Components, matchData) {
+  return routeMatches.map((match, i) => {
+    const { route } = match;
 
-  return routes.map((route, i) => {
     const Component = Components[i];
     const data = matchData[i];
-    const routeParams = matchRouteParams[i];
 
     const isComponentResolved = isResolved(Component);
     const isDataResolved = isResolved(data);
-
-    const routeMatch = {
-      ...match,
-      route,
-      routeParams: routeParams[i],
-    };
 
     if (route.render) {
       // Perhaps undefined here would be more correct for "not ready", but
       // Relay uses null in RelayReadyStateRenderer, so let's follow that
       // convention.
       return route.render({
+        match,
         Component: isComponentResolved ? Component : null,
-        props: isDataResolved ? { ...routeMatch, data } : null,
-        match: routeMatch,
+        props: isDataResolved ? { ...match, data } : null,
         data: isDataResolved ? data : null,
       });
     }
@@ -48,25 +43,19 @@ function createElements(match, Components, matchData) {
       return null;
     }
 
-    return (
-      <Component
-        {...routeMatch}
-        data={data}
-      />
-    );
+    return <Component {...match} data={data} />;
   });
 }
 
 export default async function* resolveElements(match) {
-  const { routes } = match;
+  const routeMatches = getRouteMatches(match);
 
-  // TODO: These should use routeMatch objects as above.
-  const Components = routes.map(route => (
-    route.getComponent ? route.getComponent(match) : route.Component
-  ));
-  const data = routes.map(route => (
-    route.getData ? route.getData(match) : route.data
-  ));
+  const Components = getComponents(routeMatches);
+  const data = getRouteValues(
+    routeMatches,
+    route => route.getData,
+    route => route.data,
+  );
 
   const earlyComponents = Components.some(isPromise) ?
     await Promise.all(Components.map(checkResolved)) : Components;
@@ -77,7 +66,8 @@ export default async function* resolveElements(match) {
   let resolvedData;
 
   if (!earlyComponents.every(isResolved) || !earlyData.every(isResolved)) {
-    const pendingElements = createElements(match, earlyComponents, earlyData);
+    const pendingElements =
+      createElements(routeMatches, earlyComponents, earlyData);
     yield pendingElements.every(element => element !== undefined) ?
       pendingElements : undefined;
 
@@ -88,5 +78,5 @@ export default async function* resolveElements(match) {
     resolvedData = earlyData;
   }
 
-  yield createElements(match, resolvedComponents, resolvedData);
+  yield createElements(routeMatches, resolvedComponents, resolvedData);
 }
