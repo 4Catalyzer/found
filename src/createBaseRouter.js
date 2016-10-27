@@ -43,6 +43,14 @@ export default function createBaseRouter({ routeConfig, matcher }) {
       const routes = getRoutes(routeConfig, match);
       const fullMatch = { ...match, routes, matcher, context: matchContext };
 
+      if (!routes) {
+        // Immediately render a "not found" error if no routes matched.
+        this.setState({
+          element: render({ ...fullMatch, error: new HttpError(404) }),
+        });
+        return;
+      }
+
       try {
         // ESLint doesn't handle for-await yet.
         // eslint-disable-next-line semi
