@@ -60,6 +60,7 @@ function createElements(match, Components, matchData) {
 export default async function* resolveElements(match) {
   const { routes } = match;
 
+  // TODO: These should use routeMatch objects as above.
   const Components = routes.map(route => (
     route.getComponent ? route.getComponent(match) : route.Component
   ));
@@ -67,25 +68,25 @@ export default async function* resolveElements(match) {
     route.getData ? route.getData(match) : route.data
   ));
 
-  if (!Components.some(isPromise) && !data.some(isPromise)) {
-    yield createElements(match, Components, data);
-    return;
+  const earlyComponents = Components.some(isPromise) ?
+    await Promise.all(Components.map(checkResolved)) : Components;
+  const earlyData = data.some(isPromise) ?
+    await Promise.all(data.map(checkResolved)) : data;
+
+  let resolvedComponents;
+  let resolvedData;
+
+  if (!earlyComponents.every(isResolved) || !earlyData.every(isResolved)) {
+    const pendingElements = createElements(match, earlyComponents, earlyData);
+    yield pendingElements.every(element => element !== undefined) ?
+      pendingElements : undefined;
+
+    resolvedComponents = await Promise.all(Components);
+    resolvedData = await Promise.all(data);
+  } else {
+    resolvedComponents = earlyComponents;
+    resolvedData = earlyData;
   }
-
-  const earlyComponents = await Promise.all(Components.map(checkResolved));
-  const earlyData = await Promise.all(data.map(checkResolved));
-
-  const earlyElements = createElements(match, earlyComponents, earlyData);
-  yield earlyElements.every(element => element !== undefined) ?
-    earlyElements : undefined;
-
-  if (earlyComponents.every(isResolved) && earlyData.every(isResolved)) {
-    // We're done if all promises were resolved.
-    return;
-  }
-
-  const resolvedComponents = await Promise.all(Components);
-  const resolvedData = await Promise.all(data);
 
   yield createElements(match, resolvedComponents, resolvedData);
 }
