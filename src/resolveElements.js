@@ -14,7 +14,7 @@ function createElements(routeMatches, Components, matchData) {
     const data = matchData[i];
 
     const isComponentResolved = isResolved(Component);
-    const isDataResolved = isResolved(data);
+    const areDataResolved = isResolved(data);
 
     if (route.render) {
       // Perhaps undefined here would be more correct for "not ready", but
@@ -23,17 +23,18 @@ function createElements(routeMatches, Components, matchData) {
       return route.render({
         match,
         Component: isComponentResolved ? Component : null,
-        props: isDataResolved ? { ...match, data } : null,
-        data: isDataResolved ? data : null,
+        props: areDataResolved ? { ...match, data } : null,
+        data: areDataResolved ? data : null,
       });
     }
 
-    if (!isComponentResolved || !isDataResolved) {
+    if (!isComponentResolved || !areDataResolved) {
       // Can't render.
       return undefined;
     }
 
     if (!Component) {
+      // Note this check would be wrong on potentially unresolved data.
       warning(
         data === undefined,
         `Route ${i} has data, but no render method or component.`,
