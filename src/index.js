@@ -4,6 +4,7 @@ export createBaseRouter from './createBaseRouter';
 export createBrowserRouter from './createBrowserRouter';
 export createConnectedLink from './createConnectedLink';
 export createConnectedRouter from './createConnectedRouter';
+export createElements from './createElements';
 export createFarceRouter from './createFarceRouter';
 export createMatchEnhancer from './createMatchEnhancer';
 export createRender from './createRender';
