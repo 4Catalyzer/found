@@ -35,10 +35,17 @@ export default function createFarceRouter({
       this.store.dispatch(FarceActions.init());
     }
 
+    componentWillUnmount() {
+      this.store.dispatch(FarceActions.dispose());
+    }
+
     render() {
       return (
         <Provider store={this.store}>
-          <ConnectedRouter {...this.props} />
+          <ConnectedRouter
+            {...this.props}
+            store={this.store}
+          />
         </Provider>
       );
     }

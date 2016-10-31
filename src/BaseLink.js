@@ -1,6 +1,8 @@
 import React from 'react';
 import elementType from 'react-prop-types/lib/elementType';
 
+import { routerShape } from './PropTypes';
+
 const propTypes = {
   Component: elementType.isRequired,
   to: React.PropTypes.oneOfType([
@@ -14,19 +16,10 @@ const propTypes = {
   exact: React.PropTypes.bool.isRequired,
   target: React.PropTypes.string,
   onClick: React.PropTypes.func,
-  push: React.PropTypes.func.isRequired,
 };
 
 const contextTypes = {
-  store: React.PropTypes.shape({
-    farce: React.PropTypes.shape({
-      createHref: React.PropTypes.func.isRequired,
-      createLocation: React.PropTypes.func.isRequired,
-    }).isRequired,
-    found: React.PropTypes.shape({
-      isActive: React.PropTypes.func.isRequired,
-    }).isRequired,
-  }).isRequired,
+  router: routerShape.isRequired,
 };
 
 const defaultProps = {
@@ -36,7 +29,7 @@ const defaultProps = {
 
 class BaseLink extends React.Component {
   onClick = (event) => {
-    const { onClick, target, push, to } = this.props;
+    const { onClick, target, to } = this.props;
 
     if (onClick) {
       onClick(event);
@@ -62,7 +55,7 @@ class BaseLink extends React.Component {
     // FIXME: When clicking on a link to the same location in the browser, the
     // actual becomes a replace rather than a push. We may want the same
     // handling – perhaps implemented in the Farce protocol.
-    push(to);
+    this.context.router.push(to);
   };
 
   render() {
@@ -77,13 +70,11 @@ class BaseLink extends React.Component {
       ...props
     } = this.props;
 
-    const { farce, found } = this.context.store;
-
-    delete props.push; // Used in onClick.
+    const { router } = this.context;
 
     if (activeClassName || activeStyle || activePropName) {
-      const toLocation = farce.createLocation(to);
-      const active = found.isActive(toLocation, match, { exact });
+      const toLocation = router.createLocation(to);
+      const active = router.isActive(toLocation, match, { exact });
 
       if (active) {
         if (activeClassName) {
@@ -104,7 +95,7 @@ class BaseLink extends React.Component {
     return (
       <Component
         {...props}
-        href={farce.createHref(to)}
+        href={router.createHref(to)}
         onClick={this.onClick}
       />
     );

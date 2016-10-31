@@ -1,4 +1,3 @@
-import FarceActions from 'farce/lib/Actions';
 import { connect } from 'react-redux';
 
 import BaseLink from './BaseLink';
@@ -8,6 +7,11 @@ export default function createConnectedLink({
 }) {
   return connect(
     state => ({ match: getMatch(state) }),
-    { push: FarceActions.push },
+    null,
+    (stateProps, dispatchProps, ownProps) => ({
+      ...ownProps,
+      ...stateProps,
+      // We don't want dispatch here.
+    }),
   )(BaseLink);
 }

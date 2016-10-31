@@ -14,6 +14,7 @@ export HttpError from './HttpError';
 export Link from './Link';
 export Matcher from './Matcher';
 export matchReducer from './matchReducer';
+export { routerShape } from './PropTypes';
 export Redirect from './Redirect';
 export RedirectException from './RedirectException';
 export resolveElements from './resolveElements';
