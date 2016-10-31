@@ -24,8 +24,12 @@ export default async function* resolveElements(match) {
   let fetchedData;
 
   if (!earlyComponents.every(isResolved) || !earlyData.every(isResolved)) {
-    const pendingElements =
-      createElements(routeMatches, earlyComponents, earlyData);
+    const pendingElements = createElements(
+      routeMatches,
+      earlyComponents,
+      earlyData,
+    );
+
     yield pendingElements.every(element => element !== undefined) ?
       pendingElements : undefined;
 
@@ -36,5 +40,9 @@ export default async function* resolveElements(match) {
     fetchedData = earlyData;
   }
 
-  yield createElements(routeMatches, fetchedComponents, fetchedData);
+  yield createElements(
+    routeMatches,
+    fetchedComponents,
+    fetchedData,
+  );
 }

@@ -86,15 +86,15 @@ const BrowserRouter = createBrowserRouter({
       ],
     },
   ],
+
+  renderError: error => (
+    <div>
+      {error.status === 404 ? 'Not found' : 'Error'}
+    </div>
+  ),
 });
 
 ReactDOM.render(
-  <BrowserRouter
-    renderError={error => (
-      <div>
-        {error.status === 404 ? 'Not found' : 'Error'}
-      </div>
-    )}
-  />,
+  <BrowserRouter />,
   document.getElementById('root'),
 );
