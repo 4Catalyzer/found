@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import React from 'react';
 
 import getRoutes from './getRoutes';
@@ -5,12 +6,11 @@ import HttpError from './HttpError';
 import { routerShape } from './PropTypes';
 import RedirectException from './RedirectException';
 
-export default function createBaseRouter({ routeConfig, matcher }) {
+export default function createBaseRouter({ routeConfig, matcher, render }) {
   const propTypes = {
-    match: React.PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
-    matchContext: React.PropTypes.any, // eslint-disable-line react/no-unused-prop-types
-    resolveElements: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
-    render: React.PropTypes.func.isRequired,
+    match: React.PropTypes.object.isRequired,
+    matchContext: React.PropTypes.any,
+    resolveElements: React.PropTypes.func.isRequired,
     push: React.PropTypes.func.isRequired,
     replace: React.PropTypes.func.isRequired,
     go: React.PropTypes.func.isRequired,
@@ -31,14 +31,10 @@ export default function createBaseRouter({ routeConfig, matcher }) {
       const { initialState } = props;
 
       this.state = {
-        element: initialState ? props.render(initialState) : null,
+        element: initialState ? render(initialState) : null,
       };
 
       this.matchIndex = 0;
-
-      if (!initialState) {
-        this.resolveMatch(props);
-      }
     }
 
     getChildContext() {
@@ -63,30 +59,54 @@ export default function createBaseRouter({ routeConfig, matcher }) {
       };
     }
 
-    componentWillReceiveProps(nextProps) {
-      ++this.matchIndex;
-      this.resolveMatch(nextProps);
+    // We use componentDidMount and componentDidUpdate to resolve the match if
+    // needed because element resolution is asynchronous anyway, and this lets
+    // us not worry about setState not being available in the constructor, or
+    // about having to pass around nextProps.
+
+    componentDidMount() {
+      if (!this.props.initialState) {
+        this.resolveMatch();
+      }
     }
 
-    async resolveMatch({
-      match, matchContext, resolveElements, render, replace,
-    }) {
+    componentDidUpdate(prevProps) {
+      if (
+        this.props.match !== prevProps.match ||
+        !isEqual(this.props.matchContext, prevProps.matchContext)
+      ) {
+        ++this.matchIndex;
+        this.resolveMatch();
+      }
+    }
+
+    componentWillUnmount() {
+      this.matchIndex = NaN; // This will fail all equality checks.
+    }
+
+    async resolveMatch() {
       const currentMatchIndex = this.matchIndex;
+      const { match, matchContext, resolveElements } = this.props;
+
       const routes = getRoutes(routeConfig, match);
-      const fullMatch = { ...match, routes, matcher, context: matchContext };
+      const augmentedMatch = {
+        ...match,
+        routes,
+        matcher, // For e.g. Redirect to format pattern.
+        context: matchContext,
+      };
 
       if (!routes) {
         // Immediately render a "not found" error if no routes matched.
         this.setState({
-          element: render({ ...fullMatch, error: new HttpError(404) }),
+          element: render({ ...augmentedMatch, error: new HttpError(404) }),
         });
         return;
       }
 
       try {
         // ESLint doesn't handle for-await yet.
-        // eslint-disable-next-line semi
-        for await (const elements of resolveElements(fullMatch)) {
+        for await (const elements of resolveElements(augmentedMatch)) { // eslint-disable-line semi
           if (this.matchIndex !== currentMatchIndex) {
             return;
           }
@@ -96,7 +116,7 @@ export default function createBaseRouter({ routeConfig, matcher }) {
           }
 
           this.setState({
-            element: render({ ...fullMatch, elements }),
+            element: render({ ...augmentedMatch, elements }),
           });
         }
       } catch (e) {
@@ -110,12 +130,12 @@ export default function createBaseRouter({ routeConfig, matcher }) {
         }
 
         if (e instanceof RedirectException) {
-          replace(e.location);
+          this.props.replace(e.location);
           return;
         }
 
         this.setState({
-          element: render({ ...fullMatch, error: e }),
+          element: render({ ...augmentedMatch, error: e }),
         });
       }
     }

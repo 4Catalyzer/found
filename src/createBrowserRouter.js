@@ -6,28 +6,24 @@ import createFarceRouter from './createFarceRouter';
 import createRender from './createRender';
 import resolveElements from './resolveElements';
 
-export default function createBrowserRouter({ basename, ...options }) {
+export default function createBrowserRouter({
+  basename, renderError, ...options
+}) {
   const FarceRouter = createFarceRouter({
     ...options,
     historyProtocol: new BrowserProtocol({ basename }),
     historyMiddlewares: [queryMiddleware],
+    render: createRender({ renderError }),
   });
 
-  const propTypes = {
-    renderError: React.PropTypes.func,
-  };
-
-  function BrowserRouter({ renderError, ...props }) {
+  function BrowserRouter(props) {
     return (
       <FarceRouter
         {...props}
         resolveElements={resolveElements}
-        render={createRender({ renderError })}
       />
     );
   }
-
-  BrowserRouter.propTypes = propTypes;
 
   return BrowserRouter;
 }
