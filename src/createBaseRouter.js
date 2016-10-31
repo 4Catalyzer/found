@@ -2,6 +2,7 @@ import React from 'react';
 
 import getRoutes from './getRoutes';
 import HttpError from './HttpError';
+import { routerShape } from './PropTypes';
 import RedirectException from './RedirectException';
 
 export default function createBaseRouter({ routeConfig, matcher }) {
@@ -10,8 +11,17 @@ export default function createBaseRouter({ routeConfig, matcher }) {
     matchContext: React.PropTypes.any, // eslint-disable-line react/no-unused-prop-types
     resolveElements: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
     render: React.PropTypes.func.isRequired,
-    replace: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
+    push: React.PropTypes.func.isRequired,
+    replace: React.PropTypes.func.isRequired,
+    go: React.PropTypes.func.isRequired,
+    createHref: React.PropTypes.func.isRequired,
+    createLocation: React.PropTypes.func.isRequired,
+    isActive: React.PropTypes.func.isRequired,
     initialState: React.PropTypes.object,
+  };
+
+  const childContextTypes = {
+    router: routerShape.isRequired,
   };
 
   class BaseRouter extends React.Component {
@@ -29,6 +39,28 @@ export default function createBaseRouter({ routeConfig, matcher }) {
       if (!initialState) {
         this.resolveMatch(props);
       }
+    }
+
+    getChildContext() {
+      const {
+        push,
+        replace,
+        go,
+        createHref,
+        createLocation,
+        isActive,
+      } = this.props;
+
+      return {
+        router: {
+          push,
+          replace,
+          go,
+          createHref,
+          createLocation,
+          isActive,
+        },
+      };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -94,6 +126,7 @@ export default function createBaseRouter({ routeConfig, matcher }) {
   }
 
   BaseRouter.propTypes = propTypes;
+  BaseRouter.childContextTypes = childContextTypes;
 
   return BaseRouter;
 }
