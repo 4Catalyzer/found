@@ -20,8 +20,8 @@ export default async function* resolveElements(match) {
   const earlyData = data.some(isPromise) ?
     await Promise.all(data.map(checkResolved)) : data;
 
-  let resolvedComponents;
-  let resolvedData;
+  let fetchedComponents;
+  let fetchedData;
 
   if (!earlyComponents.every(isResolved) || !earlyData.every(isResolved)) {
     const pendingElements =
@@ -29,12 +29,12 @@ export default async function* resolveElements(match) {
     yield pendingElements.every(element => element !== undefined) ?
       pendingElements : undefined;
 
-    resolvedComponents = await Promise.all(Components);
-    resolvedData = await Promise.all(data);
+    fetchedComponents = await Promise.all(Components);
+    fetchedData = await Promise.all(data);
   } else {
-    resolvedComponents = earlyComponents;
-    resolvedData = earlyData;
+    fetchedComponents = earlyComponents;
+    fetchedData = earlyData;
   }
 
-  yield createElements(routeMatches, resolvedComponents, resolvedData);
+  yield createElements(routeMatches, fetchedComponents, fetchedData);
 }
