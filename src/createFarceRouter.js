@@ -42,10 +42,7 @@ export default function createFarceRouter({
     render() {
       return (
         <Provider store={this.store}>
-          <ConnectedRouter
-            {...this.props}
-            store={this.store}
-          />
+          <ConnectedRouter {...this.props} />
         </Provider>
       );
     }

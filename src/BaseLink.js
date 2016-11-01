@@ -13,13 +13,10 @@ const propTypes = {
   activeClassName: React.PropTypes.string,
   activeStyle: React.PropTypes.object,
   activePropName: React.PropTypes.string,
+  router: routerShape.isRequired,
   exact: React.PropTypes.bool.isRequired,
   target: React.PropTypes.string,
   onClick: React.PropTypes.func,
-};
-
-const contextTypes = {
-  router: routerShape.isRequired,
 };
 
 const defaultProps = {
@@ -29,7 +26,7 @@ const defaultProps = {
 
 class BaseLink extends React.Component {
   onClick = (event) => {
-    const { onClick, target, to } = this.props;
+    const { onClick, target, router, to } = this.props;
 
     if (onClick) {
       onClick(event);
@@ -55,7 +52,7 @@ class BaseLink extends React.Component {
     // FIXME: When clicking on a link to the same location in the browser, the
     // actual becomes a replace rather than a push. We may want the same
     // handling – perhaps implemented in the Farce protocol.
-    this.context.router.push(to);
+    router.push(to);
   };
 
   render() {
@@ -66,15 +63,14 @@ class BaseLink extends React.Component {
       activeClassName,
       activeStyle,
       activePropName,
+      router,
       exact,
       ...props
     } = this.props;
 
-    const { router } = this.context;
-
     if (activeClassName || activeStyle || activePropName) {
       const toLocation = router.createLocation(to);
-      const active = router.isActive(toLocation, match, { exact });
+      const active = router.isActive(match, toLocation, { exact });
 
       if (active) {
         if (activeClassName) {
@@ -96,14 +92,13 @@ class BaseLink extends React.Component {
       <Component
         {...props}
         href={router.createHref(to)}
-        onClick={this.onClick}
+        onClick={this.onClick} // This overrides props.onClick.
       />
     );
   }
 }
 
 BaseLink.propTypes = propTypes;
-BaseLink.contextTypes = contextTypes;
 BaseLink.defaultProps = defaultProps;
 
 export default BaseLink;
