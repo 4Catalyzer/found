@@ -1,5 +1,6 @@
 import isEqual from 'lodash/isEqual';
 import React from 'react';
+import StaticContainer from 'react-static-container';
 
 import getRoutes from './getRoutes';
 import HttpError from './HttpError';
@@ -9,15 +10,17 @@ import RedirectException from './RedirectException';
 export default function createBaseRouter({ routeConfig, matcher, render }) {
   const propTypes = {
     match: React.PropTypes.object.isRequired,
+    resolvedMatch: React.PropTypes.object.isRequired,
     matchContext: React.PropTypes.any,
     resolveElements: React.PropTypes.func.isRequired,
     push: React.PropTypes.func.isRequired,
     replace: React.PropTypes.func.isRequired,
     go: React.PropTypes.func.isRequired,
+    onResolveMatch: React.PropTypes.func.isRequired,
     createHref: React.PropTypes.func.isRequired,
     createLocation: React.PropTypes.func.isRequired,
     isActive: React.PropTypes.func.isRequired,
-    initialState: React.PropTypes.object,
+    initialRenderArgs: React.PropTypes.object,
   };
 
   const childContextTypes = {
@@ -28,13 +31,13 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     constructor(props, context) {
       super(props, context);
 
-      const { initialState } = props;
+      const { initialRenderArgs } = props;
 
       this.state = {
-        element: initialState ? render(initialState) : null,
+        element: initialRenderArgs ? render(initialRenderArgs) : null,
       };
 
-      this.matchIndex = 0;
+      this.mounted = true;
     }
 
     getChildContext() {
@@ -65,7 +68,7 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     // about having to pass around nextProps.
 
     componentDidMount() {
-      if (!this.props.initialState) {
+      if (!this.props.initialRenderArgs) {
         this.resolveMatch();
       }
     }
@@ -75,20 +78,19 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
         this.props.match !== prevProps.match ||
         !isEqual(this.props.matchContext, prevProps.matchContext)
       ) {
-        ++this.matchIndex;
         this.resolveMatch();
       }
     }
 
     componentWillUnmount() {
-      this.matchIndex = NaN; // This will fail all equality checks.
+      this.mounted = false;
     }
 
     async resolveMatch() {
-      const currentMatchIndex = this.matchIndex;
       const { match, matchContext, resolveElements } = this.props;
-      const routes = getRoutes(routeConfig, match);
 
+      // TODO: Use Reselect for this?
+      const routes = getRoutes(routeConfig, match);
       const augmentedMatch = {
         ...match,
         routes,
@@ -98,16 +100,15 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
 
       if (!routes) {
         // Immediately render a "not found" error if no routes matched.
-        this.setState({
-          element: render({ ...augmentedMatch, error: new HttpError(404) }),
-        });
+        this.updateElement({ ...augmentedMatch, error: new HttpError(404) });
         return;
       }
 
       try {
         // ESLint doesn't handle for-await yet.
-        for await (const elements of resolveElements(augmentedMatch)) { // eslint-disable-line semi
-          if (this.matchIndex !== currentMatchIndex) {
+        // eslint-disable-next-line semi
+        for await (const elements of resolveElements(augmentedMatch)) {
+          if (!this.isResolvingMatch(match)) {
             return;
           }
 
@@ -115,9 +116,7 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
             continue; // eslint-disable-line no-continue
           }
 
-          this.setState({
-            element: render({ ...augmentedMatch, elements }),
-          });
+          this.updateElement({ ...augmentedMatch, elements });
         }
       } catch (e) {
         // Only handle exceptions we actually know about.
@@ -125,7 +124,7 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
           throw e;
         }
 
-        if (this.matchIndex !== currentMatchIndex) {
+        if (!this.isResolvingMatch(match)) {
           return;
         }
 
@@ -134,14 +133,38 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
           return;
         }
 
-        this.setState({
-          element: render({ ...augmentedMatch, error: e }),
-        });
+        this.updateElement({ ...augmentedMatch, error: e });
+      }
+    }
+
+    isResolvingMatch(match) {
+      return this.mounted && match === this.props.match;
+    }
+
+    updateElement(renderArgs) {
+      this.setState({ element: render(renderArgs) });
+
+      const { resolvedMatch, match } = this.props;
+
+      if (resolvedMatch !== match) {
+        // If this is a new match, update the store, so we can rerender at the
+        // same time as all of the links and other components connected to the
+        // router state.
+        this.props.onResolveMatch(match);
       }
     }
 
     render() {
-      return this.state.element;
+      const { resolvedMatch, match } = this.props;
+
+      // Normally, returning the same ReactElement is sufficient to skip
+      // reconciliation. However, that doesn't work with context. Additionally,
+      // we only need to block rerendering while a match is pending anyway.
+      return (
+        <StaticContainer shouldUpdate={resolvedMatch === match}>
+          {this.state.element}
+        </StaticContainer>
+      );
     }
   }
 

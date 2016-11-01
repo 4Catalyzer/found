@@ -37,6 +37,7 @@
     "path-to-regexp": "^1.6.0",
     "react-prop-types": "^0.4.0",
     "react-redux": "^5.0.0-beta.3",
+    "react-static-container": "^1.0.1",
     "redux": "^3.6.0",
     "warning": "^3.0.0"
   },

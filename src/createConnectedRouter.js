@@ -1,23 +1,35 @@
 import FarceActions from 'farce/lib/Actions';
 import { connect } from 'react-redux';
 
+import ActionTypes from './ActionTypes';
 import createBaseRouter from './createBaseRouter';
 
+function resolveMatch(match) {
+  return {
+    type: ActionTypes.RESOLVE_MATCH,
+    payload: match,
+  };
+}
+
 export default function createConnectedRouter({
-  getMatch = ({ match }) => match,
+  getFound = ({ found }) => found,
   ...options
 }) {
   const ConnectedRouter = connect(
-    state => ({ match: getMatch(state) }),
+    (state) => {
+      const { match, resolvedMatch } = getFound(state);
+      return { match, resolvedMatch };
+    },
     {
       push: FarceActions.push,
       replace: FarceActions.replace,
       go: FarceActions.go,
+      onResolveMatch: resolveMatch,
     },
     null,
     {
-      // <BaseRouter> already memoizes its render output, so there's no benefit
-      // to doing further memoization here.
+      // The top-level router shouldn't block context propagation from above.
+      // It should seldom be rerendering anyway.
       pure: false,
     },
   )(createBaseRouter(options));
