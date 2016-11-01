@@ -17,6 +17,10 @@ export default function createWithRouter({
       ...stateProps,
       // We don't want dispatch here.
     }),
+    {
+      // We can't assume the wrapped component is pure.
+      pure: false,
+    },
   );
 
   return function withRouter(Component) {

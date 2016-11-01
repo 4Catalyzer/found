@@ -14,6 +14,12 @@ export default function createConnectedRouter({
       replace: FarceActions.replace,
       go: FarceActions.go,
     },
+    null,
+    {
+      // <BaseRouter> already memoizes its render output, so there's no benefit
+      // to doing further memoization here.
+      pure: false,
+    },
   )(createBaseRouter(options));
 
   // This implementation is very messy, but it provides the cleanest API to get
