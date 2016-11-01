@@ -7,20 +7,19 @@ const routerContextTypes = {
 };
 
 export default function createWithRouter({
-  getMatch = ({ match }) => match,
+  getFound = ({ found }) => found,
+  matchKey = 'resolvedMatch',
 }) {
   const withMatch = connect(
-    state => ({ match: getMatch(state) }),
+    state => ({ match: getFound(state)[matchKey] }),
     null,
     (stateProps, dispatchProps, ownProps) => ({
       ...ownProps,
       ...stateProps,
       // We don't want dispatch here.
     }),
-    {
-      // We can't assume the wrapped component is pure.
-      pure: false,
-    },
+    // This needs to be pure, to avoid rerendering on changes to other matchKey
+    // values in the store.
   );
 
   return function withRouter(Component) {

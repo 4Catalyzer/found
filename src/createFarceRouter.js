@@ -6,8 +6,8 @@ import { combineReducers, compose, createStore } from 'redux';
 
 import createConnectedRouter from './createConnectedRouter';
 import createMatchEnhancer from './createMatchEnhancer';
+import foundReducer from './foundReducer';
 import Matcher from './Matcher';
-import matchReducer from './matchReducer';
 
 export default function createFarceRouter({
   historyProtocol, historyMiddlewares = [], routeConfig, ...options
@@ -24,7 +24,7 @@ export default function createFarceRouter({
 
       this.store = createStore(
         combineReducers({
-          match: matchReducer,
+          found: foundReducer,
         }),
         compose(
           createHistoryEnhancer(historyProtocol, historyMiddlewares),
