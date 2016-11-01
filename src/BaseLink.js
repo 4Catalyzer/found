@@ -17,6 +17,7 @@ const propTypes = {
   exact: React.PropTypes.bool.isRequired,
   target: React.PropTypes.string,
   onClick: React.PropTypes.func,
+  childProps: React.PropTypes.object, // In case of name conflicts here.
 };
 
 const defaultProps = {
@@ -65,6 +66,7 @@ class BaseLink extends React.Component {
       activePropName,
       router,
       exact,
+      childProps,
       ...props
     } = this.props;
 
@@ -91,6 +93,7 @@ class BaseLink extends React.Component {
     return (
       <Component
         {...props}
+        {...childProps}
         href={router.createHref(to)}
         onClick={this.onClick} // This overrides props.onClick.
       />
