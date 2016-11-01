@@ -16,6 +16,7 @@ const propTypes = {
   exact: React.PropTypes.bool.isRequired,
   target: React.PropTypes.string,
   onClick: React.PropTypes.func,
+  childProps: React.PropTypes.object, // In case of name conflicts here.
 };
 
 const contextTypes = {
@@ -67,6 +68,7 @@ class BaseLink extends React.Component {
       activeStyle,
       activePropName,
       exact,
+      childProps,
       ...props
     } = this.props;
 
@@ -95,6 +97,7 @@ class BaseLink extends React.Component {
     return (
       <Component
         {...props}
+        {...childProps}
         href={router.createHref(to)}
         onClick={this.onClick}
       />
