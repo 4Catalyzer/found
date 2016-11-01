@@ -1,8 +1,9 @@
 import createBrowserRouter from 'found/lib/createBrowserRouter';
+import ElementsRenderer from 'found/lib/ElementsRenderer';
 import Link from 'found/lib/Link';
-import Redirect from 'found/lib/Redirect';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import StaticContainer from 'react-static-container';
 
 function LinkItem(props) {
   // TODO: Remove the pragma once evcohen/eslint-plugin-jsx-a11y#81 ships.
@@ -32,13 +33,7 @@ function App({ children }) {
             Foo
           </LinkItem>
           <LinkItem to="/bar">
-            Bar (async)
-          </LinkItem>
-          <LinkItem to="/baz">
-            Baz (redirects to Foo)
-          </LinkItem>
-          <LinkItem to="/qux">
-            Qux (missing)
+            Bar
           </LinkItem>
         </ul>
       </ul>
@@ -61,35 +56,45 @@ const BrowserRouter = createBrowserRouter({
         },
         {
           path: 'foo',
-          Component: () => <div>Foo</div>,
+          getComponent: () => new Promise((resolve) => {
+            setTimeout(resolve, 1000, () => <div>Foo</div>);
+          }),
         },
         {
           path: 'bar',
           getComponent: () => new Promise((resolve) => {
-            setTimeout(resolve, 1000, ({ data }) => <div>{data}</div>);
+            setTimeout(resolve, 1000, () => <div>Bar</div>);
           }),
-          getData: () => new Promise((resolve) => {
-            setTimeout(resolve, 1000, 'Bar');
-          }),
-          render: ({ Component, props }) => ( // eslint-disable-line react/prop-types
-            Component && props ? (
-              <Component {...props} />
-            ) : (
-              <div><small>Loading&hellip;</small></div>
-            )
-          ),
         },
-        new Redirect({
-          from: 'baz',
-          to: '/foo',
-        }),
       ],
     },
   ],
 
-  renderError: ({ error }) => ( // eslint-disable-line react/prop-types
+  renderPending: () => (
     <div>
-      {error.status === 404 ? 'Not found' : 'Error'}
+      <StaticContainer>
+        {null}
+      </StaticContainer>
+
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          background: 'white',
+          opacity: 0.5,
+        }}
+      />
+    </div>
+  ),
+
+  renderReady: ({ elements }) => ( // eslint-disable-line react/prop-types
+    <div>
+      <StaticContainer shouldUpdate>
+        <ElementsRenderer elements={elements} />
+      </StaticContainer>
     </div>
   ),
 });

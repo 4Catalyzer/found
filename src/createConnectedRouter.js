@@ -28,8 +28,8 @@ export default function createConnectedRouter({
     },
     null,
     {
-      // The top-level router shouldn't block context propagation from above.
-      // It should seldom be rerendering anyway.
+      // Don't block context propagation from above. The router should seldom
+      // be unnecessarily rerendering anyway.
       pure: false,
     },
   )(createBaseRouter(options));
