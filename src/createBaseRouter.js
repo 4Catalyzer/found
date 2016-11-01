@@ -87,8 +87,8 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     async resolveMatch() {
       const currentMatchIndex = this.matchIndex;
       const { match, matchContext, resolveElements } = this.props;
-
       const routes = getRoutes(routeConfig, match);
+
       const augmentedMatch = {
         ...match,
         routes,

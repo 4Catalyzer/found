@@ -1,3 +1,3 @@
 import createConnectedLink from './createConnectedLink';
 
-export default createConnectedLink({});
+export default createConnectedLink();

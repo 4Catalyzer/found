@@ -1,17 +1,8 @@
-import { connect } from 'react-redux';
-
 import BaseLink from './BaseLink';
+import createWithRouter from './createWithRouter';
+import defaultWithRouter from './withRouter';
 
-export default function createConnectedLink({
-  getMatch = ({ match }) => match,
-}) {
-  return connect(
-    state => ({ match: getMatch(state) }),
-    null,
-    (stateProps, dispatchProps, ownProps) => ({
-      ...ownProps,
-      ...stateProps,
-      // We don't want dispatch here.
-    }),
-  )(BaseLink);
+export default function createConnectedLink(options) {
+  const withRouter = options ? createWithRouter(options) : defaultWithRouter;
+  return withRouter(BaseLink);
 }

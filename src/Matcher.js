@@ -83,18 +83,18 @@ export default class Matcher {
     return pattern.charAt(0) === '/' ? pattern : `/${pattern}`;
   }
 
-  isActive(location, { location: matchLocation }, { exact } = {}) {
+  isActive({ location: matchLocation }, location, { exact } = {}) {
     return (
       this.isPathnameActive(
-        location.pathname, matchLocation.pathname, exact,
+        matchLocation.pathname, location.pathname, exact,
       ) &&
       this.isQueryActive(
-        location.query, matchLocation.query,
+        matchLocation.query, location.query,
       )
     );
   }
 
-  isPathnameActive(pathname, matchPathname, exact) {
+  isPathnameActive(matchPathname, pathname, exact) {
     if (exact) {
       return pathname === matchPathname;
     }
@@ -103,7 +103,7 @@ export default class Matcher {
     return matchPathname.indexOf(pathname) === 0;
   }
 
-  isQueryActive(query, matchQuery) {
+  isQueryActive(matchQuery, query) {
     if (!query) {
       return true;
     }
