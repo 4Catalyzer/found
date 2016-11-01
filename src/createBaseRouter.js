@@ -76,6 +76,7 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     componentDidUpdate(prevProps) {
       if (
         this.props.match !== prevProps.match ||
+        this.props.resolveElements !== prevProps.resolveElements ||
         !isEqual(this.props.matchContext, prevProps.matchContext)
       ) {
         this.resolveMatch();
