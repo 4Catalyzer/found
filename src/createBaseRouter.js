@@ -38,6 +38,9 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
       };
 
       this.mounted = true;
+
+      this.shouldResolveMatch = false;
+      this.pendingResolvedMatch = false;
     }
 
     getChildContext() {
@@ -73,12 +76,19 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
       }
     }
 
-    componentDidUpdate(prevProps) {
+    componentWillReceiveProps(nextProps) {
       if (
-        this.props.match !== prevProps.match ||
-        this.props.resolveElements !== prevProps.resolveElements ||
-        !isEqual(this.props.matchContext, prevProps.matchContext)
+        nextProps.match !== this.props.match ||
+        nextProps.resolveElements !== this.props.resolveElements ||
+        !isEqual(nextProps.matchContext, this.props.matchContext)
       ) {
+        this.shouldResolveMatch = true;
+      }
+    }
+
+    componentDidUpdate() {
+      if (this.shouldResolveMatch) {
+        this.shouldResolveMatch = false;
         this.resolveMatch();
       }
     }
@@ -113,10 +123,6 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
             return;
           }
 
-          if (!elements) {
-            continue; // eslint-disable-line no-continue
-          }
-
           this.updateElement({ ...augmentedMatch, elements });
         }
       } catch (e) {
@@ -143,26 +149,37 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     }
 
     updateElement(renderArgs) {
-      this.setState({ element: render(renderArgs) });
-
       const { resolvedMatch, match } = this.props;
 
-      if (resolvedMatch !== match) {
+      // If we're about to mark the match resolved, delay the rerender until we
+      // do so.
+      this.pendingResolvedMatch = !!(
+        (renderArgs.elements || renderArgs.error) &&
+        resolvedMatch !== match
+      );
+
+      this.setState({ element: render(renderArgs) });
+
+      if (this.pendingResolvedMatch) {
         // If this is a new match, update the store, so we can rerender at the
         // same time as all of the links and other components connected to the
         // router state.
+        this.pendingResolvedMatch = false;
         this.props.onResolveMatch(match);
       }
     }
 
     render() {
-      const { resolvedMatch, match } = this.props;
-
-      // Normally, returning the same ReactElement is sufficient to skip
-      // reconciliation. However, that doesn't work with context. Additionally,
-      // we only need to block rerendering while a match is pending anyway.
+      // Don't rerender synchronously if we have another rerender coming. Just
+      // memoizing the element here doesn't do anything because we're using
+      // context.
       return (
-        <StaticContainer shouldUpdate={resolvedMatch === match}>
+        <StaticContainer
+          shouldUpdate={
+            !this.shouldResolveMatch &&
+            !this.pendingResolvedMatch
+          }
+        >
           {this.state.element}
         </StaticContainer>
       );
