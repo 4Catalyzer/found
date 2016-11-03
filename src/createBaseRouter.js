@@ -7,7 +7,11 @@ import HttpError from './HttpError';
 import { routerShape } from './PropTypes';
 import RedirectException from './RedirectException';
 
-export default function createBaseRouter({ routeConfig, matcher, render }) {
+export default function createBaseRouter({
+  routeConfig,
+  matcher,
+  render,
+}) {
   const propTypes = {
     match: React.PropTypes.object.isRequired,
     resolvedMatch: React.PropTypes.object.isRequired,

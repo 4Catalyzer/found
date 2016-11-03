@@ -31,9 +31,11 @@ export default function createFarceRouter({
           found: foundReducer,
         }),
         compose(
-          createHistoryEnhancer(
-            historyProtocol, historyMiddlewares, historyOptions,
-          ),
+          createHistoryEnhancer({
+            ...historyOptions,
+            protocol: historyProtocol,
+            middlewares: historyMiddlewares,
+          }),
           createMatchEnhancer(matcher),
         ),
       );
