@@ -8,4 +8,6 @@ export const routerShape = React.PropTypes.shape({
   createHref: React.PropTypes.func.isRequired,
   createLocation: React.PropTypes.func.isRequired,
   isActive: React.PropTypes.func.isRequired,
+
+  addTransitionHook: React.PropTypes.func.isRequired,
 });

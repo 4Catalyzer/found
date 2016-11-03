@@ -55,6 +55,10 @@ export default function createConnectedRouter({
       createHref: farce.createHref,
       createLocation: farce.createLocation,
       isActive: found.isActive,
+
+      // There's not really a better way to model this. Functions can't live in
+      // the store, as they're not serializable.
+      addTransitionHook: farce.addTransitionHook,
     };
   }
 

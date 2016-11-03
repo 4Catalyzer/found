@@ -7,7 +7,11 @@ import createRender from './createRender';
 import resolveElements from './resolveElements';
 
 export default function createBrowserRouter({
-  basename, renderPending, renderReady, renderError, ...options
+  basename,
+  renderPending,
+  renderReady,
+  renderError,
+  ...options
 }) {
   const FarceRouter = createFarceRouter({
     ...options,
