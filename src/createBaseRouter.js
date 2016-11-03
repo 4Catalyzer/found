@@ -19,6 +19,7 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     onResolveMatch: React.PropTypes.func.isRequired,
     createHref: React.PropTypes.func.isRequired,
     createLocation: React.PropTypes.func.isRequired,
+    addTransitionHook: React.PropTypes.func.isRequired,
     isActive: React.PropTypes.func.isRequired,
     initialRenderArgs: React.PropTypes.object,
   };
@@ -31,7 +32,16 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     constructor(props, context) {
       super(props, context);
 
-      const { initialRenderArgs } = props;
+      const {
+        push,
+        replace,
+        go,
+        createHref,
+        createLocation,
+        isActive,
+        addTransitionHook,
+        initialRenderArgs,
+      } = props;
 
       this.state = {
         element: initialRenderArgs ? render(initialRenderArgs) : null,
@@ -41,28 +51,25 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
 
       this.shouldResolveMatch = false;
       this.pendingResolvedMatch = false;
-    }
 
-    getChildContext() {
-      const {
+      // By assumption, the methods on the router context should never change.
+      this.router = {
         push,
         replace,
         go,
         createHref,
         createLocation,
         isActive,
-      } = this.props;
-
-      return {
-        router: {
-          push,
-          replace,
-          go,
-          createHref,
-          createLocation,
-          isActive,
-        },
+        addTransitionHook,
       };
+
+      this.childContext = {
+        router: this.router,
+      };
+    }
+
+    getChildContext() {
+      return this.childContext;
     }
 
     // We use componentDidMount and componentDidUpdate to resolve the match if
@@ -100,12 +107,12 @@ export default function createBaseRouter({ routeConfig, matcher, render }) {
     async resolveMatch() {
       const { match, matchContext, resolveElements } = this.props;
 
-      // TODO: Use Reselect for this?
       const routes = getRoutes(routeConfig, match);
       const augmentedMatch = {
         ...match,
         routes,
         matcher, // For e.g. Redirect to format pattern.
+        router: this.router, // Convenience access for route components.
         context: matchContext,
       };
 

@@ -10,7 +10,11 @@ import foundReducer from './foundReducer';
 import Matcher from './Matcher';
 
 export default function createFarceRouter({
-  historyProtocol, historyMiddlewares = [], routeConfig, ...options
+  historyProtocol,
+  historyMiddlewares,
+  historyOptions,
+  routeConfig,
+  ...options
 }) {
   const matcher = new Matcher(routeConfig);
 
@@ -27,7 +31,9 @@ export default function createFarceRouter({
           found: foundReducer,
         }),
         compose(
-          createHistoryEnhancer(historyProtocol, historyMiddlewares),
+          createHistoryEnhancer(
+            historyProtocol, historyMiddlewares, historyOptions,
+          ),
           createMatchEnhancer(matcher),
         ),
       );
