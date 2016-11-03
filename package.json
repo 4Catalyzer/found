@@ -1,6 +1,6 @@
 {
   "name": "found",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Extensible route-based routing for React applications",
   "files": [
     "lib"
