@@ -8,6 +8,8 @@ import resolveElements from './resolveElements';
 
 export default function createBrowserRouter({
   basename,
+  historyMiddlewares,
+  render,
   renderPending,
   renderReady,
   renderError,
@@ -16,8 +18,10 @@ export default function createBrowserRouter({
   const FarceRouter = createFarceRouter({
     ...options,
     historyProtocol: new BrowserProtocol({ basename }),
-    historyMiddlewares: [queryMiddleware],
-    render: createRender({ renderPending, renderReady, renderError }),
+    historyMiddlewares: historyMiddlewares || [queryMiddleware],
+    render: render || createRender({
+      renderPending, renderReady, renderError,
+    }),
   });
 
   function BrowserRouter(props) {
