@@ -95,12 +95,21 @@ export default class Matcher {
   }
 
   isPathnameActive(matchPathname, pathname, exact) {
-    if (exact) {
-      return pathname === matchPathname;
+    if (pathname === matchPathname) {
+      return true;
     }
 
+    if (exact) {
+      // The above condition is necessary for an exact match.
+      return false;
+    }
+
+    // Require that a partial match is followed by a path separator.
+    const pathnameWithSeparator = pathname.slice(-1) !== '/' ?
+      `${pathname}/` : pathname;
+
     // Can't use startsWith, as that requires a polyfill.
-    return matchPathname.indexOf(pathname) === 0;
+    return matchPathname.indexOf(pathnameWithSeparator) === 0;
   }
 
   isQueryActive(matchQuery, query) {
