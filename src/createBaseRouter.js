@@ -65,6 +65,7 @@ export default function createBaseRouter({
         createLocation,
         isActive,
         addTransitionHook,
+        matcher,
       };
 
       this.childContext = {
@@ -115,7 +116,7 @@ export default function createBaseRouter({
       const augmentedMatch = {
         ...match,
         routes,
-        matcher, // For e.g. Redirect to format pattern.
+        match, // For symmetry with withRouter.
         router: this.router, // Convenience access for route components.
         context: matchContext,
       };

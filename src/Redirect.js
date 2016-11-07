@@ -13,8 +13,8 @@ export default class Redirect {
     if (typeof to === 'function') {
       toLocation = to(match);
     } else {
-      const { matcher, params } = match;
-      toLocation = matcher.format(to, params);
+      const { router, params } = match;
+      toLocation = router.matcher.format(to, params);
     }
 
     throw new RedirectException(toLocation);
