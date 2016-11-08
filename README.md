@@ -20,7 +20,7 @@ const BrowserRouter = createBrowserRouter({
   routeConfig: makeRouteConfig(
     <Route
       path="/"
-      component={AppPage}
+      Component={AppPage}
     >
       <Route
         Component={MainPage}
