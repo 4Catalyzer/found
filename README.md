@@ -1,12 +1,12 @@
-# found [![npm][npm-badge]][npm]
+# Found [![npm][npm-badge]][npm]
 
 _Extensible route-based routing for React applications._
 
-found is a router for [React](https://facebook.github.io/react/) applications with a focus on power and extensibility. found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
+Found is a router for [React](https://facebook.github.io/react/) applications with a focus on power and extensibility. Found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. Found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
 
-found is designed to be extremely customizable. Most pieces of found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [found-relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
+Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
 
-found uses [Redux](http://redux.js.org/) for state management and [farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
+Found uses [Redux](http://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
 
 ## Usage
 
@@ -123,8 +123,8 @@ export default AppPage;
 
 ## Extensions
 
-- [found-scroll](https://github.com/4Catalyzer/found-scroll): scroll management
-- [found-relay](https://github.com/4Catalyzer/found-relay): [Relay](https://facebook.github.io/relay/) integration
+- [Found Scroll](https://github.com/4Catalyzer/found-scroll): scroll management
+- [Found Relay](https://github.com/4Catalyzer/found-relay): [Relay](https://facebook.github.io/relay/) integration
 
 ## Guide
 
@@ -308,7 +308,7 @@ The `getComponent` method receives an object containing these properties as its 
 
 Specify the `data` property or `getData` method to inject data into a route component as the `data` prop. `data` can be any value. `getData` can be any value, or a promise that resolves to any value. `getData` receives an object containing the routing state, as described above.
 
-The `getData` method is intended for loading additional data from your back end for a given route. By design, all requests for asynchronous component and data dependencies will be issued in parallel. found uses static route configurations specifically to enable issuing these requests in parallel.
+The `getData` method is intended for loading additional data from your back end for a given route. By design, all requests for asynchronous component and data dependencies will be issued in parallel. Found uses static route configurations specifically to enable issuing these requests in parallel.
 
 If you need additional context such as a store instance to fetch data, specify this as the `matchContext` prop to your router. This context value will then be available as the `context` property on the argument to `getData`.
 
@@ -414,7 +414,7 @@ const route = {
 
 ### Router configuration
 
-found exposes a number of router component class factories at varying levels of abstraction. These factories accept the static configuration properties for the router, such as the route configuration. The use of static configuration allows for efficient, parallel data fetching and state management as above.
+Found exposes a number of router component class factories at varying levels of abstraction. These factories accept the static configuration properties for the router, such as the route configuration. The use of static configuration allows for efficient, parallel data fetching and state management as above.
 
 #### `createBrowserRouter`
 
@@ -446,8 +446,8 @@ The `createBrowserRouter` function takes an options object. The only mandatory p
 The options object also accepts a number of optional properties:
 
 - `basename`: a string to implicitly prepend to all paths
-- `historyMiddlewares`: an array of farce history middlewares; by default, an array containing only `queryMiddleware`
-- `historyOptions`: additional configuration options for the farce history store enhancer
+- `historyMiddlewares`: an array of Farce history middlewares; by default, an array containing only `queryMiddleware`
+- `historyOptions`: additional configuration options for the Farce history store enhancer
 - `renderPending`: a custom render function called when some routes are not yet ready to render, due to those routes have unresolved asynchronous dependencies and no route-level `render` method for handling the loading state
 - `renderReady`: a custom render function called when all routes are ready to render
 - `renderError`: a custom render function called if an `HttpError` is thrown while resolving route elements
@@ -563,7 +563,7 @@ ReactDOM.render(
 );
 ```
 
-When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from farce, and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. `createMatchEnhancer` takes a matcher object which handles the actual route matching. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
+When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from Farce, and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. `createMatchEnhancer` takes a matcher object which handles the actual route matching. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
 
 `createConnectedRouter` ignores the `historyProtocol`, `historyMiddlewares`, and `historyOptions` properties on its options object. It requires the `matcher` property with the matcher object used in creating the match enhancer.
 
@@ -571,7 +571,7 @@ When creating a store for use with the created `<ConnectedRouter>`, you should i
 
 ### Navigation
 
-found provides a high-level abstractions such as a link component for controlling browser navigation. Under the hood, it delegates to [farce](https://github.com/4Catalyzer/farce) for implementation, and as such can also be controlled directly via the Redux store.
+Found provides a high-level abstractions such as a link component for controlling browser navigation. Under the hood, it delegates to [Farce](https://github.com/4Catalyzer/farce) for implementation, and as such can also be controlled directly via the Redux store.
 
 #### Links
 
@@ -679,15 +679,15 @@ export default withRouter(MyForm);
 
 The transition hook function receives the location to which the user is attempting to navigate as its argument. Return `true` or `false` from this function to allow or block the transition respectively. Return a string to display a default confirmation dialog to the user. Return a nully value to use the next transition hook if present, or else allow the transition. Return a promise to defer allowing or blocking the transition until the promise resolves; you can use this to display a custom confirmation dialog.
 
-If you want to run your transition hooks when the user attempts to leave the page, set `useBeforeUnload` to `true` in `historyOptions` when creating your router component class, or when creating the farce history store enhancer. If this option is enabled, your transition hooks will be called with a `null` location when the user attempts to leave the page. In this scenario, the transition hook must return a non-promise value.
+If you want to run your transition hooks when the user attempts to leave the page, set `useBeforeUnload` to `true` in `historyOptions` when creating your router component class, or when creating the Farce history store enhancer. If this option is enabled, your transition hooks will be called with a `null` location when the user attempts to leave the page. In this scenario, the transition hook must return a non-promise value.
 
 The [transition hook usage example](/examples/transition-hook) demonstrates the use of transition hooks in more detail, including the use of the `useBeforeUnload` option.
 
 #### Redux integration
 
-found uses Redux to manage all serializable state. farce uses Redux actions for navigation. As such, you can also access those serializable parts of the routing state from the store state, and you can navigate by dispatching actions.
+Found uses Redux to manage all serializable state. Farce uses Redux actions for navigation. As such, you can also access those serializable parts of the routing state from the store state, and you can navigate by dispatching actions.
 
-To access the current routing state, connect to the `resolvedMatch` property of the `foundReducer` state. To navigate, dispatch the appropriate actions from farce.
+To access the current routing state, connect to the `resolvedMatch` property of the `foundReducer` state. To navigate, dispatch the appropriate actions from Farce.
 
 ```js
 import { Actions as FarceActions } from 'farce';
