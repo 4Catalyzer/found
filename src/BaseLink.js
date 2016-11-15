@@ -1,7 +1,7 @@
 import React from 'react';
 import elementType from 'react-prop-types/lib/elementType';
 
-import { routerShape } from './PropTypes';
+import { matchShape, routerShape } from './PropTypes';
 
 const propTypes = {
   Component: elementType.isRequired,
@@ -9,7 +9,7 @@ const propTypes = {
     React.PropTypes.string,
     React.PropTypes.object,
   ]),
-  match: React.PropTypes.object.isRequired,
+  match: matchShape.isRequired,
   activeClassName: React.PropTypes.string,
   activeStyle: React.PropTypes.object,
   activePropName: React.PropTypes.string,

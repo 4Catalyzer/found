@@ -4,7 +4,7 @@ import StaticContainer from 'react-static-container';
 
 import getRoutes from './getRoutes';
 import HttpError from './HttpError';
-import { routerShape } from './PropTypes';
+import { matchShape, routerShape } from './PropTypes';
 import RedirectException from './RedirectException';
 
 export default function createBaseRouter({
@@ -13,7 +13,7 @@ export default function createBaseRouter({
   render,
 }) {
   const propTypes = {
-    match: React.PropTypes.object.isRequired,
+    match: matchShape.isRequired,
     resolvedMatch: React.PropTypes.object.isRequired,
     matchContext: React.PropTypes.any,
     resolveElements: React.PropTypes.func.isRequired,

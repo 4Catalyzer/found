@@ -293,7 +293,7 @@ By default, route components receive additional props describing the current rou
 - `routes`: an array of all matched route objects
 - `route`: the route object corresponding to this component
 - `routeParams`: the path parameters for `route`
-- `match`: an object with `location` and `params` as properties
+- `match`: an object with `location` and `params` as properties, conforming to the `matchShape` prop type validator
 - `router`: an object with static router properties, conforming to the `routerShape` prop type validator
   - `push(location)`: navigates to a new location
   - `replace(location)`: replaces the existing history entry
@@ -618,11 +618,7 @@ The `withRouter` HOC wraps an existing component class or function and injects `
 
 ```js
 const propTypes = {
-  match: React.PropTypes.shape({
-    params: React.PropTypes.shape({
-      widgetId: React.PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+  match: matchShape.isRequired,
   router: routerShape.isRequired,
 };
 
