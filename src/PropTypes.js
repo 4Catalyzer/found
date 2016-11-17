@@ -1,7 +1,8 @@
 import React from 'react';
 
 // The shape might be different with a custom matcher or history enhancer, but
-// the default matcher assumes and provides this shape.
+// the default matcher assumes and provides this shape. As such, this validator
+// is purely for user convenience and should not be used internally.
 export const matchShape = React.PropTypes.shape({
   location: React.PropTypes.shape({
     pathname: React.PropTypes.string.isRequired,
