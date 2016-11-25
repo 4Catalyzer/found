@@ -1,3 +1,6 @@
 {
-  "extends": "4catalyzer-react"
+  "extends": "4catalyzer-react",
+  "env": {
+    "jest": true
+  }
 }
