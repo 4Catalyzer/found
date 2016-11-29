@@ -31,7 +31,7 @@
   "homepage": "https://github.com/4Catalyzer/found#readme",
   "dependencies": {
     "babel-runtime": "^6.18.0",
-    "farce": "^0.1.0",
+    "farce": "^0.2.0",
     "invariant": "^2.2.1",
     "is-promise": "^2.1.0",
     "lodash": "^4.16.6",
