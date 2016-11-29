@@ -10,7 +10,8 @@
     "build": "rimraf lib && babel src -d lib",
     "lint": "eslint examples/*/src src test *.js",
     "prepublish": "npm run build",
-    "testonly": "jest",
+    "tdd": "jest --watch",
+    "testonly": "jest --runInBand --verbose",
     "test": "npm run lint && npm run testonly"
   },
   "repository": {
@@ -65,8 +66,5 @@
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
     "rimraf": "^2.5.4"
-  },
-  "jest": {
-    "rootDir": "src"
   }
 }
