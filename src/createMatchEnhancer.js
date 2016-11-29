@@ -33,11 +33,7 @@ export default function createMatchEnhancer(matcher) {
 
       return {
         ...store,
-        found: {
-          isActive: (match, location, options) => (
-            matcher.isActive(match, location, options)
-          ),
-        },
+        found: { matcher },
       };
     };
   };

@@ -25,6 +25,35 @@ export default class Matcher {
     return { routeIndices, routeParams, params };
   }
 
+  getRoutes({ routeIndices }) {
+    if (!routeIndices) {
+      return null;
+    }
+
+    let lastRouteConfig = this.routeConfig;
+
+    return routeIndices.map((routeIndex) => {
+      const route = lastRouteConfig[routeIndex];
+      lastRouteConfig = route.children;
+      return route;
+    });
+  }
+
+  isActive({ location: matchLocation }, location, { exact } = {}) {
+    return (
+      this.isPathnameActive(
+        matchLocation.pathname, location.pathname, exact,
+      ) &&
+      this.isQueryActive(
+        matchLocation.query, location.query,
+      )
+    );
+  }
+
+  format(pattern, params) {
+    return pathToRegexp.compile(pattern)(params);
+  }
+
   matchRoutes(routeConfig, pathname) {
     for (let index = 0; index < routeConfig.length; ++index) {
       const route = routeConfig[index];
@@ -83,17 +112,6 @@ export default class Matcher {
     return pattern.charAt(0) === '/' ? pattern : `/${pattern}`;
   }
 
-  isActive({ location: matchLocation }, location, { exact } = {}) {
-    return (
-      this.isPathnameActive(
-        matchLocation.pathname, location.pathname, exact,
-      ) &&
-      this.isQueryActive(
-        matchLocation.query, location.query,
-      )
-    );
-  }
-
   isPathnameActive(matchPathname, pathname, exact) {
     if (pathname === matchPathname) {
       return true;
@@ -121,9 +139,5 @@ export default class Matcher {
       Object.prototype.hasOwnProperty.call(matchQuery, key) &&
         isEqual(matchQuery[key], value)
     ));
-  }
-
-  format(pattern, params) {
-    return pathToRegexp.compile(pattern)(params);
   }
 }

@@ -18,9 +18,7 @@ export default function createFarceRouter({
 }) {
   const matcher = new Matcher(routeConfig);
 
-  const ConnectedRouter = createConnectedRouter({
-    ...options, routeConfig, matcher,
-  });
+  const ConnectedRouter = createConnectedRouter(options);
 
   class FarceRouter extends React.Component {
     constructor(props, context) {

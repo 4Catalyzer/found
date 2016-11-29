@@ -301,6 +301,7 @@ By default, route components receive additional props describing the current rou
   - `isActive(match, location, { exact })`: for `match` as above, returns whether `match` corresponds to `location` or a subpath of `location`; if `exact` is set, returns whether `match` corresponds exactly to `location`
   - `matcher`: an object implementing the matching algorithm
     - `format(pattern, params)`: returns the path string for a pattern of the same format as a route `path` and a object of the corresponding path parameters
+  - `addTransitionHook(hook)`: adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can [block navigation](#blocking-navigation)
 
 The `getComponent` method receives an object containing these properties as its argument.
 
@@ -542,7 +543,6 @@ const store = createStore(
 store.dispatch(FarceActions.init());
 
 const ConnectedRouter = createConnectedRouter({
-  routeConfig,
   matcher,
 
   render: createRender({
