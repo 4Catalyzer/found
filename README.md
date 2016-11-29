@@ -445,7 +445,6 @@ The `createBrowserRouter` function takes an options object. The only mandatory p
 
 The options object also accepts a number of optional properties:
 
-- `basename`: a string to implicitly prepend to all paths
 - `historyMiddlewares`: an array of Farce history middlewares; by default, an array containing only `queryMiddleware`
 - `historyOptions`: additional configuration options for the Farce history store enhancer
 - `renderPending`: a custom render function called when some routes are not yet ready to render, due to those routes have unresolved asynchronous dependencies and no route-level `render` method for handling the loading state
@@ -495,7 +494,7 @@ ReactDOM.render(
 );
 ```
 
-The options object for `createFarceRouter` should have a `historyProtocol` property that has a history protocol object. For example, instead of providing `basename` with `createBrowserRouter`, you would provide `new BrowserProtocol({ basename })`.
+The options object for `createFarceRouter` should have a `historyProtocol` property that has a history protocol object. For example, to use the HTML History API as with `createBrowserRouter`, you would provide `new BrowserProtocol()`.
 
 The `createFarceRouter` options object does not have defaults for the `historyMiddlewares` and `render` properties. It ignores the `renderPending`, `renderReady`, and `renderError` properties.
 

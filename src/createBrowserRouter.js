@@ -7,7 +7,6 @@ import createRender from './createRender';
 import resolveElements from './resolveElements';
 
 export default function createBrowserRouter({
-  basename,
   historyMiddlewares,
   render,
   renderPending,
@@ -17,7 +16,7 @@ export default function createBrowserRouter({
 }) {
   const FarceRouter = createFarceRouter({
     ...options,
-    historyProtocol: new BrowserProtocol({ basename }),
+    historyProtocol: new BrowserProtocol(),
     historyMiddlewares: historyMiddlewares || [queryMiddleware],
     render: render || createRender({
       renderPending, renderReady, renderError,
