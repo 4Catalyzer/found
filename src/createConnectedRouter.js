@@ -49,12 +49,12 @@ export default function createConnectedRouter({
     return {
       ...baseAddExtraProps.call(this, props),
 
-      // Take createHref, createLocation, and isActive directly from the store
+      // Take createHref, createLocation, and matcher directly from the store
       // to avoid potential issues with middlewares in the chain messing with
       // the return value from dispatch.
       createHref: farce.createHref,
       createLocation: farce.createLocation,
-      isActive: found.isActive,
+      matcher: found.matcher,
 
       // There's not really a better way to model this. Functions can't live in
       // the store, as they're not serializable.

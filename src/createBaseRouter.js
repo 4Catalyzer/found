@@ -1,17 +1,13 @@
 import isEqual from 'lodash/isEqual';
 import React from 'react';
 import StaticContainer from 'react-static-container';
+import warning from 'warning';
 
-import getRoutes from './getRoutes';
 import HttpError from './HttpError';
-import { routerShape } from './PropTypes';
+import { matcherShape, routerShape } from './PropTypes';
 import RedirectException from './RedirectException';
 
-export default function createBaseRouter({
-  routeConfig,
-  matcher,
-  render,
-}) {
+export default function createBaseRouter({ render }) {
   const propTypes = {
     match: React.PropTypes.object.isRequired,
     resolvedMatch: React.PropTypes.object.isRequired,
@@ -24,7 +20,7 @@ export default function createBaseRouter({
     createHref: React.PropTypes.func.isRequired,
     createLocation: React.PropTypes.func.isRequired,
     addTransitionHook: React.PropTypes.func.isRequired,
-    isActive: React.PropTypes.func.isRequired,
+    matcher: matcherShape.isRequired,
     initialRenderArgs: React.PropTypes.object,
   };
 
@@ -42,7 +38,7 @@ export default function createBaseRouter({
         go,
         createHref,
         createLocation,
-        isActive,
+        matcher,
         addTransitionHook,
         initialRenderArgs,
       } = props;
@@ -63,9 +59,14 @@ export default function createBaseRouter({
         go,
         createHref,
         createLocation,
-        isActive,
-        addTransitionHook,
         matcher,
+        addTransitionHook,
+
+        // Expose isActive from matcher directly for convenience. This pattern
+        // is faster than using matcher.isActive.bind(matcher).
+        isActive: (match, location, options) => (
+          matcher.isActive(match, location, options)
+        ),
       };
 
       this.childContext = {
@@ -89,6 +90,20 @@ export default function createBaseRouter({
     }
 
     componentWillReceiveProps(nextProps) {
+      if (__DEV__) {
+        Object.keys(this.router).forEach((propName) => {
+          if (propName === 'isActive') {
+            // isActive does not come from props.
+            return;
+          }
+
+          warning(
+            nextProps[propName] === this.props[propName],
+            `<BaseRouter> does not support changes to ${propName}.`,
+          );
+        });
+      }
+
       if (
         nextProps.match !== this.props.match ||
         nextProps.resolveElements !== this.props.resolveElements ||
@@ -110,9 +125,9 @@ export default function createBaseRouter({
     }
 
     async resolveMatch() {
-      const { match, matchContext, resolveElements } = this.props;
+      const { matcher, match, matchContext, resolveElements } = this.props;
+      const routes = matcher.getRoutes(match);
 
-      const routes = getRoutes(routeConfig, match);
       const augmentedMatch = {
         ...match,
         routes,

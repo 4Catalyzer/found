@@ -11,6 +11,15 @@ export const matchShape = React.PropTypes.shape({
   params: React.PropTypes.object.isRequired,
 });
 
+// User code generally shouldn't need this, but it doesn't hurt to export here,
+// since we use it for routerShape below.
+export const matcherShape = React.PropTypes.shape({
+  match: React.PropTypes.func.isRequired,
+  getRoutes: React.PropTypes.func.isRequired,
+  isActive: React.PropTypes.func.isRequired,
+  format: React.PropTypes.func.isRequired,
+});
+
 export const routerShape = React.PropTypes.shape({
   push: React.PropTypes.func.isRequired,
   replace: React.PropTypes.func.isRequired,
@@ -19,6 +28,7 @@ export const routerShape = React.PropTypes.shape({
   createHref: React.PropTypes.func.isRequired,
   createLocation: React.PropTypes.func.isRequired,
   isActive: React.PropTypes.func.isRequired,
+  matcher: matcherShape.isRequired,
 
   addTransitionHook: React.PropTypes.func.isRequired,
 });
