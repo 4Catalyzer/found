@@ -1,8 +1,8 @@
-import FarceActions from 'farce/lib/Actions';
 import { connect } from 'react-redux';
 
 import ActionTypes from './ActionTypes';
 import createBaseRouter from './createBaseRouter';
+import createStoreRouterObject from './utils/createStoreRouterObject';
 
 function resolveMatch(match) {
   return {
@@ -21,9 +21,6 @@ export default function createConnectedRouter({
       return { match, resolvedMatch };
     },
     {
-      push: FarceActions.push,
-      replace: FarceActions.replace,
-      go: FarceActions.go,
       onResolveMatch: resolveMatch,
     },
     null,
@@ -43,22 +40,15 @@ export default function createConnectedRouter({
   const baseAddExtraProps = ConnectedRouter.prototype.addExtraProps;
 
   function addExtraProps(props) {
-    // It's safe to read from the context because these won't change.
-    const { farce, found } = this.props.store || this.context.store;
+    if (!this.router) {
+      this.router = createStoreRouterObject(
+        this.props.store || this.context.store,
+      );
+    }
 
     return {
       ...baseAddExtraProps.call(this, props),
-
-      // Take createHref, createLocation, and matcher directly from the store
-      // to avoid potential issues with middlewares in the chain messing with
-      // the return value from dispatch.
-      createHref: farce.createHref,
-      createLocation: farce.createLocation,
-      matcher: found.matcher,
-
-      // There's not really a better way to model this. Functions can't live in
-      // the store, as they're not serializable.
-      addTransitionHook: farce.addTransitionHook,
+      router: this.router,
     };
   }
 

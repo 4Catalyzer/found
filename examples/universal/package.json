@@ -1,0 +1,20 @@
+{
+  "name": "universal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "babel-node src/server"
+  },
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.8",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "express": "^4.14.0",
+    "found": "../..",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-middleware": "^1.8.4"
+  }
+}
