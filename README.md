@@ -806,13 +806,11 @@ app.use(async (req, res) => {
   res
     .status(renderArgs.error ? renderArgs.error.status : 200)
     .send(renderPageToString(
-      (
-        <Provider store={store}>
-          <RouterProvider router={renderArgs.router}>
-            {render(renderArgs)}
-          </RouterProvider>
-        </Provider>
-      ),
+      <Provider store={store}>
+        <RouterProvider router={renderArgs.router}>
+          {render(renderArgs)}
+        </RouterProvider>
+      </Provider>,
       store.getState(),
     ));
 });
@@ -830,8 +828,6 @@ import { getStoreRenderArgs } from 'found';
 /* ... */
 
 (async () => {
-  /* ... */
-
   const initialRenderArgs = await getStoreRenderArgs({
     store,
     matchContext,
