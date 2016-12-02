@@ -120,6 +120,7 @@ export default AppPage;
 - [Basic usage with JSX route configuration](/examples/basic-jsx)
 - [Global pending state](/examples/global-pending)
 - [Transition hook usage](/examples/transition-hook)
+- [Server-side rendering](/examples/universal)
 
 ## Extensions
 
@@ -131,8 +132,8 @@ export default AppPage;
 ### Installation
 
 ```
-npm i -S react
-npm i -S found
+$ npm i -S react
+$ npm i -S found
 ```
 
 ### Basic usage
@@ -442,7 +443,7 @@ ReactDOM.render(
 );
 ```
 
-The `createBrowserRouter` function takes an options object. The only mandatory property on this object is `routeConfig`, which should be a route configuration as above.
+`createBrowserRouter` takes an options object. The only mandatory property on this object is `routeConfig`, which should be a route configuration as above.
 
 The options object also accepts a number of optional properties:
 
@@ -466,7 +467,7 @@ The created `<BrowserRouter>` accepts an optional `matchContext` prop as describ
 
 #### `createFarceRouter`
 
-`createFarceRouter` exposes additional configuration for customizing navigation management and route element resolution. To enable minimizing bundle size, it omits the defaults from `createBrowserRouter`.
+`createFarceRouter` exposes additional configuration for customizing navigation management and route element resolution. To enable minimizing bundle size, it omits some defaults from `createBrowserRouter`.
 
 ```js
 import { BrowserProtocol, queryMiddleware } from 'farce';
@@ -476,8 +477,6 @@ import { createFarceRouter, createRender, resolveElements } from 'found';
 
 const FarceRouter = createFarceRouter({
   historyProtocol: new BrowserProtocol(),
-  historyMiddlewares: [queryMiddleware],
-
   routeConfig,
 
   render: createRender({
@@ -497,7 +496,7 @@ ReactDOM.render(
 
 The options object for `createFarceRouter` should have a `historyProtocol` property that has a history protocol object. For example, to use the HTML History API as with `createBrowserRouter`, you would provide `new BrowserProtocol()`.
 
-The `createFarceRouter` options object does not have defaults for the `historyMiddlewares` and `render` properties. It ignores the `renderPending`, `renderReady`, and `renderError` properties.
+The `createFarceRouter` options object does not have a default for the `render` property. It ignores the `renderPending`, `renderReady`, and `renderError` properties.
 
 The created `<FarceRouter>` manages setting up and providing a Redux store with the appropriate configuration internally. It also requires a `resolveElements` prop with the route element resolution function. For routes configured as above, this should be the `resolveElements` function in this library.
 
@@ -525,8 +524,6 @@ import { combineReducers, compose, createStore } from 'redux';
 
 /* ... */
 
-const matcher = new Matcher(routeConfig);
-
 const store = createStore(
   combineReducers({
     found: foundReducer,
@@ -536,15 +533,15 @@ const store = createStore(
       protocol: new BrowserProtocol(),
       middlewares: [queryMiddleware],
     }),
-    createMatchEnhancer(matcher),
+    createMatchEnhancer(
+      new Matcher(routeConfig),
+    ),
   ),
 );
 
 store.dispatch(FarceActions.init());
 
 const ConnectedRouter = createConnectedRouter({
-  matcher,
-
   render: createRender({
     renderError: ({ error }) => (
       <div>
@@ -562,9 +559,9 @@ ReactDOM.render(
 );
 ```
 
-When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from Farce, and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. `createMatchEnhancer` takes a matcher object which handles the actual route matching. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
+When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from Farce and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
 
-`createConnectedRouter` ignores the `historyProtocol`, `historyMiddlewares`, and `historyOptions` properties on its options object. It requires the `matcher` property with the matcher object used in creating the match enhancer.
+`createConnectedRouter` ignores the `historyProtocol`, `historyMiddlewares`, and `historyOptions` properties on its options object.
 
 `createConnectedRouter` also accepts an optional `getFound` property. If you installed `foundReducer` on a key other than `found`, specify the `getFound` function to retrieve the reducer state.
 
@@ -678,7 +675,7 @@ If you want to run your transition hooks when the user attempts to leave the pag
 
 The [transition hook usage example](/examples/transition-hook) demonstrates the use of transition hooks in more detail, including the use of the `useBeforeUnload` option.
 
-#### Redux integration
+### Redux integration
 
 Found uses Redux to manage all serializable state. Farce uses Redux actions for navigation. As such, you can also access those serializable parts of the routing state from the store state, and you can navigate by dispatching actions.
 
@@ -697,6 +694,161 @@ const MyConnectedComponent = connect(
     push: FarceActions.push,
   },
 )(MyComponent);
+```
+
+### Server-side rendering
+
+Found supports server-side rendering for universal applications. Functionality specific to server-side rendering is available in `found/lib/server`.
+
+To render your application on the server, use `getFarceResult`.
+
+```js
+import { getFarceResult } from 'found/lib/server';
+
+/* ... */
+
+app.use(async (req, res) => {
+  const { redirect, status, element } = await getFarceResult({
+    url: req.url,
+    routeConfig,
+    render,
+  });
+
+  if (redirect) {
+    res.redirect(302, redirect.url);
+    return;
+  }
+
+  res.status(status).send(`
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Found Universal Example</title>
+</head>
+
+<body>
+<div id="root">${ReactDOMServer.renderToString(element)}</div>
+
+<script src="/static/bundle.js"></script>
+</body>
+
+</html>
+  `);
+});
+```
+
+`getFarceResult` takes an options object. This object must include the `url` property that is the full path of the current request, along with the `routeConfig` and `render` properties needed to create a Farce router component class normally.
+
+The options object for `getFarceResult` also takes the `historyMiddlewares` and `historyOptions` properties, as above for creating Farce router component classes. This options object also takes optional `matchContext` and `resolveElements` properties, as described above as props for router components. `resolveElements` defaults to the standard `resolveElements` function in this library.
+
+`getFarceResult` returns a promise for an object with the following properties:
+
+- `redirect`: if present, indicates that element resolution triggered a redirect; `redirect.url` contains the full path for the redirect location
+- `status`: if there was no redirect, the HTTP status code for the response; this will be `error.status` from any encountered `HttpError`, or 200 otherwise
+- `element`: if there was no redirect, the React element corresponding to the router component on the client
+
+This promise resolves when all asynchronous dependencies are available. If your routes require asynchronous data, e.g. from `getData` methods, you may want to dehydrate those data on the server, then rehydrate them on the client, to avoid the client having to request those data again.
+
+#### Server-side rendering with custom Redux store
+
+If you are using server-side rendering, you will need to delay the initial render on the client. In this case, use `createInitialBrowserRouter` or `createInitialFarceRouter` instead of `createBrowserRouter` or `createFarceRouter` respectively.
+
+```js
+import { createInitialBrowserRouter } from 'found';
+
+/* ... */
+
+(async () => {
+  const BrowserRouter = await createInitialBrowserRouter({
+    routeConfig,
+    render,
+  });
+
+  ReactDOM.render(
+    <BrowserRouter />,
+    document.getElementById('root'),
+  );
+})();
+```
+
+These behave similarly to their counterparts above, except that the options object for `createInitialBrowserRouter` requires a `render` method, and ignores the `renderPending`, `renderReady`, and `renderError` properties. Additionally, these functions take the initial `matchContext` and `resolveElements` if relevant as properties on the options object, rather than as props.
+
+Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On both the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
+
+```js
+import { getStoreRenderArgs } from 'found';
+import { RedirectException, RouterProvider } from 'found/lib/server';
+
+/* ... */
+
+app.use(async (req, res) => {
+  /* ... */
+
+  let renderArgs;
+
+  try {
+    renderArgs = await getStoreRenderArgs({
+      store,
+      matchContext,
+      resolveElements,
+    });
+  } catch (e) {
+    if (e instanceof RedirectException) {
+      res.redirect(302, store.farce.createHref(e.location));
+      return;
+    }
+
+    throw e;
+  }
+
+  res
+    .status(renderArgs.error ? renderArgs.error.status : 200)
+    .send(renderPageToString(
+      (
+        <Provider store={store}>
+          <RouterProvider router={renderArgs.router}>
+            {render(renderArgs)}
+          </RouterProvider>
+        </Provider>
+      ),
+      store.getState(),
+    ));
+});
+```
+
+You must dispatch `FarceActions.init()` before calling `getStoreRenderArgs`. `getStoreRenderArgs` takes an options object. This object must have the `store` property for your store and the `resolveElements` property as described above. It supports an optional `matchContext` property as described above as well. `getStoreRenderArgs` returns a promise that resolves to a `renderArgs` object that can be passed into a `render` function as above.
+
+`<RouterProvider>` requires a `router` prop that is the router context object as described above. This is available on `renderArgs.router`, from the value resolved by `getStoreRenderArgs`.
+
+On the client, pass the value resolved by by `getStoreRenderArgs` to your `<ConnectedRouter>` as the `initialRenderArgs` prop.
+
+```js
+import { getStoreRenderArgs } from 'found';
+
+/* ... */
+
+(async () => {
+  /* ... */
+
+  const initialRenderArgs = await getStoreRenderArgs({
+    store,
+    matchContext,
+    resolveElements,
+  });
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <ConnectedRouter
+        matchContext={matchContext}
+        resolveElements={resolveElements}
+        initialRenderArgs={initialRenderArgs}
+      />
+    </Provider>,
+    document.getElementById('root'),
+  );
+})();
 ```
 
 ### Minimizing bundle size
