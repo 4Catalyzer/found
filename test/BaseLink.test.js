@@ -1,115 +1,32 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
+import { mount } from 'enzyme';
 import React from 'react';
-import {
-  mount,
-} from 'enzyme';
 
 import BaseLink from '../src/BaseLink';
 
 const CustomComponent = () => <div />;
 
-let router;
+describe('<BaseLink>', () => {
+  let router;
 
-beforeEach(() => {
-  router = {
-    push: jest.fn(),
-    replace: jest.fn(),
-    go: jest.fn(),
-    isActive: jest.fn(),
-    createHref: jest.fn(),
-    createLocation: jest.fn(),
-    addTransitionHook: jest.fn(),
-  };
-});
-
-it('renders <a> as default', () => {
-  const link = mount(
-    <BaseLink
-      match={{}}
-      router={router}
-    />
-  );
-  expect(link.find('a')).toHaveLength(1);
-});
-
-it('can use custom Component as link', () => {
-  const link = mount(
-    <BaseLink
-      match={{}}
-      router={router}
-      Component={CustomComponent}
-    />
-  );
-  expect(link.find('a')).toHaveLength(0);
-  expect(link.find(CustomComponent)).toHaveLength(1);
-});
-
-describe('when clicked', () => {
-  it('calls a user defined click handler', () => {
-    const handleClick = jest.fn();
-    const link = mount(
-      <BaseLink
-        match={{}}
-        router={router}
-        onClick={handleClick}
-      />
-    );
-
-    link.find('a').simulate('click');
-    expect(handleClick).toBeCalled();
+  beforeEach(() => {
+    router = {
+      push: jest.fn(),
+      replace: jest.fn(),
+      go: jest.fn(),
+      createHref: jest.fn(),
+      createLocation: jest.fn(),
+      isActive: jest.fn(),
+      matcher: {
+        match: jest.fn(),
+        getRoutes: jest.fn(),
+        isActive: jest.fn(),
+        format: jest.fn(),
+      },
+      addTransitionHook: jest.fn(),
+    };
   });
 
-  it('push location with `to`', () => {
-    const link = mount(
-      <BaseLink
-        to="/path-to-another-page"
-        match={{}}
-        router={router}
-      />
-    );
-
-    link.find('a').simulate('click', { button: 0 });
-    expect(router.push).toBeCalledWith('/path-to-another-page');
-  });
-
-  it('should not push location if handler call preventDefault', () => {
-    const handleClick = event => event.preventDefault();
-    const link = mount(
-      <BaseLink
-        match={{}}
-        router={router}
-        onClick={handleClick}
-      />
-    );
-
-    link.find('a').simulate('click', { button: 0 });
-    expect(router.push).not.toBeCalled();
-  });
-
-  it('should not push location if click be modified', () => {
-    const link = mount(
-      <BaseLink
-        match={{}}
-        router={router}
-      />
-    );
-    const a = link.find('a');
-
-    a.simulate('click', { button: 0, metaKey: true });
-    expect(router.push).not.toBeCalled();
-
-    a.simulate('click', { button: 0, altKey: true });
-    expect(router.push).not.toBeCalled();
-
-    a.simulate('click', { button: 0, ctrlKey: true });
-    expect(router.push).not.toBeCalled();
-
-    a.simulate('click', { button: 0, shiftKey: true });
-    expect(router.push).not.toBeCalled();
-  });
-
-  it('should not push location if it was not a left click', () => {
+  it('should render <a> by default', () => {
     const link = mount(
       <BaseLink
         match={{}}
@@ -117,85 +34,176 @@ describe('when clicked', () => {
       />
     );
 
-    link.find('a').simulate('click', { button: 2 });
-    expect(router.push).not.toBeCalled();
+    expect(link.find('a')).toHaveLength(1);
   });
 
-  it('should not push location if target exists', () => {
+  it('should support a custom Component', () => {
     const link = mount(
-      <BaseLink
-        match={{}}
-        router={router}
-        target="_blank"
-      />
-    );
-
-    link.find('a').simulate('click', { button: 0 });
-    expect(router.push).not.toBeCalled();
-  });
-});
-
-describe('active state', () => {
-  it('should not call isActive when all of activeClassName, activeStyle, activePropName were absence', () => { // eslint-disable-line max-len
-    mount(
-      <BaseLink
-        match={{}}
-        router={router}
-      />
-    );
-    expect(router.isActive).not.toBeCalled();
-  });
-
-  it('passed activeClassName down when active', () => {
-    router.isActive.mockReturnValueOnce(true);
-    const link = mount(
-      <BaseLink
-        match={{}}
-        router={router}
-        activeClassName="active"
-      />
-    );
-
-    expect(link.find('a').prop('className')).toMatch(/active/);
-  });
-
-  it('passed activeStyle down when active', () => {
-    router.isActive.mockReturnValueOnce(true);
-    const link = mount(
-      <BaseLink
-        match={{}}
-        router={router}
-        activeStyle={{ color: '#fff' }}
-      />
-    );
-
-    expect(link.find('a').prop('style').color).toBe('#fff');
-  });
-
-  it('passed activePropName to Component when it exists', () => {
-    router.isActive.mockReturnValueOnce(true);
-    let link = mount(
       <BaseLink
         match={{}}
         router={router}
         Component={CustomComponent}
-        activePropName="active"
       />
     );
 
-    expect(link.find(CustomComponent).prop('active')).toBe(true);
+    expect(link.find('a')).toHaveLength(0);
+    expect(link.find(CustomComponent)).toHaveLength(1);
+  });
 
-    router.isActive.mockReturnValueOnce(false);
+  describe('when clicked', () => {
+    it('should call a custom click handler', () => {
+      const handleClick = jest.fn();
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+          onClick={handleClick}
+        />
+      );
 
-    link = mount(
-      <BaseLink
-        match={{}}
-        router={router}
-        Component={CustomComponent}
-        activePropName="active"
-      />
-    );
+      link.find('a').simulate('click');
+      expect(handleClick).toBeCalled();
+    });
 
-    expect(link.find(CustomComponent).prop('active')).toBe(false);
+    it('should navigate to the destination location', () => {
+      const link = mount(
+        <BaseLink
+          to="/path-to-another-page"
+          match={{}}
+          router={router}
+        />
+      );
+
+      link.find('a').simulate('click', { button: 0 });
+      expect(router.push).toBeCalledWith('/path-to-another-page');
+    });
+
+    it('should not navigate if the click handler calls preventDefault', () => {
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+          onClick={(event) => { event.preventDefault(); }}
+        />
+      );
+
+      link.find('a').simulate('click', { button: 0 });
+      expect(router.push).not.toBeCalled();
+    });
+
+    it('should not navigate on modified clicks', () => {
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+        />
+      );
+
+      const a = link.find('a');
+
+      a.simulate('click', { button: 0, metaKey: true });
+      expect(router.push).not.toBeCalled();
+
+      a.simulate('click', { button: 0, altKey: true });
+      expect(router.push).not.toBeCalled();
+
+      a.simulate('click', { button: 0, ctrlKey: true });
+      expect(router.push).not.toBeCalled();
+
+      a.simulate('click', { button: 0, shiftKey: true });
+      expect(router.push).not.toBeCalled();
+    });
+
+    it('should not navigate on non-left clicks', () => {
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+        />
+      );
+
+      link.find('a').simulate('click', { button: 2 });
+      expect(router.push).not.toBeCalled();
+    });
+
+    it('should not navigate if target is defined', () => {
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+          target="_blank"
+        />
+      );
+
+      link.find('a').simulate('click', { button: 0 });
+      expect(router.push).not.toBeCalled();
+    });
+  });
+
+  describe('active state', () => {
+    it('should not call isActive when not showing active state', () => {
+      mount(
+        <BaseLink
+          match={{}}
+          router={router}
+        />
+      );
+
+      expect(router.isActive).not.toBeCalled();
+    });
+
+    it('should set activeClassName when active', () => {
+      router.isActive.mockReturnValueOnce(true);
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+          activeClassName="active"
+        />
+      );
+
+      expect(link.find('a').prop('className')).toMatch(/active/);
+    });
+
+    it('should set activeStyle when active', () => {
+      router.isActive.mockReturnValueOnce(true);
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+          activeStyle={{ color: '#fff' }}
+        />
+      );
+
+      expect(link.find('a').prop('style').color).toBe('#fff');
+    });
+
+    it('should set activePropName when active', () => {
+      router.isActive.mockReturnValueOnce(true);
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+          Component={CustomComponent}
+          activePropName="active"
+        />
+      );
+
+      expect(link.find(CustomComponent).prop('active')).toBe(true);
+    });
+
+    it('should not set activePropName when not active', () => {
+      router.isActive.mockReturnValueOnce(false);
+      const link = mount(
+        <BaseLink
+          match={{}}
+          router={router}
+          Component={CustomComponent}
+          activePropName="active"
+        />
+      );
+
+      expect(link.find(CustomComponent).prop('active')).toBe(false);
+    });
   });
 });
