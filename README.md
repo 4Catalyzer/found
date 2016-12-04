@@ -1,4 +1,4 @@
-# Found [![npm][npm-badge]][npm]
+# Found [![Travis][build-badge]][build] [![npm][npm-badge]][npm]
 
 _Extensible route-based routing for React applications._
 
@@ -861,6 +861,9 @@ import Route from 'found/lib/jsx/Route';
 // import { createBrowserRouter, routerShape } from 'found';
 // import { makeRouteConfig, Route } from 'found/lib/jsx';
 ```
+
+[build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg
+[build]: https://travis-ci.org/4Catalyzer/found
 
 [npm-badge]: https://img.shields.io/npm/v/found.svg
 [npm]: https://www.npmjs.org/package/found
