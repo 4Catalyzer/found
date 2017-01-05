@@ -7,7 +7,10 @@ export function checkResolved(value) {
     return value;
   }
 
-  return Promise.race([value, UNRESOLVED]);
+  return Promise.race([
+    value,
+    new Promise((resolve) => { setImmediate(resolve, UNRESOLVED); }),
+  ]);
 }
 
 export function isResolved(value) {
