@@ -1,7 +1,7 @@
 import { checkResolved, isResolved } from '../src/ResolverUtils';
 
 describe('ResolverUtils', () => {
-  describe('isResolved', () => {
+  describe('checkResolved, isResolved', () => {
     it('should return true for non-promises', async () => {
       expect(isResolved(
         await checkResolved({}),
@@ -11,6 +11,10 @@ describe('ResolverUtils', () => {
     it('should return true for resolved promises', async () => {
       expect(isResolved(
         await checkResolved(Promise.resolve({})),
+      )).toBe(true);
+
+      expect(isResolved(
+        await checkResolved(Promise.resolve({}).then(value => value)),
       )).toBe(true);
     });
 
