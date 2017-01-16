@@ -1,0 +1,32 @@
+{
+  "name": "universal-connected-redux",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "babel-node src/server"
+  },
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.8",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "express": "^4.14.0",
+    "farce": "^0.2.1",
+    "found": "../..",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0",
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-middleware": "^1.8.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.8.1",
+    "eslint-config-react-app": "^0.5.0",
+    "eslint-plugin-flowtype": "^2.21.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1"
+  }
+}
