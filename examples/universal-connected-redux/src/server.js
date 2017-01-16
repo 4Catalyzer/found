@@ -15,8 +15,6 @@ import render from './render';
 const PORT = 3000;
 const app = express();
 
-process.on('unhandledRejection', r => console.log(r));
-
 const webpackConfig = {
   entry: './src/client',
 
@@ -91,11 +89,6 @@ app.use(async (req, res) => {
       </Provider>,
       store.getState(),
     ));
-});
-
-app.use((err, req, res, next) => {
-  console.error(err.stack)
-  res.status(500).send({ error: 'Something failed!' })
 });
 
 app.listen(PORT, () => {

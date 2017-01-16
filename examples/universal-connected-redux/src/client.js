@@ -9,6 +9,7 @@ import { BrowserProtocol } from 'farce';
 import render from './render';
 import genStore from './genStore';
 
+// eslint-disable-next-line no-underscore-dangle
 const store = genStore(new BrowserProtocol(), window.__PRELOADED_STATE__);
 const matchContext = { store };
 const ConnectedRouter = createConnectedRouter({ render });
