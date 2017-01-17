@@ -39,6 +39,19 @@ export default class Matcher {
     });
   }
 
+  joinPaths(basePath, path) {
+    if (!path) {
+      return basePath;
+    }
+
+    if (basePath.charAt(basePath.length - 1) === '/') {
+      // eslint-disable-next-line no-param-reassign
+      basePath = basePath.slice(0, -1);
+    }
+
+    return `${basePath}${this.getCanonicalPattern(path)}`;
+  }
+
   isActive({ location: matchLocation }, location, { exact } = {}) {
     return (
       this.isPathnameActive(
