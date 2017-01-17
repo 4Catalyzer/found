@@ -121,6 +121,7 @@ export default AppPage;
 - [Global pending state](/examples/global-pending)
 - [Transition hook usage](/examples/transition-hook)
 - [Server-side rendering](/examples/universal)
+- [Named components](/examples/named-components)
 
 ## Extensions
 
