@@ -11,8 +11,8 @@ Found uses [Redux](http://redux.js.org/) for state management and [Farce](https:
 ## Usage
 
 ```js
-import { createBrowserRouter, HttpError } from 'found';
-import { makeRouteConfig, Redirect, Route } from 'found/lib/jsx';
+import { createBrowserRouter, HttpError, makeRouteConfig, Redirect, Route }
+  from 'found';
 
 /* ... */
 
@@ -140,7 +140,7 @@ $ npm i -S found
 
 ### Basic usage
 
-Define a route configuration as an array of objects, or with the JSX configuration components and the `makeRouteConfig` function in `found/lib/jsx`.
+Define a route configuration as an array of objects, or as JSX with `<Route>` elements using `makeRouteConfig`.
 
 ```js
 const routeConfig = [
@@ -209,7 +209,7 @@ A route object under the default matching algorithm and route element resolver c
 - `render`: a method that returns the element for the route
 - `children`: an array of child route objects; if using JSX configuration components, this comes from the JSX children
 
-A route configuration consists of an array of route objects. You can also define a route configuration using the JSX configuration components and the `makeRouteConfig` function in `found/lib/jsx`.
+A route configuration consists of an array of route objects. You can generate such an array of route objects from JSX with `<Route>` elements using `makeRouteConfig`.
 
 #### `path`
 
@@ -355,7 +355,7 @@ If any matched routes have unresolved asynchronous component or data dependencie
 
 #### Redirects
 
-The `Redirect` route class and the `<Redirect>` configuration component set up static redirect routes. These take `from` and `to` properties. `from` should be a path pattern as for normal routes above. `to` can be either a path pattern or a function. If it is a path pattern, the router will populate path parameters appropriately. If it is a function, it will receive the same routing state object as `getComponent` and `getData`, as described above.
+The `Redirect` route class sets up static redirect routes. You can also use it to create JSX `<Redirect>` elements for use with `makeRouteConfig`. This class takes `from` and `to` properties. `from` should be a path pattern as for normal routes above. `to` can be either a path pattern or a function. If it is a path pattern, the router will populate path parameters appropriately. If it is a function, it will receive the same routing state object as `getComponent` and `getData`, as described above.
 
 ```js
 const redirect1 = new Redirect({
@@ -855,13 +855,13 @@ The top-level `found` package exports everything available in this library. It i
 
 ```js
 import createBrowserRouter from 'found/lib/createBrowserRouter';
+import makeRouteConfig from 'found/lib/makeRouteConfig';
 import { routerShape } from 'found/lib/PropTypes';
-import makeRouteConfig from 'found/lib/jsx/makeRouteConfig';
-import Route from 'found/lib/jsx/Route';
+import Route from 'found/lib/Route';
 
 // Instead of:
-// import { createBrowserRouter, routerShape } from 'found';
-// import { makeRouteConfig, Route } from 'found/lib/jsx';
+// import { createBrowserRouter, makeRouteConfig, Route, routerShape }
+//   from 'found';
 ```
 
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg

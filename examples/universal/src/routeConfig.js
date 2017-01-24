@@ -1,7 +1,7 @@
 import Link from 'found/lib/Link';
-import makeRouteConfig from 'found/lib/jsx/makeRouteConfig';
-import Redirect from 'found/lib/jsx/Redirect';
-import Route from 'found/lib/jsx/Route';
+import makeRouteConfig from 'found/lib/makeRouteConfig';
+import Redirect from 'found/lib/Redirect';
+import Route from 'found/lib/Route';
 import PropTypes from 'prop-types';
 import React from 'react';
 
