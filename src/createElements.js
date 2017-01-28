@@ -1,3 +1,5 @@
+import isPlainObject from 'lodash/isPlainObject';
+import mapValues from 'lodash/mapValues';
 import React from 'react';
 import warning from 'warning';
 
@@ -39,6 +41,13 @@ export default function createElements(routeMatches, Components, matchData) {
 
       // Nothing to render.
       return null;
+    }
+
+    if (isPlainObject(Component)) {
+      // named components
+      return mapValues(Component, (Value, key) => (
+        <Value {...match} data={data && data[key]} />
+      ));
     }
 
     return <Component {...match} data={data} />;
