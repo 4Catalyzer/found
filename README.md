@@ -778,8 +778,8 @@ These behave similarly to their counterparts above, except that the options obje
 Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On both the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
 
 ```js
-import { getStoreRenderArgs } from 'found';
-import { RedirectException, RouterProvider } from 'found/lib/server';
+import { getStoreRenderArgs, RedirectException } from 'found';
+import { RouterProvider } from 'found/lib/server';
 
 /* ... */
 
