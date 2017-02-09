@@ -1,3 +1,4 @@
+// @flow
 import FarceActions from 'farce/lib/Actions';
 import { bindActionCreators } from 'redux';
 
@@ -7,7 +8,7 @@ const NAVIGATION_ACTION_CREATORS = {
   go: FarceActions.go,
 };
 
-export default function createStoreRouterObject(store) {
+export default function createStoreRouterObject(store: any) {
   const { farce, found } = store;
   const { matcher } = found;
 

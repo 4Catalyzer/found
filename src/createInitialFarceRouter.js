@@ -1,3 +1,4 @@
+// @flow
 import createFarceRouter from './createFarceRouter';
 import getStoreRenderArgs from './getStoreRenderArgs';
 import createFarceStore from './utils/createFarceStore';
@@ -10,7 +11,7 @@ export default async function createInitialFarceRouter({
   matchContext,
   resolveElements,
   ...options
-}) {
+}: any) {
   const store = createFarceStore({
     historyProtocol,
     historyMiddlewares,

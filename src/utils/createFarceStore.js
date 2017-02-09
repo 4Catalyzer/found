@@ -1,3 +1,4 @@
+// @flow
 import FarceActions from 'farce/lib/Actions';
 import createHistoryEnhancer from 'farce/lib/createHistoryEnhancer';
 import queryMiddleware from 'farce/lib/queryMiddleware';
@@ -12,6 +13,11 @@ export default function createFarceStore({
   historyMiddlewares,
   historyOptions,
   routeConfig,
+}: {
+  historyProtocol: any,
+  historyMiddlewares: any,
+  historyOptions: any,
+  routeConfig: any,
 }) {
   const store = createStore(
     combineReducers({

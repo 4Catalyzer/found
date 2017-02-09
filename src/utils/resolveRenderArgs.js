@@ -1,8 +1,9 @@
+// @flow
 import HttpError from '../HttpError';
 
 export default async function* resolveRenderArgs({
   router, match, matchContext, resolveElements,
-}) {
+}: any): any {
   const routes = router.matcher.getRoutes(match);
 
   const augmentedMatch = {

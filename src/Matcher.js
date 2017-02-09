@@ -1,12 +1,15 @@
+// @flow
 import isEqual from 'lodash/isEqual';
 import pathToRegexp from 'path-to-regexp';
 
 export default class Matcher {
-  constructor(routeConfig) {
+  routeConfig: any;
+
+  constructor(routeConfig: any) {
     this.routeConfig = routeConfig;
   }
 
-  match({ pathname }) {
+  match({ pathname }: { pathname: string }) {
     const matches = this.matchRoutes(this.routeConfig, pathname);
     if (!matches) {
       return null;
@@ -25,7 +28,7 @@ export default class Matcher {
     return { routeIndices, routeParams, params };
   }
 
-  getRoutes({ routeIndices }) {
+  getRoutes({ routeIndices }: { routeIndices: any }) {
     if (!routeIndices) {
       return null;
     }
@@ -39,7 +42,7 @@ export default class Matcher {
     });
   }
 
-  joinPaths(basePath, path) {
+  joinPaths(basePath: string, path: ?string) {
     if (!path) {
       return basePath;
     }
@@ -52,7 +55,11 @@ export default class Matcher {
     return `${basePath}${this.getCanonicalPattern(path)}`;
   }
 
-  isActive({ location: matchLocation }, location, { exact } = {}) {
+  isActive(
+    { location: matchLocation }: any,
+    location: any,
+    { exact }: any = {}
+  ) {
     return (
       this.isPathnameActive(
         matchLocation.pathname, location.pathname, exact,
@@ -63,11 +70,11 @@ export default class Matcher {
     );
   }
 
-  format(pattern, params) {
+  format(pattern: any, params: any) {
     return pathToRegexp.compile(pattern)(params);
   }
 
-  matchRoutes(routeConfig, pathname) {
+  matchRoutes(routeConfig: any, pathname: string) {
     for (let index = 0; index < routeConfig.length; ++index) {
       const route = routeConfig[index];
 
@@ -92,7 +99,7 @@ export default class Matcher {
     return null;
   }
 
-  matchRoute(route, pathname) {
+  matchRoute(route: any, pathname: string) {
     const routePath = route.path;
     if (!routePath) {
       return {
@@ -121,11 +128,11 @@ export default class Matcher {
     };
   }
 
-  getCanonicalPattern(pattern) {
+  getCanonicalPattern(pattern: string) {
     return pattern.charAt(0) === '/' ? pattern : `/${pattern}`;
   }
 
-  isPathnameActive(matchPathname, pathname, exact) {
+  isPathnameActive(matchPathname: string, pathname: string, exact: boolean) {
     if (pathname === matchPathname) {
       return true;
     }
@@ -143,7 +150,7 @@ export default class Matcher {
     return matchPathname.indexOf(pathnameWithSeparator) === 0;
   }
 
-  isQueryActive(matchQuery, query) {
+  isQueryActive(matchQuery: any, query: any) {
     if (!query) {
       return true;
     }

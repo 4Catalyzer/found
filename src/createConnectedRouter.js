@@ -1,3 +1,4 @@
+// @flow
 import { connect } from 'react-redux';
 
 import ActionTypes from './ActionTypes';
@@ -14,7 +15,7 @@ function resolveMatch(match) {
 export default function createConnectedRouter({
   getFound = ({ found }) => found,
   ...options
-}) {
+}: any) {
   const ConnectedRouter = connect(
     (state) => {
       const { match, resolvedMatch } = getFound(state);

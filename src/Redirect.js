@@ -1,12 +1,16 @@
+// @flow
 import RedirectException from './RedirectException';
 
 export default class Redirect {
-  constructor({ from, to }) {
+  path: string;
+  to: string;
+
+  constructor({ from, to }: { from: string, to: string }) {
     this.path = from;
     this.to = to;
   }
 
-  render({ match }) {
+  render({ match }: { match: any }) {
     const to = this.to;
     let toLocation;
 

@@ -1,3 +1,4 @@
+// @flow
 import invariant from 'invariant';
 
 function createRoute(props) {

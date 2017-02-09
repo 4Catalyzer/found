@@ -1,3 +1,4 @@
+// @flow
 import FarceActions from 'farce/lib/Actions';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
@@ -20,6 +21,14 @@ export default async function getFarceResult({
   matchContext,
   resolveElements = defaultResolveElements,
   render,
+}: {
+  url: string,
+  historyMiddlewares: any,
+  historyOptions: any,
+  routeConfig: any,
+  matchContext: any,
+  resolveElements: any,
+  render: any,
 }) {
   const store = createFarceStore({
     historyProtocol: new ServerProtocol(url),

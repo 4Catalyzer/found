@@ -1,6 +1,7 @@
+// @flow
 import ActionTypes from './ActionTypes';
 
-export default function foundReducer(state = null, action) {
+export default function foundReducer(state: any = null, action: any) {
   const { type, payload } = action;
 
   switch (type) {
