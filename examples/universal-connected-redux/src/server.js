@@ -8,6 +8,7 @@ import { RouterProvider } from 'found/lib/server';
 import { Actions as FarceActions, ServerProtocol } from 'farce';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
+import serialize from 'serialize-javascript';
 
 import genStore from './genStore';
 import render from './render';
@@ -44,7 +45,7 @@ function renderPageToString(element, state) {
 <body>
   <div id="root">${ReactDOMServer.renderToString(element)}</div>
   <script>
-    window.__PRELOADED_STATE__ = ${JSON.stringify(state)};
+    window.__PRELOADED_STATE__ = ${serialize(state, { isJSON: true })};
   </script>
   <script src="/static/bundle.js"></script>
 </body>
