@@ -6,18 +6,18 @@
     "start": "babel-node src/server"
   },
   "dependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-loader": "^6.2.8",
-    "babel-preset-latest": "^6.16.0",
-    "babel-preset-react": "^6.16.0",
-    "express": "^4.14.0",
+    "babel-cli": "^6.23.0",
+    "babel-loader": "^6.3.0",
+    "babel-preset-latest": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "express": "^4.14.1",
     "farce": "^0.2.1",
     "found": "../..",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
-    "webpack": "^2.1.0-beta.27",
-    "webpack-dev-middleware": "^1.8.4"
+    "webpack": "^2.2.1",
+    "webpack-dev-middleware": "^1.10.0"
   }
 }
