@@ -121,6 +121,8 @@ export default AppPage;
 - [Global pending state](/examples/global-pending)
 - [Transition hook usage](/examples/transition-hook)
 - [Server-side rendering](/examples/universal)
+- [Shared redux store](/examples/redux)
+- [Server-side rendering with shared redux store](/examples/universal-redux)
 
 ## Extensions
 
