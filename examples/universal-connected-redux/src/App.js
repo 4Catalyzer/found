@@ -48,4 +48,3 @@ function App({ children }) {
 App.propTypes = propTypes;
 
 export default App;
-
