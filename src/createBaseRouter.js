@@ -1,3 +1,4 @@
+// @flow
 import isEqual from 'lodash/isEqual';
 import React from 'react';
 import StaticContainer from 'react-static-container';
@@ -7,7 +8,7 @@ import { routerShape } from './PropTypes';
 import RedirectException from './RedirectException';
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
-export default function createBaseRouter({ render }) {
+export default function createBaseRouter({ render }: any) {
   const propTypes = {
     match: React.PropTypes.object.isRequired,
     resolvedMatch: React.PropTypes.object.isRequired,
@@ -23,7 +24,7 @@ export default function createBaseRouter({ render }) {
   };
 
   class BaseRouter extends React.Component {
-    constructor(props, context) {
+    constructor(props: any, context: any) {
       super(props, context);
 
       const { router, initialRenderArgs } = props;
@@ -40,6 +41,10 @@ export default function createBaseRouter({ render }) {
       this.childContext = { router };
     }
 
+    state: {
+      element: any,
+    };
+
     getChildContext() {
       return this.childContext;
     }
@@ -55,7 +60,7 @@ export default function createBaseRouter({ render }) {
       }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: any) {
       warning(
         nextProps.router === this.props.router,
         '<BaseRouter> does not support changing the router object.',
@@ -80,6 +85,11 @@ export default function createBaseRouter({ render }) {
     componentWillUnmount() {
       this.mounted = false;
     }
+
+    mounted: boolean;
+    shouldResolveMatch: boolean;
+    pendingResolvedMatch: boolean;
+    childContext: any;
 
     async resolveMatch() {
       const pendingMatch = this.props.match;

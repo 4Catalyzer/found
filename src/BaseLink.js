@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import elementType from 'react-prop-types/lib/elementType';
 
@@ -26,7 +27,9 @@ const defaultProps = {
 };
 
 class BaseLink extends React.Component {
-  onClick = (event) => {
+  static defaultProps: typeof defaultProps;
+
+  onClick = (event: any) => {
     const { onClick, target, router, to } = this.props;
 
     if (onClick) {

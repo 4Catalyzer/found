@@ -1,3 +1,4 @@
+// @flow
 import isPromise from 'is-promise';
 
 import createElements from './createElements';
@@ -5,7 +6,7 @@ import {
   checkResolved, getComponents, getRouteMatches, getRouteValues, isResolved,
 } from './ResolverUtils';
 
-export default async function* resolveElements(match) {
+export default async function* resolveElements(match: any): any {
   const routeMatches = getRouteMatches(match);
 
   const Components = getComponents(routeMatches);

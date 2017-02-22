@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 // The shape might be different with a custom matcher or history enhancer, but

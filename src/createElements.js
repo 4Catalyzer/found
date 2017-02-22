@@ -1,9 +1,14 @@
+// @flow
 import React from 'react';
 import warning from 'warning';
 
 import { isResolved } from './ResolverUtils';
 
-export default function createElements(routeMatches, Components, matchData) {
+export default function createElements(
+  routeMatches: any,
+  Components: any,
+  matchData: any,
+) {
   return routeMatches.map((match, i) => {
     const { route } = match;
 

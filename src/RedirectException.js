@@ -1,6 +1,9 @@
+// @flow
 // This isn't really an error.
 export default class RedirectException {
-  constructor(location) {
+  location: any;
+
+  constructor(location: any) {
     this.location = location;
   }
 }

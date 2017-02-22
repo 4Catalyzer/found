@@ -1,3 +1,4 @@
+// @flow
 import BrowserProtocol from 'farce/lib/BrowserProtocol';
 import React from 'react';
 
@@ -11,7 +12,7 @@ export default function createBrowserRouter({
   renderReady,
   renderError,
   ...options
-}) {
+}: any) {
   const FarceRouter = createFarceRouter({
     ...options,
     historyProtocol: new BrowserProtocol(),
@@ -20,7 +21,7 @@ export default function createBrowserRouter({
     }),
   });
 
-  function BrowserRouter(props) {
+  function BrowserRouter(props: any) {
     return (
       <FarceRouter
         {...props}

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 const propTypes = {
@@ -14,7 +15,7 @@ function accumulateElement(children, element) {
   return React.cloneElement(element, { children });
 }
 
-function Renderer({ elements }) {
+function Renderer({ elements }: any) {
   return elements.reduceRight(accumulateElement, null);
 }
 

@@ -1,5 +1,9 @@
+// @flow
 export default class HttpError {
-  constructor(status, data) {
+  status: number;
+  data: any;
+
+  constructor(status: number, data: any) {
     this.status = status;
     this.data = data;
   }

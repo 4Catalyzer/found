@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import StaticContainer from 'react-static-container';
 
@@ -7,8 +8,8 @@ import ElementsRenderer from './ElementsRenderer';
 // from Relay, because these don't quite correspond to those conditions.
 export default function createRender({
   renderPending, renderReady, renderError,
-}) {
-  return function render(renderArgs) {
+}: any) {
+  return function render(renderArgs: any) {
     const { error, elements } = renderArgs;
     let element;
 

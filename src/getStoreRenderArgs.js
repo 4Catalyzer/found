@@ -1,3 +1,4 @@
+// @flow
 import getRenderArgs from './getRenderArgs';
 import createStoreRouterObject from './utils/createStoreRouterObject';
 
@@ -8,7 +9,7 @@ export default function getStoreRenderArgs({
   getFound = ({ found }) => found,
   matchContext,
   resolveElements,
-}) {
+}: Object) {
   const router = createStoreRouterObject(store);
   const match = getFound(store.getState()).resolvedMatch;
 

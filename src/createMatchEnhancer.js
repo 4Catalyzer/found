@@ -1,3 +1,4 @@
+// @flow
 import FarceActionTypes from 'farce/lib/ActionTypes';
 import { applyMiddleware } from 'redux';
 
@@ -22,9 +23,9 @@ function createMatchMiddleware(matcher) {
   };
 }
 
-export default function createMatchEnhancer(matcher) {
-  return function matchEnhancer(createStore) {
-    return (...args) => {
+export default function createMatchEnhancer(matcher: any) {
+  return function matchEnhancer(createStore: any) {
+    return (...args: any) => {
       const middlewareEnhancer = applyMiddleware(
         createMatchMiddleware(matcher),
       );

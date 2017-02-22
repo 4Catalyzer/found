@@ -1,3 +1,4 @@
+// @flow
 import FarceActions from 'farce/lib/Actions';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -12,11 +13,11 @@ export default function createFarceRouter({
   historyOptions,
   routeConfig,
   ...options
-}) {
+}: any) {
   const ConnectedRouter = createConnectedRouter(options);
 
   class FarceRouter extends React.Component {
-    constructor(props, context) {
+    constructor(props: any, context: any) {
       super(props, context);
 
       this.store = store || createFarceStore({
@@ -30,6 +31,8 @@ export default function createFarceRouter({
     componentWillUnmount() {
       this.store.dispatch(FarceActions.dispose());
     }
+
+    store: any;
 
     render() {
       return (

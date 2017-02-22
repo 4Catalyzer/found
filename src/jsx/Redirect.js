@@ -1,3 +1,4 @@
+// @flow
 import invariant from 'invariant';
 
 import RedirectObject from '../Redirect';

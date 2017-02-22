@@ -1,6 +1,7 @@
+// @flow
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
-export default async function getRenderArgs(props) {
+export default async function getRenderArgs(props: any): Object {
   let elements;
 
   // ESLint doesn't handle for-await yet.

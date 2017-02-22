@@ -1,3 +1,4 @@
+// @flow
 import { connect } from 'react-redux';
 
 import { routerShape } from './PropTypes';
@@ -9,7 +10,7 @@ const routerContextTypes = {
 export default function createWithRouter({
   getFound = ({ found }) => found,
   matchKey = 'resolvedMatch',
-}) {
+}: any) {
   const withMatch = connect(
     state => ({ match: getFound(state)[matchKey] }),
     null,
@@ -22,7 +23,7 @@ export default function createWithRouter({
     // values in the store.
   );
 
-  return function withRouter(Component) {
+  return function withRouter(Component: any) {
     const ConnectedComponent = withMatch(Component);
 
     // Yes, this is pretty gross. It's the simplest way to inject router as
