@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderIntoDocument } from 'react-addons-test-utils';
+import { renderIntoDocument } from 'react-dom/test-utils';
 
 import Redirect from '../../src/jsx/Redirect';
 import RedirectObject from '../../src/Redirect';
@@ -14,7 +14,7 @@ describe('<Redirect>', () => {
 
   it('should throw when endered', () => {
     expect(
-      () => renderIntoDocument(<Redirect />)
+      () => renderIntoDocument(<Redirect />),
     ).toThrowError(/should not be rendered/);
   });
 });

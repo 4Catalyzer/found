@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import FarceActions from 'farce/lib/Actions';
 import BrowserProtocol from 'farce/lib/BrowserProtocol';
 import createHistoryEnhancer from 'farce/lib/createHistoryEnhancer';
@@ -12,6 +10,9 @@ import Matcher from 'found/lib/Matcher';
 import resolveElements from 'found/lib/resolveElements';
 import Redirect from 'found/lib/Redirect';
 import Link from 'found/lib/Link';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, compose, createStore } from 'redux';
 
@@ -28,7 +29,7 @@ function LinkItem(props) {
 }
 
 const propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 function App({ children }) {

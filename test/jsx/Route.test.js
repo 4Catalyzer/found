@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderIntoDocument } from 'react-addons-test-utils';
+import { renderIntoDocument } from 'react-dom/test-utils';
 
 import Route from '../../src/jsx/Route';
 
@@ -18,7 +18,7 @@ describe('<Route>', () => {
 
   it('should throw when rendered', () => {
     expect(
-      () => renderIntoDocument(<Route />)
+      () => renderIntoDocument(<Route />),
     ).toThrowError(/should not be rendered/);
   });
 });

@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const propTypes = {
-  elements: React.PropTypes.arrayOf(
-    React.PropTypes.element,
+  elements: PropTypes.arrayOf(
+    PropTypes.element,
   ).isRequired,
 };
 

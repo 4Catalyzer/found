@@ -1,4 +1,5 @@
 import isEqual from 'lodash/isEqual';
+import PropTypes from 'prop-types';
 import React from 'react';
 import StaticContainer from 'react-static-container';
 import warning from 'warning';
@@ -9,13 +10,13 @@ import resolveRenderArgs from './utils/resolveRenderArgs';
 
 export default function createBaseRouter({ render }) {
   const propTypes = {
-    match: React.PropTypes.object.isRequired,
-    resolvedMatch: React.PropTypes.object.isRequired,
-    matchContext: React.PropTypes.any,
-    resolveElements: React.PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
+    resolvedMatch: PropTypes.object.isRequired,
+    matchContext: PropTypes.any,
+    resolveElements: PropTypes.func.isRequired,
     router: routerShape.isRequired,
-    onResolveMatch: React.PropTypes.func.isRequired,
-    initialRenderArgs: React.PropTypes.object,
+    onResolveMatch: PropTypes.func.isRequired,
+    initialRenderArgs: PropTypes.object,
   };
 
   const childContextTypes = {

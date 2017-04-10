@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import { routerShape } from '../PropTypes';
 
 const propTypes = {
   router: routerShape.isRequired,
-  children: React.PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 const childContextTypes = {

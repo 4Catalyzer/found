@@ -2,6 +2,7 @@ import Link from 'found/lib/Link';
 import makeRouteConfig from 'found/lib/jsx/makeRouteConfig';
 import Redirect from 'found/lib/jsx/Redirect';
 import Route from 'found/lib/jsx/Route';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 function LinkItem(props) {
@@ -17,7 +18,7 @@ function LinkItem(props) {
 }
 
 const propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 function App({ children }) {
@@ -82,5 +83,5 @@ export default makeRouteConfig(
       from="baz"
       to="/foo"
     />
-  </Route>
+  </Route>,
 );

@@ -27,7 +27,7 @@ describe('<RouterProvider>', () => {
     wrapper = mount(
       <RouterProvider router={router}>
         <div />
-      </RouterProvider>
+      </RouterProvider>,
     );
     expect(wrapper.find('div')).toHaveLength(1);
 
@@ -35,7 +35,7 @@ describe('<RouterProvider>', () => {
     wrapper = mount(
       <RouterProvider router={router}>
         <CustomCompoment />
-      </RouterProvider>
+      </RouterProvider>,
     );
     expect(wrapper.find(CustomCompoment)).toHaveLength(1);
   });
@@ -56,7 +56,7 @@ describe('<RouterProvider>', () => {
     mount(
       <RouterProvider router={router}>
         <Child />
-      </RouterProvider>
+      </RouterProvider>,
     );
     expect(routerInContext).toBeDefined();
   });

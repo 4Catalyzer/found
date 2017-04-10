@@ -1,4 +1,5 @@
 import { mount } from 'enzyme';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import ElementsRenderer from '../src/ElementsRenderer';
@@ -7,7 +8,7 @@ describe('<ElementsRenderer>', () => {
   it('should render null when no item in elements', () => {
     const elements = [];
     const wrapper = mount(
-      <ElementsRenderer elements={elements} />
+      <ElementsRenderer elements={elements} />,
     );
     expect(wrapper.html()).toBe(null);
   });
@@ -15,20 +16,20 @@ describe('<ElementsRenderer>', () => {
   it('should render element', () => {
     const elements = [<div />];
     const wrapper = mount(
-      <ElementsRenderer elements={elements} />
+      <ElementsRenderer elements={elements} />,
     );
     expect(wrapper.find('div')).toHaveLength(1);
   });
 
   it('should render elements with nested structure', () => {
     const Parent = ({ children }) => <div className="parent">{children}</div>;
-    Parent.propTypes = { children: React.PropTypes.element };
+    Parent.propTypes = { children: PropTypes.element };
     const Child = () => <div className="child" />;
 
     const elements = [<Parent />, <Child />];
 
     const wrapper = mount(
-      <ElementsRenderer elements={elements} />
+      <ElementsRenderer elements={elements} />,
     );
 
     const parent = wrapper.find(Parent);

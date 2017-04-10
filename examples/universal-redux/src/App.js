@@ -1,5 +1,6 @@
-import React from 'react';
 import Link from 'found/lib/Link';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 function LinkItem(props) {
   // TODO: Remove the pragma once evcohen/eslint-plugin-jsx-a11y#81 ships.
@@ -14,7 +15,7 @@ function LinkItem(props) {
 }
 
 const propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 function App({ children }) {
