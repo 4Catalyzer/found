@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import elementType from 'react-prop-types/lib/elementType';
 
@@ -5,19 +6,19 @@ import { routerShape } from './PropTypes';
 
 const propTypes = {
   Component: elementType.isRequired,
-  to: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.object,
+  to: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
   ]),
-  match: React.PropTypes.object.isRequired,
-  activeClassName: React.PropTypes.string,
-  activeStyle: React.PropTypes.object,
-  activePropName: React.PropTypes.string,
+  match: PropTypes.object.isRequired,
+  activeClassName: PropTypes.string,
+  activeStyle: PropTypes.object,
+  activePropName: PropTypes.string,
   router: routerShape.isRequired,
-  exact: React.PropTypes.bool.isRequired,
-  target: React.PropTypes.string,
-  onClick: React.PropTypes.func,
-  childProps: React.PropTypes.object, // In case of name conflicts here.
+  exact: PropTypes.bool.isRequired,
+  target: PropTypes.string,
+  onClick: PropTypes.func,
+  childProps: PropTypes.object, // In case of name conflicts here.
 };
 
 const defaultProps = {

@@ -31,7 +31,7 @@ describe('<BaseLink>', () => {
       <BaseLink
         match={{}}
         router={router}
-      />
+      />,
     );
 
     expect(link.find('a')).toHaveLength(1);
@@ -43,7 +43,7 @@ describe('<BaseLink>', () => {
         match={{}}
         router={router}
         Component={CustomComponent}
-      />
+      />,
     );
 
     expect(link.find('a')).toHaveLength(0);
@@ -58,7 +58,7 @@ describe('<BaseLink>', () => {
           match={{}}
           router={router}
           onClick={handleClick}
-        />
+        />,
       );
 
       link.find('a').simulate('click');
@@ -71,7 +71,7 @@ describe('<BaseLink>', () => {
           to="/path-to-another-page"
           match={{}}
           router={router}
-        />
+        />,
       );
 
       link.find('a').simulate('click', { button: 0 });
@@ -84,7 +84,7 @@ describe('<BaseLink>', () => {
           match={{}}
           router={router}
           onClick={(event) => { event.preventDefault(); }}
-        />
+        />,
       );
 
       link.find('a').simulate('click', { button: 0 });
@@ -96,7 +96,7 @@ describe('<BaseLink>', () => {
         <BaseLink
           match={{}}
           router={router}
-        />
+        />,
       );
 
       const a = link.find('a');
@@ -119,7 +119,7 @@ describe('<BaseLink>', () => {
         <BaseLink
           match={{}}
           router={router}
-        />
+        />,
       );
 
       link.find('a').simulate('click', { button: 2 });
@@ -132,7 +132,7 @@ describe('<BaseLink>', () => {
           match={{}}
           router={router}
           target="_blank"
-        />
+        />,
       );
 
       link.find('a').simulate('click', { button: 0 });
@@ -146,7 +146,7 @@ describe('<BaseLink>', () => {
         <BaseLink
           match={{}}
           router={router}
-        />
+        />,
       );
 
       expect(router.isActive).not.toBeCalled();
@@ -159,7 +159,7 @@ describe('<BaseLink>', () => {
           match={{}}
           router={router}
           activeClassName="active"
-        />
+        />,
       );
 
       expect(link.find('a').prop('className')).toMatch(/active/);
@@ -172,7 +172,7 @@ describe('<BaseLink>', () => {
           match={{}}
           router={router}
           activeStyle={{ color: '#fff' }}
-        />
+        />,
       );
 
       expect(link.find('a').prop('style').color).toBe('#fff');
@@ -186,7 +186,7 @@ describe('<BaseLink>', () => {
           router={router}
           Component={CustomComponent}
           activePropName="active"
-        />
+        />,
       );
 
       expect(link.find(CustomComponent).prop('active')).toBe(true);
@@ -200,7 +200,7 @@ describe('<BaseLink>', () => {
           router={router}
           Component={CustomComponent}
           activePropName="active"
-        />
+        />,
       );
 
       expect(link.find(CustomComponent).prop('active')).toBe(false);

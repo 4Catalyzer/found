@@ -3,6 +3,7 @@ import Link from 'found/lib/Link';
 import makeRouteConfig from 'found/lib/jsx/makeRouteConfig';
 import Redirect from 'found/lib/jsx/Redirect';
 import Route from 'found/lib/jsx/Route';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -19,7 +20,7 @@ function LinkItem(props) {
 }
 
 const propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 function App({ children }) {
@@ -85,7 +86,7 @@ const BrowserRouter = createBrowserRouter({
         from="baz"
         to="/foo"
       />
-    </Route>
+    </Route>,
   ),
 
   renderError: ({ error }) => ( // eslint-disable-line react/prop-types

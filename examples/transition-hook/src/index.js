@@ -1,6 +1,7 @@
 import createBrowserRouter from 'found/lib/createBrowserRouter';
 import { routerShape } from 'found/lib/PropTypes';
 import Link from 'found/lib/Link';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -17,7 +18,7 @@ function LinkItem(props) {
 }
 
 const appPropTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 function App({ children }) {

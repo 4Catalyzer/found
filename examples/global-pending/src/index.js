@@ -1,6 +1,7 @@
 import createBrowserRouter from 'found/lib/createBrowserRouter';
 import ElementsRenderer from 'found/lib/ElementsRenderer';
 import Link from 'found/lib/Link';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import StaticContainer from 'react-static-container';
@@ -18,7 +19,7 @@ function LinkItem(props) {
 }
 
 const propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 function App({ children }) {
