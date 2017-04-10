@@ -20,7 +20,11 @@ describe('ResolverUtils', () => {
 
     it('should return false for unresolved promises', async () => {
       expect(isResolved(
-        await checkResolved(new Promise(setTimeout)),
+        await checkResolved(
+          // FIXME: This is not quite the right condition, but the test is
+          // flaky on Travis with a 0-delay timeout.
+          new Promise((resolve) => { setTimeout(resolve, 10); }),
+        ),
       )).toBe(false);
 
       expect(isResolved(
