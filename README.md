@@ -753,9 +753,7 @@ The options object for `getFarceResult` also takes the `historyMiddlewares` and 
 
 This promise resolves when all asynchronous dependencies are available. If your routes require asynchronous data, e.g. from `getData` methods, you may want to dehydrate those data on the server, then rehydrate them on the client, to avoid the client having to request those data again.
 
-#### Server-side rendering with custom Redux store
-
-If you are using server-side rendering, you will need to delay the initial render on the client. In this case, use `createInitialBrowserRouter` or `createInitialFarceRouter` instead of `createBrowserRouter` or `createFarceRouter` respectively.
+When using server-side rendering, you need to delay the initial render on the client, such that the initial client-rendered markup matches the server-rendered markup. To do so, use `createInitialBrowserRouter` or `createInitialFarceRouter` instead of `createBrowserRouter` or `createFarceRouter` respectively.
 
 ```js
 import { createInitialBrowserRouter } from 'found';
@@ -777,7 +775,9 @@ import { createInitialBrowserRouter } from 'found';
 
 These behave similarly to their counterparts above, except that the options object for `createInitialBrowserRouter` requires a `render` method, and ignores the `renderPending`, `renderReady`, and `renderError` properties. Additionally, these functions take the initial `matchContext` and `resolveElements` if relevant as properties on the options object, rather than as props.
 
-Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On both the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
+#### Server-side rendering with custom Redux store
+
+Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
 
 ```js
 import { getStoreRenderArgs, RedirectException } from 'found';
