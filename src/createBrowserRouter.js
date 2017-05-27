@@ -3,7 +3,7 @@ import React from 'react';
 
 import createFarceRouter from './createFarceRouter';
 import createRender from './createRender';
-import resolveElements from './resolveElements';
+import resolver from './resolver';
 
 export default function createBrowserRouter({
   render,
@@ -24,7 +24,7 @@ export default function createBrowserRouter({
     return (
       <FarceRouter
         {...props}
-        resolveElements={resolveElements}
+        resolver={resolver}
       />
     );
   }

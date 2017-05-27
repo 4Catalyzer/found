@@ -473,7 +473,7 @@ The created `<BrowserRouter>` accepts an optional `matchContext` prop as describ
 
 ```js
 import { BrowserProtocol, queryMiddleware } from 'farce';
-import { createFarceRouter, createRender, resolveElements } from 'found';
+import { createFarceRouter, createRender, resolver } from 'found';
 
 /* ... */
 
@@ -491,7 +491,7 @@ const FarceRouter = createFarceRouter({
 });
 
 ReactDOM.render(
-  <FarceRouter resolveElements={resolveElements} />,
+  <FarceRouter resolver={resolver} />,
   document.getElementById('root'),
 );
 ```
@@ -500,7 +500,7 @@ The options object for `createFarceRouter` should have a `historyProtocol` prope
 
 The `createFarceRouter` options object does not have a default for the `render` property. It ignores the `renderPending`, `renderReady`, and `renderError` properties.
 
-The created `<FarceRouter>` manages setting up and providing a Redux store with the appropriate configuration internally. It also requires a `resolveElements` prop with the route element resolution function. For routes configured as above, this should be the `resolveElements` function in this library.
+The created `<FarceRouter>` manages setting up and providing a Redux store with the appropriate configuration internally. It also requires a `resolver` prop with the route element resolver object. For routes configured as above, this should be the `resolver` object in this library.
 
 #### `createConnectedRouter`
 
@@ -519,7 +519,7 @@ import {
   createRender,
   foundReducer,
   Matcher,
-  resolveElements,
+  resolver,
 } from 'found';
 import { Provider } from 'react-redux';
 import { combineReducers, compose, createStore } from 'redux';
@@ -555,7 +555,7 @@ const ConnectedRouter = createConnectedRouter({
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter resolveElements={resolveElements} />
+    <ConnectedRouter resolver={resolver} />
   </Provider>,
   document.getElementById('root'),
 );
@@ -743,7 +743,7 @@ app.use(async (req, res) => {
 
 `getFarceResult` takes an options object. This object must include the `url` property that is the full path of the current request, along with the `routeConfig` and `render` properties needed to create a Farce router component class normally.
 
-The options object for `getFarceResult` also takes the `historyMiddlewares` and `historyOptions` properties, as above for creating Farce router component classes. This options object also takes optional `matchContext` and `resolveElements` properties, as described above as props for router components. `resolveElements` defaults to the standard `resolveElements` function in this library.
+The options object for `getFarceResult` also takes the `historyMiddlewares` and `historyOptions` properties, as above for creating Farce router component classes. This options object also takes optional `matchContext` and `resolver` properties, as described above as props for router components. `resolver` defaults to the standard `resolver` object in this library.
 
 `getFarceResult` returns a promise for an object with the following properties:
 
@@ -775,7 +775,7 @@ import { createInitialBrowserRouter } from 'found';
 })();
 ```
 
-These behave similarly to their counterparts above, except that the options object for `createInitialBrowserRouter` requires a `render` method, and ignores the `renderPending`, `renderReady`, and `renderError` properties. Additionally, these functions take the initial `matchContext` and `resolveElements` if relevant as properties on the options object, rather than as props.
+These behave similarly to their counterparts above, except that the options object for `createInitialBrowserRouter` requires a `render` method, and ignores the `renderPending`, `renderReady`, and `renderError` properties. Additionally, these functions take the initial `matchContext` and `resolver` if relevant as properties on the options object, rather than as props.
 
 Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On both the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
 
@@ -794,7 +794,7 @@ app.use(async (req, res) => {
     renderArgs = await getStoreRenderArgs({
       store,
       matchContext,
-      resolveElements,
+      resolver,
     });
   } catch (e) {
     if (e instanceof RedirectException) {
@@ -818,7 +818,7 @@ app.use(async (req, res) => {
 });
 ```
 
-You must dispatch `FarceActions.init()` before calling `getStoreRenderArgs`. `getStoreRenderArgs` takes an options object. This object must have the `store` property for your store and the `resolveElements` property as described above. It supports an optional `matchContext` property as described above as well. `getStoreRenderArgs` returns a promise that resolves to a `renderArgs` object that can be passed into a `render` function as above.
+You must dispatch `FarceActions.init()` before calling `getStoreRenderArgs`. `getStoreRenderArgs` takes an options object. This object must have the `store` property for your store and the `resolver` property as described above. It supports an optional `matchContext` property as described above as well. `getStoreRenderArgs` returns a promise that resolves to a `renderArgs` object that can be passed into a `render` function as above.
 
 `<RouterProvider>` requires a `router` prop that is the router context object as described above. This is available on `renderArgs.router`, from the value resolved by `getStoreRenderArgs`.
 
@@ -833,14 +833,14 @@ import { getStoreRenderArgs } from 'found';
   const initialRenderArgs = await getStoreRenderArgs({
     store,
     matchContext,
-    resolveElements,
+    resolver,
   });
 
   ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter
         matchContext={matchContext}
-        resolveElements={resolveElements}
+        resolver={resolver}
         initialRenderArgs={initialRenderArgs}
       />
     </Provider>,

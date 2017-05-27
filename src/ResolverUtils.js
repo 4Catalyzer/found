@@ -32,6 +32,7 @@ export function getRouteValues(routeMatches, getGetter, getValue) {
   });
 }
 
+// This should be common to most resolvers, so make it available here.
 export function getComponents(routeMatches) {
   return getRouteValues(
     routeMatches,
