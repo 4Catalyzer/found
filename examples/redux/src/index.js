@@ -6,10 +6,10 @@ import createConnectedRouter from 'found/lib/createConnectedRouter';
 import createMatchEnhancer from 'found/lib/createMatchEnhancer';
 import createRender from 'found/lib/createRender';
 import foundReducer from 'found/lib/foundReducer';
-import Matcher from 'found/lib/Matcher';
-import resolveElements from 'found/lib/resolveElements';
-import Redirect from 'found/lib/Redirect';
 import Link from 'found/lib/Link';
+import Matcher from 'found/lib/Matcher';
+import Redirect from 'found/lib/Redirect';
+import resolver from 'found/lib/resolver';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -127,7 +127,7 @@ const ConnectedRouter = createConnectedRouter({
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter resolveElements={resolveElements} />
+    <ConnectedRouter resolver={resolver} />
   </Provider>,
   document.getElementById('root'),
 );

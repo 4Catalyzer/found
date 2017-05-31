@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { BrowserProtocol } from 'farce';
 import createConnectedRouter from 'found/lib/createConnectedRouter';
 import getStoreRenderArgs from 'found/lib/getStoreRenderArgs';
-import resolveElements from 'found/lib/resolveElements';
+import resolver from 'found/lib/resolver';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserProtocol } from 'farce';
 
-import render from './render';
 import genStore from './genStore';
+import render from './render';
 
 // eslint-disable-next-line no-underscore-dangle
 const store = genStore(new BrowserProtocol(), window.__PRELOADED_STATE__);
@@ -18,14 +18,14 @@ const ConnectedRouter = createConnectedRouter({ render });
   const initialRenderArgs = await getStoreRenderArgs({
     store,
     matchContext,
-    resolveElements,
+    resolver,
   });
 
   ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter
         matchContext={matchContext}
-        resolveElements={resolveElements}
+        resolver={resolver}
         initialRenderArgs={initialRenderArgs}
       />
     </Provider>,
