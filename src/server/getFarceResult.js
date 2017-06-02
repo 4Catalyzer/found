@@ -5,20 +5,17 @@ import { Provider } from 'react-redux';
 
 import getStoreRenderArgs from '../getStoreRenderArgs';
 import RedirectException from '../RedirectException';
-import defaultResolveElements from '../resolveElements';
+import defaultResolver from '../resolver';
 import createFarceStore from '../utils/createFarceStore';
 import RouterProvider from './RouterProvider';
 
-// TODO: eslint-plugin-react should not think async functions are components.
-// This is not a component.
-/* eslint-disable react/prop-types */
 export default async function getFarceResult({
   url,
   historyMiddlewares,
   historyOptions,
   routeConfig,
   matchContext,
-  resolveElements = defaultResolveElements,
+  resolver = defaultResolver,
   render,
 }) {
   const store = createFarceStore({
@@ -34,7 +31,7 @@ export default async function getFarceResult({
     renderArgs = await getStoreRenderArgs({
       store,
       matchContext,
-      resolveElements,
+      resolver,
     });
   } catch (e) {
     if (e instanceof RedirectException) {
@@ -64,4 +61,3 @@ export default async function getFarceResult({
     ),
   };
 }
-/* eslint-enable react/prop-types */

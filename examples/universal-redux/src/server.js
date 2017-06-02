@@ -1,14 +1,14 @@
+import express from 'express';
+import { Actions as FarceActions, ServerProtocol } from 'farce';
+import { getStoreRenderArgs, resolver, RedirectException } from 'found';
+import { RouterProvider } from 'found/lib/server';
+import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { Provider } from 'react-redux';
-import express from 'express';
-import path from 'path';
-import { getStoreRenderArgs, resolveElements, RedirectException } from 'found';
-import { RouterProvider } from 'found/lib/server';
-import { Actions as FarceActions, ServerProtocol } from 'farce';
+import serialize from 'serialize-javascript';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
-import serialize from 'serialize-javascript';
 
 import genStore from './genStore';
 import render from './render';
@@ -69,7 +69,7 @@ app.use(async (req, res) => {
     renderArgs = await getStoreRenderArgs({
       store,
       matchContext,
-      resolveElements,
+      resolver,
     });
   } catch (e) {
     if (e instanceof RedirectException) {

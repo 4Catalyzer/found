@@ -1,9 +1,8 @@
 import React from 'react';
 
-import makeRouteConfig from '../../src/jsx/makeRouteConfig';
-import Redirect from '../../src/jsx/Redirect';
-import Route from '../../src/jsx/Route';
-import RedirectObject from '../../src/Redirect';
+import makeRouteConfig from '../src/makeRouteConfig';
+import Redirect from '../src/Redirect';
+import Route from '../src/Route';
 
 const AppPage = () => {};
 const MainPage = () => {};
@@ -15,10 +14,10 @@ describe('makeRouteConfig', () => {
     expect(makeRouteConfig(
       <Route path="/" Component={AppPage} />,
     )).toEqual([
-      {
+      new Route({
         path: '/',
         Component: AppPage,
-      },
+      }),
     ]);
   });
 
@@ -31,25 +30,25 @@ describe('makeRouteConfig', () => {
         </Route>
       </Route>,
     )).toEqual([
-      {
+      new Route({
         path: '/',
         Component: AppPage,
         children: [
-          {
+          new Route({
             Component: MainPage,
-          },
-          {
+          }),
+          new Route({
             path: 'foo',
             Component: FooPage,
             children: [
-              {
+              new Route({
                 path: 'bar',
                 Component: BarPage,
-              },
+              }),
             ],
-          },
+          }),
         ],
-      },
+      }),
     ]);
   });
 
@@ -65,16 +64,16 @@ describe('makeRouteConfig', () => {
         />
       </Route>,
     )).toEqual([
-      {
+      new Route({
         path: '/',
         Component: AppPage,
         children: [
-          new RedirectObject({
+          new Redirect({
             from: 'widget/:widgetId',
             to: '/widgets/:widgetId',
           }),
         ],
-      },
+      }),
     ]);
   });
 });

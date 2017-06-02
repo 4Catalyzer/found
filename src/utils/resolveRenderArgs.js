@@ -1,7 +1,7 @@
 import HttpError from '../HttpError';
 
 export default async function* resolveRenderArgs({
-  router, match, matchContext, resolveElements,
+  router, match, matchContext, resolver,
 }) {
   const routes = router.matcher.getRoutes(match);
 
@@ -22,7 +22,7 @@ export default async function* resolveRenderArgs({
   try {
     // ESLint doesn't handle for-await yet.
     // eslint-disable-next-line semi
-    for await (const elements of resolveElements(augmentedMatch)) {
+    for await (const elements of resolver.resolveElements(augmentedMatch)) {
       yield { ...augmentedMatch, elements };
     }
   } catch (e) {

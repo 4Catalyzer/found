@@ -8,7 +8,7 @@ export default async function createInitialFarceRouter({
   historyOptions,
   routeConfig,
   matchContext,
-  resolveElements,
+  resolver,
   ...options
 }) {
   const store = createFarceStore({
@@ -25,14 +25,14 @@ export default async function createInitialFarceRouter({
   const initialRenderArgs = await getStoreRenderArgs({
     store,
     matchContext,
-    resolveElements,
+    resolver,
   });
 
   // We own this FarceRouter, so it's safe to replace its default props.
   FarceRouter.defaultProps = {
     ...FarceRouter.defaultProps,
     matchContext,
-    resolveElements,
+    resolver,
     initialRenderArgs,
   };
 

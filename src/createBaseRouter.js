@@ -13,7 +13,9 @@ export default function createBaseRouter({ render }) {
     match: PropTypes.object.isRequired,
     resolvedMatch: PropTypes.object.isRequired,
     matchContext: PropTypes.any,
-    resolveElements: PropTypes.func.isRequired,
+    resolver: PropTypes.shape({
+      resolveElements: PropTypes.func.isRequired,
+    }).isRequired,
     router: routerShape.isRequired,
     onResolveMatch: PropTypes.func.isRequired,
     initialRenderArgs: PropTypes.object,
@@ -64,7 +66,7 @@ export default function createBaseRouter({ render }) {
 
       if (
         nextProps.match !== this.props.match ||
-        nextProps.resolveElements !== this.props.resolveElements ||
+        nextProps.resolver !== this.props.resolver ||
         !isEqual(nextProps.matchContext, this.props.matchContext)
       ) {
         this.shouldResolveMatch = true;
