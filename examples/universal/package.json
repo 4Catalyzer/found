@@ -7,15 +7,15 @@
   },
   "dependencies": {
     "babel-cli": "^6.24.1",
-    "babel-loader": "^6.4.1",
+    "babel-loader": "^7.0.0",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "express": "^4.15.2",
-    "found": "../..",
-    "prop-types": "^15.5.6",
-    "react": "^15.5.3",
-    "react-dom": "^15.5.3",
-    "webpack": "^2.3.3",
-    "webpack-dev-middleware": "^1.10.1"
+    "express": "^4.15.3",
+    "found": "^0.3.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "webpack": "^2.6.1",
+    "webpack-dev-middleware": "^1.10.2"
   }
 }

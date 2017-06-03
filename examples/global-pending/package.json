@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "react-scripts": "1.0.7"
   },
   "dependencies": {
-    "found": "../..",
-    "prop-types": "^15.5.6",
-    "react": "^15.5.3",
-    "react-dom": "^15.5.3",
+    "found": "^0.3.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "react-static-container": "^1.0.1"
   },
   "scripts": {
