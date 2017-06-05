@@ -1,6 +1,5 @@
 import express from 'express';
 import { getFarceResult } from 'found/lib/server';
-import path from 'path';
 import ReactDOMServer from 'react-dom/server';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
@@ -13,10 +12,13 @@ const PORT = 3000;
 const app = express();
 
 const webpackConfig = {
-  entry: './src/client',
+  entry: [
+    'babel-polyfill',
+    './src/client',
+  ],
 
   output: {
-    path: path.resolve('build'),
+    path: '/',
     publicPath: '/static',
     filename: 'bundle.js',
   },
@@ -29,8 +31,8 @@ const webpackConfig = {
 };
 
 app.use(webpackMiddleware(webpack(webpackConfig), {
-  noInfo: true,
   publicPath: webpackConfig.output.publicPath,
+  stats: { colors: true },
 }));
 
 app.use(async (req, res) => {
@@ -50,7 +52,7 @@ app.use(async (req, res) => {
 <html>
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Found Universal Example</title>
 </head>
 
