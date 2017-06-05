@@ -2,7 +2,6 @@ import express from 'express';
 import { Actions as FarceActions, ServerProtocol } from 'farce';
 import { getStoreRenderArgs, resolver, RedirectException } from 'found';
 import { RouterProvider } from 'found/lib/server';
-import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { Provider } from 'react-redux';
@@ -17,10 +16,13 @@ const PORT = 3000;
 const app = express();
 
 const webpackConfig = {
-  entry: './src/client',
+  entry: [
+    'babel-polyfill',
+    './src/client',
+  ],
 
   output: {
-    path: path.resolve('build'),
+    path: '/',
     publicPath: '/static',
     filename: 'bundle.js',
   },
@@ -38,7 +40,7 @@ function renderPageToString(element, state) {
 <html>
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Found Universal Redux Example</title>
 </head>
 
@@ -55,8 +57,8 @@ function renderPageToString(element, state) {
 }
 
 app.use(webpackMiddleware(webpack(webpackConfig), {
-  noInfo: true,
   publicPath: webpackConfig.output.publicPath,
+  stats: { colors: true },
 }));
 
 app.use(async (req, res) => {
