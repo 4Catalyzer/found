@@ -110,10 +110,12 @@ export default class Matcher {
     }
 
     const params = Object.create(null);
-    regexp.keys.forEach(({ name }, index) => {
-      const value = match[index + 1];
-      params[name] = value && decodeURIComponent(value);
-    });
+    if (regexp.keys) {
+      regexp.keys.forEach(({ name }, index) => {
+        const value = match[index + 1];
+        params[name] = value && decodeURIComponent(value);
+      });
+    }
 
     return {
       params,
