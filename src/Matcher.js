@@ -114,7 +114,7 @@ export default class Matcher {
       regexp.keys.forEach(({ name }, index) => {
         const value = match[index + 1];
         params[name] = value && decodeURIComponent(value);
-      });    
+      });
     }
 
     return {
