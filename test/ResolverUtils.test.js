@@ -34,14 +34,14 @@ describe('ResolverUtils', () => {
   });
 
   describe.skip('getRouteMatches', () => {
-    it('untested');
+    test('untested');
   });
 
   describe.skip('getRouteValues', () => {
-    it('untested');
+    test('untested');
   });
 
   describe.skip('getComponents', () => {
-    it('untested');
+    test('untested');
   });
 });
