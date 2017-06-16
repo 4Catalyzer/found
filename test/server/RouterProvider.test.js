@@ -41,23 +41,24 @@ describe('<RouterProvider>', () => {
   });
 
   it('should pass router to children cotext', () => {
-    let routerInContext;
-    const Child = class extends React.Component { // eslint-disable-line react/prefer-stateless-function
-      static contextTypes = {
-        router: routerShape.isRequired,
-      };
+    let contextRouter;
 
-      render() {
-        routerInContext = this.context.router;
-        return <div />;
-      }
+    const contextTypes = {
+      router: routerShape.isRequired,
     };
+
+    function Child(props, context) {
+      contextRouter = context.router;
+      return null;
+    }
+
+    Child.contextTypes = contextTypes;
 
     mount(
       <RouterProvider router={router}>
         <Child />
       </RouterProvider>,
     );
-    expect(routerInContext).toBeDefined();
+    expect(contextRouter).toBeDefined();
   });
 });
