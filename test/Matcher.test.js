@@ -5,7 +5,7 @@ describe('Matcher', () => {
     let matcher;
 
     beforeEach(() => {
-      const routeConfig = [
+      matcher = new Matcher([
         {
           path: 'foo',
           children: [
@@ -30,9 +30,7 @@ describe('Matcher', () => {
         {
           path: 'foo/baz',
         },
-      ];
-
-      matcher = new Matcher(routeConfig);
+      ]);
     });
 
     [
@@ -163,6 +161,80 @@ describe('Matcher', () => {
           foo: 'a',
           0: 'b/c',
         },
+      });
+    });
+  });
+
+  describe('custom match methods', () => {
+    it('should support custom match method', () => {
+      const matcher = new Matcher([{
+        match: pathname => (
+          pathname === '/foo' ? {
+            params: {}, remaining: '',
+          } : null
+        ),
+      }]);
+
+      expect(matcher.match({
+        pathname: '/bar',
+      })).toBeNull();
+
+      expect(matcher.match({
+        pathname: '/foo',
+      })).toBeTruthy();
+    });
+
+    it('should respect match method return value', () => {
+      const matcher = new Matcher([{
+        match: pathname => (
+          pathname === '/bar' ? {
+            params: { bar: true }, remaining: '/baz',
+          } : null
+        ),
+        children: [{
+          path: ':foo',
+        }],
+      }]);
+
+      expect(matcher.match({
+        pathname: '/bar',
+      })).toMatchObject({
+        routeIndices: [0, 0],
+        params: {
+          bar: true,
+          foo: 'baz',
+        },
+      });
+    });
+
+    it('should support matching on query', () => {
+      const matcher = new Matcher([{
+        path: 'foo',
+        children: [{
+          match: (pathname, { query }) => (
+            query.foo === 'bar' ? {
+              params: {}, remaining: '',
+            } : null
+          ),
+        }],
+      }]);
+
+      expect(matcher.match({
+        pathname: '/foo',
+        query: {
+          foo: 'foo',
+        },
+      })).toMatchObject({
+        routeIndices: [0],
+      });
+
+      expect(matcher.match({
+        pathname: '/foo',
+        query: {
+          foo: 'bar',
+        },
+      })).toMatchObject({
+        routeIndices: [0, 0],
       });
     });
   });

@@ -16,8 +16,10 @@ export default class Matcher {
     );
   }
 
-  match({ pathname }) {
-    const matches = this.matchRoutes(this.routeConfig, pathname);
+  match(location) {
+    const { pathname } = location;
+
+    const matches = this.matchRoutes(this.routeConfig, pathname, location);
     if (!matches) {
       return null;
     }
@@ -77,11 +79,11 @@ export default class Matcher {
     return pathToRegexp.compile(pattern)(params);
   }
 
-  matchRoutes(routeConfig, pathname) {
+  matchRoutes(routeConfig, pathname, location) {
     for (let index = 0; index < routeConfig.length; ++index) {
       const route = routeConfig[index];
 
-      const match = this.matchRoute(route, pathname);
+      const match = this.matchRoute(route, pathname, location);
       if (!match) {
         continue; // eslint-disable-line no-continue
       }
@@ -89,7 +91,7 @@ export default class Matcher {
       const { children = [] } = route;
       const { params, remaining } = match;
 
-      const childMatches = this.matchRoutes(children, remaining);
+      const childMatches = this.matchRoutes(children, remaining, location);
       if (childMatches) {
         return [{ index, params }, ...childMatches];
       }
@@ -102,7 +104,11 @@ export default class Matcher {
     return null;
   }
 
-  matchRoute(route, pathname) {
+  matchRoute(route, pathname, location) {
+    if (route.match) {
+      return route.match(pathname, location);
+    }
+
     const routePath = route.path;
     if (!routePath) {
       return {
