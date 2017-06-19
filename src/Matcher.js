@@ -54,7 +54,7 @@ export default class Matcher {
       return basePath;
     }
 
-    if (basePath.charAt(basePath.length - 1) === '/') {
+    if (this.endsWithDelimiter(basePath)) {
       // eslint-disable-next-line no-param-reassign
       basePath = basePath.slice(0, -1);
     }
@@ -112,7 +112,7 @@ export default class Matcher {
     }
 
     const pattern = this.getCanonicalPattern(routePath);
-    const regexp = pathToRegexp(pattern, { end: false });
+    const regexp = pathToRegexp(pattern, { strict: true, end: false });
 
     const match = regexp.exec(pathname);
     if (match === null) {
@@ -125,10 +125,18 @@ export default class Matcher {
       params[name] = value && decodeURIComponent(value);
     });
 
-    return {
-      params,
-      remaining: pathname.slice(match[0].length),
-    };
+    let remaining = pathname.slice(match[0].length);
+    if (this.endsWithDelimiter(match[0])) {
+      if (remaining) {
+        // Canonicalize remaining path.
+        remaining = `/${remaining}`;
+      }
+    } else if (remaining === '/') {
+      // Support optional trailing slashes.
+      remaining = '';
+    }
+
+    return { params, remaining };
   }
 
   getCanonicalPattern(pattern) {
@@ -162,5 +170,9 @@ export default class Matcher {
       Object.prototype.hasOwnProperty.call(matchQuery, key) ?
         isEqual(matchQuery[key], value) : value === undefined
     ));
+  }
+
+  endsWithDelimiter(path) {
+    return path.charAt(path.length - 1) === '/';
   }
 }
