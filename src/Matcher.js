@@ -145,7 +145,7 @@ export default class Matcher {
       return false;
     }
 
-    // Require that a partial match is followed by a path separator.
+    // Require that a partial match be followed by a path separator.
     const pathnameWithSeparator = pathname.slice(-1) !== '/' ?
       `${pathname}/` : pathname;
 
@@ -159,8 +159,8 @@ export default class Matcher {
     }
 
     return Object.entries(query).every(([key, value]) => (
-      Object.prototype.hasOwnProperty.call(matchQuery, key) &&
-        isEqual(matchQuery[key], value)
+      Object.prototype.hasOwnProperty.call(matchQuery, key) ?
+        isEqual(matchQuery[key], value) : value === undefined
     ));
   }
 }

@@ -5,7 +5,7 @@ describe('Matcher', () => {
     let matcher;
 
     beforeEach(() => {
-      const routeConfig = [
+      matcher = new Matcher([
         {
           path: 'foo',
           children: [
@@ -30,9 +30,7 @@ describe('Matcher', () => {
         {
           path: 'foo/baz',
         },
-      ];
-
-      matcher = new Matcher(routeConfig);
+      ]);
     });
 
     [
@@ -163,6 +161,124 @@ describe('Matcher', () => {
           foo: 'a',
           0: 'b/c',
         },
+      });
+    });
+  });
+
+  describe('#isActive', () => {
+    let matcher;
+
+    beforeEach(() => {
+      matcher = new Matcher([]);
+    });
+
+    describe('active locations', () => {
+      [
+        [
+          'path match',
+          { pathname: '/foo/bar' },
+          { pathname: '/foo/bar' },
+        ],
+        [
+          'parent path match',
+          { pathname: '/foo/bar' },
+          { pathname: '/foo' },
+        ],
+        [
+          'exact path match',
+          { pathname: '/foo/bar' },
+          { pathname: '/foo/bar' },
+          { exact: true },
+        ],
+        [
+          'null query match',
+          { pathname: '/foo', query: { foo: 'bar' } },
+          { pathname: '/foo' },
+        ],
+        [
+          'empty query match',
+          { pathname: '/foo', query: { foo: 'bar' } },
+          { pathname: '/foo', query: {} },
+        ],
+        [
+          'empty query match with explicit undefined',
+          { pathname: '/foo', query: { foo: undefined } },
+          { pathname: '/foo', query: {} },
+        ],
+        [
+          'query match',
+          { pathname: '/foo', query: { foo: 'bar' } },
+          { pathname: '/foo', query: { foo: 'bar' } },
+        ],
+        [
+          'query match with extraneous query item',
+          { pathname: '/foo', query: { foo: 'bar', bar: 'foo' } },
+          { pathname: '/foo', query: { foo: 'bar' } },
+        ],
+        [
+          'absent query match with implicit undefined',
+          { pathname: '/foo', query: {} },
+          { pathname: '/foo', query: { foo: undefined } },
+        ],
+        [
+          'absent query match with explicit undefined',
+          { pathname: '/foo', query: { foo: undefined } },
+          { pathname: '/foo', query: { foo: undefined } },
+        ],
+      ].forEach(([scenario, matchLocation, location, options]) => {
+        it(`should be active on ${scenario}`, () => {
+          expect(matcher.isActive(
+            { location: matchLocation }, location, options,
+          )).toBe(true);
+        });
+      });
+    });
+
+    describe('inactive locations', () => {
+      [
+        [
+          'path mismatch',
+          { pathname: '/bar' },
+          { pathname: '/foo' },
+        ],
+        [
+          'exact parent path match',
+          { pathname: '/foo/bar' },
+          { pathname: '/foo' },
+          { exact: true },
+        ],
+        [
+          'exact path mismatch',
+          { pathname: '/bar' },
+          { pathname: '/foo' },
+          { exact: true },
+        ],
+        [
+          'query mismatch',
+          { pathname: '/foo', query: { foo: 'foo' } },
+          { pathname: '/foo', query: { foo: 'bar' } },
+        ],
+        [
+          'missing query item',
+          { pathname: '/foo', query: {} },
+          { pathname: '/foo', query: { foo: 'bar' } },
+        ],
+        [
+          'expected query item explicitly undefined',
+          { pathname: '/foo', query: { foo: undefined } },
+          { pathname: '/foo', query: { foo: 'bar' } },
+        ],
+        [
+          'expected undefined query item present',
+          { pathname: '/foo', query: { foo: 'bar' } },
+          { pathname: '/foo', query: { foo: undefined } },
+        ],
+      ].forEach(([scenario, matchLocation, location, options]) => {
+        it(`should not be active on ${scenario}`, () => {
+          expect(matcher.isActive(
+            { location: matchLocation }, location, options,
+          )).toBe(false);
+        });
       });
     });
   });
