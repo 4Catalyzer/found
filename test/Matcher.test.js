@@ -2,36 +2,32 @@ import Matcher from '../src/Matcher';
 
 describe('Matcher', () => {
   describe('route hierarchies', () => {
-    let matcher;
-
-    beforeEach(() => {
-      matcher = new Matcher([
-        {
-          path: 'foo',
-          children: [
-            {
-              children: [
-                {},
-              ],
-            },
-            {
-              path: 'bar',
-            },
-          ],
-        },
-        {
-          path: 'bar',
-          children: [
-            {
-              path: 'baz',
-            },
-          ],
-        },
-        {
-          path: 'foo/baz',
-        },
-      ]);
-    });
+    const matcher = new Matcher([
+      {
+        path: 'foo',
+        children: [
+          {
+            children: [
+              {},
+            ],
+          },
+          {
+            path: 'bar',
+          },
+        ],
+      },
+      {
+        path: 'bar',
+        children: [
+          {
+            path: 'baz',
+          },
+        ],
+      },
+      {
+        path: 'foo/baz',
+      },
+    ]);
 
     [
       ['pathless children', '/foo', [0, 0, 0]],
@@ -151,6 +147,17 @@ describe('Matcher', () => {
       }]);
 
       expect(matcher.match({
+        pathname: '/a',
+      })).toMatchObject({
+        routeParams: [
+          { foo: 'a' },
+        ],
+        params: {
+          foo: 'a',
+        },
+      });
+
+      expect(matcher.match({
         pathname: '/a/b/c',
       })).toMatchObject({
         routeParams: [
@@ -165,12 +172,99 @@ describe('Matcher', () => {
     });
   });
 
-  describe('#isActive', () => {
-    let matcher;
+  describe('trailing slash handling', () => {
+    describe('routes without trailing slashes', () => {
+      const matcher = new Matcher([{
+        path: 'foo',
+        children: [{
+          path: 'bar',
+        }],
+      }]);
 
-    beforeEach(() => {
-      matcher = new Matcher([]);
+      [
+        ['parent without trailing slash', '/foo', [0]],
+        ['parent with trailing slash', '/foo/', [0]],
+        ['child without trailing slash', '/foo/bar', [0, 0]],
+        ['child with trailing slash', '/foo/bar/', [0, 0]],
+      ].forEach(([scenario, pathname, expectedRouteIndices]) => {
+        it(`should match ${scenario}`, () => {
+          expect(matcher.match({
+            pathname,
+          })).toMatchObject({
+            routeIndices: expectedRouteIndices,
+          });
+        });
+      });
+
+      [
+        ['parent with extraneous trailing slashes', '/foo//'],
+        ['child with extraneous trailing slashes', '/foo/bar//'],
+        ['extraneous slashes between parent and child ', '/foo//bar/'],
+      ].forEach(([scenario, pathname]) => {
+        it(`should not match ${scenario}`, () => {
+          expect(matcher.match({
+            pathname,
+          })).toBeNull();
+        });
+      });
     });
+
+    describe('routes with trailing slashes', () => {
+      const matcher = new Matcher([{
+        path: 'foo/',
+        children: [{
+          path: 'bar/',
+        }],
+      }]);
+
+      [
+        ['parent with trailing slash', '/foo/', [0]],
+        ['child with trailing slash', '/foo/bar/', [0, 0]],
+      ].forEach(([scenario, pathname, expectedRouteIndices]) => {
+        it(`should match ${scenario}`, () => {
+          expect(matcher.match({
+            pathname,
+          })).toMatchObject({
+            routeIndices: expectedRouteIndices,
+          });
+        });
+      });
+
+      [
+        ['parent without trailing slash', '/foo'],
+        ['child without trailing slash', '/foo/bar'],
+        ['parent with extraneous trailing slashes', '/foo//'],
+        ['child with extraneous trailing slashes', '/foo/bar//'],
+        ['extraneous slashes between parent and child ', '/foo//bar/'],
+      ].forEach(([scenario, pathname]) => {
+        it(`should not match ${scenario}`, () => {
+          expect(matcher.match({
+            pathname,
+          })).toBeNull();
+        });
+      });
+    });
+  });
+
+  describe('#joinPaths', () => {
+    const matcher = new Matcher();
+
+    [
+      ['no extra slashes', '/foo', 'bar'],
+      ['trailing slash on parent', '/foo/', 'bar'],
+      ['leading slash on child', '/foo', '/bar'],
+      ['slashes everywhere', '/foo/', '/bar'],
+    ].forEach(([scenario, basePath, path]) => {
+      it(`should support ${scenario}`, () => {
+        expect(matcher.joinPaths(
+          basePath, path,
+        )).toBe('/foo/bar');
+      });
+    });
+  });
+
+  describe('#isActive', () => {
+    const matcher = new Matcher([]);
 
     describe('active locations', () => {
       [
