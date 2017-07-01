@@ -9,7 +9,7 @@ const propTypes = {
   to: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
-  ]),
+  ]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
   activeStyle: PropTypes.object,
