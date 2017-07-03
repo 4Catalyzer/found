@@ -29,6 +29,7 @@ describe('<BaseLink>', () => {
   it('should render <a> by default', () => {
     const link = mount(
       <BaseLink
+        to="/"
         match={{}}
         router={router}
       />,
@@ -40,6 +41,7 @@ describe('<BaseLink>', () => {
   it('should support a custom Component', () => {
     const link = mount(
       <BaseLink
+        to="/"
         match={{}}
         router={router}
         Component={CustomComponent}
@@ -55,6 +57,7 @@ describe('<BaseLink>', () => {
       const handleClick = jest.fn();
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
           onClick={handleClick}
@@ -81,6 +84,7 @@ describe('<BaseLink>', () => {
     it('should not navigate if the click handler calls preventDefault', () => {
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
           onClick={(event) => { event.preventDefault(); }}
@@ -94,6 +98,7 @@ describe('<BaseLink>', () => {
     it('should not navigate on modified clicks', () => {
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
         />,
@@ -117,6 +122,7 @@ describe('<BaseLink>', () => {
     it('should not navigate on non-left clicks', () => {
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
         />,
@@ -129,6 +135,7 @@ describe('<BaseLink>', () => {
     it('should not navigate if target is defined', () => {
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
           target="_blank"
@@ -144,6 +151,7 @@ describe('<BaseLink>', () => {
     it('should not call isActive when not showing active state', () => {
       mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
         />,
@@ -156,6 +164,7 @@ describe('<BaseLink>', () => {
       router.isActive.mockReturnValueOnce(true);
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
           activeClassName="active"
@@ -169,6 +178,7 @@ describe('<BaseLink>', () => {
       router.isActive.mockReturnValueOnce(true);
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
           activeStyle={{ color: '#fff' }}
@@ -182,6 +192,7 @@ describe('<BaseLink>', () => {
       router.isActive.mockReturnValueOnce(true);
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
           Component={CustomComponent}
@@ -196,6 +207,7 @@ describe('<BaseLink>', () => {
       router.isActive.mockReturnValueOnce(false);
       const link = mount(
         <BaseLink
+          to="/"
           match={{}}
           router={router}
           Component={CustomComponent}
