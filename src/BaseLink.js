@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import elementType from 'prop-types-extra/lib/elementType';
 import React from 'react';
+import warning from 'warning';
 
 import { routerShape } from './PropTypes';
 
@@ -70,6 +71,19 @@ class BaseLink extends React.Component {
       childProps,
       ...props
     } = this.props;
+
+    if (__DEV__ && props.component) {
+      warning(
+        typeof Component === 'function',
+        (
+          'Link to %s with `component` prop `%s` has an element type that ' +
+          'is not a component. The expected prop for the link component is ' +
+          '`Component`.'
+        ),
+        JSON.stringify(to),
+        props.component.displayName || props.component.name,
+      );
+    }
 
     if (activeClassName || activeStyle || activePropName) {
       const toLocation = router.createLocation(to);

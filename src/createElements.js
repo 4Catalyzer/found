@@ -34,7 +34,8 @@ export default function createElements(routeMatches, Components, matchData) {
       // Note this check would be wrong on potentially unresolved data.
       warning(
         data === undefined,
-        `Route ${i} has data, but no render method or component.`,
+        'Route %s with data has no render method or component.',
+        i,
       );
 
       // Nothing to render.
