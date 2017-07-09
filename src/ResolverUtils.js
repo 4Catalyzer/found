@@ -1,4 +1,5 @@
 import isPromise from 'is-promise';
+import warning from 'warning';
 
 const UNRESOLVED = {};
 
@@ -37,6 +38,20 @@ export function getComponents(routeMatches) {
   return getRouteValues(
     routeMatches,
     route => route.getComponent,
-    route => route.Component,
+    (route) => {
+      if (__DEV__ && route.component) {
+        warning(
+          route.Component,
+          (
+            'Route with `component` property `%s` has no `Component` ' +
+            'property. The expected property for the route component ' +
+            'is `Component`.'
+          ),
+          route.component.displayName || route.component.name,
+        );
+      }
+
+      return route.Component;
+    },
   );
 }
