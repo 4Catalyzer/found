@@ -1,6 +1,6 @@
 # Found Redux Example
 
-This example uses the same route configuration as the [basic JSX example](../basic-jsx), but uses shared redux store between found and the app.
+This example uses the same route configuration as the [basic JSX example](../basic-jsx), but uses a shared Redux store between Found and the app.
 
 ## Usage
 
