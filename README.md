@@ -603,8 +603,9 @@ const link2 = (
 - `activeStyle`: if specified, a style object to append merge with the component's style object when the link is active
 - `activePropName`: if specified, a prop to inject with a boolean value with the link's active state
 - `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
+- `Component`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
 
-By default, links render `<a>` elements. You can override this by specifying a `Component` prop with the desired element type. If you need to pass in additional props to the custom link component that collide with the names of props used by `<Link>`, specify the optional `childProps` prop as an object containing those props.
+`<Link>` forwards additional props to the child element. If you need to pass in additional props to the custom link component that collide with the names of props used by `<Link>`, specify the optional `childProps` prop as an object containing those props.
 
 A link will navigate per its `to` location descriptor when clicked. You can prevent this navigation by providing an `onClick` handler that calls `event.preventDefault()`.
 
