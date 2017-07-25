@@ -17,10 +17,9 @@ import { Provider } from 'react-redux';
 import { combineReducers, compose, createStore } from 'redux';
 
 function LinkItem(props) {
-  // TODO: Remove the pragma once evcohen/eslint-plugin-jsx-a11y#81 ships.
   return (
     <li>
-      <Link // eslint-disable-line jsx-a11y/anchor-has-content
+      <Link
         {...props}
         activeStyle={{ fontWeight: 'bold' }}
       />

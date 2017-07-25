@@ -20,8 +20,6 @@ export default async function* resolveRenderArgs({
   }
 
   try {
-    // ESLint doesn't handle for-await yet.
-    // eslint-disable-next-line semi
     for await (const elements of resolver.resolveElements(augmentedMatch)) {
       yield { ...augmentedMatch, elements };
     }

@@ -1,6 +1,13 @@
 {
   "extends": "4catalyzer-react",
+  "plugins": [
+    "babel"
+  ],
   "globals": {
     "__DEV__": false
+  },
+  "rules": {
+    "semi": "off", // Use babel/semi instead for for-await support.
+    "babel/semi": ["error", "always"]
   }
 }
