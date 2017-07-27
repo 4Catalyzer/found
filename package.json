@@ -11,10 +11,13 @@
     "lint": "eslint examples/*/src src test *.js",
     "prepublish": "npm run build",
     "tdd": "jest --watch",
-    "testonly": "jest --runInBand --verbose",
-    "test": "npm run lint && npm run testonly"
+    "test": "npm run lint && npm run testonly -- --coverage",
+    "testonly": "jest --runInBand --verbose"
   },
   "jest": {
+    "collectCoverageFrom": [
+      "src/**"
+    ],
     "setupFiles": [
       "<rootDir>/test/setup.js"
     ]
@@ -61,6 +64,7 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
+    "codecov": "^2.2.0",
     "enzyme": "^2.9.1",
     "eslint": "^4.3.0",
     "eslint-config-4catalyzer-react": "^0.3.0",
