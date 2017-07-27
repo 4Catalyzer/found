@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import ElementsRenderer from '../src/ElementsRenderer';
@@ -23,7 +22,6 @@ describe('<ElementsRenderer>', () => {
 
   it('should render elements with nested structure', () => {
     const Parent = ({ children }) => <div className="parent">{children}</div>;
-    Parent.propTypes = { children: PropTypes.element };
     const Child = () => <div className="child" />;
 
     const elements = [<Parent />, <Child />];

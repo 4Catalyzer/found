@@ -10,7 +10,16 @@ export default function makeRouteConfig(node) {
       const route = new Type(props);
 
       if (children) {
-        route.children = makeRouteConfig(children);
+        if (React.isValidElement(children) || Array.isArray(children)) {
+          route.children = makeRouteConfig(children);
+        } else {
+          const routeGroups = {};
+          Object.entries(children).forEach(([groupName, groupRoutes]) => {
+            routeGroups[groupName] = makeRouteConfig(groupRoutes);
+          });
+
+          route.children = routeGroups;
+        }
       }
 
       return route;

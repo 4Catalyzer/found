@@ -22,17 +22,7 @@ export default class Matcher {
       return null;
     }
 
-    const routeIndices = new Array(matches.length);
-    const routeParams = new Array(matches.length);
-    const params = {};
-
-    matches.forEach((routeMatch, i) => {
-      routeIndices[i] = routeMatch.index;
-      routeParams[i] = routeMatch.params;
-      Object.assign(params, routeMatch.params);
-    });
-
-    return { routeIndices, routeParams, params };
+    return this.makePayload(matches);
   }
 
   getRoutes({ routeIndices }) {
@@ -40,13 +30,7 @@ export default class Matcher {
       return null;
     }
 
-    let lastRouteConfig = this.routeConfig;
-
-    return routeIndices.map((routeIndex) => {
-      const route = lastRouteConfig[routeIndex];
-      lastRouteConfig = route.children;
-      return route;
-    });
+    return this.getRoutesFromIndices(routeIndices, this.routeConfig);
   }
 
   joinPaths(basePath, path) {
@@ -86,12 +70,21 @@ export default class Matcher {
         continue; // eslint-disable-line no-continue
       }
 
-      const { children = [] } = route;
       const { params, remaining } = match;
+      const { children } = route;
 
-      const childMatches = this.matchRoutes(children, remaining);
-      if (childMatches) {
-        return [{ index, params }, ...childMatches];
+      if (children) {
+        if (Array.isArray(children)) {
+          const childMatches = this.matchRoutes(children, remaining);
+          if (childMatches) {
+            return [{ index, params }, ...childMatches];
+          }
+        } else {
+          const groups = this.matchGroups(children, remaining);
+          if (groups) {
+            return [{ index, params }, { groups }];
+          }
+        }
       }
 
       if (!remaining) {
@@ -133,6 +126,104 @@ export default class Matcher {
 
   getCanonicalPattern(pattern) {
     return pattern.charAt(0) === '/' ? pattern : `/${pattern}`;
+  }
+
+  matchGroups(routeGroups, pathname) {
+    const groups = {};
+
+    for (const [groupName, routes] of Object.entries(routeGroups)) {
+      const groupMatch = this.matchRoutes(routes, pathname);
+      if (!groupMatch) {
+        return null;
+      }
+
+      groups[groupName] = groupMatch;
+    }
+
+    return groups;
+  }
+
+  makePayload(matches) {
+    const routeMatch = matches[0];
+
+    if (routeMatch.groups) {
+      warning(
+        matches.length === 1,
+        'Route match with groups %s has children, which are ignored.',
+        Object.keys(routeMatch.groups).join(', '),
+      );
+
+      const routeIndices = {};
+      const routeParams = [];
+      const params = {};
+
+      Object.entries(
+        routeMatch.groups,
+      ).forEach(([groupName, groupMatches]) => {
+        const groupPayload = this.makePayload(groupMatches);
+
+        // Retain the nested group structure for route indices so we can
+        // reconstruct the element tree from flattened route elements.
+        routeIndices[groupName] = groupPayload.routeIndices;
+
+        // Flatten route groups for route params matching getRoutesFromIndices
+        // below.
+        routeParams.push(...groupPayload.routeParams);
+
+        // Just merge all the params depth-first; it's the easiest option.
+        Object.assign(params, groupPayload.params);
+      });
+
+      return { routeIndices, routeParams, params };
+    }
+
+    const { index, params } = routeMatch;
+
+    if (matches.length === 1) {
+      return {
+        routeIndices: [index],
+        routeParams: [params],
+        params,
+      };
+    }
+
+    const childPayload = this.makePayload(matches.slice(1));
+    return {
+      routeIndices: [index, ...childPayload.routeIndices],
+      routeParams: [params, ...childPayload.routeParams],
+      params: { ...params, ...childPayload.params },
+    };
+  }
+
+  getRoutesFromIndices(routeIndices, routeConfigOrGroups) {
+    const routeIndex = routeIndices[0];
+
+    if (typeof routeIndex === 'object') {
+      // Flatten route groups to save resolvers from having to explicitly
+      // handle them.
+      const groupRoutes = [];
+      Object.entries(routeIndex).forEach(([groupName, groupRouteIndices]) => {
+        groupRoutes.push(...this.getRoutesFromIndices(
+          groupRouteIndices, routeConfigOrGroups[groupName],
+        ));
+      });
+
+      return groupRoutes;
+    }
+
+    const route = routeConfigOrGroups[routeIndex];
+
+    if (routeIndices.length === 1) {
+      return [route];
+    }
+
+    return [
+      route,
+      ...this.getRoutesFromIndices(
+        routeIndices.slice(1),
+        route.children,
+      ),
+    ];
   }
 
   isPathnameActive(matchPathname, pathname, exact) {
