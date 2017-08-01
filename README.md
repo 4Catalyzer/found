@@ -543,7 +543,7 @@ The options object also accepts a number of optional properties:
 - `renderPending`: a custom render function called when some routes are not yet ready to render, due to those routes have unresolved asynchronous dependencies and no route-level `render` method for handling the loading state
 - `renderReady`: a custom render function called when all routes are ready to render
 - `renderError`: a custom render function called if an `HttpError` is thrown while resolving route elements
-- `render`: a custom render function called in all cases, superseding `renderPending`, `renderReady`, and `renderError`; by default, this is `createRender({ renderPending, readyReady, renderError })`
+- `render`: a custom render function called in all cases, superseding `renderPending`, `renderReady`, and `renderError`; by default, this is `createRender({ renderPending, renderReady, renderError })`
 
 The `renderPending`, `renderReady`, `renderError`, and `render` functions receive the routing state object as an argument, with the following additional properties:
 
