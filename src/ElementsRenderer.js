@@ -34,10 +34,10 @@ function accumulateElement(children, element) {
   return React.cloneElement(element, { children });
 }
 
-function Renderer({ elements }) {
+function ElementsRenderer({ elements }) {
   return elements.reduceRight(accumulateElement, null);
 }
 
-Renderer.propTypes = propTypes;
+ElementsRenderer.propTypes = propTypes;
 
-export default Renderer;
+export default ElementsRenderer;
