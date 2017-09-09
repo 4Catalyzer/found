@@ -7,6 +7,12 @@
     "__DEV__": false
   },
   "rules": {
+    // FIXME: Temporary workaround pending fixing this upstream.
+    "generator-star-spacing": ["error", {
+      "before": false,
+      "after": true,
+      "method": "both"
+    }],
     "semi": "off", // Use babel/semi instead for for-await support.
     "babel/semi": ["error", "always"]
   }
