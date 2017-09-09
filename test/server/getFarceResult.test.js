@@ -1,23 +1,27 @@
-import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
 
-import createFarceRouter from '../src/createFarceRouter';
-import createRender from '../src/createRender';
+import createRender from '../../src/createRender';
+import getFarceResult from '../../src/server/getFarceResult';
 
-import { timeout, InstrumentedResolver } from './helpers';
+async function render(url, routeConfig) {
+  const { element } = await getFarceResult({
+    url,
+    routeConfig,
+    render: createRender({}),
+  });
 
-describe('render', () => {
+  return ReactTestUtils.renderIntoDocument(element);
+}
+
+describe('getFarceResult', () => {
   it('should support nested routes', async () => {
-    const Router = createFarceRouter({
-      historyProtocol: new ServerProtocol('/foo/baz/a'),
-      routeConfig: [
+    const instance = await render(
+      '/foo/baz/a',
+      [
         {
           path: 'foo',
-          getComponent: async () => {
-            await timeout(20);
-            return ({ children }) => <div className="foo">{children}</div>;
-          },
+          Component: ({ children }) => <div className="foo">{children}</div>,
           children: [
             {
               path: 'bar',
@@ -32,23 +36,7 @@ describe('render', () => {
           ],
         },
       ],
-
-      render: createRender({
-        renderPending: () => <div className="pending" />,
-      }),
-    });
-
-    const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
     );
-
-    // Initial pending render is asynchronous.
-    await timeout(10);
-
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
-
-    await resolver.done;
 
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
     expect(
@@ -62,20 +50,17 @@ describe('render', () => {
   });
 
   it('should support named child routes', async () => {
-    const Router = createFarceRouter({
-      historyProtocol: new ServerProtocol('/foo/bar/qux/a'),
-      routeConfig: [
+    const instance = await render(
+      '/foo/bar/qux/a',
+      [
         {
           path: 'foo',
-          getComponent: async () => {
-            await timeout(20);
-            return ({ nav, main }) => (
-              <div className="foo">
-                {nav}
-                {main}
-              </div>
-            );
-          },
+          Component: ({ nav, main }) => (
+            <div className="foo">
+              {nav}
+              {main}
+            </div>
+          ),
           children: [
             {
               path: 'bar',
@@ -103,23 +88,7 @@ describe('render', () => {
           ],
         },
       ],
-
-      render: createRender({
-        renderPending: () => <div className="pending" />,
-      }),
-    });
-
-    const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
     );
-
-    // Initial pending render is asynchronous.
-    await timeout(10);
-
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
-
-    await resolver.done;
 
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar-nav');
