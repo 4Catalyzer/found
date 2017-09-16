@@ -4,9 +4,7 @@ language: node_js
 node_js:
   - stable
 
-cache:
-  directories:
-    - node_modules
+cache: yarn
 
 after_script:
   - node_modules/.bin/codecov
