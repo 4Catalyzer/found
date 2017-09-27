@@ -52,7 +52,7 @@
     "warning": "^3.0.0"
   },
   "peerDependencies": {
-    "react": ">=0.14.0"
+    "react": "^0.14.9 || >=15.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
