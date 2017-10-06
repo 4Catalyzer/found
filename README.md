@@ -219,7 +219,7 @@ Specify a `path` pattern to control the paths for which a route is active. These
   - Matches `/path/subpath`
 - `/path/:param`
   - Matches `/path/foo` with `params` of `{ param: 'foo' }`
-- `/path/:(\d+)regexParam`
+- `/path/:regexParam(\\d+)`
   - Matches `/path/123` with `params` of `{ regexParam: '123' }`
   - Does not match `/path/foo`
 - `/path/:optionalParam?`
