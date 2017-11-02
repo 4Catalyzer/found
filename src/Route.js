@@ -7,3 +7,9 @@ export default class Route {
     Object.assign(this, props);
   }
 }
+
+if (__DEV__) {
+  // Workaround to make React Proxy give me the original class, to allow
+  // makeRouteConfig to get the actual class, when using JSX for routes.
+  Route.prototype.isReactComponent = {};
+}

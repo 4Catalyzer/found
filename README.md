@@ -505,6 +505,27 @@ const route = {
 };
 ```
 
+#### Custom route classes
+
+You can implement reusable logic in routes with a custom route class. When extending `Route`, methods defined on the class will be overridden by explicitly specified route properties. You can use custom route classes for either object route configurations or JSX route configurations.
+
+> **Note:** To avoid issues with [React Hot Loader](http://gaearon.github.io/react-hot-loader/), custom route classes should usually extend `Route`.
+
+```js
+class AsyncRoute extends Route {
+  // An explicit render property on the route will override this.
+  render({ Component, props }) {
+    return Component && props ? (
+      <Component {...props} />
+    ) : (
+      <LoadingIndicator />
+    );
+}
+
+const myRoute = new AsyncRoute(properties);
+const myJsxRoute = <AsyncRoute {...properties} />;
+```
+
 ### Router configuration
 
 Found exposes a number of router component class factories at varying levels of abstraction. These factories accept the static configuration properties for the router, such as the route configuration. The use of static configuration allows for efficient, parallel data fetching and state management as above.
