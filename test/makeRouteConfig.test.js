@@ -1,4 +1,5 @@
 import React from 'react';
+import createProxy from 'react-proxy';
 
 import makeRouteConfig from '../src/makeRouteConfig';
 import Redirect from '../src/Redirect';
@@ -152,5 +153,15 @@ describe('makeRouteConfig', () => {
         },
       ],
     }]);
+  });
+
+  it('should work with proxies', () => {
+    const ProxiedRoute = createProxy(Route).get();
+    const route = makeRouteConfig(
+      <ProxiedRoute name="foo" path="/" />,
+    )[0];
+
+    // instanceof is not sufficient here, as we want to check the actual class.
+    expect(Object.getPrototypeOf(route)).toBe(Route.prototype);
   });
 });
