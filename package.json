@@ -11,7 +11,8 @@
     "lint": "eslint examples/*/src src test *.js",
     "prepublish": "npm run build",
     "tdd": "jest --watch",
-    "test": "npm run lint && npm run testonly -- --coverage",
+    "typescript": "tsc -p tsconfig.json",
+    "test": "npm run lint && npm run typescript && npm run testonly -- --coverage",
     "testonly": "jest --runInBand --verbose"
   },
   "jest": {
@@ -55,6 +56,8 @@
     "react": "^0.14.9 || >=15.3.0"
   },
   "devDependencies": {
+    "@types/react": "^16.0.27",
+    "@types/react-dom": "^16.0.3",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^21.0.2",
@@ -77,6 +80,7 @@
     "react-dom": "^15.6.1",
     "react-proxy": "^3.0.0-alpha.1",
     "react-test-renderer": "^15.6.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "typescript": "^2.6.2"
   }
 }
