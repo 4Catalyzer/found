@@ -288,12 +288,12 @@ declare module 'found' {
         to: string | LocationArg
         // match: Match,  provided by withRouter
         activeClassName?: string
-        activeStyle?: Object
+        activeStyle?: any
         activePropName?: string
         // router: Router, provided by withRouter
         exact?: boolean
         target?: string
-        childProps?: Object
+        childProps?: any
     }
 
     class Link extends React.Component<LinkProps> {
