@@ -326,13 +326,7 @@ declare module 'found' {
     [key: string]: any
   }
 
-  function createBrowserRouter({
-                                 render,
-                                 renderPending,
-                                 renderReady,
-                                 renderError,
-                                 ...options,
-                               }: CreateBrowserRouterArgs): BrowserRouter
+  function createBrowserRouter(options: CreateBrowserRouterArgs): BrowserRouter
 
   // Improve these `any`s as needed
   type FarceRouter = any
