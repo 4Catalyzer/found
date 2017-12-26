@@ -128,10 +128,7 @@ export default function createBaseRouter({ render }) {
       // context.
       return (
         <StaticContainer
-          shouldUpdate={
-            !this.shouldResolveMatch &&
-            !this.pendingResolvedMatch
-          }
+          shouldUpdate={!this.shouldResolveMatch && !this.pendingResolvedMatch}
         >
           {this.state.element}
         </StaticContainer>

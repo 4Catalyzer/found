@@ -7,10 +7,7 @@ import { routerShape } from './PropTypes';
 
 const propTypes = {
   Component: elementType.isRequired,
-  to: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-  ]).isRequired,
+  to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
   activeStyle: PropTypes.object,
@@ -28,7 +25,7 @@ const defaultProps = {
 };
 
 class BaseLink extends React.Component {
-  onClick = (event) => {
+  onClick = event => {
     const { onClick, target, router, to } = this.props;
 
     if (onClick) {
@@ -75,11 +72,9 @@ class BaseLink extends React.Component {
     if (__DEV__ && props.component) {
       warning(
         typeof Component === 'function',
-        (
-          'Link to %s with `component` prop `%s` has an element type that ' +
+        'Link to %s with `component` prop `%s` has an element type that ' +
           'is not a component. The expected prop for the link component is ' +
-          '`Component`.'
-        ),
+          '`Component`.',
         JSON.stringify(to),
         props.component.displayName || props.component.name,
       );
@@ -91,8 +86,9 @@ class BaseLink extends React.Component {
 
       if (active) {
         if (activeClassName) {
-          props.className = props.className ?
-            `${props.className} ${activeClassName}` : activeClassName;
+          props.className = props.className
+            ? `${props.className} ${activeClassName}`
+            : activeClassName;
         }
 
         if (activeStyle) {

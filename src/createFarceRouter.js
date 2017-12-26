@@ -19,12 +19,14 @@ export default function createFarceRouter({
     constructor(props, context) {
       super(props, context);
 
-      this.store = store || createFarceStore({
-        historyProtocol,
-        historyMiddlewares,
-        historyOptions,
-        routeConfig,
-      });
+      this.store =
+        store ||
+        createFarceStore({
+          historyProtocol,
+          historyMiddlewares,
+          historyOptions,
+          routeConfig,
+        });
     }
 
     componentWillUnmount() {

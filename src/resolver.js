@@ -2,11 +2,15 @@ import isPromise from 'is-promise';
 
 import createElements from './createElements';
 import {
-  checkResolved, getComponents, getRouteMatches, getRouteValues, isResolved,
+  checkResolved,
+  getComponents,
+  getRouteMatches,
+  getRouteValues,
+  isResolved,
 } from './ResolverUtils';
 
 export default {
-  async * resolveElements(match) {
+  async *resolveElements(match) {
     const routeMatches = getRouteMatches(match);
 
     const Components = getComponents(routeMatches);
@@ -16,10 +20,12 @@ export default {
       route => route.data,
     );
 
-    const earlyComponents = Components.some(isPromise) ?
-      await Promise.all(Components.map(checkResolved)) : Components;
-    const earlyData = data.some(isPromise) ?
-      await Promise.all(data.map(checkResolved)) : data;
+    const earlyComponents = Components.some(isPromise)
+      ? await Promise.all(Components.map(checkResolved))
+      : Components;
+    const earlyData = data.some(isPromise)
+      ? await Promise.all(data.map(checkResolved))
+      : data;
 
     let fetchedComponents;
     let fetchedData;
@@ -31,8 +37,9 @@ export default {
         earlyData,
       );
 
-      yield pendingElements.every(element => element !== undefined) ?
-        pendingElements : undefined;
+      yield pendingElements.every(element => element !== undefined)
+        ? pendingElements
+        : undefined;
 
       fetchedComponents = await Promise.all(Components);
       fetchedData = await Promise.all(data);
@@ -41,10 +48,6 @@ export default {
       fetchedData = earlyData;
     }
 
-    yield createElements(
-      routeMatches,
-      fetchedComponents,
-      fetchedData,
-    );
+    yield createElements(routeMatches, fetchedComponents, fetchedData);
   },
 };

@@ -56,7 +56,8 @@ describe('render', () => {
     ).toHaveLength(0);
 
     const bazNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance, 'baz',
+      instance,
+      'baz',
     );
     expect(bazNode.textContent).toBe('a');
   });
@@ -129,7 +130,8 @@ describe('render', () => {
     ).toHaveLength(0);
 
     const quxNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance, 'qux',
+      instance,
+      'qux',
     );
     expect(quxNode.textContent).toBe('a');
   });

@@ -12,10 +12,7 @@ const PORT = 3000;
 const app = express();
 
 const webpackConfig = {
-  entry: [
-    'babel-polyfill',
-    './src/client',
-  ],
+  entry: ['babel-polyfill', './src/client'],
 
   output: {
     path: '/',
@@ -24,16 +21,16 @@ const webpackConfig = {
   },
 
   module: {
-    rules: [
-      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
-    ],
+    rules: [{ test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' }],
   },
 };
 
-app.use(webpackMiddleware(webpack(webpackConfig), {
-  publicPath: webpackConfig.output.publicPath,
-  stats: { colors: true },
-}));
+app.use(
+  webpackMiddleware(webpack(webpackConfig), {
+    publicPath: webpackConfig.output.publicPath,
+    stats: { colors: true },
+  }),
+);
 
 app.use(async (req, res) => {
   const { redirect, status, element } = await getFarceResult({

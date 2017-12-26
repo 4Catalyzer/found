@@ -5,7 +5,7 @@ import ActionTypes from './ActionTypes';
 
 function createMatchMiddleware(matcher) {
   return function matchMiddleware() {
-    return next => (action) => {
+    return next => action => {
       const { type, payload } = action;
       if (type !== FarceActionTypes.UPDATE_LOCATION) {
         return next(action);
