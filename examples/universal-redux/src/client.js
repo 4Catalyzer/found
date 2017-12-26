@@ -6,11 +6,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import genStore from './genStore';
+import configureStore from './configureStore';
 import render from './render';
 
-// eslint-disable-next-line no-underscore-dangle
-const store = genStore(new BrowserProtocol(), window.__PRELOADED_STATE__);
+const store = configureStore(
+  new BrowserProtocol(),
+  window.__PRELOADED_STATE__, // eslint-disable-line no-underscore-dangle
+);
 const matchContext = { store };
 const ConnectedRouter = createConnectedRouter({ render });
 
@@ -21,7 +23,7 @@ const ConnectedRouter = createConnectedRouter({ render });
     resolver,
   });
 
-  ReactDOM.render(
+  ReactDOM.hydrate(
     <Provider store={store}>
       <ConnectedRouter
         matchContext={matchContext}
