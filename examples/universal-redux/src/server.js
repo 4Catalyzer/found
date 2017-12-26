@@ -9,7 +9,7 @@ import serialize from 'serialize-javascript';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
 
-import genStore from './genStore';
+import configureStore from './configureStore';
 import render from './render';
 
 const PORT = 3000;
@@ -59,7 +59,7 @@ app.use(
 );
 
 app.use(async (req, res) => {
-  const store = genStore(new ServerProtocol(req.url));
+  const store = configureStore(new ServerProtocol(req.url));
   store.dispatch(FarceActions.init());
   const matchContext = { store };
   let renderArgs;
