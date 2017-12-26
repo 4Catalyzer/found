@@ -23,9 +23,7 @@ function accumulateElement(children, element) {
     // Children come from named child routes.
     const groups = {};
     Object.entries(children).forEach(([groupName, groupElements]) => {
-      groups[groupName] = groupElements.reduceRight(
-        accumulateElement, null,
-      );
+      groups[groupName] = groupElements.reduceRight(accumulateElement, null);
     });
 
     return React.cloneElement(element, groups);

@@ -7,9 +7,7 @@ describe('Matcher', () => {
         path: 'foo',
         children: [
           {
-            children: [
-              {},
-            ],
+            children: [{}],
           },
           {
             path: 'bar',
@@ -36,9 +34,11 @@ describe('Matcher', () => {
       ['route fallthrough', '/foo/baz', [2]],
     ].forEach(([scenario, pathname, expectedRouteIndices]) => {
       it(`should support ${scenario}`, () => {
-        expect(matcher.match({
-          pathname,
-        })).toMatchObject({
+        expect(
+          matcher.match({
+            pathname,
+          }),
+        ).toMatchObject({
           routeIndices: expectedRouteIndices,
         });
       });
@@ -47,20 +47,23 @@ describe('Matcher', () => {
 
   describe('route params', () => {
     it('should match route params', () => {
-      const matcher = new Matcher([{
-        path: ':foo',
-        children: [{
-          path: ':bar',
-        }],
-      }]);
+      const matcher = new Matcher([
+        {
+          path: ':foo',
+          children: [
+            {
+              path: ':bar',
+            },
+          ],
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/a/b',
-      })).toMatchObject({
-        routeParams: [
-          { foo: 'a' },
-          { bar: 'b' },
-        ],
+      expect(
+        matcher.match({
+          pathname: '/a/b',
+        }),
+      ).toMatchObject({
+        routeParams: [{ foo: 'a' }, { bar: 'b' }],
         params: {
           foo: 'a',
           bar: 'b',
@@ -69,24 +72,28 @@ describe('Matcher', () => {
     });
 
     it('should support param name collisions', () => {
-      const matcher = new Matcher([{
-        path: ':foo',
-        children: [{
+      const matcher = new Matcher([
+        {
           path: ':foo',
-          children: [{
-            path: ':bar',
-          }],
-        }],
-      }]);
+          children: [
+            {
+              path: ':foo',
+              children: [
+                {
+                  path: ':bar',
+                },
+              ],
+            },
+          ],
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/a/b/c',
-      })).toMatchObject({
-        routeParams: [
-          { foo: 'a' },
-          { foo: 'b' },
-          { bar: 'c' },
-        ],
+      expect(
+        matcher.match({
+          pathname: '/a/b/c',
+        }),
+      ).toMatchObject({
+        routeParams: [{ foo: 'a' }, { foo: 'b' }, { bar: 'c' }],
         params: {
           foo: 'b',
           bar: 'c',
@@ -95,24 +102,28 @@ describe('Matcher', () => {
     });
 
     it('should support anonymous params', () => {
-      const matcher = new Matcher([{
-        path: ':foo',
-        children: [{
-          path: '([^/]+)',
-          children: [{
-            path: '([^/]+)',
-          }],
-        }],
-      }]);
+      const matcher = new Matcher([
+        {
+          path: ':foo',
+          children: [
+            {
+              path: '([^/]+)',
+              children: [
+                {
+                  path: '([^/]+)',
+                },
+              ],
+            },
+          ],
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/a/b/c',
-      })).toMatchObject({
-        routeParams: [
-          { foo: 'a' },
-          { 0: 'b' },
-          { 0: 'c' },
-        ],
+      expect(
+        matcher.match({
+          pathname: '/a/b/c',
+        }),
+      ).toMatchObject({
+        routeParams: [{ foo: 'a' }, { 0: 'b' }, { 0: 'c' }],
         params: {
           foo: 'a',
           0: 'c',
@@ -121,17 +132,23 @@ describe('Matcher', () => {
     });
 
     it('should support custom params', () => {
-      const matcher = new Matcher([{
-        path: ':foo(\\d+)',
-      }]);
+      const matcher = new Matcher([
+        {
+          path: ':foo(\\d+)',
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/abc',
-      })).toBeNull();
+      expect(
+        matcher.match({
+          pathname: '/abc',
+        }),
+      ).toBeNull();
 
-      expect(matcher.match({
-        pathname: '/123',
-      })).toMatchObject({
+      expect(
+        matcher.match({
+          pathname: '/123',
+        }),
+      ).toMatchObject({
         params: {
           foo: '123',
         },
@@ -139,38 +156,36 @@ describe('Matcher', () => {
     });
 
     it('should support path params', () => {
-      const matcher = new Matcher([{
-        path: ':foo',
-        children: [{
-          path: '*',
-        }],
-      }]);
+      const matcher = new Matcher([
+        {
+          path: ':foo',
+          children: [
+            {
+              path: '*',
+            },
+          ],
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/a',
-      })).toEqual({
-        routeIndices: [
-          0,
-        ],
-        routeParams: [
-          { foo: 'a' },
-        ],
+      expect(
+        matcher.match({
+          pathname: '/a',
+        }),
+      ).toEqual({
+        routeIndices: [0],
+        routeParams: [{ foo: 'a' }],
         params: {
           foo: 'a',
         },
       });
 
-      expect(matcher.match({
-        pathname: '/a/b/c',
-      })).toEqual({
-        routeIndices: [
-          0,
-          0,
-        ],
-        routeParams: [
-          { foo: 'a' },
-          { 0: 'b/c' },
-        ],
+      expect(
+        matcher.match({
+          pathname: '/a/b/c',
+        }),
+      ).toEqual({
+        routeIndices: [0, 0],
+        routeParams: [{ foo: 'a' }, { 0: 'b/c' }],
         params: {
           foo: 'a',
           0: 'b/c',
@@ -179,41 +194,37 @@ describe('Matcher', () => {
     });
 
     it('should support optional path params', () => {
-      const matcher = new Matcher([{
-        path: ':foo',
-        children: [{
-          path: '(.*)?',
-        }],
-      }]);
+      const matcher = new Matcher([
+        {
+          path: ':foo',
+          children: [
+            {
+              path: '(.*)?',
+            },
+          ],
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/a',
-      })).toEqual({
-        routeIndices: [
-          0,
-          0,
-        ],
-        routeParams: [
-          { foo: 'a' },
-          { 0: undefined },
-        ],
+      expect(
+        matcher.match({
+          pathname: '/a',
+        }),
+      ).toEqual({
+        routeIndices: [0, 0],
+        routeParams: [{ foo: 'a' }, { 0: undefined }],
         params: {
           foo: 'a',
           0: undefined,
         },
       });
 
-      expect(matcher.match({
-        pathname: '/a/b/c',
-      })).toEqual({
-        routeIndices: [
-          0,
-          0,
-        ],
-        routeParams: [
-          { foo: 'a' },
-          { 0: 'b/c' },
-        ],
+      expect(
+        matcher.match({
+          pathname: '/a/b/c',
+        }),
+      ).toEqual({
+        routeIndices: [0, 0],
+        routeParams: [{ foo: 'a' }, { 0: 'b/c' }],
         params: {
           foo: 'a',
           0: 'b/c',
@@ -223,12 +234,16 @@ describe('Matcher', () => {
   });
 
   describe('trailing slash handling', () => {
-    const matcher = new Matcher([{
-      path: 'foo',
-      children: [{
-        path: 'bar',
-      }],
-    }]);
+    const matcher = new Matcher([
+      {
+        path: 'foo',
+        children: [
+          {
+            path: 'bar',
+          },
+        ],
+      },
+    ]);
 
     [
       ['parent without trailing slash', '/foo', [0]],
@@ -237,9 +252,11 @@ describe('Matcher', () => {
       ['child with trailing slash', '/foo/bar/', [0, 0]],
     ].forEach(([scenario, pathname, expectedRouteIndices]) => {
       it(`should match ${scenario}`, () => {
-        expect(matcher.match({
-          pathname,
-        })).toMatchObject({
+        expect(
+          matcher.match({
+            pathname,
+          }),
+        ).toMatchObject({
           routeIndices: expectedRouteIndices,
         });
       });
@@ -251,36 +268,37 @@ describe('Matcher', () => {
       ['extraneous slashes between parent and child ', '/foo//bar/'],
     ].forEach(([scenario, pathname]) => {
       it(`should not match ${scenario}`, () => {
-        expect(matcher.match({
-          pathname,
-        })).toBeNull();
+        expect(
+          matcher.match({
+            pathname,
+          }),
+        ).toBeNull();
       });
     });
   });
 
   describe('named child routes', () => {
     it('should support named child routes', () => {
-      const matcher = new Matcher([{
-        path: 'foo',
-        children: [
-          {
-            path: 'bar',
-            children: {
-              nav: [
-                { path: '(.*)?' },
-              ],
-              main: [
-                { path: 'baz' },
-                { path: 'qux/:quux' },
-              ],
+      const matcher = new Matcher([
+        {
+          path: 'foo',
+          children: [
+            {
+              path: 'bar',
+              children: {
+                nav: [{ path: '(.*)?' }],
+                main: [{ path: 'baz' }, { path: 'qux/:quux' }],
+              },
             },
-          },
-        ],
-      }]);
+          ],
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/foo/bar/qux/a',
-      })).toEqual({
+      expect(
+        matcher.match({
+          pathname: '/foo/bar/qux/a',
+        }),
+      ).toEqual({
         routeIndices: [0, 0, { nav: [0], main: [1] }],
         routeParams: [{}, {}, { 0: 'qux/a' }, { quux: 'a' }],
         params: { 0: 'qux/a', quux: 'a' },
@@ -288,38 +306,33 @@ describe('Matcher', () => {
     });
 
     it('should waterfall past groups', () => {
-      const matcher = new Matcher([{
-        path: 'foo',
-        children: [
-          {
-            path: 'bar',
-            children: {
-              nav: [
-                { path: '(.*)?' },
-              ],
-              main: [
-                { path: 'baz' },
-              ],
+      const matcher = new Matcher([
+        {
+          path: 'foo',
+          children: [
+            {
+              path: 'bar',
+              children: {
+                nav: [{ path: '(.*)?' }],
+                main: [{ path: 'baz' }],
+              },
             },
-          },
-          {
-            path: 'bar',
-            children: {
-              nav: [
-                { path: '(.*)?' },
-              ],
-              main: [
-                { path: 'qux' },
-                { path: 'quux' },
-              ],
+            {
+              path: 'bar',
+              children: {
+                nav: [{ path: '(.*)?' }],
+                main: [{ path: 'qux' }, { path: 'quux' }],
+              },
             },
-          },
-        ],
-      }]);
+          ],
+        },
+      ]);
 
-      expect(matcher.match({
-        pathname: '/foo/bar/quux',
-      })).toMatchObject({
+      expect(
+        matcher.match({
+          pathname: '/foo/bar/quux',
+        }),
+      ).toMatchObject({
         routeIndices: [0, 1, { nav: [0], main: [1] }],
       });
     });
@@ -335,9 +348,7 @@ describe('Matcher', () => {
       ['slashes everywhere', '/foo/', '/bar'],
     ].forEach(([scenario, basePath, path]) => {
       it(`should support ${scenario}`, () => {
-        expect(matcher.joinPaths(
-          basePath, path,
-        )).toBe('/foo/bar');
+        expect(matcher.joinPaths(basePath, path)).toBe('/foo/bar');
       });
     });
   });
@@ -347,16 +358,8 @@ describe('Matcher', () => {
 
     describe('active locations', () => {
       [
-        [
-          'path match',
-          { pathname: '/foo/bar' },
-          { pathname: '/foo/bar' },
-        ],
-        [
-          'parent path match',
-          { pathname: '/foo/bar' },
-          { pathname: '/foo' },
-        ],
+        ['path match', { pathname: '/foo/bar' }, { pathname: '/foo/bar' }],
+        ['parent path match', { pathname: '/foo/bar' }, { pathname: '/foo' }],
         [
           'exact path match',
           { pathname: '/foo/bar' },
@@ -400,20 +403,16 @@ describe('Matcher', () => {
         ],
       ].forEach(([scenario, matchLocation, location, options]) => {
         it(`should be active on ${scenario}`, () => {
-          expect(matcher.isActive(
-            { location: matchLocation }, location, options,
-          )).toBe(true);
+          expect(
+            matcher.isActive({ location: matchLocation }, location, options),
+          ).toBe(true);
         });
       });
     });
 
     describe('inactive locations', () => {
       [
-        [
-          'path mismatch',
-          { pathname: '/bar' },
-          { pathname: '/foo' },
-        ],
+        ['path mismatch', { pathname: '/bar' }, { pathname: '/foo' }],
         [
           'exact parent path match',
           { pathname: '/foo/bar' },
@@ -448,9 +447,9 @@ describe('Matcher', () => {
         ],
       ].forEach(([scenario, matchLocation, location, options]) => {
         it(`should not be active on ${scenario}`, () => {
-          expect(matcher.isActive(
-            { location: matchLocation }, location, options,
-          )).toBe(false);
+          expect(
+            matcher.isActive({ location: matchLocation }, location, options),
+          ).toBe(false);
         });
       });
     });

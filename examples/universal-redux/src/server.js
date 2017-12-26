@@ -16,10 +16,7 @@ const PORT = 3000;
 const app = express();
 
 const webpackConfig = {
-  entry: [
-    'babel-polyfill',
-    './src/client',
-  ],
+  entry: ['babel-polyfill', './src/client'],
 
   output: {
     path: '/',
@@ -28,9 +25,7 @@ const webpackConfig = {
   },
 
   module: {
-    rules: [
-      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
-    ],
+    rules: [{ test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' }],
   },
 };
 
@@ -56,10 +51,12 @@ function renderPageToString(element, state) {
   `;
 }
 
-app.use(webpackMiddleware(webpack(webpackConfig), {
-  publicPath: webpackConfig.output.publicPath,
-  stats: { colors: true },
-}));
+app.use(
+  webpackMiddleware(webpack(webpackConfig), {
+    publicPath: webpackConfig.output.publicPath,
+    stats: { colors: true },
+  }),
+);
 
 app.use(async (req, res) => {
   const store = genStore(new ServerProtocol(req.url));
@@ -82,16 +79,16 @@ app.use(async (req, res) => {
     throw e;
   }
 
-  res
-    .status(renderArgs.error ? renderArgs.error.status : 200)
-    .send(renderPageToString(
+  res.status(renderArgs.error ? renderArgs.error.status : 200).send(
+    renderPageToString(
       <Provider store={store}>
         <RouterProvider router={renderArgs.router}>
           {render(renderArgs)}
         </RouterProvider>
       </Provider>,
       store.getState(),
-    ));
+    ),
+  );
 });
 
 app.listen(PORT, () => {

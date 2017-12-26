@@ -11,8 +11,13 @@ Found uses [Redux](http://redux.js.org/) for state management and [Farce](https:
 ## Usage
 
 ```js
-import { createBrowserRouter, HttpError, makeRouteConfig, Redirect, Route }
-  from 'found';
+import {
+  createBrowserRouter,
+  HttpError,
+  makeRouteConfig,
+  Redirect,
+  Route,
+} from 'found';
 
 /* ... */
 
@@ -53,7 +58,7 @@ const BrowserRouter = createBrowserRouter({
         from="widget/:widgetId"
         to="/widgets/:widgetId"
       />
-    </Route>
+    </Route>,
   ),
 
   renderError: ({ error }) => (
@@ -172,7 +177,7 @@ const jsxRouteConfig = makeRouteConfig(
     <Route path="foo" Component={FooPage}>
       <Route path="bar" Component={BarPage} />
     </Route>
-  </Route>
+  </Route>,
 );
 ```
 
@@ -247,7 +252,7 @@ const routes = makeRouteConfig(
       <Route Component={WidgetsPage} />
       <Route path=":widgetId" Component={WidgetPage} />
     </Route>
-  </Route>
+  </Route>,
 );
 ```
 
@@ -971,8 +976,12 @@ import { routerShape } from 'found/lib/PropTypes';
 import Route from 'found/lib/Route';
 
 // Instead of:
-// import { createBrowserRouter, makeRouteConfig, Route, routerShape }
-//   from 'found';
+// import {
+//  createBrowserRouter,
+//  makeRouteConfig,
+//  Route,
+//  routerShape,
+// } from 'found';
 ```
 
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg

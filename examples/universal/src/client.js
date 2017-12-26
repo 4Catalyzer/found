@@ -11,8 +11,5 @@ import routeConfig from './routeConfig';
     render,
   });
 
-  ReactDOM.render(
-    <BrowserRouter />,
-    document.getElementById('root'),
-  );
+  ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
 })();

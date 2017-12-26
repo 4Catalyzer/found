@@ -16,27 +16,22 @@ async function render(url, routeConfig) {
 
 describe('getFarceResult', () => {
   it('should support nested routes', async () => {
-    const instance = await render(
-      '/foo/baz/a',
-      [
-        {
-          path: 'foo',
-          Component: ({ children }) => <div className="foo">{children}</div>,
-          children: [
-            {
-              path: 'bar',
-              Component: () => <div className="bar" />,
-            },
-            {
-              path: 'baz/:qux',
-              Component: ({ params }) => (
-                <div className="baz">{params.qux}</div>
-              ),
-            },
-          ],
-        },
-      ],
-    );
+    const instance = await render('/foo/baz/a', [
+      {
+        path: 'foo',
+        Component: ({ children }) => <div className="foo">{children}</div>,
+        children: [
+          {
+            path: 'bar',
+            Component: () => <div className="bar" />,
+          },
+          {
+            path: 'baz/:qux',
+            Component: ({ params }) => <div className="baz">{params.qux}</div>,
+          },
+        ],
+      },
+    ]);
 
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
     expect(
@@ -44,51 +39,49 @@ describe('getFarceResult', () => {
     ).toHaveLength(0);
 
     const bazNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance, 'baz',
+      instance,
+      'baz',
     );
     expect(bazNode.textContent).toBe('a');
   });
 
   it('should support named child routes', async () => {
-    const instance = await render(
-      '/foo/bar/qux/a',
-      [
-        {
-          path: 'foo',
-          Component: ({ nav, main }) => (
-            <div className="foo">
-              {nav}
-              {main}
-            </div>
-          ),
-          children: [
-            {
-              path: 'bar',
-              children: {
-                nav: [
-                  {
-                    path: '(.*)?',
-                    Component: () => <div className="bar-nav" />,
-                  },
-                ],
-                main: [
-                  {
-                    path: 'baz',
-                    Component: () => <div className="baz" />,
-                  },
-                  {
-                    path: 'qux/:quux',
-                    Component: ({ params }) => (
-                      <div className="qux">{params.quux}</div>
-                    ),
-                  },
-                ],
-              },
+    const instance = await render('/foo/bar/qux/a', [
+      {
+        path: 'foo',
+        Component: ({ nav, main }) => (
+          <div className="foo">
+            {nav}
+            {main}
+          </div>
+        ),
+        children: [
+          {
+            path: 'bar',
+            children: {
+              nav: [
+                {
+                  path: '(.*)?',
+                  Component: () => <div className="bar-nav" />,
+                },
+              ],
+              main: [
+                {
+                  path: 'baz',
+                  Component: () => <div className="baz" />,
+                },
+                {
+                  path: 'qux/:quux',
+                  Component: ({ params }) => (
+                    <div className="qux">{params.quux}</div>
+                  ),
+                },
+              ],
             },
-          ],
-        },
-      ],
-    );
+          },
+        ],
+      },
+    ]);
 
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar-nav');
@@ -98,7 +91,8 @@ describe('getFarceResult', () => {
     ).toHaveLength(0);
 
     const quxNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance, 'qux',
+      instance,
+      'qux',
     );
     expect(quxNode.textContent).toBe('a');
   });

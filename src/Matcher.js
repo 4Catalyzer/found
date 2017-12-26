@@ -12,7 +12,7 @@ export default class Matcher {
     warning(
       typeof pathToRegexp.compile === 'function',
       'Incorrect version of path-to-regexp imported. If this is running ' +
-      'from a client bundle, check your bundler settings.',
+        'from a client bundle, check your bundler settings.',
     );
   }
 
@@ -49,11 +49,10 @@ export default class Matcher {
   isActive({ location: matchLocation }, location, { exact } = {}) {
     return (
       this.isPathnameActive(
-        matchLocation.pathname, location.pathname, exact,
-      ) &&
-      this.isQueryActive(
-        matchLocation.query, location.query,
-      )
+        matchLocation.pathname,
+        location.pathname,
+        exact,
+      ) && this.isQueryActive(matchLocation.query, location.query)
     );
   }
 
@@ -157,22 +156,22 @@ export default class Matcher {
       const routeParams = [];
       const params = {};
 
-      Object.entries(
-        routeMatch.groups,
-      ).forEach(([groupName, groupMatches]) => {
-        const groupPayload = this.makePayload(groupMatches);
+      Object.entries(routeMatch.groups).forEach(
+        ([groupName, groupMatches]) => {
+          const groupPayload = this.makePayload(groupMatches);
 
-        // Retain the nested group structure for route indices so we can
-        // reconstruct the element tree from flattened route elements.
-        routeIndices[groupName] = groupPayload.routeIndices;
+          // Retain the nested group structure for route indices so we can
+          // reconstruct the element tree from flattened route elements.
+          routeIndices[groupName] = groupPayload.routeIndices;
 
-        // Flatten route groups for route params matching getRoutesFromIndices
-        // below.
-        routeParams.push(...groupPayload.routeParams);
+          // Flatten route groups for route params matching getRoutesFromIndices
+          // below.
+          routeParams.push(...groupPayload.routeParams);
 
-        // Just merge all the params depth-first; it's the easiest option.
-        Object.assign(params, groupPayload.params);
-      });
+          // Just merge all the params depth-first; it's the easiest option.
+          Object.assign(params, groupPayload.params);
+        },
+      );
 
       return { routeIndices, routeParams, params };
     }
@@ -203,9 +202,12 @@ export default class Matcher {
       // handle them.
       const groupRoutes = [];
       Object.entries(routeIndex).forEach(([groupName, groupRouteIndices]) => {
-        groupRoutes.push(...this.getRoutesFromIndices(
-          groupRouteIndices, routeConfigOrGroups[groupName],
-        ));
+        groupRoutes.push(
+          ...this.getRoutesFromIndices(
+            groupRouteIndices,
+            routeConfigOrGroups[groupName],
+          ),
+        );
       });
 
       return groupRoutes;
@@ -219,10 +221,7 @@ export default class Matcher {
 
     return [
       route,
-      ...this.getRoutesFromIndices(
-        routeIndices.slice(1),
-        route.children,
-      ),
+      ...this.getRoutesFromIndices(routeIndices.slice(1), route.children),
     ];
   }
 
@@ -237,8 +236,8 @@ export default class Matcher {
     }
 
     // Require that a partial match be followed by a path separator.
-    const pathnameWithSeparator = pathname.slice(-1) !== '/' ?
-      `${pathname}/` : pathname;
+    const pathnameWithSeparator =
+      pathname.slice(-1) !== '/' ? `${pathname}/` : pathname;
 
     // Can't use startsWith, as that requires a polyfill.
     return matchPathname.indexOf(pathnameWithSeparator) === 0;
@@ -249,9 +248,11 @@ export default class Matcher {
       return true;
     }
 
-    return Object.entries(query).every(([key, value]) => (
-      Object.prototype.hasOwnProperty.call(matchQuery, key) ?
-        isEqual(matchQuery[key], value) : value === undefined
-    ));
+    return Object.entries(query).every(
+      ([key, value]) =>
+        Object.prototype.hasOwnProperty.call(matchQuery, key)
+          ? isEqual(matchQuery[key], value)
+          : value === undefined,
+    );
   }
 }

@@ -1,7 +1,7 @@
 import resolver from '../src/resolver';
 
 export function timeout(delay) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(resolve, delay);
   });
 }
@@ -13,9 +13,9 @@ export class InstrumentedResolver {
     this.done = new Promise(() => {});
   }
 
-  async * resolveElements(match) {
+  async *resolveElements(match) {
     let resolveDone;
-    this.done = new Promise((resolve) => {
+    this.done = new Promise(resolve => {
       resolveDone = resolve;
     });
 

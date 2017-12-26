@@ -17,9 +17,7 @@ export default function genStore(historyProtocol, preloadedState) {
         protocol: historyProtocol,
         middlewares: [queryMiddleware],
       }),
-      createMatchEnhancer(
-        new Matcher(routeConfig),
-      ),
+      createMatchEnhancer(new Matcher(routeConfig)),
     ),
   );
 }

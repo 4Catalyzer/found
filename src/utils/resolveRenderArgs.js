@@ -10,7 +10,8 @@ function foldElements(elementsRaw, routeIndices) {
       const groupElements = {};
       Object.entries(routeIndex).forEach(([groupName, groupRouteIndices]) => {
         groupElements[groupName] = foldElements(
-          elementsRaw, groupRouteIndices,
+          elementsRaw,
+          groupRouteIndices,
         );
       });
 
@@ -26,7 +27,10 @@ function foldElements(elementsRaw, routeIndices) {
 }
 
 export default async function* resolveRenderArgs({
-  router, match, matchContext, resolver,
+  router,
+  match,
+  matchContext,
+  resolver,
 }) {
   const routes = router.matcher.getRoutes(match);
 

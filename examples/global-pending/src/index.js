@@ -9,10 +9,7 @@ import StaticContainer from 'react-static-container';
 function LinkItem(props) {
   return (
     <li>
-      <Link
-        {...props}
-        activeStyle={{ fontWeight: 'bold' }}
-      />
+      <Link {...props} activeStyle={{ fontWeight: 'bold' }} />
     </li>
   );
 }
@@ -25,16 +22,10 @@ function App({ children }) {
   return (
     <div>
       <ul>
-        <LinkItem to="/">
-          Main
-        </LinkItem>
+        <LinkItem to="/">Main</LinkItem>
         <ul>
-          <LinkItem to="/foo">
-            Foo
-          </LinkItem>
-          <LinkItem to="/bar">
-            Bar
-          </LinkItem>
+          <LinkItem to="/foo">Foo</LinkItem>
+          <LinkItem to="/bar">Bar</LinkItem>
         </ul>
       </ul>
 
@@ -56,16 +47,18 @@ const BrowserRouter = createBrowserRouter({
         },
         {
           path: 'foo',
-          getComponent: () => new Promise((resolve) => {
-            setTimeout(resolve, 1000, () => <div>Foo</div>);
-          }),
+          getComponent: () =>
+            new Promise(resolve => {
+              setTimeout(resolve, 1000, () => <div>Foo</div>);
+            }),
         },
         {
           path: 'bar',
           Component: ({ data }) => <div>{data}</div>, // eslint-disable-line react/prop-types
-          getData: () => new Promise((resolve) => {
-            setTimeout(resolve, 1000, 'Bar');
-          }),
+          getData: () =>
+            new Promise(resolve => {
+              setTimeout(resolve, 1000, 'Bar');
+            }),
         },
       ],
     },
@@ -73,9 +66,7 @@ const BrowserRouter = createBrowserRouter({
 
   renderPending: () => (
     <div>
-      <StaticContainer>
-        {null}
-      </StaticContainer>
+      <StaticContainer>{null}</StaticContainer>
 
       <div
         style={{
@@ -91,7 +82,9 @@ const BrowserRouter = createBrowserRouter({
     </div>
   ),
 
-  renderReady: ({ elements }) => ( // eslint-disable-line react/prop-types
+  renderReady: (
+    { elements }, // eslint-disable-line react/prop-types
+  ) => (
     <div>
       <StaticContainer shouldUpdate>
         <ElementsRenderer elements={elements} />
@@ -100,7 +93,4 @@ const BrowserRouter = createBrowserRouter({
   ),
 });
 
-ReactDOM.render(
-  <BrowserRouter />,
-  document.getElementById('root'),
-);
+ReactDOM.render(<BrowserRouter />, document.getElementById('root'));

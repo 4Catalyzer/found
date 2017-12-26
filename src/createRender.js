@@ -6,7 +6,9 @@ import ElementsRenderer from './ElementsRenderer';
 // These are intentionally not renderLoading, renderFetched, and renderFailure
 // from Relay, because these don't quite correspond to those conditions.
 export default function createRender({
-  renderPending, renderReady, renderError,
+  renderPending,
+  renderReady,
+  renderError,
 }) {
   return function render(renderArgs) {
     const { error, elements } = renderArgs;

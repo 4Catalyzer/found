@@ -15,18 +15,17 @@ export default function createBrowserRouter({
   const FarceRouter = createFarceRouter({
     ...options,
     historyProtocol: new BrowserProtocol(),
-    render: render || createRender({
-      renderPending, renderReady, renderError,
-    }),
+    render:
+      render ||
+      createRender({
+        renderPending,
+        renderReady,
+        renderError,
+      }),
   });
 
   function BrowserRouter(props) {
-    return (
-      <FarceRouter
-        {...props}
-        resolver={resolver}
-      />
-    );
+    return <FarceRouter {...props} resolver={resolver} />;
   }
 
   return BrowserRouter;
