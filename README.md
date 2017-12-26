@@ -6,7 +6,7 @@ Found is a router for [React](https://facebook.github.io/react/) applications wi
 
 Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
 
-Found uses [Redux](http://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
+Found uses [Redux](https://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
 
 ## Usage
 
@@ -125,8 +125,9 @@ export default AppPage;
 - [Basic usage with JSX route configuration](/examples/basic-jsx)
 - [Global pending state](/examples/global-pending)
 - [Transition hook usage](/examples/transition-hook)
-- [Server-side rendering](/examples/universal)
 - [Shared Redux store](/examples/redux)
+- [Hot reloading](/examples/hot-reloading)
+- [Server-side rendering](/examples/universal)
 - [Server-side rendering with shared Redux store](/examples/universal-redux)
 
 ## Extensions
@@ -514,7 +515,7 @@ const route = {
 
 You can implement reusable logic in routes with a custom route class. When extending `Route`, methods defined on the class will be overridden by explicitly specified route properties. You can use custom route classes for either object route configurations or JSX route configurations.
 
-> **Note:** To avoid issues with [React Hot Loader](http://gaearon.github.io/react-hot-loader/), custom route classes should usually extend `Route`.
+> **Note:** To avoid issues with [React Hot Loader](https://gaearon.github.io/react-hot-loader/), custom route classes should usually extend `Route`.
 
 ```js
 class AsyncRoute extends Route {
@@ -813,6 +814,22 @@ const MyConnectedComponent = connect(
   },
 )(MyComponent);
 ```
+
+### Hot reloading
+
+When using hot reloading via [React Hot Loader](https://gaearon.github.io/react-hot-loader/), mark your route configuration with `hotRouteConfig` to enable hot reloading for your route configuration as well.
+
+```js
+export default hotRouteConfig(routeConfig);
+```
+
+This will replace the route configuration and rerun the match with the current location whenever the route configuration changes. As with React Hot Loader, this is safe to do unconditionally, as it will have no effect in production.
+
+> **Note:** Changes to route components also count as route configuration changes. If your routes have asynchronous data dependencies, ensure that the data are cached. Otherwise, the router will refetch data every time a route component changes.
+
+`createMatchEnhancer` takes an optional `getFound` function as its second argument. If you installed `foundReducer` on a key other than `found`, specify the `getFound` function to retrieve the reducer state to enable this hot reloading support.
+
+You can also manually replace the route configuration and rerun the match by calling `found.replaceRouteConfig` on a Found-enhanced store object.
 
 ### Server-side rendering
 

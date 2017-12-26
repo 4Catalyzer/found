@@ -15,6 +15,7 @@ export ElementsRenderer from './ElementsRenderer';
 export foundReducer from './foundReducer';
 export getRenderArgs from './getRenderArgs';
 export getStoreRenderArgs from './getStoreRenderArgs';
+export hotRouteConfig from './hotRouteConfig';
 export HttpError from './HttpError';
 export Link from './Link';
 export makeRouteConfig from './makeRouteConfig';

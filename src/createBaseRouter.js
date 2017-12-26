@@ -56,6 +56,22 @@ export default function createBaseRouter({ render }) {
       if (!this.props.initialRenderArgs) {
         this.resolveMatch();
       }
+
+      if (__DEV__ && typeof window !== 'undefined') {
+        /* eslint-env browser */
+        /* eslint-disable no-underscore-dangle */
+        if (window.__FOUND_HOT_RELOAD__) {
+          warning(
+            !window.__FOUND_REPLACE_ROUTE_CONFIG__,
+            'Replacing existing hot reloading hook. Do not render more than ' +
+              'one router instance when using hot reloading.',
+          );
+
+          window.__FOUND_REPLACE_ROUTE_CONFIG__ = this.props.router.replaceRouteConfig;
+        }
+        /* eslint-enable no-underscore-dangle */
+        /* eslint-env browser: false */
+      }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -82,6 +98,16 @@ export default function createBaseRouter({ render }) {
 
     componentWillUnmount() {
       this.mounted = false;
+
+      if (__DEV__ && typeof window !== 'undefined') {
+        /* eslint-env browser */
+        /* eslint-disable no-underscore-dangle */
+        if (window.__FOUND_HOT_RELOAD__) {
+          delete window.__FOUND_REPLACE_ROUTE_CONFIG__;
+        }
+        /* eslint-enable no-underscore-dangle */
+        /* eslint-env browser: false */
+      }
     }
 
     async resolveMatch() {
