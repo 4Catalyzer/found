@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "rimraf lib && babel src -d lib",
-    "lint": "eslint examples/*/src src test *.js",
+    "lint": "eslint examples/*/src src test",
     "precommit": "lint-staged",
     "prepublish": "npm run build",
     "tdd": "jest --watch",
