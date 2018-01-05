@@ -78,7 +78,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "codecov": "^3.0.0",
-    "enzyme": "^3.2.0",
+    "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.14.0",
     "eslint-config-4catalyzer-react": "^0.3.3",
@@ -94,7 +94,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-proxy": "^3.0.0-alpha.1",
-    "react-stand-in": "^4.0.0-beta.6",
+    "react-stand-in": "^4.0.0-beta.12",
     "react-test-renderer": "^16.2.0",
     "rimraf": "^2.6.2"
   }
