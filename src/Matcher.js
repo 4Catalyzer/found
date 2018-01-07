@@ -104,7 +104,8 @@ export default class Matcher {
     }
 
     const pattern = this.getCanonicalPattern(routePath);
-    const regexp = pathToRegexp(pattern, { end: false });
+    let keys = [];
+    const regexp = pathToRegexp(pattern, keys, { end: false });
 
     const match = regexp.exec(pathname);
     if (match === null) {
@@ -112,7 +113,7 @@ export default class Matcher {
     }
 
     const params = Object.create(null);
-    regexp.keys.forEach(({ name }, index) => {
+    keys.forEach(({ name }, index) => {
       const value = match[index + 1];
       params[name] = value && decodeURIComponent(value);
     });
