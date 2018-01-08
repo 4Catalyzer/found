@@ -104,7 +104,7 @@ export default class Matcher {
     }
 
     const pattern = this.getCanonicalPattern(routePath);
-    let keys = [];
+    const keys = [];
     const regexp = pathToRegexp(pattern, keys, { end: false });
 
     const match = regexp.exec(pathname);
