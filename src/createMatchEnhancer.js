@@ -22,7 +22,10 @@ function createMatchMiddleware(matcher) {
   };
 }
 
-export default function createMatchEnhancer(matcher) {
+export default function createMatchEnhancer(
+  matcher,
+  getFound = ({ found }) => found,
+) {
   return function matchEnhancer(createStore) {
     return (...args) => {
       const middlewareEnhancer = applyMiddleware(
@@ -31,9 +34,18 @@ export default function createMatchEnhancer(matcher) {
 
       const store = middlewareEnhancer(createStore)(...args);
 
+      function replaceRouteConfig(routeConfig) {
+        matcher.replaceRouteConfig(routeConfig);
+
+        store.dispatch({
+          type: FarceActionTypes.UPDATE_LOCATION,
+          payload: getFound(store.getState()).match.location,
+        });
+      }
+
       return {
         ...store,
-        found: { matcher },
+        found: { matcher, replaceRouteConfig },
       };
     };
   };
