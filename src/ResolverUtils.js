@@ -58,8 +58,8 @@ export function getComponents(routeMatches) {
   );
 }
 
-function accumulateRoutesImpl(
-  routeMatches,
+function accumulateRouteValuesImpl(
+  routeValues,
   routeIndices,
   callback,
   initialValue,
@@ -72,8 +72,8 @@ function accumulateRoutesImpl(
       // eslint-disable-next-line no-loop-func
       Object.values(routeIndex).forEach(groupRouteIndices => {
         accumulated.push(
-          ...accumulateRoutesImpl(
-            routeMatches,
+          ...accumulateRouteValuesImpl(
+            routeValues,
             groupRouteIndices,
             callback,
             value,
@@ -81,7 +81,7 @@ function accumulateRoutesImpl(
         );
       });
     } else {
-      value = callback(value, routeMatches.shift().route);
+      value = callback(value, routeValues.shift());
       accumulated.push(value);
     }
   }
@@ -89,12 +89,14 @@ function accumulateRoutesImpl(
   return accumulated;
 }
 
-export function accumulateRoutes(routeMatches, callback, initialValue) {
-  // Route match arrays are always non-empty. An empty match makes no sense.
-  const { routeIndices } = routeMatches[0];
-
-  return accumulateRoutesImpl(
-    [...routeMatches],
+export function accumulateRouteValues(
+  routeValues,
+  routeIndices,
+  callback,
+  initialValue,
+) {
+  return accumulateRouteValuesImpl(
+    [...routeValues],
     routeIndices,
     callback,
     initialValue,

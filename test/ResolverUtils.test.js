@@ -1,6 +1,6 @@
 import Matcher from '../src/Matcher';
 import {
-  accumulateRoutes,
+  accumulateRouteValues,
   checkResolved,
   getComponents,
   getRouteMatches,
@@ -106,22 +106,13 @@ describe('ResolverUtils', () => {
     });
   });
 
-  describe('accumulateRoutes', () => {
-    it('should accumulate route trees', () => {
+  describe('accumulateRouteValues', () => {
+    it('should accumulate route values along match tree', () => {
       expect(
-        accumulateRoutes(
+        accumulateRouteValues(
           getRouteMatches(match),
-          (value, { path }) => `${value}/${path}`,
-          '',
-        ),
-      ).toEqual(['/foo', '/foo/bar', '/foo/bar/(.*)?', '/foo/bar/qux/:quux']);
-    });
-
-    it('should handle empty matches', () => {
-      expect(
-        accumulateRoutes(
-          getRouteMatches(match),
-          (value, { path }) => `${value}/${path}`,
+          match.routeIndices,
+          (value, { route: { path } }) => `${value}/${path}`,
           '',
         ),
       ).toEqual(['/foo', '/foo/bar', '/foo/bar/(.*)?', '/foo/bar/qux/:quux']);
