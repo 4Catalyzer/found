@@ -57,3 +57,48 @@ export function getComponents(routeMatches) {
     },
   );
 }
+
+function accumulateRouteValuesImpl(
+  routeValues,
+  routeIndices,
+  callback,
+  initialValue,
+) {
+  const accumulated = [];
+  let value = initialValue;
+
+  for (const routeIndex of routeIndices) {
+    if (typeof routeIndex === 'object') {
+      // eslint-disable-next-line no-loop-func
+      Object.values(routeIndex).forEach(groupRouteIndices => {
+        accumulated.push(
+          ...accumulateRouteValuesImpl(
+            routeValues,
+            groupRouteIndices,
+            callback,
+            value,
+          ),
+        );
+      });
+    } else {
+      value = callback(value, routeValues.shift());
+      accumulated.push(value);
+    }
+  }
+
+  return accumulated;
+}
+
+export function accumulateRouteValues(
+  routeValues,
+  routeIndices,
+  callback,
+  initialValue,
+) {
+  return accumulateRouteValuesImpl(
+    [...routeValues],
+    routeIndices,
+    callback,
+    initialValue,
+  );
+}

@@ -24,6 +24,6 @@ export { matcherShape, matchShape, routerShape } from './PropTypes';
 export Redirect from './Redirect';
 export RedirectException from './RedirectException';
 export resolver from './resolver';
-export ResolverUtils from './ResolverUtils';
+export * as ResolverUtils from './ResolverUtils';
 export Route from './Route';
 export withRouter from './withRouter';
