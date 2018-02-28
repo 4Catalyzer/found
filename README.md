@@ -8,6 +8,41 @@ Found is designed to be extremely customizable. Most pieces of Found such as the
 
 Found uses [Redux](https://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Usage](#usage)
+- [Examples](#examples)
+- [Extensions](#extensions)
+- [Guide](#guide)
+  - [Installation](#installation)
+  - [Basic usage](#basic-usage)
+  - [Route configuration](#route-configuration)
+    - [`path`](#path)
+    - [`Component` or `getComponent`](#component-or-getcomponent)
+    - [`data` or `getData`](#data-or-getdata)
+    - [`render`](#render)
+    - [Named child routes](#named-child-routes)
+    - [Redirects](#redirects)
+    - [Error handling](#error-handling)
+    - [Custom route classes](#custom-route-classes)
+  - [Router configuration](#router-configuration)
+    - [`createBrowserRouter`](#createbrowserrouter)
+    - [`createFarceRouter`](#createfarcerouter)
+    - [`createConnectedRouter`](#createconnectedrouter)
+  - [Navigation](#navigation)
+    - [Links](#links)
+    - [Programmatic navigation](#programmatic-navigation)
+    - [Blocking navigation](#blocking-navigation)
+  - [Redux integration](#redux-integration)
+  - [Hot reloading](#hot-reloading)
+  - [Server-side rendering](#server-side-rendering)
+    - [Server-side rendering with custom Redux store](#server-side-rendering-with-custom-redux-store)
+  - [Minimizing bundle size](#minimizing-bundle-size)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Usage
 
 ```js
