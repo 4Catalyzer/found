@@ -25,7 +25,7 @@ export default function createBrowserRouter({
   });
 
   function BrowserRouter(props) {
-    return <FarceRouter {...props} resolver={resolver} />;
+    return <FarceRouter resolver={resolver} {...props} />;
   }
 
   return BrowserRouter;
