@@ -380,6 +380,8 @@ Specify the `render` method to further customize how the route renders. This met
 - `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
 - `data`: the data for the route, as above; `null` if the data have not yet been loaded
 
+Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`. 
+
 You can use this method to render per-route loading state.
 
 ```js
@@ -832,6 +834,8 @@ The [transition hook usage example](/examples/transition-hook) demonstrates the 
 ### Redux integration
 
 Found uses Redux to manage all serializable state. Farce uses Redux actions for navigation. As such, you can also access those serializable parts of the routing state from the store state, and you can navigate by dispatching actions.
+
+If you are using your own Redux store, use `createConnectedRouter` as described above to have a single store that contains both routing state and other application state. Additionally, if you need to make this store available in `getData` methods on routes, pass it to `matchContext` on the router component as described above.
 
 To access the current routing state, connect to the `resolvedMatch` property of the `foundReducer` state. To navigate, dispatch the appropriate actions from Farce.
 
