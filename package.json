@@ -8,13 +8,14 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "rimraf lib && babel src -d lib",
-    "lint": "eslint examples/*/src src test",
+    "format": "eslint --fix examples/*/src src test && prettier --write '{src,test}/**/*.{ts,tsx}'",
+    "lint": "eslint examples/*/src src test && prettier -l '{src,test}/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
     "prepublish": "npm run build",
     "tdd": "jest --watch",
-    "typescript": "tsc -p tsconfig.json",
-    "test": "npm run lint && npm run typescript && npm run testonly -- --coverage",
-    "testonly": "jest --runInBand --verbose"
+    "test": "npm run lint && npm run tsc && npm run testonly -- --coverage",
+    "testonly": "jest --runInBand --verbose",
+    "tsc": "tsc -p tsconfig.json"
   },
   "lint-staged": {
     "globOptions": {
@@ -23,6 +24,10 @@
     "linters": {
       "**/*.js": [
         "eslint --fix",
+        "git add"
+      ],
+      "**/*.{ts,tsx}": [
+        "prettier --write",
         "git add"
       ],
       "README.md": [

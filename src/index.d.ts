@@ -1,11 +1,16 @@
 // Type definitions for found v0.3.5
 // Project: https://github.com/4Catalyzer/found
 // Definitions by: Kevin Ross <https://github.com/rosskevin/>
-declare module 'found' {
-  import * as React from 'react'
 
-  interface Map {
-    [key: string]: any
+declare module 'found' {
+  import * as React from 'react';
+
+  interface ObjectMap {
+    [key: string]: any;
+  }
+
+  interface ObjectStringMap {
+    [key: string]: string;
   }
 
   /**
@@ -23,196 +28,211 @@ declare module 'found' {
    */
   interface Location {
     /**
-     * 'PUSH' or 'REPLACE' if the location was reached via FarceActions.push or FarceActions.replace respectively;
-     * 'POP' on the initial location, or if the location was reached via the browser back or forward buttons or
+     * 'PUSH' or 'REPLACE' if the location was reached via FarceActions.push or
+     * FarceActions.replace respectively; 'POP' on the initial location, or if
+     * the location was reached via the browser back or forward buttons or
      * via FarceActions.go
      */
-    action: 'PUSH' | 'REPLACE' | 'POP'
+    action: 'PUSH' | 'REPLACE' | 'POP';
     /**
-     * the difference between the current index and the index of the previous location
+     * the difference between the current index and the index of the previous
+     * location
      */
-    delta: number
+    delta: number;
     /**
      * the location hash; as on window.location e.g. '#qux'
      */
-    hash: string
+    hash: string;
     /**
-     * the current index of the history entry, starting at 0 for the initial entry; this increments
-     * on FarceActions.push but not on FarceActions.replace
+     * the current index of the history entry, starting at 0 for the initial
+     * entry; this increments on FarceActions.push but not on
+     * FarceActions.replace
      */
-    index: number
+    index: number;
     /**
      * if present, a unique key identifying the current history entry
      */
-    key?: string
+    key?: string;
     /**
      * the path name; as on window.location e.g. '/foo'
      */
-    pathname: string
+    pathname: string;
     /**
      * map version of search string
      */
-    query: Map
+    query: ObjectStringMap;
     /**
      * the search string; as on window.location e.g. '?bar=baz'
      */
-    search: string
+    search: string;
     /**
      * additional location state that is not part of the URL
      */
-    state: any
+    state: any;
   }
 
   /**
-   * The shape might be different with a custom matcher or history enhancer, but the default matcher
-   * assumes and provides this shape. As such, this validator is purely for user convenience and
-   * should not be used internally.
+   * The shape might be different with a custom matcher or history enhancer,
+   * but the default matcher assumes and provides this shape. As such, this
+   * validator is purely for user convenience and should not be used
+   * internally.
    */
   interface Match {
-    location: Location
-    params: Map
+    location: Location;
+    params: ObjectStringMap;
   }
 
   /**
    * An object implementing the matching algorithm.
    *
-   * User code generally shouldn't need this, but it doesn't hurt to here, since we use it
-   * for routerShape below.
+   * User code generally shouldn't need this, but it doesn't hurt to here,
+   * since we use it for routerShape below.
    */
   interface Matcher {
-    match: Function
-    getRoutes: Function
-    isActive: Function
+    match: Function;
+    getRoutes: Function;
+    isActive: Function;
     /**
-     * Returns the path string for a pattern of the same format as a route path and a object of the
-     * corresponding path parameters
+     * Returns the path string for a pattern of the same format as a route path
+     * and a object of the corresponding path parameters
      */
-    format: (pattern: any, params: Map) => any
+    format: (pattern: any, params: ObjectMap) => any;
   }
 
   /**
-   * Lenient arg version of location using in #push and #replace.
+   * Location descriptor object used in #push and #replace.
    */
-  type LocationArg = Pick<Location, 'pathname'> &
-    Partial<Pick<Location, 'search' | 'hash' | 'state' | 'query'>>
+  type LocationDescriptorObject = Pick<Location, 'pathname'> &
+    Partial<Pick<Location, 'search' | 'hash' | 'state' | 'query'>>;
+
+  type LocationDescriptor = LocationDescriptorObject | string;
 
   /**
-   * The transition hook function receives the location to which the user is attempting to navigate.
+   * The transition hook function receives the location to which the user is
+   * attempting to navigate.
    *
    * This function may return:
    *  - true to allow the transition
    *  - false to block the transition
    *  - A string to prompt the user with that string as the message
-   *  - A nully value to call the next transition hook and use its return value, if present, or
-   *    else to allow the transition
-   *  - A promise that resolves to any of the above values, to allow or block the transition
-   *    once the promise resolves
+   *  - A nully value to call the next transition hook and use its return
+   *    value, if present, or else to allow the transition
+   *  - A promise that resolves to any of the above values, to allow or block
+   *    the transition once the promise resolves
    *
    * @see https://github.com/4Catalyzer/farce#transition-hooks
    */
   type TransitionHook = (
     location: Location,
-  ) => undefined | (boolean | string | Promise<boolean | string>)
+  ) => undefined | (boolean | string | Promise<boolean | string>);
 
   class Router {
     /**
      * Navigates to a new location
      * @see farce
      */
-    public push: (location: string | LocationArg) => void
+    public push: (location: LocationDescriptor) => void;
     /**
      * Replace the current history entry
      * @see farce
      */
-    public replace: (location: string | LocationArg) => void
+    public replace: (location: LocationDescriptor) => void;
     /**
      * Moves delta steps in the history stack
      * @see farce
      */
-    public go: (delta: number) => void
+    public go: (delta: number) => void;
 
-    public createHref: Function
-    public createLocation: Function
+    public createHref: (location: LocationDescriptor) => string;
+    public createLocation: (location: LocationDescriptor) => Location;
     /**
-     * for match as above, returns whether match corresponds to location or a subpath of location;
-     * if exact is set, returns whether match corresponds exactly to location
+     * for match as above, returns whether match corresponds to location or a
+     * subpath of location; if exact is set, returns whether match corresponds
+     * exactly to location
      */
-    public isActive: (match: Match, location: Location, options: { exact?: boolean }) => boolean
-    public matcher: Matcher
+    public isActive: (
+      match: Match,
+      location: Location,
+      options: { exact?: boolean },
+    ) => boolean;
+    public matcher: Matcher;
     /**
      * Adds a transition hook that can block navigation.
      *
-     * This method takes a transition hook function and returns a function to remove the transition hook.
+     * This method takes a transition hook function and returns a function to
+     * remove the transition hook.
      */
-    public addTransitionHook: (hook: TransitionHook) => (() => void)
+    public addTransitionHook: (hook: TransitionHook) => (() => void);
   }
 
   interface RoutingState {
     /**
      * The current location
      */
-    location: Location
+    location: Location;
     /**
      * An object with location and params as properties
      */
-    match: Match
+    match: Match;
     /**
      * The union of path parameters for *all* matched routes
      */
-    params: Map
+    params: ObjectMap;
     /**
      * The route object corresponding to this component
      */
-    route: RouteConfig
+    route: RouteConfig;
     /**
      * The path parameters for route
      */
-    routeParams: Map
+    routeParams: ObjectMap;
     /**
      * An object with static router properties
      */
-    router: Router
+    router: Router;
     /**
      * An array of all matched route objects
      */
-    routes: RouteConfig[]
+    routes: RouteConfig[];
   }
 
   /**
    * @see https://github.com/4Catalyzer/found/blob/master/README.md#render
    */
   interface RenderArgs {
-    match: Match
+    match: Match;
     /**
-     * The component for the route, if any; null if the component has not yet been loaded
+     * The component for the route, if any; null if the component has not yet
+     * been loaded
      */
-    Component?: React.ComponentType<any>
+    Component?: React.ComponentType<any>;
     /**
-     * The data for the route, as above; null if the data have not yet been loaded
+     * The data for the route, as above; null if the data have not yet been
+     * loaded
      */
-    data?: any
+    data?: any;
     /**
-     * The default props for the route component, specifically match with data as an additional property;
-     * null if data have not yet been loaded
+     * The default props for the route component, specifically match with data
+     * as an additional property; null if data have not yet been loaded
      */
-    props?: RoutingState
+    props?: RoutingState;
     /**
      *
      */
-    error?: any
+    error?: any;
   }
 
   /**
    * Same as RenderArgs, but Component and Props are no longer optionally null
    */
   interface RenderReadyArgs extends RenderArgs {
-    Component: React.ComponentType<any>
-    props: RoutingState
+    Component: React.ComponentType<any>;
+    props: RoutingState;
   }
 
   interface GetDataArgs {
-    params: Map
-    context: any
+    params: ObjectMap;
+    context: any;
   }
 
   /**
@@ -222,37 +242,42 @@ declare module 'found' {
     /**
      * a string defining the pattern for the route
      */
-    path?: string
+    path?: string;
     /**
      * the component for the route
      */
-    Component?: React.ComponentType<any>
+    Component?: React.ComponentType<any>;
     /**
      * a method that returns the component for the route
      */
     getComponent?: (
       props: RoutingState,
-    ) => React.ComponentType<any> | Promise<React.ComponentType<any>> | Promise<JSX.Element>
+    ) =>
+      | React.ComponentType<any>
+      | Promise<React.ComponentType<any>>
+      | Promise<JSX.Element>;
     /**
      * additional data for the route
      */
-    data?: any
+    data?: any;
     /**
      * a method that returns additional data for the route
      */
-    getData?: (args: GetDataArgs) => any
-    prepareParams?: (params: Map, match: Match) => Map
+    getData?: (args: GetDataArgs) => any;
+    prepareParams?: (params: ObjectMap, match: Match) => ObjectMap;
     /**
      *
      * @returns never (RedirectException) | undefined | React.ReactElement<any> (typical)
      */
-    render?: (args: RenderArgs) => never | undefined | React.ReactElement<any>
+    render?: (args: RenderArgs) => never | undefined | React.ReactElement<any>;
     // Provide indexer allowing for any properties
-    [key: string]: any
+    [key: string]: any;
   }
 
   interface RouteProps extends BaseRouteConfig {
-    children?: Array<React.ReactElement<RouteProps>> | React.ReactElement<RouteProps>
+    children?:
+      | Array<React.ReactElement<RouteProps>>
+      | React.ReactElement<RouteProps>;
   }
 
   /**
@@ -264,81 +289,87 @@ declare module 'found' {
    * e.g. Resolved JSX Route
    */
   interface RouteConfig extends BaseRouteConfig {
-    children?: RouteConfig[]
+    children?: RouteConfig[];
   }
 
   class HttpError {
-    public status: number
-    public data: any
-    constructor(status: number)
+    public status: number;
+    public data: any;
+    constructor(status: number);
   }
 
   interface RedirectProps {
-    from: string
-    to: string
+    from: string;
+    to: string;
   }
 
   class Redirect extends React.Component<RedirectProps> {}
 
   interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-    Component?: React.ComponentType<any>
-    to: string | LocationArg
+    Component?: React.ComponentType<any>;
+    to: string | LocationDescriptor;
     // match: Match,  provided by withRouter
-    activeClassName?: string
-    activeStyle?: any
-    activePropName?: string
+    activeClassName?: string;
+    activeStyle?: any;
+    activePropName?: string;
     // router: Router, provided by withRouter
-    exact?: boolean
-    target?: string
-    childProps?: any
+    exact?: boolean;
+    target?: string;
+    childProps?: any;
   }
 
   class Link extends React.Component<LinkProps> {
-    public onClick: (event: React.SyntheticEvent<any>) => void
+    public onClick: (event: React.SyntheticEvent<any>) => void;
   }
 
   interface WithRouter {
-    match: Match
-    router: Router
+    match: Match;
+    router: Router;
   }
 
   function withRouter<OriginalProps>(
     Component: React.ComponentType<OriginalProps & WithRouter>,
-  ): React.ComponentType<OriginalProps>
+  ): React.ComponentType<OriginalProps>;
 
   class RedirectException {
-    constructor(location: string | LocationArg)
+    constructor(location: string | LocationDescriptor);
   }
 
   /**
    * Create a route configuration from JSX configuration elements.
    */
-  function makeRouteConfig(node: React.ReactNode): RouteConfig
+  function makeRouteConfig(node: React.ReactNode): RouteConfig;
 
   // Improve these `any`s as needed
-  type BrowserRouter = any
+  type BrowserRouter = any;
 
   interface CreateBrowserRouterArgs {
-    render?: (args: RenderArgs) => React.ReactElement<any>
-    renderPending?: (args: RenderArgs) => React.ReactElement<any>
-    renderReady?: (args: RenderReadyArgs) => React.ReactElement<any>
-    renderError?: (args: RenderArgs) => React.ReactElement<any>
-    [key: string]: any
+    render?: (args: RenderArgs) => React.ReactElement<any>;
+    renderPending?: (args: RenderArgs) => React.ReactElement<any>;
+    renderReady?: (args: RenderReadyArgs) => React.ReactElement<any>;
+    renderError?: (args: RenderArgs) => React.ReactElement<any>;
+    [key: string]: any;
   }
 
-  function createBrowserRouter(options: CreateBrowserRouterArgs): BrowserRouter
+  function createBrowserRouter(
+    options: CreateBrowserRouterArgs,
+  ): BrowserRouter;
 
   // Improve these `any`s as needed
-  type FarceRouter = any
+  type FarceRouter = any;
 
   function createFarceRouter({
-                               store,
-                               historyProtocol,
-                               historyMiddlewares,
-                               historyOptions,
-                               routeConfig,
-                               ...options,
-                             }: any): FarceRouter
+    store,
+    historyProtocol,
+    historyMiddlewares,
+    historyOptions,
+    routeConfig,
+    ...options
+  }: any): FarceRouter;
 
-  function createRender({ renderPending, renderReady, renderError }: any): React.ReactElement<any>
+  function createRender({
+    renderPending,
+    renderReady,
+    renderError,
+  }: any): React.ReactElement<any>;
 }
