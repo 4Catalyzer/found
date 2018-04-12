@@ -19,8 +19,7 @@ export default function createStoreRouterObject(store) {
 
     // Expose isActive from matcher directly for convenience. This pattern is
     // faster than using matcher.isActive.bind(matcher).
-    isActive: (match, location, options) => (
-      matcher.isActive(match, location, options)
-    ),
+    isActive: (match, location, options) =>
+      matcher.isActive(match, location, options),
   };
 }

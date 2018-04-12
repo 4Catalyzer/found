@@ -1,27 +1,23 @@
 {
-  "name": "universal-redux",
+  "name": "hot-reloading",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "babel-node src/server"
+    "start": "webpack-dev-server --hot"
   },
   "dependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "express": "^4.16.2",
-    "farce": "^0.2.4",
     "found": "^0.3.5",
+    "html-webpack-plugin": "^2.30.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
-    "serialize-javascript": "^1.4.0",
+    "react-hot-loader": "^4.0.0-beta.12",
     "webpack": "^3.10.0",
-    "webpack-dev-middleware": "^2.0.3"
+    "webpack-dev-server": "^2.9.7"
   }
 }

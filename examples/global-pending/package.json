@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.0.17"
   },
   "dependencies": {
-    "found": "^0.3.0",
-    "prop-types": "^15.5.10",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-static-container": "^1.0.1"
+    "found": "^0.3.5",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-static-container": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start"

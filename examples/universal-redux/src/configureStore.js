@@ -6,7 +6,7 @@ import { combineReducers, compose, createStore } from 'redux';
 
 import routeConfig from './routeConfig';
 
-export default function genStore(historyProtocol, preloadedState) {
+export default function configureStore(historyProtocol, preloadedState) {
   return createStore(
     combineReducers({
       found: foundReducer,
@@ -17,9 +17,7 @@ export default function genStore(historyProtocol, preloadedState) {
         protocol: historyProtocol,
         middlewares: [queryMiddleware],
       }),
-      createMatchEnhancer(
-        new Matcher(routeConfig),
-      ),
+      createMatchEnhancer(new Matcher(routeConfig)),
     ),
   );
 }

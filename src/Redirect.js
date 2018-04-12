@@ -7,7 +7,7 @@ export default class Redirect {
   }
 
   render({ match }) {
-    const to = this.to;
+    const { to } = this;
     let toLocation;
 
     if (typeof to === 'function') {

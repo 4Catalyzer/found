@@ -17,19 +17,24 @@ export default [
       },
       {
         path: 'bar',
-        getComponent: () => new Promise((resolve) => {
-          setTimeout(resolve, 1000, ({ data }) => <div>{data}</div>);
-        }),
-        getData: () => new Promise((resolve) => {
-          setTimeout(resolve, 1000, 'Bar');
-        }),
-        render: ({ Component, props }) => ( // eslint-disable-line react/prop-types
+        getComponent: () =>
+          new Promise(resolve => {
+            setTimeout(resolve, 1000, ({ data }) => <div>{data}</div>);
+          }),
+        getData: () =>
+          new Promise(resolve => {
+            setTimeout(resolve, 1000, 'Bar');
+          }),
+        render: (
+          { Component, props }, // eslint-disable-line react/prop-types
+        ) =>
           Component && props ? (
             <Component {...props} />
           ) : (
-            <div><small>Loading&hellip;</small></div>
-          )
-        ),
+            <div>
+              <small>Loading&hellip;</small>
+            </div>
+          ),
       },
       new Redirect({
         from: 'baz',

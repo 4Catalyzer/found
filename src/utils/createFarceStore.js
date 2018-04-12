@@ -23,9 +23,7 @@ export default function createFarceStore({
         protocol: historyProtocol,
         middlewares: historyMiddlewares || [queryMiddleware],
       }),
-      createMatchEnhancer(
-        new Matcher(routeConfig),
-      ),
+      createMatchEnhancer(new Matcher(routeConfig)),
     ),
   );
 

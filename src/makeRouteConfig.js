@@ -7,11 +7,19 @@ export default function makeRouteConfig(node) {
   return React.Children.toArray(node)
     .filter(React.isValidElement)
     .map(({ type: Type, props: { children, ...props } }) => {
-      if (__DEV__ && Type.prototype.constructor !== Type) {
-        // With React Hot Loader, this might actually be a proxy. We're not
-        // actually rendering this and we want the real class instead. This
-        // isn't a problem here, but can come when users extend route classes.
-        Type = Type.prototype.constructor; // eslint-disable-line no-param-reassign
+      if (__DEV__) {
+        if (Type.prototype.constructor !== Type) {
+          // Unwrap proxies from react-proxy. This isn't strictly necessary.
+          // eslint-disable-next-line no-param-reassign
+          Type = Type.prototype.constructor;
+        } else if (
+          // eslint-disable-next-line no-underscore-dangle
+          Type.__reactstandin__getCurrent
+        ) {
+          // Unwrap proxies from react-stand-in.
+          // eslint-disable-next-line no-param-reassign
+          Type = Object.getPrototypeOf(Type);
+        }
       }
 
       const route = new Type(props);

@@ -14,10 +14,12 @@ export default function foundReducer(state = null, action) {
     case ActionTypes.RESOLVE_MATCH:
       // It doesn't make sense to resolve a match if there wasn't already an
       // unresolved match.
-      return state && {
-        match: state.match,
-        resolvedMatch: payload,
-      };
+      return (
+        state && {
+          match: state.match,
+          resolvedMatch: payload,
+        }
+      );
     default:
       return state;
   }

@@ -56,7 +56,8 @@ describe('render', () => {
     ).toHaveLength(0);
 
     const bazNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance, 'baz',
+      instance,
+      'baz',
     );
     expect(bazNode.textContent).toBe('a');
   });
@@ -129,8 +130,55 @@ describe('render', () => {
     ).toHaveLength(0);
 
     const quxNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance, 'qux',
+      instance,
+      'qux',
     );
     expect(quxNode.textContent).toBe('a');
+  });
+
+  it('should support reloading the route configuration', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [
+        {
+          path: '/foo',
+          getData: async () => {
+            await timeout(20);
+          },
+          render: () => <div className="foo" />,
+        },
+      ],
+
+      render: createRender({}),
+    });
+
+    const resolver = new InstrumentedResolver();
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Router resolver={resolver} />,
+    );
+
+    await resolver.done;
+
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
+    expect(
+      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'bar'),
+    ).toHaveLength(0);
+
+    instance.store.found.replaceRouteConfig([
+      {
+        path: '/foo',
+        getData: async () => {
+          await timeout(10);
+        },
+        render: () => <div className="bar" />,
+      },
+    ]);
+
+    await resolver.done;
+
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
+    expect(
+      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'foo'),
+    ).toHaveLength(0);
   });
 });

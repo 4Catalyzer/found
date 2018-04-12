@@ -6,13 +6,53 @@ Found is a router for [React](https://facebook.github.io/react/) applications wi
 
 Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
 
-Found uses [Redux](http://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
+Found uses [Redux](https://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Usage](#usage)
+- [Examples](#examples)
+- [Extensions](#extensions)
+- [Guide](#guide)
+  - [Installation](#installation)
+  - [Basic usage](#basic-usage)
+  - [Route configuration](#route-configuration)
+    - [`path`](#path)
+    - [`Component` or `getComponent`](#component-or-getcomponent)
+    - [`data` or `getData`](#data-or-getdata)
+    - [`render`](#render)
+    - [Named child routes](#named-child-routes)
+    - [Redirects](#redirects)
+    - [Error handling](#error-handling)
+    - [Custom route classes](#custom-route-classes)
+  - [Router configuration](#router-configuration)
+    - [`createBrowserRouter`](#createbrowserrouter)
+    - [`createFarceRouter`](#createfarcerouter)
+    - [`createConnectedRouter`](#createconnectedrouter)
+  - [Navigation](#navigation)
+    - [Links](#links)
+    - [Programmatic navigation](#programmatic-navigation)
+    - [Blocking navigation](#blocking-navigation)
+  - [Redux integration](#redux-integration)
+  - [Hot reloading](#hot-reloading)
+  - [Server-side rendering](#server-side-rendering)
+    - [Server-side rendering with custom Redux store](#server-side-rendering-with-custom-redux-store)
+  - [Minimizing bundle size](#minimizing-bundle-size)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Usage
 
 ```js
-import { createBrowserRouter, HttpError, makeRouteConfig, Redirect, Route }
-  from 'found';
+import {
+  createBrowserRouter,
+  HttpError,
+  makeRouteConfig,
+  Redirect,
+  Route,
+} from 'found';
 
 /* ... */
 
@@ -53,7 +93,7 @@ const BrowserRouter = createBrowserRouter({
         from="widget/:widgetId"
         to="/widgets/:widgetId"
       />
-    </Route>
+    </Route>,
   ),
 
   renderError: ({ error }) => (
@@ -120,8 +160,9 @@ export default AppPage;
 - [Basic usage with JSX route configuration](/examples/basic-jsx)
 - [Global pending state](/examples/global-pending)
 - [Transition hook usage](/examples/transition-hook)
-- [Server-side rendering](/examples/universal)
 - [Shared Redux store](/examples/redux)
+- [Hot reloading](/examples/hot-reloading)
+- [Server-side rendering](/examples/universal)
 - [Server-side rendering with shared Redux store](/examples/universal-redux)
 
 ## Extensions
@@ -172,7 +213,7 @@ const jsxRouteConfig = makeRouteConfig(
     <Route path="foo" Component={FooPage}>
       <Route path="bar" Component={BarPage} />
     </Route>
-  </Route>
+  </Route>,
 );
 ```
 
@@ -247,7 +288,7 @@ const routes = makeRouteConfig(
       <Route Component={WidgetsPage} />
       <Route path=":widgetId" Component={WidgetPage} />
     </Route>
-  </Route>
+  </Route>,
 );
 ```
 
@@ -338,6 +379,8 @@ Specify the `render` method to further customize how the route renders. This met
 - `Component`: the component for the route, if any; `null` if the component has not yet been loaded
 - `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
 - `data`: the data for the route, as above; `null` if the data have not yet been loaded
+
+Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`. 
 
 You can use this method to render per-route loading state.
 
@@ -509,7 +552,7 @@ const route = {
 
 You can implement reusable logic in routes with a custom route class. When extending `Route`, methods defined on the class will be overridden by explicitly specified route properties. You can use custom route classes for either object route configurations or JSX route configurations.
 
-> **Note:** To avoid issues with [React Hot Loader](http://gaearon.github.io/react-hot-loader/), custom route classes should usually extend `Route`.
+> **Note:** To avoid issues with [React Hot Loader](https://gaearon.github.io/react-hot-loader/), custom route classes should usually extend `Route`.
 
 ```js
 class AsyncRoute extends Route {
@@ -792,6 +835,8 @@ The [transition hook usage example](/examples/transition-hook) demonstrates the 
 
 Found uses Redux to manage all serializable state. Farce uses Redux actions for navigation. As such, you can also access those serializable parts of the routing state from the store state, and you can navigate by dispatching actions.
 
+If you are using your own Redux store, use `createConnectedRouter` as described above to have a single store that contains both routing state and other application state. Additionally, if you need to make this store available in `getData` methods on routes, pass it to `matchContext` on the router component as described above.
+
 To access the current routing state, connect to the `resolvedMatch` property of the `foundReducer` state. To navigate, dispatch the appropriate actions from Farce.
 
 ```js
@@ -808,6 +853,22 @@ const MyConnectedComponent = connect(
   },
 )(MyComponent);
 ```
+
+### Hot reloading
+
+When using hot reloading via [React Hot Loader](https://gaearon.github.io/react-hot-loader/), mark your route configuration with `hotRouteConfig` to enable hot reloading for your route configuration as well.
+
+```js
+export default hotRouteConfig(routeConfig);
+```
+
+This will replace the route configuration and rerun the match with the current location whenever the route configuration changes. As with React Hot Loader, this is safe to do unconditionally, as it will have no effect in production.
+
+> **Note:** Changes to route components also count as route configuration changes. If your routes have asynchronous data dependencies, ensure that the data are cached. Otherwise, the router will refetch data every time a route component changes.
+
+`createMatchEnhancer` takes an optional `getFound` function as its second argument. If you installed `foundReducer` on a key other than `found`, specify the `getFound` function to retrieve the reducer state to enable this hot reloading support.
+
+You can also manually replace the route configuration and rerun the match by calling `found.replaceRouteConfig` on a Found-enhanced store object.
 
 ### Server-side rendering
 
@@ -971,8 +1032,12 @@ import { routerShape } from 'found/lib/PropTypes';
 import Route from 'found/lib/Route';
 
 // Instead of:
-// import { createBrowserRouter, makeRouteConfig, Route, routerShape }
-//   from 'found';
+// import {
+//  createBrowserRouter,
+//  makeRouteConfig,
+//  Route,
+//  routerShape,
+// } from 'found';
 ```
 
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg

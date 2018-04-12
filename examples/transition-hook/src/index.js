@@ -8,10 +8,7 @@ import ReactDOM from 'react-dom';
 function LinkItem(props) {
   return (
     <li>
-      <Link
-        {...props}
-        activeStyle={{ fontWeight: 'bold' }}
-      />
+      <Link {...props} activeStyle={{ fontWeight: 'bold' }} />
     </li>
   );
 }
@@ -27,9 +24,7 @@ function App({ children }) {
         <LinkItem to="/" exact>
           Main
         </LinkItem>
-        <LinkItem to="/other">
-          Other
-        </LinkItem>
+        <LinkItem to="/other">Other</LinkItem>
       </ul>
 
       {children}
@@ -63,7 +58,7 @@ class Main extends React.Component {
     this.removeTransitionHook();
   }
 
-  onTransition = (location) => {
+  onTransition = location => {
     switch (this.state.transitionType) {
       case 'confirm':
         return 'Confirm';
@@ -76,12 +71,12 @@ class Main extends React.Component {
         return false;
       case 'delayedConfirm':
         // This won't prompt on before unload.
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           setTimeout(resolve, 1000, 'Confirm');
         });
       case 'delayedAllow':
         // This won't prompt on before unload.
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           setTimeout(resolve, 1000, true);
         });
       default:
@@ -89,7 +84,7 @@ class Main extends React.Component {
     }
   };
 
-  onChangeSelect = (event) => {
+  onChangeSelect = event => {
     this.setState({ transitionType: event.target.value });
   };
 
@@ -104,8 +99,8 @@ class Main extends React.Component {
   showCustomConfirm() {
     this.setState({ showCustomConfirm: true });
 
-    return new Promise((resolve) => {
-      this.resolveCustomConfirm = (result) => {
+    return new Promise(resolve => {
+      this.resolveCustomConfirm = result => {
         this.setState({ showCustomConfirm: false });
         this.resolveCustomConfirm = null;
         resolve(result);
@@ -119,27 +114,23 @@ class Main extends React.Component {
     return (
       <div>
         <label htmlFor="transition-type">
-          Transition type
+          Transition type{' '}
+          <select
+            id="transition-type"
+            value={transitionType}
+            onChange={this.onChangeSelect}
+          >
+            <option value="confirm">Confirm</option>
+            <option value="customConfirm">Custom confirm</option>
+            <option value="allow">Allow</option>
+            <option value="block">Block</option>
+            <option value="delayedConfirm">Delayed confirm</option>
+            <option value="delayedAllow">Delayed allow</option>
+          </select>
         </label>
-        {' '}
-        <select
-          id="transition-type"
-          value={transitionType}
-          onChange={this.onChangeSelect}
-        >
-          <option value="confirm">Confirm</option>
-          <option value="customConfirm">Custom confirm</option>
-          <option value="allow">Allow</option>
-          <option value="block">Block</option>
-          <option value="delayedConfirm">Delayed confirm</option>
-          <option value="delayedAllow">Delayed allow</option>
-        </select>
-
         {showCustomConfirm && (
           <div>
-            Confirm
-            {' '}
-            <button onClick={this.onClickYes}>Yes</button>
+            Confirm <button onClick={this.onClickYes}>Yes</button>
             <button onClick={this.onClickNo}>No</button>
           </div>
         )}
@@ -170,7 +161,4 @@ const BrowserRouter = createBrowserRouter({
   ],
 });
 
-ReactDOM.render(
-  <BrowserRouter />,
-  document.getElementById('root'),
-);
+ReactDOM.render(<BrowserRouter />, document.getElementById('root'));

@@ -27,13 +27,7 @@ describe('<BaseLink>', () => {
   });
 
   it('should render <a> by default', () => {
-    const link = mount(
-      <BaseLink
-        to="/"
-        match={{}}
-        router={router}
-      />,
-    );
+    const link = mount(<BaseLink to="/" match={{}} router={router} />);
 
     expect(link.find('a')).toHaveLength(1);
   });
@@ -56,12 +50,7 @@ describe('<BaseLink>', () => {
     it('should call a custom click handler', () => {
       const handleClick = jest.fn();
       const link = mount(
-        <BaseLink
-          to="/"
-          match={{}}
-          router={router}
-          onClick={handleClick}
-        />,
+        <BaseLink to="/" match={{}} router={router} onClick={handleClick} />,
       );
 
       link.find('a').simulate('click');
@@ -70,11 +59,7 @@ describe('<BaseLink>', () => {
 
     it('should navigate to the destination location', () => {
       const link = mount(
-        <BaseLink
-          to="/path-to-another-page"
-          match={{}}
-          router={router}
-        />,
+        <BaseLink to="/path-to-another-page" match={{}} router={router} />,
       );
 
       link.find('a').simulate('click', { button: 0 });
@@ -87,7 +72,9 @@ describe('<BaseLink>', () => {
           to="/"
           match={{}}
           router={router}
-          onClick={(event) => { event.preventDefault(); }}
+          onClick={event => {
+            event.preventDefault();
+          }}
         />,
       );
 
@@ -96,13 +83,7 @@ describe('<BaseLink>', () => {
     });
 
     it('should not navigate on modified clicks', () => {
-      const link = mount(
-        <BaseLink
-          to="/"
-          match={{}}
-          router={router}
-        />,
-      );
+      const link = mount(<BaseLink to="/" match={{}} router={router} />);
 
       const a = link.find('a');
 
@@ -120,13 +101,7 @@ describe('<BaseLink>', () => {
     });
 
     it('should not navigate on non-left clicks', () => {
-      const link = mount(
-        <BaseLink
-          to="/"
-          match={{}}
-          router={router}
-        />,
-      );
+      const link = mount(<BaseLink to="/" match={{}} router={router} />);
 
       link.find('a').simulate('click', { button: 2 });
       expect(router.push).not.toBeCalled();
@@ -134,12 +109,7 @@ describe('<BaseLink>', () => {
 
     it('should not navigate if target is defined', () => {
       const link = mount(
-        <BaseLink
-          to="/"
-          match={{}}
-          router={router}
-          target="_blank"
-        />,
+        <BaseLink to="/" match={{}} router={router} target="_blank" />,
       );
 
       link.find('a').simulate('click', { button: 0 });
@@ -149,13 +119,7 @@ describe('<BaseLink>', () => {
 
   describe('active state', () => {
     it('should not call isActive when not showing active state', () => {
-      mount(
-        <BaseLink
-          to="/"
-          match={{}}
-          router={router}
-        />,
-      );
+      mount(<BaseLink to="/" match={{}} router={router} />);
 
       expect(router.isActive).not.toBeCalled();
     });

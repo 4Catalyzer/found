@@ -1,11 +1,10 @@
-import createBrowserRouter from 'found/lib/createBrowserRouter';
+import hotRouteConfig from 'found/lib/hotRouteConfig';
 import Link from 'found/lib/Link';
 import makeRouteConfig from 'found/lib/makeRouteConfig';
 import Redirect from 'found/lib/Redirect';
 import Route from 'found/lib/Route';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 function LinkItem(props) {
   return (
@@ -39,8 +38,8 @@ function App({ children }) {
 
 App.propTypes = propTypes;
 
-const BrowserRouter = createBrowserRouter({
-  routeConfig: makeRouteConfig(
+export default hotRouteConfig(
+  makeRouteConfig(
     <Route path="/" Component={App}>
       <Route Component={() => <div>Main</div>} />
       <Route path="foo" Component={() => <div>Foo</div>} />
@@ -69,10 +68,4 @@ const BrowserRouter = createBrowserRouter({
       <Redirect from="baz" to="/foo" />
     </Route>,
   ),
-
-  renderError: (
-    { error }, // eslint-disable-line react/prop-types
-  ) => <div>{error.status === 404 ? 'Not found' : 'Error'}</div>,
-});
-
-ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+);

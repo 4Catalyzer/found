@@ -1,19 +1,15 @@
 {
-  "extends": "4catalyzer-react",
+  "extends": [
+    "4catalyzer-react",
+    "prettier"
+  ],
   "plugins": [
-    "babel"
+    "prettier"
   ],
   "globals": {
     "__DEV__": false
   },
   "rules": {
-    // FIXME: Temporary workaround pending fixing this upstream.
-    "generator-star-spacing": ["error", {
-      "before": false,
-      "after": true,
-      "method": "both"
-    }],
-    "semi": "off", // Use babel/semi instead for for-await support.
-    "babel/semi": ["error", "always"]
+    "prettier/prettier": "error"
   }
 }
