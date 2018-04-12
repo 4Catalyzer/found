@@ -113,19 +113,21 @@ class Main extends React.Component {
 
     return (
       <div>
-        <label htmlFor="transition-type">Transition type</label>{' '}
-        <select
-          id="transition-type"
-          value={transitionType}
-          onChange={this.onChangeSelect}
-        >
-          <option value="confirm">Confirm</option>
-          <option value="customConfirm">Custom confirm</option>
-          <option value="allow">Allow</option>
-          <option value="block">Block</option>
-          <option value="delayedConfirm">Delayed confirm</option>
-          <option value="delayedAllow">Delayed allow</option>
-        </select>
+        <label htmlFor="transition-type">
+          Transition type{' '}
+          <select
+            id="transition-type"
+            value={transitionType}
+            onChange={this.onChangeSelect}
+          >
+            <option value="confirm">Confirm</option>
+            <option value="customConfirm">Custom confirm</option>
+            <option value="allow">Allow</option>
+            <option value="block">Block</option>
+            <option value="delayedConfirm">Delayed confirm</option>
+            <option value="delayedAllow">Delayed allow</option>
+          </select>
+        </label>
         {showCustomConfirm && (
           <div>
             Confirm <button onClick={this.onClickYes}>Yes</button>
