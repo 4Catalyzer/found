@@ -6,14 +6,14 @@ import warning from 'warning';
 import { routerShape } from './PropTypes';
 
 const propTypes = {
-  Component: elementType.isRequired,
+  Component: elementType,
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
   activeStyle: PropTypes.object,
   activePropName: PropTypes.string,
   router: routerShape.isRequired,
-  exact: PropTypes.bool.isRequired,
+  exact: PropTypes.bool,
   target: PropTypes.string,
   onClick: PropTypes.func,
   childProps: PropTypes.object, // In case of name conflicts here.
