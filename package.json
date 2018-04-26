@@ -3,12 +3,13 @@
   "version": "0.3.10",
   "description": "Extensible route-based routing for React applications",
   "files": [
-    "lib"
+    "lib",
+    "index.d.ts"
   ],
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "rimraf lib && babel src -d lib && cp src/index.d.ts lib/.",
+    "build": "rimraf lib && babel src -d lib",
     "format": "eslint --fix examples/*/src src test && prettier --write '{src,test}/**/*.{ts,tsx}'",
     "lint": "eslint examples/*/src src test && prettier -l '{src,test}/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
