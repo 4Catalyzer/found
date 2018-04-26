@@ -6,8 +6,9 @@
     "lib"
   ],
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "build": "rimraf lib && babel src -d lib",
+    "build": "rimraf lib && babel src -d lib && cp src/index.d.ts lib/.",
     "format": "eslint --fix examples/*/src src test && prettier --write '{src,test}/**/*.{ts,tsx}'",
     "lint": "eslint examples/*/src src test && prettier -l '{src,test}/**/*.{ts,tsx}'",
     "precommit": "lint-staged",
