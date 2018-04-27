@@ -14,5 +14,5 @@
     "noEmit": true,
     "experimentalDecorators": true
   },
-  "include": ["src/**/*", "test/typescript/*"]
+  "include": ["index.d.ts", "test/typescript/*"]
 }
