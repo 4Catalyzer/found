@@ -12,6 +12,8 @@ const PORT = 3000;
 const app = express();
 
 const webpackConfig = {
+  mode: 'development',
+
   entry: ['babel-polyfill', './src/client'],
 
   output: {
