@@ -5,7 +5,7 @@ import {
   checkResolved,
   getComponents,
   getRouteMatches,
-  getRouteValues,
+  getRouteData,
   isResolved,
 } from './ResolverUtils';
 
@@ -14,7 +14,8 @@ export default {
     const routeMatches = getRouteMatches(match);
 
     const Components = getComponents(routeMatches);
-    const data = getRouteValues(
+
+    const data = getRouteData(
       routeMatches,
       route => route.getData,
       route => route.data,
