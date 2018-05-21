@@ -84,12 +84,12 @@ export function getRouteData(routeMatches, getGetter, getValue) {
 
       const getter = getGetter(route);
 
-      const { lastDeferredPromise, lastPromise } = value;
+      const { lastPromiseBeforeDefer, lastPromise } = value;
 
       if (getter) {
         // If the route is deferred, execute the callback after the previous promise
         // Otherwise execute after the last deferred promise
-        const promise = route.defer ? lastPromise : lastDeferredPromise;
+        const promise = route.defer ? lastPromise : lastPromiseBeforeDefer;
 
         // If there is no promise to defer from, execute immediately
         const result = promise
@@ -100,24 +100,24 @@ export function getRouteData(routeMatches, getGetter, getValue) {
         const valuePromise = isPromise(result) ? result : null;
 
         return {
-          lastPromise: valuePromise,
+          lastPromise: valuePromise || lastPromise,
           result,
-          lastDeferredPromise: route.defer
-            ? valuePromise
-            : lastDeferredPromise,
+          lastPromiseBeforeDefer: route.defer
+            ? promise || valuePromise
+            : lastPromiseBeforeDefer,
         };
       }
 
       return {
         result: getValue(route),
-        lastDeferredPromise,
+        lastPromiseBeforeDefer,
         lastPromise,
       };
     },
     {
       result: null,
       lastPromise: null,
-      lastDeferredPromise: null,
+      lastPromiseBeforeDefer: null,
     },
   ).map(value => value.result);
 }
