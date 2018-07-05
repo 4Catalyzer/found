@@ -28,13 +28,14 @@ export default function createConnectedRouter({
       // Don't block context propagation from above. The router should seldom
       // be unnecessarily rerendering anyway.
       pure: false,
+      getDisplayName: () => 'ConnectedRouter',
     },
   )(createBaseRouter(options));
 
+  // TODO: Use connectAdvanced.
   // This implementation is very messy, but it provides the cleanest API to get
   // these methods into the base router from the store, since they're already
   // on the store context.
-
   // Overwriting the method instead of extending the class is used to avoid
   // issues with compatibility on IE <= 10.
   const baseAddExtraProps = ConnectedRouter.prototype.addExtraProps;

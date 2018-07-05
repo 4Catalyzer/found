@@ -4,5 +4,9 @@ import defaultWithRouter from './withRouter';
 
 export default function createConnectedLink(options) {
   const withRouter = options ? createWithRouter(options) : defaultWithRouter;
-  return withRouter(BaseLink);
+
+  const ConnectedLink = withRouter(BaseLink);
+  ConnectedLink.displayName = 'ConnectedLink';
+
+  return ConnectedLink;
 }
