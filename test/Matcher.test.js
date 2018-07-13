@@ -2,45 +2,81 @@ import Matcher from '../src/Matcher';
 
 describe('Matcher', () => {
   describe('route hierarchies', () => {
-    const matcher = new Matcher([
-      {
-        path: 'foo',
-        children: [
+    function createMatcher(options) {
+      return new Matcher(
+        [
           {
-            children: [{}],
+            path: 'foo',
+            children: [
+              {
+                children: [{}],
+              },
+              {
+                path: 'bar',
+              },
+            ],
           },
           {
             path: 'bar',
+            children: [
+              {
+                path: 'baz',
+              },
+            ],
           },
-        ],
-      },
-      {
-        path: 'bar',
-        children: [
           {
-            path: 'baz',
+            path: 'foo/baz',
           },
         ],
-      },
-      {
-        path: 'foo/baz',
-      },
-    ]);
+        options,
+      );
+    }
 
     [
       ['pathless children', '/foo', [0, 0, 0]],
       ['nested matching', '/foo/bar', [0, 1]],
-      ['non-leaf routes', '/bar', [1]],
       ['route fallthrough', '/foo/baz', [2]],
     ].forEach(([scenario, pathname, expectedRouteIndices]) => {
-      it(`should support ${scenario}`, () => {
+      describe(scenario, () => {
+        it('should be supported', () => {
+          expect(
+            createMatcher().match({
+              pathname,
+            }),
+          ).toMatchObject({
+            routeIndices: expectedRouteIndices,
+          });
+        });
+
+        it('should be supported with matchStemRoutes disabled', () => {
+          expect(
+            createMatcher({ matchStemRoutes: false }).match({
+              pathname,
+            }),
+          ).toMatchObject({
+            routeIndices: expectedRouteIndices,
+          });
+        });
+      });
+    });
+
+    describe('stem routes', () => {
+      it('should be supported by default', () => {
         expect(
-          matcher.match({
-            pathname,
+          createMatcher().match({
+            pathname: '/bar',
           }),
         ).toMatchObject({
-          routeIndices: expectedRouteIndices,
+          routeIndices: [1],
         });
+      });
+
+      it('should not be supported with matchStemRoutes disabled', () => {
+        expect(
+          createMatcher({ matchStemRoutes: false }).match({
+            pathname: '/bar',
+          }),
+        ).toBeNull();
       });
     });
   });
