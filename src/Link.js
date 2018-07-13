@@ -1,3 +1,6 @@
 import createConnectedLink from './createConnectedLink';
 
-export default createConnectedLink();
+const Link = createConnectedLink();
+Link.displayName = 'Link';
+
+export default Link;

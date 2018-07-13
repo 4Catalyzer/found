@@ -20,6 +20,9 @@ export default function createWithRouter({
     }),
     // This needs to be pure, to avoid rerendering on changes to other matchKey
     // values in the store.
+    {
+      getDisplayName: name => `withRouter(${name})`,
+    },
   );
 
   return function withRouter(Component) {
@@ -27,12 +30,12 @@ export default function createWithRouter({
 
     // Yes, this is pretty gross. It's the simplest way to inject router as
     // a prop without adding yet another wrapper component, though.
-
     ConnectedComponent.contextTypes = {
       ...ConnectedComponent.contextTypes,
       ...routerContextTypes,
     };
 
+    // TODO: Use connectAdvanced.
     // Overwriting the method instead of extending the class is used to avoid
     // issues with compatibility on IE <= 10.
     const baseAddExtraProps = ConnectedComponent.prototype.addExtraProps;
