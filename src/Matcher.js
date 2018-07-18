@@ -3,8 +3,10 @@ import pathToRegexp from 'path-to-regexp';
 import warning from 'warning';
 
 export default class Matcher {
-  constructor(routeConfig) {
+  constructor(routeConfig, { matchStemRoutes = true } = {}) {
     this.routeConfig = routeConfig;
+
+    this.matchStemRoutes = matchStemRoutes;
 
     // Overly-aggressive deduplication of packages can lead to the wrong
     // version of path-to-regexp getting bundled. This is a common enough
@@ -87,7 +89,9 @@ export default class Matcher {
       }
 
       if (!remaining) {
-        return [{ index, params }];
+        if (this.matchStemRoutes || !children) {
+          return [{ index, params }];
+        }
       }
     }
 
