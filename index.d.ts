@@ -100,7 +100,10 @@ declare module 'found' {
   }
 
   class Matcher implements Matcher {
-    constructor(routeConfig: RouteConfig);
+    constructor(
+      routeConfig: RouteConfig,
+      options?: { matchStemRoutes?: boolean },
+    );
   }
 
   /**
