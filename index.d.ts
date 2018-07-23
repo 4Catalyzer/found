@@ -99,6 +99,13 @@ declare module 'found' {
     format: (pattern: any, params: ObjectMap) => any;
   }
 
+  class Matcher implements Matcher {
+    constructor(
+      routeConfig: RouteConfig,
+      options?: { matchStemRoutes?: boolean },
+    );
+  }
+
   /**
    * Location descriptor object used in #push and #replace.
    */
