@@ -604,10 +604,29 @@ The options object also accepts a number of optional properties:
 
 - `historyMiddlewares`: an array of Farce history middlewares; by default, an array containing only `queryMiddleware`
 - `historyOptions`: additional configuration options for the Farce history store enhancer
+- `matcherOptions`: configuration options for the route matcher
+  - `matchStemRoutes`: whether to match routes that are not leaf routes (see below); defaults to `true` if not explicitly specified, though future releases may deprecate and warn on this behavior in advance of changing the default
 - `renderPending`: a custom render function called when some routes are not yet ready to render, due to those routes have unresolved asynchronous dependencies and no route-level `render` method for handling the loading state
 - `renderReady`: a custom render function called when all routes are ready to render
 - `renderError`: a custom render function called if an `HttpError` is thrown while resolving route elements
 - `render`: a custom render function called in all cases, superseding `renderPending`, `renderReady`, and `renderError`; by default, this is `createRender({ renderPending, renderReady, renderError })`
+
+`matchStemRoutes` in `matcherOptions` controls whether routes that are not leaf routes will match. Given the following route configuration:
+
+```js
+<Route path="foo">
+  <Route path="bar" />
+</Route>
+```
+
+The path `/foo` will match if `matchStemRoutes` is enabled. To match on `/foo` when `matchStemRoutes` is disabled, specify this equivalent route configuration:
+
+```js
+<Route path="foo">
+  <Route />
+  <Route path="bar" />
+</Route>
+```
 
 The `renderPending`, `renderReady`, `renderError`, and `render` functions receive the routing state object as an argument, with the following additional properties:
 
@@ -689,7 +708,7 @@ const store = createStore(
       middlewares: [queryMiddleware],
     }),
     createMatchEnhancer(
-      new Matcher(routeConfig),
+      new Matcher(routeConfig, { matchStemRoutes: false }),
     ),
   ),
 );
