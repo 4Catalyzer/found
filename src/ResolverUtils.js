@@ -3,6 +3,23 @@ import warning from 'warning';
 
 const UNRESOLVED = {};
 
+export function checkResolved(value) {
+  if (!isPromise(value)) {
+    return value;
+  }
+
+  return Promise.race([
+    value,
+    new Promise(resolve => {
+      setImmediate(resolve, UNRESOLVED);
+    }),
+  ]);
+}
+
+export function isResolved(value) {
+  return value !== UNRESOLVED;
+}
+
 function accumulateRouteValuesImpl(
   routeValues,
   routeIndices,
@@ -48,23 +65,6 @@ export function accumulateRouteValues(
   );
 }
 
-export function checkResolved(value) {
-  if (!isPromise(value)) {
-    return value;
-  }
-
-  return Promise.race([
-    value,
-    new Promise(resolve => {
-      setImmediate(resolve, UNRESOLVED);
-    }),
-  ]);
-}
-
-export function isResolved(value) {
-  return value !== UNRESOLVED;
-}
-
 export function getRouteMatches(match) {
   return match.routes.map((route, i) => ({
     ...match,
@@ -79,16 +79,47 @@ function getRouteValue(match, getGetter, getValue) {
   return getter ? getter.call(route, match) : getValue(route);
 }
 
-// This should work better with Flow than the obvious solution with keys.
+// This is a little more versatile than if we only passed in keys.
 export function getRouteValues(routeMatches, getGetter, getValue) {
   return routeMatches.map(match => getRouteValue(match, getGetter, getValue));
+}
+
+function getGetComponent(route) {
+  return route.getComponent;
+}
+
+function getComponent(route) {
+  if (__DEV__ && route.component) {
+    warning(
+      route.Component,
+      'Route with `component` property `%s` has no `Component` ' +
+        'property. The expected property for the route component ' +
+        'is `Component`.',
+      route.component.displayName || route.component.name,
+    );
+  }
+
+  return route.Component;
+}
+
+// This should be common to most resolvers, so make it available here.
+export function getComponents(routeMatches) {
+  return getRouteValues(routeMatches, getGetComponent, getComponent);
+}
+
+function getGetData(route) {
+  return route.getData;
+}
+
+function getData(route) {
+  return route.data;
 }
 
 /**
  * Generate route data according to their getters, respecting the order of
  * promises per the `defer` flag on routes.
  */
-export function getRouteData(routeMatches, getGetter, getValue) {
+export function getRouteData(routeMatches) {
   return accumulateRouteValues(
     routeMatches,
     routeMatches[0].routeIndices,
@@ -101,8 +132,8 @@ export function getRouteData(routeMatches, getGetter, getValue) {
 
       // If there is a parent promise, execute after it resolves.
       const routeData = parentPromise
-        ? parentPromise.then(() => getRouteValue(match, getGetter, getValue))
-        : getRouteValue(match, getGetter, getValue);
+        ? parentPromise.then(() => getRouteValue(match, getGetData, getData))
+        : getRouteValue(match, getGetData, getData);
 
       return {
         routeData,
@@ -116,25 +147,4 @@ export function getRouteData(routeMatches, getGetter, getValue) {
       prevParentPromise: null,
     },
   ).map(({ routeData }) => routeData);
-}
-
-// This should be common to most resolvers, so make it available here.
-export function getComponents(routeMatches) {
-  return getRouteData(
-    routeMatches,
-    route => route.getComponent,
-    route => {
-      if (__DEV__ && route.component) {
-        warning(
-          route.Component,
-          'Route with `component` property `%s` has no `Component` ' +
-            'property. The expected property for the route component ' +
-            'is `Component`.',
-          route.component.displayName || route.component.name,
-        );
-      }
-
-      return route.Component;
-    },
-  );
 }

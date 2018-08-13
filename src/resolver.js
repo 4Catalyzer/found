@@ -14,12 +14,7 @@ export default {
     const routeMatches = getRouteMatches(match);
 
     const Components = getComponents(routeMatches);
-
-    const data = getRouteData(
-      routeMatches,
-      route => route.getData,
-      route => route.data,
-    );
+    const data = getRouteData(routeMatches);
 
     const earlyComponents = Components.some(isPromise)
       ? await Promise.all(Components.map(checkResolved))

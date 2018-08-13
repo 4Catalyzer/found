@@ -72,6 +72,19 @@ describe('ResolverUtils', () => {
     });
   });
 
+  describe('accumulateRouteValues', () => {
+    it('should accumulate route values along match tree', () => {
+      expect(
+        accumulateRouteValues(
+          getRouteMatches(match),
+          match.routeIndices,
+          (value, { route: { path } }) => `${value}/${path}`,
+          '',
+        ),
+      ).toEqual(['/foo', '/foo/bar', '/foo/bar/(.*)?', '/foo/bar/qux/:quux']);
+    });
+  });
+
   describe('getRouteMatches', () => {
     it('should get per-route match information', () => {
       expect(getRouteMatches(match)).toMatchObject([
@@ -106,16 +119,14 @@ describe('ResolverUtils', () => {
     });
   });
 
-  describe('accumulateRouteValues', () => {
-    it('should accumulate route values along match tree', () => {
-      expect(
-        accumulateRouteValues(
-          getRouteMatches(match),
-          match.routeIndices,
-          (value, { route: { path } }) => `${value}/${path}`,
-          '',
-        ),
-      ).toEqual(['/foo', '/foo/bar', '/foo/bar/(.*)?', '/foo/bar/qux/:quux']);
+  describe('getData', () => {
+    it('should get static and computed route components', () => {
+      expect(getComponents(getRouteMatches(match))).toEqual([
+        Foo,
+        Bar,
+        undefined,
+        undefined,
+      ]);
     });
   });
 });
