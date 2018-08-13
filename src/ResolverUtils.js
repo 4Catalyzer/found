@@ -73,62 +73,49 @@ export function getRouteMatches(match) {
   }));
 }
 
-// Generates route data according to their getters and respects the order
-// of the promises by the `defer` flag
-export function getRouteData(routeMatches, getGetter, getValue) {
-  return accumulateRouteValues(
-    routeMatches,
-    routeMatches[0].routeIndices,
-    (value, match) => {
-      const { route } = match;
-
-      const getter = getGetter(route);
-
-      const { lastPromiseBeforeDefer, lastPromise } = value;
-
-      if (getter) {
-        // If the route is deferred, execute the callback after the previous promise
-        // Otherwise execute after the last deferred promise
-        const promise = route.defer ? lastPromise : lastPromiseBeforeDefer;
-
-        // If there is no promise to defer from, execute immediately
-        const result = promise
-          ? promise.then(() => getter.call(route, match))
-          : getter.call(route, match);
-
-        // Check if getter has returned a promise
-        const valuePromise = isPromise(result) ? result : null;
-
-        return {
-          lastPromise: valuePromise || lastPromise,
-          result,
-          lastPromiseBeforeDefer: route.defer
-            ? promise || valuePromise
-            : lastPromiseBeforeDefer,
-        };
-      }
-
-      return {
-        result: getValue(route),
-        lastPromiseBeforeDefer,
-        lastPromise,
-      };
-    },
-    {
-      result: null,
-      lastPromise: null,
-      lastPromiseBeforeDefer: null,
-    },
-  ).map(value => value.result);
+function getRouteValue(match, getGetter, getValue) {
+  const { route } = match;
+  const getter = getGetter(route);
+  return getter ? getter.call(route, match) : getValue(route);
 }
 
 // This should work better with Flow than the obvious solution with keys.
 export function getRouteValues(routeMatches, getGetter, getValue) {
-  return routeMatches.map(match => {
-    const { route } = match;
-    const getter = getGetter(route);
-    return getter ? getter.call(route, match) : getValue(route);
-  });
+  return routeMatches.map(match => getRouteValue(match, getGetter, getValue));
+}
+
+/**
+ * Generate route data according to their getters, respecting the order of
+ * promises per the `defer` flag on routes.
+ */
+export function getRouteData(routeMatches, getGetter, getValue) {
+  return accumulateRouteValues(
+    routeMatches,
+    routeMatches[0].routeIndices,
+    ({ prevParentPromise, prevPromise }, match) => {
+      const { defer } = match.route;
+
+      // For a deferred route, the parent promise is the previous promise.
+      // Otherwise, it's the previous parent promise.
+      const parentPromise = defer ? prevPromise : prevParentPromise;
+
+      // If there is a parent promise, execute after it resolves.
+      const routeData = parentPromise
+        ? parentPromise.then(() => getRouteValue(match, getGetter, getValue))
+        : getRouteValue(match, getGetter, getValue);
+
+      return {
+        routeData,
+        prevPromise: isPromise(routeData) ? routeData : prevPromise,
+        prevParentPromise: parentPromise,
+      };
+    },
+    {
+      routeData: null,
+      prevPromise: null,
+      prevParentPromise: null,
+    },
+  ).map(({ routeData }) => routeData);
 }
 
 // This should be common to most resolvers, so make it available here.
