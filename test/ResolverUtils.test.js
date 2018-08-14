@@ -1,3 +1,5 @@
+import delay from 'delay';
+
 import Matcher from '../src/Matcher';
 import {
   accumulateRouteValues,
@@ -59,9 +61,7 @@ describe('ResolverUtils', () => {
           await checkResolved(
             // FIXME: This is not quite the right condition, but the test is
             // flaky on Travis with a 0-delay timeout.
-            new Promise(resolve => {
-              setTimeout(resolve, 10);
-            }),
+            delay(10),
           ),
         ),
       ).toBe(false);
@@ -69,6 +69,19 @@ describe('ResolverUtils', () => {
       expect(isResolved(await checkResolved(new Promise(() => {})))).toBe(
         false,
       );
+    });
+  });
+
+  describe('accumulateRouteValues', () => {
+    it('should accumulate route values along match tree', () => {
+      expect(
+        accumulateRouteValues(
+          getRouteMatches(match),
+          match.routeIndices,
+          (value, { route: { path } }) => `${value}/${path}`,
+          '',
+        ),
+      ).toEqual(['/foo', '/foo/bar', '/foo/bar/(.*)?', '/foo/bar/qux/:quux']);
     });
   });
 
@@ -103,19 +116,6 @@ describe('ResolverUtils', () => {
         undefined,
         undefined,
       ]);
-    });
-  });
-
-  describe('accumulateRouteValues', () => {
-    it('should accumulate route values along match tree', () => {
-      expect(
-        accumulateRouteValues(
-          getRouteMatches(match),
-          match.routeIndices,
-          (value, { route: { path } }) => `${value}/${path}`,
-          '',
-        ),
-      ).toEqual(['/foo', '/foo/bar', '/foo/bar/(.*)?', '/foo/bar/qux/:quux']);
     });
   });
 });

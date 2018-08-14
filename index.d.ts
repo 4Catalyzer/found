@@ -264,6 +264,10 @@ declare module 'found' {
      */
     getData?: (match: RouteMatch) => any;
     /**
+     * whether to defer getting data until ancestor data promises are resolved
+     */
+    defer?: boolean;
+    /**
      *
      * @returns never (RedirectException) | undefined | React.ReactElement<any> (typical)
      */

@@ -5,20 +5,25 @@ import {
   checkResolved,
   getComponents,
   getRouteMatches,
-  getRouteValues,
+  getRouteValue,
   isResolved,
+  accumulateRouteValues,
 } from './ResolverUtils';
+
+function getRouteGetData(route) {
+  return route.getData;
+}
+
+function getRouteData(route) {
+  return route.data;
+}
 
 export default {
   async *resolveElements(match) {
     const routeMatches = getRouteMatches(match);
 
     const Components = getComponents(routeMatches);
-    const data = getRouteValues(
-      routeMatches,
-      route => route.getData,
-      route => route.data,
-    );
+    const data = this.getData(match, routeMatches);
 
     const earlyComponents = Components.some(isPromise)
       ? await Promise.all(Components.map(checkResolved))
@@ -49,5 +54,41 @@ export default {
     }
 
     yield createElements(routeMatches, fetchedComponents, fetchedData);
+  },
+
+  /**
+   * Generate route data according to their getters, respecting the order of
+   * promises per the `defer` flag on routes.
+   */
+  getData(match, routeMatches) {
+    return accumulateRouteValues(
+      routeMatches,
+      match.routeIndices,
+      ({ ancestorRouteData, prevParentPromise }, routeMatch) => {
+        // For a deferred route, the parent promise is the previous promise.
+        // Otherwise, it's the previous parent promise.
+        const parentPromise = routeMatch.route.defer
+          ? Promise.all(ancestorRouteData)
+          : prevParentPromise;
+
+        // If there is a parent promise, execute after it resolves.
+        const routeData = parentPromise
+          ? parentPromise.then(() =>
+              getRouteValue(routeMatch, getRouteGetData, getRouteData),
+            )
+          : getRouteValue(routeMatch, getRouteGetData, getRouteData);
+
+        return {
+          routeData,
+          ancestorRouteData: [...ancestorRouteData, routeData],
+          prevParentPromise: parentPromise,
+        };
+      },
+      {
+        routeData: null,
+        ancestorRouteData: [],
+        prevParentPromise: null,
+      },
+    ).map(({ routeData }) => routeData);
   },
 };

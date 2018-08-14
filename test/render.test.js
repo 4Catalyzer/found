@@ -1,3 +1,4 @@
+import delay from 'delay';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
@@ -5,7 +6,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 import createFarceRouter from '../src/createFarceRouter';
 import createRender from '../src/createRender';
 
-import { timeout, InstrumentedResolver } from './helpers';
+import { InstrumentedResolver } from './helpers';
 
 describe('render', () => {
   it('should support nested routes', async () => {
@@ -15,7 +16,7 @@ describe('render', () => {
         {
           path: 'foo',
           getComponent: async () => {
-            await timeout(20);
+            await delay(20);
             return ({ children }) => <div className="foo">{children}</div>;
           },
           children: [
@@ -44,7 +45,7 @@ describe('render', () => {
     );
 
     // Initial pending render is asynchronous.
-    await timeout(10);
+    await delay(10);
 
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
 
@@ -69,7 +70,7 @@ describe('render', () => {
         {
           path: 'foo',
           getComponent: async () => {
-            await timeout(20);
+            await delay(20);
             return ({ nav, main }) => (
               <div className="foo">
                 {nav}
@@ -116,7 +117,7 @@ describe('render', () => {
     );
 
     // Initial pending render is asynchronous.
-    await timeout(10);
+    await delay(10);
 
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
 
@@ -143,7 +144,7 @@ describe('render', () => {
         {
           path: '/foo',
           getData: async () => {
-            await timeout(20);
+            await delay(20);
           },
           render: () => <div className="foo" />,
         },
@@ -168,7 +169,7 @@ describe('render', () => {
       {
         path: '/foo',
         getData: async () => {
-          await timeout(10);
+          await delay(10);
         },
         render: () => <div className="bar" />,
       },
