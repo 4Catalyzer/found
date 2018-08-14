@@ -73,7 +73,7 @@ export function getRouteMatches(match) {
   }));
 }
 
-function getRouteValue(match, getGetter, getValue) {
+export function getRouteValue(match, getGetter, getValue) {
   const { route } = match;
   const getter = getGetter(route);
   return getter ? getter.call(route, match) : getValue(route);
@@ -84,11 +84,11 @@ export function getRouteValues(routeMatches, getGetter, getValue) {
   return routeMatches.map(match => getRouteValue(match, getGetter, getValue));
 }
 
-function getGetComponent(route) {
+function getRouteGetComponent(route) {
   return route.getComponent;
 }
 
-function getComponent(route) {
+function getRouteComponent(route) {
   if (__DEV__ && route.component) {
     warning(
       route.Component,
@@ -104,47 +104,5 @@ function getComponent(route) {
 
 // This should be common to most resolvers, so make it available here.
 export function getComponents(routeMatches) {
-  return getRouteValues(routeMatches, getGetComponent, getComponent);
-}
-
-function getGetData(route) {
-  return route.getData;
-}
-
-function getData(route) {
-  return route.data;
-}
-
-/**
- * Generate route data according to their getters, respecting the order of
- * promises per the `defer` flag on routes.
- */
-export function getRouteData(routeMatches) {
-  return accumulateRouteValues(
-    routeMatches,
-    routeMatches[0].routeIndices,
-    ({ prevParentPromise, prevPromise }, match) => {
-      const { defer } = match.route;
-
-      // For a deferred route, the parent promise is the previous promise.
-      // Otherwise, it's the previous parent promise.
-      const parentPromise = defer ? prevPromise : prevParentPromise;
-
-      // If there is a parent promise, execute after it resolves.
-      const routeData = parentPromise
-        ? parentPromise.then(() => getRouteValue(match, getGetData, getData))
-        : getRouteValue(match, getGetData, getData);
-
-      return {
-        routeData,
-        prevPromise: isPromise(routeData) ? routeData : prevPromise,
-        prevParentPromise: parentPromise,
-      };
-    },
-    {
-      routeData: null,
-      prevPromise: null,
-      prevParentPromise: null,
-    },
-  ).map(({ routeData }) => routeData);
+  return getRouteValues(routeMatches, getRouteGetComponent, getRouteComponent);
 }

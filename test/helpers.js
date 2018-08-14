@@ -1,11 +1,5 @@
 import resolver from '../src/resolver';
 
-export function timeout(delay) {
-  return new Promise(resolve => {
-    setTimeout(resolve, delay);
-  });
-}
-
 export class InstrumentedResolver {
   constructor() {
     // This should be a rejected promise to prevent awaiting on done before

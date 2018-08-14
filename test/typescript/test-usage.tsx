@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {
   createBrowserRouter,
-  GetDataArgs,
+  RouteMatch,
   HttpError,
   makeRouteConfig,
   Redirect,
@@ -17,7 +17,7 @@ const fetchWidget = (widgetId: any) =>
     throw new Error('oops');
   });
 
-const fetchWidgets = ({ params, context }: GetDataArgs) => [
+const fetchWidgets = ({ params, context }: RouteMatch) => [
   'foo',
   'bar',
   'baz',

@@ -22,6 +22,7 @@ Found uses [Redux](https://redux.js.org/) for state management and [Farce](https
     - [`path`](#path)
     - [`Component` or `getComponent`](#component-or-getcomponent)
     - [`data` or `getData`](#data-or-getdata)
+    - [`defer`](#defer)
     - [`render`](#render)
     - [Named child routes](#named-child-routes)
     - [Redirects](#redirects)
@@ -247,6 +248,7 @@ A route object under the default matching algorithm and route element resolver c
 - `path`: a string defining the pattern for the route
 - `Component` or `getComponent`: the component for the route, or a method that returns the component for the route
 - `data` or `getData`: additional data for the route, or a method that returns additional data for the route
+- `defer`: whether to wait for all parent `data` or `getData` promises to resolve before getting data for this route and its descendants
 - `render`: a method that returns the element for the route
 - `children`: an array of child route objects, or an object of those arrays; if using JSX configuration components, this comes from the JSX children
 
@@ -370,6 +372,20 @@ const route = {
 ```
 
 It does not make sense to specify `data` or `getData` if the route does not have a component as above or a `render` method as below.
+
+#### `defer`
+
+By default, Found will issue all data fetching operations in parallel. However, if you wish to defer data fetching for a given route until its parent data promises has been resolved, you may do so by setting `defer` on the route.
+
+```js
+<Route Component={Parent} getData={getParentData}>
+  <Route Component={Child} getData={getChildData} defer />
+</Route>
+```
+
+Setting `defer` on a route will make the resolver defer calling its `getData` method and the `getData` methods on all of its descendants until all of its parent data promises have resolved.
+
+This should be a relatively rare scenario, as generally user experience is better if all data are fetched in parallel, but in some cases it can be desirable to avoid making data fetching operations that are guaranteed to fail, such as when the user is not authenticated, when optimizing for client bandwidth usage or API utilization.
 
 #### `render`
 
@@ -979,14 +995,16 @@ app.use(async (req, res) => {
 
   res
     .status(renderArgs.error ? renderArgs.error.status : 200)
-    .send(renderPageToString(
-      <Provider store={store}>
-        <RouterProvider router={renderArgs.router}>
-          {render(renderArgs)}
-        </RouterProvider>
-      </Provider>,
-      store.getState(),
-    ));
+    .send(
+      renderPageToString(
+        <Provider store={store}>
+          <RouterProvider router={renderArgs.router}>
+            {render(renderArgs)}
+          </RouterProvider>
+        </Provider>,
+        store.getState(),
+      ),
+    );
 });
 ```
 
