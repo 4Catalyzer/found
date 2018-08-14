@@ -118,15 +118,4 @@ describe('ResolverUtils', () => {
       ]);
     });
   });
-
-  describe('getData', () => {
-    it('should get static and computed route components', () => {
-      expect(getComponents(getRouteMatches(match))).toEqual([
-        Foo,
-        Bar,
-        undefined,
-        undefined,
-      ]);
-    });
-  });
 });
