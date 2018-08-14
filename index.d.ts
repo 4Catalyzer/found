@@ -71,15 +71,40 @@ declare module 'found' {
     state: any;
   }
 
+  interface MatchBase {
+    /**
+     * The current location
+     */
+    location: Location;
+    /**
+     * The union of path parameters for *all* matched routes
+     */
+    params: ObjectStringMap;
+  }
+
   /**
    * The shape might be different with a custom matcher or history enhancer,
    * but the default matcher assumes and provides this shape. As such, this
    * validator is purely for user convenience and should not be used
    * internally.
    */
-  interface Match {
-    location: Location;
-    params: ObjectStringMap;
+  interface Match extends MatchBase {
+    /**
+     * An array of all matched route objects
+     */
+    routes: RouteConfig[];
+    /**
+     * The base match, for symmetry with withRouter.
+     */
+    match: MatchBase;
+    /**
+     * An object with static router properties.
+     */
+    router: Router;
+    /**
+     * matchContext from the router
+     */
+    context: any;
   }
 
   /**
@@ -97,13 +122,6 @@ declare module 'found' {
      * and a object of the corresponding path parameters
      */
     format: (pattern: any, params: ObjectMap) => any;
-  }
-
-  class Matcher implements Matcher {
-    constructor(
-      routeConfig: RouteConfig,
-      options?: { matchStemRoutes?: boolean },
-    );
   }
 
   /**
@@ -172,19 +190,10 @@ declare module 'found' {
     public addTransitionHook: (hook: TransitionHook) => (() => void);
   }
 
-  interface RoutingState {
-    /**
-     * The current location
-     */
-    location: Location;
-    /**
-     * An object with location and params as properties
-     */
-    match: Match;
-    /**
-     * The union of path parameters for *all* matched routes
-     */
-    params: ObjectMap;
+  /**
+   * The match for a specific route, including that route and its own params.
+   */
+  interface RouteMatch extends Match {
     /**
      * The route object corresponding to this component
      */
@@ -192,21 +201,21 @@ declare module 'found' {
     /**
      * The path parameters for route
      */
-    routeParams: ObjectMap;
+    routeParams: ObjectStringMap;
+  }
+
+  interface RenderProps extends RouteMatch {
     /**
-     * An object with static router properties
+     * The data for the route, as above; null if the data have not yet been
+     * loaded
      */
-    router: Router;
-    /**
-     * An array of all matched route objects
-     */
-    routes: RouteConfig[];
+    data?: any;
   }
 
   /**
    * @see https://github.com/4Catalyzer/found/blob/master/README.md#render
    */
-  interface RenderArgs {
+  interface RouteRenderArgs {
     match: Match;
     /**
      * The component for the route, if any; null if the component has not yet
@@ -214,32 +223,15 @@ declare module 'found' {
      */
     Component?: React.ComponentType<any>;
     /**
+     * The default props for the route component, specifically match with data
+     * as an additional property; null if data have not yet been loaded
+     */
+    props?: RenderProps;
+    /**
      * The data for the route, as above; null if the data have not yet been
      * loaded
      */
     data?: any;
-    /**
-     * The default props for the route component, specifically match with data
-     * as an additional property; null if data have not yet been loaded
-     */
-    props?: RoutingState;
-    /**
-     *
-     */
-    error?: any;
-  }
-
-  /**
-   * Same as RenderArgs, but Component and Props are no longer optionally null
-   */
-  interface RenderReadyArgs extends RenderArgs {
-    Component: React.ComponentType<any>;
-    props: RoutingState;
-  }
-
-  interface GetDataArgs {
-    params: ObjectMap;
-    context: any;
   }
 
   /**
@@ -258,7 +250,7 @@ declare module 'found' {
      * a method that returns the component for the route
      */
     getComponent?: (
-      props: RoutingState,
+      match: RouteMatch,
     ) =>
       | React.ComponentType<any>
       | Promise<React.ComponentType<any>>
@@ -270,13 +262,14 @@ declare module 'found' {
     /**
      * a method that returns additional data for the route
      */
-    getData?: (args: GetDataArgs) => any;
-    prepareParams?: (params: ObjectMap, match: Match) => ObjectMap;
+    getData?: (match: RouteMatch) => any;
     /**
      *
      * @returns never (RedirectException) | undefined | React.ReactElement<any> (typical)
      */
-    render?: (args: RenderArgs) => never | undefined | React.ReactElement<any>;
+    render?: (
+      args: RouteRenderArgs,
+    ) => never | undefined | React.ReactElement<any>;
     // Provide indexer allowing for any properties
     [key: string]: any;
   }
@@ -350,11 +343,31 @@ declare module 'found' {
   // Improve these `any`s as needed
   type BrowserRouter = any;
 
-  interface CreateBrowserRouterArgs {
-    render?: (args: RenderArgs) => React.ReactElement<any>;
-    renderPending?: (args: RenderArgs) => React.ReactElement<any>;
+  type ReactElementOrGroup =
+    | React.ReactElement<any>
+    | { [key: string]: ReactElementOrGroup[] };
+
+  interface RenderErrorArgs extends Match {
+    error: HttpError;
+  }
+
+  interface RenderReadyArgs extends Match {
+    elements: ReactElementOrGroup[];
+  }
+
+  interface RouterRenderArgs extends Match {
+    error?: HttpError;
+    elements?: ReactElementOrGroup[];
+  }
+
+  interface CreateRenderArgs {
+    renderPending?: (args: Match) => React.ReactElement<any>;
     renderReady?: (args: RenderReadyArgs) => React.ReactElement<any>;
-    renderError?: (args: RenderArgs) => React.ReactElement<any>;
+    renderError?: (args: RenderErrorArgs) => React.ReactElement<any>;
+  }
+
+  interface CreateBrowserRouterArgs extends CreateRenderArgs {
+    render?: (args: RouterRenderArgs) => React.ReactElement<any>;
     [key: string]: any;
   }
 
@@ -374,9 +387,5 @@ declare module 'found' {
     ...options
   }: any): FarceRouter;
 
-  function createRender({
-    renderPending,
-    renderReady,
-    renderError,
-  }: any): React.ReactElement<any>;
+  function createRender(args: CreateRenderArgs): React.ReactElement<any>;
 }
