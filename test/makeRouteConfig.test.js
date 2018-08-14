@@ -11,6 +11,7 @@ describe('makeRouteConfig', () => {
   const MainPage = () => {};
   const FooPage = () => {};
   const BarPage = () => {};
+  const BazPage = () => {};
 
   const FooNav = () => {};
   const FooA = () => {};
@@ -54,6 +55,45 @@ describe('makeRouteConfig', () => {
                 Component: BarPage,
               }),
             ],
+          }),
+        ],
+      }),
+    ]);
+  });
+
+  it('should work with fragments', () => {
+    expect(
+      makeRouteConfig(
+        <Route path="/" Component={AppPage}>
+          <Route Component={MainPage} />
+          <React.Fragment>
+            <Route path="foo" Component={FooPage} />
+            <React.Fragment>
+              <Route path="bar" Component={BarPage} />
+            </React.Fragment>
+          </React.Fragment>
+          <Route path="baz" Component={BazPage} />
+        </Route>,
+      ),
+    ).toEqual([
+      new Route({
+        path: '/',
+        Component: AppPage,
+        children: [
+          new Route({
+            Component: MainPage,
+          }),
+          new Route({
+            path: 'foo',
+            Component: FooPage,
+          }),
+          new Route({
+            path: 'bar',
+            Component: BarPage,
+          }),
+          new Route({
+            path: 'baz',
+            Component: BazPage,
           }),
         ],
       }),
