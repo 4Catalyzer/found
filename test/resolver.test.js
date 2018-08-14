@@ -9,9 +9,10 @@ describe('resolver', () => {
     it('should support defer', async () => {
       const deferred1 = pDefer();
       const deferred2 = pDefer();
+      const deferred3 = pDefer();
 
       const getData1 = jest.fn(() => deferred1.promise);
-      const getData3 = jest.fn(() => 3);
+      const getData3 = jest.fn(() => deferred3.promise);
       const getData4 = jest.fn(() => 4);
 
       const match = {
@@ -56,6 +57,8 @@ describe('resolver', () => {
 
       expect(getData3).toHaveBeenCalled();
       expect(getData4).toHaveBeenCalled();
+
+      deferred3.resolve(3);
 
       const data = await Promise.all(dataPromises);
       expect(data).toEqual([1, 2, 3, 4]);
