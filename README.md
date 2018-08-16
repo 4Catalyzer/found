@@ -389,7 +389,7 @@ This should be a relatively rare scenario, as generally user experience is bette
 
 #### `render`
 
-Specify the `render` method to further customize how the route renders. This method should return a React element to render that element, `undefined` if it has a pending asynchronous component or data dependency and is not ready to render, or `null` to render no component. It receives an object with the following properties:
+Specify the `render` method to further customize how the route renders. This method should return a React element to render that element, `undefined` if it has a pending asynchronous component or data dependency and is not ready to render, or `null` to render no component for this route (but instead render its children). It receives an object with the following properties:
 
 - `match`: the routing state object, as above
 - `Component`: the component for the route, if any; `null` if the component has not yet been loaded
