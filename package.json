@@ -118,6 +118,6 @@
     "react-stand-in": "^4.0.0-beta.14",
     "react-test-renderer": "^16.3.2",
     "rimraf": "^2.6.2",
-    "typescript": "^2.8.1"
+    "typescript": "^3.0.3"
   }
 }
