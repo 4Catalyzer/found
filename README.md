@@ -396,7 +396,7 @@ Specify the `render` method to further customize how the route renders. This met
 - `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
 - `data`: the data for the route, as above; `null` if the data have not yet been loaded
 
-Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`. 
+Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`.
 
 You can use this method to render per-route loading state.
 

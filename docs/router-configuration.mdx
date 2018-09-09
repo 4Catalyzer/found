@@ -1,0 +1,175 @@
+---
+name: Router Configuration
+menu: Guide
+order: 97
+---
+
+# Router Configuration
+
+Found exposes a number of router component class factories at varying levels of abstraction. These factories accept the static configuration properties for the router, such as the route configuration. The use of static configuration allows for efficient, parallel data fetching and state management as above.
+
+## createBrowserRouter
+
+`createBrowserRouter` creates a basic router component class that uses the HTML5 History API for navigation. This factory uses reasonable defaults that should fit a variety use cases.
+
+```js
+import { createBrowserRouter } from 'found';
+
+/* ... */
+
+const BrowserRouter = createBrowserRouter({
+  routeConfig,
+
+  renderError: ({ error }) => (
+    <div>
+      {error.status === 404 ? 'Not found' : 'Error'}
+    </div>
+  ),
+});
+
+ReactDOM.render(
+  <BrowserRouter />,
+  document.getElementById('root'),
+);
+```
+
+`createBrowserRouter` takes an options object. The only mandatory property on this object is `routeConfig`, which should be a route configuration as above.
+
+The options object also accepts a number of optional properties:
+
+- `historyMiddlewares`: an array of Farce history middlewares; by default, an array containing only `queryMiddleware`
+- `historyOptions`: additional configuration options for the Farce history store enhancer
+- `matcherOptions`: configuration options for the route matcher
+  - `matchStemRoutes`: whether to match routes that are not leaf routes (see below); defaults to `true` if not explicitly specified, though future releases may deprecate and warn on this behavior in advance of changing the default
+- `renderPending`: a custom render function called when some routes are not yet ready to render, due to those routes have unresolved asynchronous dependencies and no route-level `render` method for handling the loading state
+- `renderReady`: a custom render function called when all routes are ready to render
+- `renderError`: a custom render function called if an `HttpError` is thrown while resolving route elements
+- `render`: a custom render function called in all cases, superseding `renderPending`, `renderReady`, and `renderError`; by default, this is `createRender({ renderPending, renderReady, renderError })`
+
+`matchStemRoutes` in `matcherOptions` controls whether routes that are not leaf routes will match. Given the following route configuration:
+
+```js
+<Route path="foo">
+  <Route path="bar" />
+</Route>
+```
+
+The path `/foo` will match if `matchStemRoutes` is enabled. To match on `/foo` when `matchStemRoutes` is disabled, specify this equivalent route configuration:
+
+```js
+<Route path="foo">
+  <Route />
+  <Route path="bar" />
+</Route>
+```
+
+The `renderPending`, `renderReady`, `renderError`, and `render` functions receive the routing state object as an argument, with the following additional properties:
+
+- `elements`: if present, an array the resolved elements for the matched routes; the array item will be `null` for routes without elements
+- `error`: if present, the `HttpError` object thrown during element resolution with properties describing the error
+  - `status`: the status code; this is the first argument to the `HttpError` constructor
+  - `data`: additional error data; this is the second argument to the `HttpError` constructor
+
+You should specify a `renderError` function or otherwise handle error states. You can specify `renderPending` and `renderReady` functions to indicate loading state globally; the [global pending state example](/examples/global-pending) demonstrates doing this using a static container.
+
+The created `<BrowserRouter>` accepts an optional `matchContext` prop as described above that injects additional context into the route resolution methods.
+
+## createFarceRouter
+
+`createFarceRouter` exposes additional configuration for customizing navigation management and route element resolution. To enable minimizing bundle size, it omits some defaults from `createBrowserRouter`.
+
+```js
+import { BrowserProtocol, queryMiddleware } from 'farce';
+import { createFarceRouter, createRender, resolver } from 'found';
+
+/* ... */
+
+const FarceRouter = createFarceRouter({
+  historyProtocol: new BrowserProtocol(),
+  routeConfig,
+
+  render: createRender({
+    renderError: ({ error }) => (
+      <div>
+        {error.status === 404 ? 'Not found' : 'Error'}
+      </div>
+    ),
+  }),
+});
+
+ReactDOM.render(
+  <FarceRouter resolver={resolver} />,
+  document.getElementById('root'),
+);
+```
+
+The options object for `createFarceRouter` should have a `historyProtocol` property that has a history protocol object. For example, to use the HTML History API as with `createBrowserRouter`, you would provide `new BrowserProtocol()`.
+
+The `createFarceRouter` options object does not have a default for the `render` property. It ignores the `renderPending`, `renderReady`, and `renderError` properties.
+
+The created `<FarceRouter>` manages setting up and providing a Redux store with the appropriate configuration internally. It also requires a `resolver` prop with the route element resolver object. For routes configured as above, this should be the `resolver` object in this library.
+
+## createConnectedRouter
+
+`createConnectedRouter` creates a router that works with an existing Redux store and provider.
+
+```js
+import {
+  Actions as FarceActions,
+  BrowserProtocol,
+  createHistoryEnhancer,
+  queryMiddleware,
+} from 'farce';
+import {
+  createConnectedRouter,
+  createMatchEnhancer,
+  createRender,
+  foundReducer,
+  Matcher,
+  resolver,
+} from 'found';
+import { Provider } from 'react-redux';
+import { combineReducers, compose, createStore } from 'redux';
+
+/* ... */
+
+const store = createStore(
+  combineReducers({
+    found: foundReducer,
+  }),
+  compose(
+    createHistoryEnhancer({
+      protocol: new BrowserProtocol(),
+      middlewares: [queryMiddleware],
+    }),
+    createMatchEnhancer(
+      new Matcher(routeConfig, { matchStemRoutes: false }),
+    ),
+  ),
+);
+
+store.dispatch(FarceActions.init());
+
+const ConnectedRouter = createConnectedRouter({
+  render: createRender({
+    renderError: ({ error }) => (
+      <div>
+        {error.status === 404 ? 'Not found' : 'Error'}
+      </div>
+    ),
+  }),
+});
+
+ReactDOM.render(
+  <Provider store={store}>
+    <ConnectedRouter resolver={resolver} />
+  </Provider>,
+  document.getElementById('root'),
+);
+```
+
+When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from Farce and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
+
+`createConnectedRouter` ignores the `historyProtocol`, `historyMiddlewares`, and `historyOptions` properties on its options object.
+
+`createConnectedRouter` also accepts an optional `getFound` property. If you installed `foundReducer` on a key other than `found`, specify the `getFound` function to retrieve the reducer state.

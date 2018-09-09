@@ -1,0 +1,24 @@
+---
+name: Minimizing Bundle Size
+menu: Guide
+order: 92
+---
+
+# Minimizing Bundle Size
+
+The top-level `found` package exports everything available in this library. It is unlikely that any single application will use all the features available. As such, for real applications, you should import the modules that you need from `found/lib` directly, to pull in only the code that you use.
+
+```js
+import createBrowserRouter from 'found/lib/createBrowserRouter';
+import makeRouteConfig from 'found/lib/makeRouteConfig';
+import { routerShape } from 'found/lib/PropTypes';
+import Route from 'found/lib/Route';
+
+// Instead of:
+// import {
+//  createBrowserRouter,
+//  makeRouteConfig,
+//  Route,
+//  routerShape,
+// } from 'found';
+```

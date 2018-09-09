@@ -1,0 +1,116 @@
+---
+name: Navigation
+menu: Guide
+order: 96
+---
+
+# Navigation
+
+Found provides a high-level abstractions such as a link component for controlling browser navigation. Under the hood, it delegates to [Farce](https://github.com/4Catalyzer/farce) for implementation, and as such can also be controlled directly via the Redux store.
+
+## Links
+
+The `<Link>` component renders a link with optional active state indication.
+
+```js
+const link1 = (
+  <Link to="/widgets/foo" activeClassName="active">
+    Foo widget
+  </Link>
+);
+
+const link2 = (
+  <Link
+    Component={CustomAnchor}
+    to={{
+      pathname: '/widgets/bar',
+      query: { the: query },
+    }}
+    activePropName="active"
+  >
+    Bar widget with query
+  </Link>
+);
+```
+
+`<Link>` accepts the following props:
+
+- `to`: a [location descriptor](https://github.com/4Catalyzer/farce#locations-and-location-descriptors) for the link's destination
+- `activeClassName`: if specified, a CSS class to append to the component's CSS classes when the link is active
+- `activeStyle`: if specified, a style object to append merge with the component's style object when the link is active
+- `activePropName`: if specified, a prop to inject with a boolean value with the link's active state
+- `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
+- `Component`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
+
+`<Link>` forwards additional props to the child element. If you need to pass in additional props to the custom link component that collide with the names of props used by `<Link>`, specify the optional `childProps` prop as an object containing those props.
+
+A link will navigate per its `to` location descriptor when clicked. You can prevent this navigation by providing an `onClick` handler that calls `event.preventDefault()`.
+
+If you have your own store with `foundReducer` installed on a key other than `found`, use `createConnectedLink` with a options object with a `getFound` function to create a custom link component class, as with `createConnectedRouter` above.
+
+## Programmatic navigation
+
+The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above. You can use this HOC to create components that navigate programmatically in event handlers.
+
+```js
+const propTypes = {
+  match: matchShape.isRequired,
+  router: routerShape.isRequired,
+};
+
+class MyButton extends React.Component {
+  onClick = () => {
+    this.props.router.replace('/widgets');
+  };
+
+  render() {
+    return (
+      <button onClick={this.onClick}>
+        Current widget: {this.props.match.params.widgetId}
+      </button>
+    );
+  }
+}
+
+MyButton.propTypes = propTypes;
+
+export default withRouter(MyButton);
+```
+
+If you only need the `router` object, you can access it on React context as `context.router`, with the appropriate `contextTypes` configuration.
+
+If you have your own store with `foundReducer` installed on a key other than `found`, use `createWithRouter` with a options object with a `getFound` function to create a custom HOC, as with `createConnectedLink` above.
+
+## Blocking navigation
+
+The `router.addTransitionHook` method adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can block navigation. This method accepts a transition hook function. It returns a function that removes the transition hook.
+
+```js
+class MyForm extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.dirty = false;
+
+    this.removeTransitionHook = props.router.addTransitionHook(() => (
+      this.dirty ?
+        'You have unsaved input. Are you sure you want to leave this page?' :
+        true
+    ));
+  }
+
+  componentWillUnmount() {
+    this.removeTransitionHook();
+  }
+
+  /* ... */
+}
+
+export default withRouter(MyForm);
+```
+
+The transition hook function receives the location to which the user is attempting to navigate as its argument. Return `true` or `false` from this function to allow or block the transition respectively. Return a string to display a default confirmation dialog to the user. Return a nully value to use the next transition hook if present, or else allow the transition. Return a promise to defer allowing or blocking the transition until the promise resolves; you can use this to display a custom confirmation dialog.
+
+If you want to run your transition hooks when the user attempts to leave the page, set `useBeforeUnload` to `true` in `historyOptions` when creating your router component class, or when creating the Farce history store enhancer. If this option is enabled, your transition hooks will be called with a `null` location when the user attempts to leave the page. In this scenario, the transition hook must return a non-promise value.
+
+The [transition hook usage example](/examples/transition-hook) demonstrates the use of transition hooks in more detail, including the use of the `useBeforeUnload` option.
