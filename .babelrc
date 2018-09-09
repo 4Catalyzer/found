@@ -1,14 +1,15 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/env", {
       "loose": true
     }],
-    "stage-1",
-    "react"
+    "@babel/react"
   ],
   "plugins": [
-    "dev-expression",
-    "transform-runtime", // Need stage-3 Symbol polyfill.
-    "add-module-exports"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/transform-runtime",
+    "dev-expression"
   ]
 }
