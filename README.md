@@ -100,18 +100,18 @@ ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
 
 This configuration will set up the following routes:
 
-* `/`
-  * This renders `<AppPage><MainPage /></AppPage>`
-* `/widget`
-  * This renders `<AppPage><WidgetsPage /><AppPage>`
-  * This will load the data for `<WidgetsPage>` when the user navigates to this route
-  * This will continue to render the previous routes while the data for `<WidgetsPage>` are loading
-* `/widgets/${widgetId}` (e.g. `/widgets/foo`)
-  * This renders `<AppPage><WidgetPage /></AppPage>`
-  * This will load the code and data for `<WidgetPage>` when the user navigates to this route
-  * This will render the text "Loading" in place of `<WidgetPage>` while the code and data for `<WidgetPage>` are loading
-* `/widget/${widgetId}` (e.g. `/widget/foo`)
-  * This redirects to `/widgets/${widgetId}`, then renders as above
+- `/`
+  - This renders `<AppPage><MainPage /></AppPage>`
+- `/widget`
+  - This renders `<AppPage><WidgetsPage /><AppPage>`
+  - This will load the data for `<WidgetsPage>` when the user navigates to this route
+  - This will continue to render the previous routes while the data for `<WidgetsPage>` are loading
+- `/widgets/${widgetId}` (e.g. `/widgets/foo`)
+  - This renders `<AppPage><WidgetPage /></AppPage>`
+  - This will load the code and data for `<WidgetPage>` when the user navigates to this route
+  - This will render the text "Loading" in place of `<WidgetPage>` while the code and data for `<WidgetPage>` are loading
+- `/widget/${widgetId}` (e.g. `/widget/foo`)
+  - This redirects to `/widgets/${widgetId}`, then renders as above
 
 ```js
 // AppPage.js
@@ -145,19 +145,19 @@ export default AppPage;
 
 ## Examples
 
-* [Basic usage](/examples/basic)
-* [Basic usage with JSX route configuration](/examples/basic-jsx)
-* [Global pending state](/examples/global-pending)
-* [Transition hook usage](/examples/transition-hook)
-* [Shared Redux store](/examples/redux)
-* [Hot reloading](/examples/hot-reloading)
-* [Server-side rendering](/examples/universal)
-* [Server-side rendering with shared Redux store](/examples/universal-redux)
+- [Basic usage](/examples/basic)
+- [Basic usage with JSX route configuration](/examples/basic-jsx)
+- [Global pending state](/examples/global-pending)
+- [Transition hook usage](/examples/transition-hook)
+- [Shared Redux store](/examples/redux)
+- [Hot reloading](/examples/hot-reloading)
+- [Server-side rendering](/examples/universal)
+- [Server-side rendering with shared Redux store](/examples/universal-redux)
 
 ## Extensions
 
-* [Found Scroll](https://github.com/4Catalyzer/found-scroll): scroll management
-* [Found Relay](https://github.com/4Catalyzer/found-relay): [Relay](https://facebook.github.io/relay/) integration
+- [Found Scroll](https://github.com/4Catalyzer/found-scroll): scroll management
+- [Found Relay](https://github.com/4Catalyzer/found-relay): [Relay](https://facebook.github.io/relay/) integration
 
 ## Guide
 
@@ -230,12 +230,12 @@ In components rendered by the router, use `<Link>` to render links that navigate
 
 A route object under the default matching algorithm and route element resolver consists of 4 properties, all of which are optional:
 
-* `path`: a string defining the pattern for the route
-* `Component` or `getComponent`: the component for the route, or a method that returns the component for the route
-* `data` or `getData`: additional data for the route, or a method that returns additional data for the route
-* `defer`: whether to wait for all parent `data` or `getData` promises to resolve before getting data for this route and its descendants
-* `render`: a method that returns the element for the route
-* `children`: an array of child route objects, or an object of those arrays; if using JSX configuration components, this comes from the JSX children
+- `path`: a string defining the pattern for the route
+- `Component` or `getComponent`: the component for the route, or a method that returns the component for the route
+- `data` or `getData`: additional data for the route, or a method that returns additional data for the route
+- `defer`: whether to wait for all parent `data` or `getData` promises to resolve before getting data for this route and its descendants
+- `render`: a method that returns the element for the route
+- `children`: an array of child route objects, or an object of those arrays; if using JSX configuration components, this comes from the JSX children
 
 A route configuration consists of an array of route objects. You can generate such an array of route objects from JSX with `<Route>` elements using `makeRouteConfig`.
 
@@ -243,18 +243,18 @@ A route configuration consists of an array of route objects. You can generate su
 
 Specify a `path` pattern to control the paths for which a route is active. These patterns are handled using [Path-to-RegExp](https://github.com/pillarjs/path-to-regexp) and follow the rules there. Both named and unnamed parameters will be captured in `params` and `routeParams` as below. The following are common patterns:
 
-* `/path/subpath`
-  * Matches `/path/subpath`
-* `/path/:param`
-  * Matches `/path/foo` with `params` of `{ param: 'foo' }`
-* `/path/:regexParam(\\d+)`
-  * Matches `/path/123` with `params` of `{ regexParam: '123' }`
-  * Does not match `/path/foo`
-* `/path/:optionalParam?`
-  * Matches `/path/foo` with `params` of `{ optionalParam: 'foo' }`
-  * Matches `/path` with `params` of `{ optionalParam: undefined }`
-* `/path/*`
-  * Matches `/path/foo/bar`
+- `/path/subpath`
+  - Matches `/path/subpath`
+- `/path/:param`
+  - Matches `/path/foo` with `params` of `{ param: 'foo' }`
+- `/path/:regexParam(\\d+)`
+  - Matches `/path/123` with `params` of `{ regexParam: '123' }`
+  - Does not match `/path/foo`
+- `/path/:optionalParam?`
+  - Matches `/path/foo` with `params` of `{ optionalParam: 'foo' }`
+  - Matches `/path` with `params` of `{ optionalParam: undefined }`
+- `/path/*`
+  - Matches `/path/foo/bar`
 
 Routes are matched based on their `path` properties in a depth-first manner, where `path` on the route must match the prefix of the remaining current path. Routing continues through any routes that do not have `path` set. To configure a default or "index" route, use a route with no `path`.
 
@@ -281,7 +281,7 @@ const routes = makeRouteConfig(
 
 The router will have routes as follows:
 
-* `/`, rendering:
+- `/`, rendering:
 
 ```js
 <AppPage>
@@ -291,7 +291,7 @@ The router will have routes as follows:
 </AppPage>
 ```
 
-* `/other`, rendering:
+- `/other`, rendering:
 
 ```js
 <AppPage>
@@ -301,7 +301,7 @@ The router will have routes as follows:
 </AppPage>
 ```
 
-* `/widgets`, rendering:
+- `/widgets`, rendering:
 
 ```js
 <AppPage>
@@ -309,7 +309,7 @@ The router will have routes as follows:
 </AppPage>
 ```
 
-* `/widgets/${widgetId}` (e.g. `/widgets/foo`), rendering:
+- `/widgets/${widgetId}` (e.g. `/widgets/foo`), rendering:
 
 ```js
 <AppPage>
@@ -319,20 +319,20 @@ The router will have routes as follows:
 
 By default, route components receive additional props describing the current routing state. These include:
 
-* `location`: the current [location object](https://github.com/4Catalyzer/farce#locations-and-location-descriptors)
-* `params`: the union of path parameters for all matched routes
-* `routes`: an array of all matched route objects
-* `route`: the route object corresponding to this component
-* `routeParams`: the path parameters for `route`
-* `match`: an object with `location` and `params` as properties, conforming to the `matchShape` prop type validator
-* `router`: an object with static router properties, conforming to the `routerShape` prop type validator
-  * `push(location)`: navigates to a new location
-  * `replace(location)`: replaces the existing history entry
-  * `go(delta)`: moves `delta` steps in the history stack
-  * `isActive(match, location, { exact })`: for `match` as above, returns whether `match` corresponds to `location` or a subpath of `location`; if `exact` is set, returns whether `match` corresponds exactly to `location`
-  * `matcher`: an object implementing the matching algorithm
-    * `format(pattern, params)`: returns the path string for a pattern of the same format as a route `path` and a object of the corresponding path parameters
-  * `addTransitionHook(hook)`: adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can [block navigation](#blocking-navigation)
+- `location`: the current [location object](https://github.com/4Catalyzer/farce#locations-and-location-descriptors)
+- `params`: the union of path parameters for all matched routes
+- `routes`: an array of all matched route objects
+- `route`: the route object corresponding to this component
+- `routeParams`: the path parameters for `route`
+- `match`: an object with `location` and `params` as properties, conforming to the `matchShape` prop type validator
+- `router`: an object with static router properties, conforming to the `routerShape` prop type validator
+  - `push(location)`: navigates to a new location
+  - `replace(location)`: replaces the existing history entry
+  - `go(delta)`: moves `delta` steps in the history stack
+  - `isActive(match, location, { exact })`: for `match` as above, returns whether `match` corresponds to `location` or a subpath of `location`; if `exact` is set, returns whether `match` corresponds exactly to `location`
+  - `matcher`: an object implementing the matching algorithm
+    - `format(pattern, params)`: returns the path string for a pattern of the same format as a route `path` and a object of the corresponding path parameters
+  - `addTransitionHook(hook)`: adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can [block navigation](#blocking-navigation)
 
 The `getComponent` method receives an object containing these properties as its argument.
 
@@ -375,10 +375,10 @@ This should be a relatively rare scenario, as generally user experience is bette
 
 Specify the `render` method to further customize how the route renders. This method should return a React element to render that element, `undefined` if it has a pending asynchronous component or data dependency and is not ready to render, or `null` to render no component. It receives an object with the following properties:
 
-* `match`: the routing state object, as above
-* `Component`: the component for the route, if any; `null` if the component has not yet been loaded
-* `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
-* `data`: the data for the route, as above; `null` if the data have not yet been loaded
+- `match`: the routing state object, as above
+- `Component`: the component for the route, if any; `null` if the component has not yet been loaded
+- `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
+- `data`: the data for the route, as above; `null` if the data have not yet been loaded
 
 Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`.
 
@@ -585,14 +585,14 @@ ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
 
 The options object also accepts a number of optional properties:
 
-* `historyMiddlewares`: an array of Farce history middlewares; by default, an array containing only `queryMiddleware`
-* `historyOptions`: additional configuration options for the Farce history store enhancer
-* `matcherOptions`: configuration options for the route matcher
-  * `matchStemRoutes`: whether to match routes that are not leaf routes (see below); defaults to `true` if not explicitly specified, though future releases may deprecate and warn on this behavior in advance of changing the default
-* `renderPending`: a custom render function called when some routes are not yet ready to render, due to those routes have unresolved asynchronous dependencies and no route-level `render` method for handling the loading state
-* `renderReady`: a custom render function called when all routes are ready to render
-* `renderError`: a custom render function called if an `HttpError` is thrown while resolving route elements
-* `render`: a custom render function called in all cases, superseding `renderPending`, `renderReady`, and `renderError`; by default, this is `createRender({ renderPending, renderReady, renderError })`
+- `historyMiddlewares`: an array of Farce history middlewares; by default, an array containing only `queryMiddleware`
+- `historyOptions`: additional configuration options for the Farce history store enhancer
+- `matcherOptions`: configuration options for the route matcher
+  - `matchStemRoutes`: whether to match routes that are not leaf routes (see below); defaults to `true` if not explicitly specified, though future releases may deprecate and warn on this behavior in advance of changing the default
+- `renderPending`: a custom render function called when some routes are not yet ready to render, due to those routes have unresolved asynchronous dependencies and no route-level `render` method for handling the loading state
+- `renderReady`: a custom render function called when all routes are ready to render
+- `renderError`: a custom render function called if an `HttpError` is thrown while resolving route elements
+- `render`: a custom render function called in all cases, superseding `renderPending`, `renderReady`, and `renderError`; by default, this is `createRender({ renderPending, renderReady, renderError })`
 
 `matchStemRoutes` in `matcherOptions` controls whether routes that are not leaf routes will match. Given the following route configuration:
 
@@ -613,10 +613,10 @@ The path `/foo` will match if `matchStemRoutes` is enabled. To match on `/foo` w
 
 The `renderPending`, `renderReady`, `renderError`, and `render` functions receive the routing state object as an argument, with the following additional properties:
 
-* `elements`: if present, an array the resolved elements for the matched routes; the array item will be `null` for routes without elements
-* `error`: if present, the `HttpError` object thrown during element resolution with properties describing the error
-  * `status`: the status code; this is the first argument to the `HttpError` constructor
-  * `data`: additional error data; this is the second argument to the `HttpError` constructor
+- `elements`: if present, an array the resolved elements for the matched routes; the array item will be `null` for routes without elements
+- `error`: if present, the `HttpError` object thrown during element resolution with properties describing the error
+  - `status`: the status code; this is the first argument to the `HttpError` constructor
+  - `data`: additional error data; this is the second argument to the `HttpError` constructor
 
 You should specify a `renderError` function or otherwise handle error states. You can specify `renderPending` and `renderReady` functions to indicate loading state globally; the [global pending state example](/examples/global-pending) demonstrates doing this using a static container.
 
@@ -747,12 +747,12 @@ const link2 = (
 
 `<Link>` accepts the following props:
 
-* `to`: a [location descriptor](https://github.com/4Catalyzer/farce#locations-and-location-descriptors) for the link's destination
-* `activeClassName`: if specified, a CSS class to append to the component's CSS classes when the link is active
-* `activeStyle`: if specified, a style object to append merge with the component's style object when the link is active
-* `activePropName`: if specified, a prop to inject with a boolean value with the link's active state
-* `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
-* `Component`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
+- `to`: a [location descriptor](https://github.com/4Catalyzer/farce#locations-and-location-descriptors) for the link's destination
+- `activeClassName`: if specified, a CSS class to append to the component's CSS classes when the link is active
+- `activeStyle`: if specified, a style object to append merge with the component's style object when the link is active
+- `activePropName`: if specified, a prop to inject with a boolean value with the link's active state
+- `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
+- `Component`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
 
 `<Link>` forwards additional props to the child element. If you need to pass in additional props to the custom link component that collide with the names of props used by `<Link>`, specify the optional `childProps` prop as an object containing those props.
 
@@ -804,11 +804,10 @@ class MyForm extends React.Component {
 
     this.dirty = false;
 
-    this.removeTransitionHook = props.router.addTransitionHook(
-      () =>
-        this.dirty
-          ? 'You have unsaved input. Are you sure you want to leave this page?'
-          : true,
+    this.removeTransitionHook = props.router.addTransitionHook(() =>
+      this.dirty
+        ? 'You have unsaved input. Are you sure you want to leave this page?'
+        : true,
     );
   }
 
@@ -916,9 +915,9 @@ The options object for `getFarceResult` also takes the `historyMiddlewares` and 
 
 `getFarceResult` returns a promise for an object with the following properties:
 
-* `redirect`: if present, indicates that element resolution triggered a redirect; `redirect.url` contains the full path for the redirect location
-* `status`: if there was no redirect, the HTTP status code for the response; this will be `error.status` from any encountered `HttpError`, or 200 otherwise
-* `element`: if there was no redirect, the React element corresponding to the router component on the client
+- `redirect`: if present, indicates that element resolution triggered a redirect; `redirect.url` contains the full path for the redirect location
+- `status`: if there was no redirect, the HTTP status code for the response; this will be `error.status` from any encountered `HttpError`, or 200 otherwise
+- `element`: if there was no redirect, the React element corresponding to the router component on the client
 
 This promise resolves when all asynchronous dependencies are available. If your routes require asynchronous data, e.g. from `getData` methods, you may want to dehydrate those data on the server, then rehydrate them on the client, to avoid the client having to request those data again.
 

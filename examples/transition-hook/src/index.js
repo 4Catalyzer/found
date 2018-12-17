@@ -130,8 +130,13 @@ class Main extends React.Component {
         </label>
         {showCustomConfirm && (
           <div>
-            Confirm <button onClick={this.onClickYes}>Yes</button>
-            <button onClick={this.onClickNo}>No</button>
+            Confirm{' '}
+            <button type="button" onClick={this.onClickYes}>
+              Yes
+            </button>
+            <button type="button" onClick={this.onClickNo}>
+              No
+            </button>
           </div>
         )}
       </div>

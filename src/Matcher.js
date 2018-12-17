@@ -253,11 +253,10 @@ export default class Matcher {
       return true;
     }
 
-    return Object.entries(query).every(
-      ([key, value]) =>
-        Object.prototype.hasOwnProperty.call(matchQuery, key)
-          ? isEqual(matchQuery[key], value)
-          : value === undefined,
+    return Object.entries(query).every(([key, value]) =>
+      Object.prototype.hasOwnProperty.call(matchQuery, key)
+        ? isEqual(matchQuery[key], value)
+        : value === undefined,
     );
   }
 
