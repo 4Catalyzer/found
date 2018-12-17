@@ -2,35 +2,30 @@ import Matcher from '../src/Matcher';
 
 describe('Matcher', () => {
   describe('route hierarchies', () => {
-    function createMatcher(options) {
-      return new Matcher(
-        [
+    const matcher = new Matcher([
+      {
+        path: 'foo',
+        children: [
           {
-            path: 'foo',
-            children: [
-              {
-                children: [{}],
-              },
-              {
-                path: 'bar',
-              },
-            ],
+            children: [{}],
           },
           {
             path: 'bar',
-            children: [
-              {
-                path: 'baz',
-              },
-            ],
-          },
-          {
-            path: 'foo/baz',
           },
         ],
-        options,
-      );
-    }
+      },
+      {
+        path: 'bar',
+        children: [
+          {
+            path: 'baz',
+          },
+        ],
+      },
+      {
+        path: 'foo/baz',
+      },
+    ]);
 
     [
       ['pathless children', '/foo', [0, 0, 0]],
@@ -40,17 +35,7 @@ describe('Matcher', () => {
       describe(scenario, () => {
         it('should be supported', () => {
           expect(
-            createMatcher().match({
-              pathname,
-            }),
-          ).toMatchObject({
-            routeIndices: expectedRouteIndices,
-          });
-        });
-
-        it('should be supported with matchStemRoutes disabled', () => {
-          expect(
-            createMatcher({ matchStemRoutes: false }).match({
+            matcher.match({
               pathname,
             }),
           ).toMatchObject({
@@ -60,24 +45,12 @@ describe('Matcher', () => {
       });
     });
 
-    describe('stem routes', () => {
-      it('should be supported by default', () => {
-        expect(
-          createMatcher().match({
-            pathname: '/bar',
-          }),
-        ).toMatchObject({
-          routeIndices: [1],
-        });
-      });
-
-      it('should not be supported with matchStemRoutes disabled', () => {
-        expect(
-          createMatcher({ matchStemRoutes: false }).match({
-            pathname: '/bar',
-          }),
-        ).toBeNull();
-      });
+    it('should not match stem routes', () => {
+      expect(
+        matcher.match({
+          pathname: '/bar',
+        }),
+      ).toBeNull();
     });
   });
 
@@ -196,6 +169,7 @@ describe('Matcher', () => {
         {
           path: ':foo',
           children: [
+            {},
             {
               path: '*',
             },
@@ -208,8 +182,8 @@ describe('Matcher', () => {
           pathname: '/a',
         }),
       ).toEqual({
-        routeIndices: [0],
-        routeParams: [{ foo: 'a' }],
+        routeIndices: [0, 0],
+        routeParams: [{ foo: 'a' }, {}],
         params: {
           foo: 'a',
         },
@@ -220,7 +194,7 @@ describe('Matcher', () => {
           pathname: '/a/b/c',
         }),
       ).toEqual({
-        routeIndices: [0, 0],
+        routeIndices: [0, 1],
         routeParams: [{ foo: 'a' }, { 0: 'b/c' }],
         params: {
           foo: 'a',
@@ -274,6 +248,7 @@ describe('Matcher', () => {
       {
         path: 'foo',
         children: [
+          {},
           {
             path: 'bar',
           },
@@ -282,10 +257,10 @@ describe('Matcher', () => {
     ]);
 
     [
-      ['parent without trailing slash', '/foo', [0]],
-      ['parent with trailing slash', '/foo/', [0]],
-      ['child without trailing slash', '/foo/bar', [0, 0]],
-      ['child with trailing slash', '/foo/bar/', [0, 0]],
+      ['parent without trailing slash', '/foo', [0, 0]],
+      ['parent with trailing slash', '/foo/', [0, 0]],
+      ['child without trailing slash', '/foo/bar', [0, 1]],
+      ['child with trailing slash', '/foo/bar/', [0, 1]],
     ].forEach(([scenario, pathname, expectedRouteIndices]) => {
       it(`should match ${scenario}`, () => {
         expect(

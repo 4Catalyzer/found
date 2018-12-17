@@ -12,7 +12,6 @@ export default function createFarceStore({
   historyMiddlewares,
   historyOptions,
   routeConfig,
-  matcherOptions,
 }) {
   const store = createStore(
     combineReducers({
@@ -24,7 +23,7 @@ export default function createFarceStore({
         protocol: historyProtocol,
         middlewares: historyMiddlewares || [queryMiddleware],
       }),
-      createMatchEnhancer(new Matcher(routeConfig, matcherOptions)),
+      createMatchEnhancer(new Matcher(routeConfig)),
     ),
   );
 
