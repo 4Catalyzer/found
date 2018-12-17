@@ -10,10 +10,11 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "rimraf lib && babel src -d lib",
-    "format": "eslint --fix examples/*/src src test && prettier --write '{src,test}/**/*.{ts,tsx}'",
-    "lint": "eslint examples/*/src src test && prettier -l '{src,test}/**/*.{ts,tsx}'",
+    "format": "eslint --fix . && npm run prettier -- --write",
+    "lint": "eslint . && npm run prettier -- -l",
     "precommit": "lint-staged",
     "prepublish": "npm run build",
+    "prettier": "prettier --ignore-path .eslintignore '**/*.{js,md,ts,tsx}'",
     "tdd": "jest --watch",
     "test": "npm run lint && npm run tsc && npm run testonly -- --coverage",
     "testonly": "jest --runInBand --verbose",
@@ -28,7 +29,7 @@
         "eslint --fix",
         "git add"
       ],
-      "**/*.{ts,tsx}": [
+      "**/*.{md,ts,tsx}": [
         "prettier --write",
         "git add"
       ],
