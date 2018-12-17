@@ -21,15 +21,11 @@ export default function createBaseRouter({ render }) {
     initialRenderArgs: PropTypes.object,
   };
 
-  const childContextTypes = {
-    router: routerShape.isRequired,
-  };
-
   class BaseRouter extends React.Component {
-    constructor(props, context) {
-      super(props, context);
+    constructor(props) {
+      super(props);
 
-      const { router, initialRenderArgs } = props;
+      const { initialRenderArgs } = props;
 
       this.state = {
         element: initialRenderArgs ? render(initialRenderArgs) : null,
@@ -39,12 +35,6 @@ export default function createBaseRouter({ render }) {
 
       this.shouldResolveMatch = false;
       this.pendingResolvedMatch = false;
-
-      this.childContext = { router };
-    }
-
-    getChildContext() {
-      return this.childContext;
     }
 
     // We use componentDidMount and componentDidUpdate to resolve the match if
@@ -163,7 +153,6 @@ export default function createBaseRouter({ render }) {
   }
 
   BaseRouter.propTypes = propTypes;
-  BaseRouter.childContextTypes = childContextTypes;
 
   return BaseRouter;
 }
