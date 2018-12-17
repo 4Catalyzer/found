@@ -39,8 +39,8 @@ const mainPropTypes = {
 };
 
 class Main extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       transitionType: 'confirm',
