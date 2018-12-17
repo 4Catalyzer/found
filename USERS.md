@@ -8,4 +8,4 @@ Using Found in your production app? If you'd like to add your team to the list, 
 
 ## B
 
-* [Butterfly Network](https://www.butterflynetwork.com/)
+- [Butterfly Network](https://www.butterflynetwork.com/)
