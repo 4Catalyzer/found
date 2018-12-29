@@ -1,4 +1,8 @@
+import { mount } from 'enzyme';
+
+import createRender from '../src/createRender';
 import resolver from '../src/resolver';
+import getFarceResult from '../src/server/getFarceResult';
 
 export class InstrumentedResolver {
   constructor() {
@@ -17,4 +21,26 @@ export class InstrumentedResolver {
     yield* resolver.resolveElements(match);
     resolveDone();
   }
+}
+
+export async function mountFarceResult({
+  url = '/',
+  render = createRender({}),
+  ...options
+}) {
+  const { element } = await getFarceResult({ ...options, url, render });
+  return mount(element);
+}
+
+export function mountWithRouter(element, options = {}) {
+  return mountFarceResult({
+    ...options,
+
+    routeConfig: [
+      {
+        path: '*',
+        render: () => element,
+      },
+    ],
+  });
 }

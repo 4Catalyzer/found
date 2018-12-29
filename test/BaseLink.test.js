@@ -26,26 +26,6 @@ describe('<BaseLink>', () => {
     };
   });
 
-  it('should render <a> by default', () => {
-    const link = mount(<BaseLink to="/" match={{}} router={router} />);
-
-    expect(link.find('a')).toHaveLength(1);
-  });
-
-  it('should support a custom Component', () => {
-    const link = mount(
-      <BaseLink
-        to="/"
-        match={{}}
-        router={router}
-        Component={CustomComponent}
-      />,
-    );
-
-    expect(link.find('a')).toHaveLength(0);
-    expect(link.find(CustomComponent)).toHaveLength(1);
-  });
-
   describe('when clicked', () => {
     it('should call a custom click handler', () => {
       const handleClick = jest.fn();
