@@ -16,8 +16,8 @@ export default function createFarceRouter({
   const ConnectedRouter = createConnectedRouter(options);
 
   class FarceRouter extends React.Component {
-    constructor(props, context) {
-      super(props, context);
+    constructor(props) {
+      super(props);
 
       this.store =
         store ||

@@ -7,7 +7,6 @@ import getStoreRenderArgs from '../getStoreRenderArgs';
 import RedirectException from '../RedirectException';
 import defaultResolver from '../resolver';
 import createFarceStore from '../utils/createFarceStore';
-import RouterProvider from './RouterProvider';
 
 export default async function getFarceResult({
   url,
@@ -52,12 +51,6 @@ export default async function getFarceResult({
 
   return {
     status: renderArgs.error ? renderArgs.error.status : 200,
-    element: (
-      <Provider store={store}>
-        <RouterProvider router={renderArgs.router}>
-          {render(renderArgs)}
-        </RouterProvider>
-      </Provider>
-    ),
+    element: <Provider store={store}>{render(renderArgs)}</Provider>,
   };
 }

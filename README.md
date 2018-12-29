@@ -780,8 +780,8 @@ The `router.addTransitionHook` method adds a [transition hook](https://github.co
 
 ```js
 class MyForm extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.dirty = false;
 
@@ -923,11 +923,10 @@ These behave similarly to their counterparts above, except that the options obje
 
 #### Server-side rendering with custom Redux store
 
-Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
+Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function.
 
 ```js
 import { getStoreRenderArgs, RedirectException } from 'found';
-import { RouterProvider } from 'found/lib/server';
 
 /* ... */
 
@@ -951,22 +950,18 @@ app.use(async (req, res) => {
     throw e;
   }
 
-  res.status(renderArgs.error ? renderArgs.error.status : 200).send(
-    renderPageToString(
-      <Provider store={store}>
-        <RouterProvider router={renderArgs.router}>
-          {render(renderArgs)}
-        </RouterProvider>
-      </Provider>,
-      store.getState(),
-    ),
-  );
+  res
+    .status(renderArgs.error ? renderArgs.error.status : 200)
+    .send(
+      renderPageToString(
+        <Provider store={store}>{render(renderArgs)}</Provider>,
+        store.getState(),
+      ),
+    );
 });
 ```
 
 You must dispatch `FarceActions.init()` before calling `getStoreRenderArgs`. `getStoreRenderArgs` takes an options object. This object must have the `store` property for your store and the `resolver` property as described above. It supports an optional `matchContext` property as described above as well. `getStoreRenderArgs` returns a promise that resolves to a `renderArgs` object that can be passed into a `render` function as above.
-
-`<RouterProvider>` requires a `router` prop that is the router context object as described above. This is available on `renderArgs.router`, from the value resolved by `getStoreRenderArgs`.
 
 On the client, pass the value resolved by by `getStoreRenderArgs` to your `<ConnectedRouter>` as the `initialRenderArgs` prop.
 
