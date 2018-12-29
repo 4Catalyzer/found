@@ -2,7 +2,10 @@
   "name": "found",
   "version": "0.3.14",
   "description": "Extensible route-based routing for React applications",
-  "files": ["lib", "types/index.d.ts"],
+  "files": [
+    "lib",
+    "types/index.d.ts"
+  ],
   "main": "lib/index.js",
   "types": "types/index.d.ts",
   "scripts": {
@@ -12,8 +15,7 @@
     "prepublish": "npm run build",
     "prettier": "prettier --ignore-path .eslintignore '**/*.{js,md,ts,tsx}'",
     "tdd": "jest --watch",
-    "test":
-      "npm run lint && npm run test:ts && npm run testonly -- --coverage",
+    "test": "npm run lint && npm run test:ts && npm run testonly -- --coverage",
     "test:ts": "dtslint types",
     "testonly": "jest --runInBand --verbose"
   },
@@ -46,14 +48,23 @@
     "trailingComma": "all"
   },
   "jest": {
-    "collectCoverageFrom": ["src/**"],
-    "setupFiles": ["<rootDir>/test/setup.js"]
+    "collectCoverageFrom": [
+      "src/**"
+    ],
+    "setupFiles": [
+      "<rootDir>/test/setup.js"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/4Catalyzer/found.git"
   },
-  "keywords": ["react", "router", "routes", "routing"],
+  "keywords": [
+    "react",
+    "router",
+    "routes",
+    "routing"
+  ],
   "author": "4Catalyzer",
   "license": "MIT",
   "bugs": {
@@ -90,9 +101,9 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "codecov": "^3.1.0",
-    "dtslint": "^0.3.0",
     "delay": "^4.1.0",
     "doctoc": "^1.4.0",
+    "dtslint": "^0.3.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.10.0",
