@@ -6,9 +6,24 @@ import warning from 'warning';
 
 import { routerShape } from './PropTypes';
 import RedirectException from './RedirectException';
+import createRender from './createRender';
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
-export default function createBaseRouter({ render }) {
+export default function createBaseRouter({
+  render,
+  renderPending,
+  renderReady,
+  renderError,
+}) {
+  // eslint-disable-next-line no-param-reassign
+  render =
+    render ||
+    createRender({
+      renderPending,
+      renderReady,
+      renderError,
+    });
+
   const propTypes = {
     match: PropTypes.object.isRequired,
     resolvedMatch: PropTypes.object.isRequired,

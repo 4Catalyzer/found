@@ -609,19 +609,18 @@ The created `<BrowserRouter>` accepts an optional `matchContext` prop as describ
 
 ```js
 import { BrowserProtocol, queryMiddleware } from 'farce';
-import { createFarceRouter, createRender, resolver } from 'found';
+import { createFarceRouter, resolver } from 'found';
 
 /* ... */
 
 const FarceRouter = createFarceRouter({
   historyProtocol: new BrowserProtocol(),
+  historyMiddlewares: [queryMiddleware],
   routeConfig,
 
-  render: createRender({
-    renderError: ({ error }) => (
-      <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
-    ),
-  }),
+  renderError: ({ error }) => (
+    <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
+  ),
 });
 
 ReactDOM.render(
@@ -631,8 +630,6 @@ ReactDOM.render(
 ```
 
 The options object for `createFarceRouter` should have a `historyProtocol` property that has a history protocol object. For example, to use the HTML History API as with `createBrowserRouter`, you would provide `new BrowserProtocol()`.
-
-The `createFarceRouter` options object does not have a default for the `render` property. It ignores the `renderPending`, `renderReady`, and `renderError` properties.
 
 The created `<FarceRouter>` manages setting up and providing a Redux store with the appropriate configuration internally. It also requires a `resolver` prop with the route element resolver object. For routes configured as above, this should be the `resolver` object in this library.
 

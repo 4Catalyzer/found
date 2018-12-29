@@ -1,9 +1,10 @@
-// Type definitions for found v0.3.5
-// Project: https://github.com/4Catalyzer/found
-// Definitions by: Kevin Ross <https://github.com/rosskevin/>
+// TypeScript Version: 3.0
 
 declare module 'found' {
   import * as React from 'react';
+  import { Store, Reducer, Action, StoreEnhancer } from 'redux';
+
+  type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
   interface ObjectMap {
     [key: string]: any;
@@ -13,20 +14,7 @@ declare module 'found' {
     [key: string]: string;
   }
 
-  /**
-   * Location descriptor string:
-   *  store.dispatch(FarceActions.push('/foo?bar=baz#qux'));
-   *
-   * Equivalent location descriptor object:
-   *    store.dispatch(FarceActions.push({
-   *     pathname: '/foo',
-   *     search: '?bar=baz',
-   *     hash: '#qux',
-   *   }));
-   *
-   * https://github.com/4Catalyzer/farce#locations-and-location-descriptors
-   */
-  interface Location {
+  interface Location<S = any> {
     /**
      * 'PUSH' or 'REPLACE' if the location was reached via FarceActions.push or
      * FarceActions.replace respectively; 'POP' on the initial location, or if
@@ -68,8 +56,24 @@ declare module 'found' {
     /**
      * additional location state that is not part of the URL
      */
-    state: any;
+    state: S;
   }
+
+  type Params = ObjectStringMap;
+
+  /**
+   * Location descriptor string:
+   *  store.dispatch(FarceActions.push('/foo?bar=baz#qux'));
+   *
+   * Equivalent location descriptor object:
+   *    store.dispatch(FarceActions.push({
+   *     pathname: '/foo',
+   *     search: '?bar=baz',
+   *     hash: '#qux',
+   *   }));
+   *
+   * https://github.com/4Catalyzer/farce#locations-and-location-descriptors
+   */
 
   interface MatchBase {
     /**
@@ -79,7 +83,7 @@ declare module 'found' {
     /**
      * The union of path parameters for *all* matched routes
      */
-    params: ObjectStringMap;
+    params: Params;
   }
 
   /**
@@ -107,16 +111,41 @@ declare module 'found' {
     context: any;
   }
 
+  interface FoundState {
+    match: Match;
+    resolvedMatch: any;
+  }
+
+  interface Resolver {
+    resolveElements(
+      match: Match,
+    ): AsyncIterableIterator<React.ReactElement<any> | null>;
+  }
+
+  const resolver: Resolver;
+
+  const foundReducer: Reducer<FoundState>;
+
   /**
    * An object implementing the matching algorithm.
    *
    * User code generally shouldn't need this, but it doesn't hurt to here,
    * since we use it for routerShape below.
    */
-  interface Matcher {
-    match: Function;
-    getRoutes: Function;
-    isActive: Function;
+  class Matcher {
+    constructor(
+      routeConfig: RouteConfig,
+      options: { matchStemRoutes: boolean },
+    );
+    match(
+      location: Location,
+    ): null | { routeIndices: number[]; routeParams: Params; params: Params };
+    getRoutes: () => RouteConfig[];
+    isActive: (
+      match: Match,
+      location: Location,
+      options: { exact: boolean },
+    ) => boolean;
     /**
      * Returns the path string for a pattern of the same format as a route path
      * and a object of the corresponding path parameters
@@ -156,38 +185,38 @@ declare module 'found' {
      * Navigates to a new location
      * @see farce
      */
-    public push: (location: LocationDescriptor) => void;
+    push: (location: LocationDescriptor) => void;
     /**
      * Replace the current history entry
      * @see farce
      */
-    public replace: (location: LocationDescriptor) => void;
+    replace: (location: LocationDescriptor) => void;
     /**
      * Moves delta steps in the history stack
      * @see farce
      */
-    public go: (delta: number) => void;
+    go: (delta: number) => void;
 
-    public createHref: (location: LocationDescriptor) => string;
-    public createLocation: (location: LocationDescriptor) => Location;
+    createHref: (location: LocationDescriptor) => string;
+    createLocation: (location: LocationDescriptor) => Location;
     /**
      * for match as above, returns whether match corresponds to location or a
      * subpath of location; if exact is set, returns whether match corresponds
      * exactly to location
      */
-    public isActive: (
+    isActive: (
       match: Match,
       location: Location,
       options: { exact?: boolean },
     ) => boolean;
-    public matcher: Matcher;
+    matcher: Matcher;
     /**
      * Adds a transition hook that can block navigation.
      *
      * This method takes a transition hook function and returns a function to
      * remove the transition hook.
      */
-    public addTransitionHook: (hook: TransitionHook) => (() => void);
+    addTransitionHook: (hook: TransitionHook) => (() => void);
   }
 
   /**
@@ -201,7 +230,7 @@ declare module 'found' {
     /**
      * The path parameters for route
      */
-    routeParams: ObjectStringMap;
+    routeParams: Params;
   }
 
   interface RenderProps extends RouteMatch {
@@ -280,7 +309,10 @@ declare module 'found' {
 
   interface RouteProps extends BaseRouteConfig {
     children?:
-      | Array<React.ReactElement<RouteProps>>
+      | React.ReactNode
+      | false
+      | null
+      | Array<false | null | React.ReactElement<RouteProps>>
       | React.ReactElement<RouteProps>;
   }
 
@@ -297,8 +329,8 @@ declare module 'found' {
   }
 
   class HttpError {
-    public status: number;
-    public data: any;
+    status: number;
+    data: any;
     constructor(status: number);
   }
 
@@ -323,7 +355,7 @@ declare module 'found' {
   }
 
   class Link extends React.Component<LinkProps> {
-    public onClick: (event: React.SyntheticEvent<any>) => void;
+    onClick: (event: React.SyntheticEvent<any>) => void;
   }
 
   interface WithRouter {
@@ -344,9 +376,6 @@ declare module 'found' {
    */
   function makeRouteConfig(node: React.ReactNode): RouteConfig;
 
-  // Improve these `any`s as needed
-  type BrowserRouter = any;
-
   type ReactElementOrGroup =
     | React.ReactElement<any>
     | { [key: string]: ReactElementOrGroup[] };
@@ -365,22 +394,53 @@ declare module 'found' {
   }
 
   interface CreateRenderArgs {
-    renderPending?: (args: Match) => React.ReactElement<any>;
-    renderReady?: (args: RenderReadyArgs) => React.ReactElement<any>;
-    renderError?: (args: RenderErrorArgs) => React.ReactElement<any>;
+    renderPending?: (args: Match) => React.ReactNode;
+    renderReady?: (args: RenderReadyArgs) => React.ReactNode;
+    renderError?: (args: RenderErrorArgs) => React.ReactNode;
   }
 
-  interface CreateBrowserRouterArgs extends CreateRenderArgs {
-    render?: (args: RouterRenderArgs) => React.ReactElement<any>;
-    [key: string]: any;
+  function createMatchEnhancer(
+    matcher: Matcher,
+  ): () => StoreEnhancer<{
+    found: {
+      matcher: Matcher;
+      replaceRouteConfig: (routes: RouteConfig) => void;
+    };
+  }>;
+
+  function createRender(
+    args: CreateRenderArgs,
+  ): (renderArgs: Match) => React.ReactElement<any>;
+
+  interface BaseCreateRouterArgs extends CreateRenderArgs {
+    render?: (args: RouterRenderArgs) => React.ReactNode;
   }
 
-  function createBrowserRouter(
-    options: CreateBrowserRouterArgs,
-  ): BrowserRouter;
+  interface FarceCreateRouterArgs extends BaseCreateRouterArgs {
+    store?: Store<FoundState>;
+    historyProtocol: any;
+    historyMiddlewares?: any[];
+    historyOptions?: any;
+    routeConfig: RouteConfig;
+  }
+
+  interface CreateBrowserRouterArgs
+    extends Omit<FarceCreateRouterArgs, 'historyProtocol'> {
+    render?: (args: RouterRenderArgs) => React.ReactNode;
+  }
 
   // Improve these `any`s as needed
-  type FarceRouter = any;
+  type ConnectedRouter = React.ComponentType<{
+    resolver: Resolver;
+    matchContext?: any;
+  }>;
+
+  type BrowserRouter = React.ComponentType<{
+    resolver?: Resolver;
+    matchContext?: any;
+  }>;
+
+  function createConnectedRouter({ store, ...options }: any): ConnectedRouter;
 
   function createFarceRouter({
     store,
@@ -389,7 +449,39 @@ declare module 'found' {
     historyOptions,
     routeConfig,
     ...options
-  }: any): FarceRouter;
+  }: any): ConnectedRouter;
 
-  function createRender(args: CreateRenderArgs): React.ReactElement<any>;
+  function createBrowserRouter(
+    options: CreateBrowserRouterArgs,
+  ): BrowserRouter;
+}
+
+declare module 'found/lib/Route' {
+  import { Route } from 'found';
+
+  export default Route;
+}
+
+declare module 'found/lib/createRender' {
+  import { createRender } from 'found';
+
+  export default createRender;
+}
+
+declare module 'found/lib/makeRouteConfig' {
+  import { makeRouteConfig } from 'found';
+
+  export default makeRouteConfig;
+}
+
+declare module 'found/lib/RedirectException' {
+  import { RedirectException } from 'found';
+
+  export default RedirectException;
+}
+
+declare module 'found/lib/HttpError' {
+  import { HttpError } from 'found';
+
+  export default HttpError;
 }
