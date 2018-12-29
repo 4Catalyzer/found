@@ -103,7 +103,7 @@
     "codecov": "^3.1.0",
     "delay": "^4.1.0",
     "doctoc": "^1.4.0",
-    "dtslint": "^0.3.0",
+    "dtslint": "^0.4.2",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.10.0",
