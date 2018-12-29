@@ -11,7 +11,6 @@ export default function createFarceRouter({
   historyMiddlewares,
   historyOptions,
   routeConfig,
-  matcherOptions,
   ...options
 }) {
   const ConnectedRouter = createConnectedRouter(options);
@@ -27,7 +26,6 @@ export default function createFarceRouter({
           historyMiddlewares,
           historyOptions,
           routeConfig,
-          matcherOptions,
         });
     }
 
