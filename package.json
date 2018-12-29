@@ -4,10 +4,10 @@
   "description": "Extensible route-based routing for React applications",
   "files": [
     "lib",
-    "index.d.ts"
+    "types/index.d.ts"
   ],
   "main": "lib/index.js",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "rimraf lib && babel src -d lib",
     "format": "eslint --fix . && npm run prettier -- --write",
@@ -15,9 +15,9 @@
     "prepublish": "npm run build",
     "prettier": "prettier --ignore-path .eslintignore '**/*.{js,md,ts,tsx}'",
     "tdd": "jest --watch",
-    "test": "npm run lint && npm run tsc && npm run testonly -- --coverage",
-    "testonly": "jest --runInBand --verbose",
-    "tsc": "tsc -p tsconfig.json"
+    "test": "npm run lint && npm run test:ts && npm run testonly -- --coverage",
+    "test:ts": "dtslint types",
+    "testonly": "jest --runInBand --verbose"
   },
   "husky": {
     "hooks": {
@@ -103,6 +103,7 @@
     "codecov": "^3.1.0",
     "delay": "^4.1.0",
     "doctoc": "^1.4.0",
+    "dtslint": "^0.4.2",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.10.0",
