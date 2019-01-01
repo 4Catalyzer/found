@@ -22,4 +22,4 @@ function AppPage({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default AppPage;
+export { AppPage };
