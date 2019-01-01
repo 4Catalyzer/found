@@ -5,9 +5,9 @@ export interface MyProps {
   foo?: boolean;
 }
 
-export default withRouter(
+const WithRouterComponent = withRouter(
   class MyRoutedComponent extends React.Component<MyProps & WithRouter> {
-    public render() {
+    render() {
       const {
         match: { location },
         router,
@@ -20,3 +20,5 @@ export default withRouter(
     }
   },
 );
+
+export { WithRouterComponent };

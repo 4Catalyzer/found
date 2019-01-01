@@ -15,5 +15,5 @@
     "typeRoots": ["../"],
     "types": []
   },
-  "include": ["./*.ts", "./*.tsx"]
+  "include": ["./**/*.ts", "./**/*.tsx"]
 }

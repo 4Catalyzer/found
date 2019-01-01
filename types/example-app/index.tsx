@@ -8,9 +8,9 @@ import {
   Redirect,
   Route,
 } from 'found';
-import WidgetsPage from './WidgetsPage';
-import AppPage from './AppPage';
-import MainPage from './MainPage';
+import { WidgetsPage } from './WidgetsPage';
+import { AppPage } from './AppPage';
+import { MainPage } from './MainPage';
 
 const fetchWidget = (widgetId: any) =>
   new Promise(resolve => {
@@ -32,7 +32,7 @@ const BrowserRouter = createBrowserRouter({
         <Route
           path="widgets/:widgetId"
           getComponent={() =>
-            import('./WidgetsPage').then(module => module.default)
+            import('./WidgetsPage').then(module => module.WidgetsPage)
           }
           getData={({ params: { widgetId } }) =>
             fetchWidget(widgetId).catch(() => {
