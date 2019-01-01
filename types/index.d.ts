@@ -363,9 +363,12 @@ declare module 'found' {
     router: Router;
   }
 
-  function withRouter<OriginalProps>(
-    Component: React.ComponentType<OriginalProps & WithRouter>,
-  ): React.ComponentType<OriginalProps>;
+  type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
+  type Subtract<T, K> = Omit<T, keyof K>
+  
+  function withRouter<Props extends WithRouter>(
+    Component: React.ComponentType<Props>,
+  ): React.ComponentType<Subtract<Props, WithRouter>>;
 
   class RedirectException {
     constructor(location: string | LocationDescriptor);
