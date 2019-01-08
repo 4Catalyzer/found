@@ -416,8 +416,12 @@ declare module 'found' {
     render?: (args: RouterRenderArgs) => React.ReactNode;
   }
 
+  interface CreateConnectedRouterArgs extends BaseCreateRouterArgs {
+    getFound?: (store: any) => FoundState;
+  }
+
   interface FarceCreateRouterArgs extends BaseCreateRouterArgs {
-    store?: Store<FoundState>;
+    store?: Store;
     historyProtocol: any;
     historyMiddlewares?: any[];
     historyOptions?: any;
@@ -440,7 +444,10 @@ declare module 'found' {
     matchContext?: any;
   }>;
 
-  function createConnectedRouter({ store, ...options }: any): ConnectedRouter;
+  function createConnectedRouter({
+    getFound,
+    ...opts
+  }: CreateConnectedRouterArgs): ConnectedRouter;
 
   function createFarceRouter({
     store,
@@ -449,39 +456,9 @@ declare module 'found' {
     historyOptions,
     routeConfig,
     ...options
-  }: any): ConnectedRouter;
+  }: FarceCreateRouterArgs): ConnectedRouter;
 
   function createBrowserRouter(
     options: CreateBrowserRouterArgs,
   ): BrowserRouter;
-}
-
-declare module 'found/lib/Route' {
-  import { Route } from 'found';
-
-  export default Route;
-}
-
-declare module 'found/lib/createRender' {
-  import { createRender } from 'found';
-
-  export default createRender;
-}
-
-declare module 'found/lib/makeRouteConfig' {
-  import { makeRouteConfig } from 'found';
-
-  export default makeRouteConfig;
-}
-
-declare module 'found/lib/RedirectException' {
-  import { RedirectException } from 'found';
-
-  export default RedirectException;
-}
-
-declare module 'found/lib/HttpError' {
-  import { HttpError } from 'found';
-
-  export default HttpError;
 }
