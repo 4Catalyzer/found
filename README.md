@@ -767,8 +767,6 @@ MyButton.propTypes = propTypes;
 export default withRouter(MyButton);
 ```
 
-If you only need the `router` object, you can access it on React context as `context.router`, with the appropriate `contextTypes` configuration.
-
 If you have your own store with `foundReducer` installed on a key other than `found`, use `createWithRouter` with a options object with a `getFound` function to create a custom HOC, as with `createConnectedLink` above.
 
 #### Blocking navigation
