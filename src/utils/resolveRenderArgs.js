@@ -37,7 +37,6 @@ export default async function* resolveRenderArgs({
   const augmentedMatch = {
     ...match,
     routes,
-    match, // For symmetry with withRouter.
     router, // Convenience access for route components.
     context: matchContext,
   };
