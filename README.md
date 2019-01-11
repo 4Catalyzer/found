@@ -317,14 +317,14 @@ The router will have routes as follows:
 </AppPage>
 ```
 
-By default, route components receive additional props describing the current routing state. These include:
+By default, route components receive the following additional props describing the current routing state:
 
-- `location`: the current [location object](https://github.com/4Catalyzer/farce#locations-and-location-descriptors)
-- `params`: the union of path parameters for all matched routes
-- `routes`: an array of all matched route objects
-- `route`: the route object corresponding to this component
-- `routeParams`: the path parameters for `route`
-- `match`: an object with `location` and `params` as properties, conforming to the `matchShape` prop type validator
+- `match`: an object with router state properties, conforming to the `matchShape` prop type validator
+  - `location`: the current [location object](https://github.com/4Catalyzer/farce#locations-and-location-descriptors)
+  - `params`: the union of path parameters for all matched routes
+  - `routes`: an array of all matched route objects
+  - `route`: the route object corresponding to this component
+  - `routeParams`: the path parameters for `route`
 - `router`: an object with static router properties, conforming to the `routerShape` prop type validator
   - `push(location)`: navigates to a new location
   - `replace(location)`: replaces the existing history entry
@@ -334,11 +334,11 @@ By default, route components receive additional props describing the current rou
     - `format(pattern, params)`: returns the path string for a pattern of the same format as a route `path` and a object of the corresponding path parameters
   - `addTransitionHook(hook)`: adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can [block navigation](#blocking-navigation)
 
-The `getComponent` method receives an object containing these properties as its argument.
+The `getComponent` method receives an object containing the same properties as the `match` object above, with an additional `router` property as above.
 
 #### `data` or `getData`
 
-Specify the `data` property or `getData` method to inject data into a route component as the `data` prop. `data` can be any value. `getData` can be any value, or a promise that resolves to any value. `getData` receives an object containing the routing state, as described above.
+Specify the `data` property or `getData` method to inject data into a route component as the `data` prop. `data` can be any value. `getData` can be any value, or a promise that resolves to any value. `getData` receives an object containing the routing state, as described above for `getComponent`.
 
 The `getData` method is intended for loading additional data from your back end for a given route. By design, all requests for asynchronous component and data dependencies will be issued in parallel. Found uses static route configurations specifically to enable issuing these requests in parallel.
 
@@ -740,7 +740,7 @@ If you have your own store with `foundReducer` installed on a key other than `fo
 
 #### Programmatic navigation
 
-The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above. You can use this HOC to create components that navigate programmatically in event handlers.
+The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above, but with only the `location` and `params` properties on `match`. You can use this HOC to create components that navigate programmatically in event handlers.
 
 ```js
 const propTypes = {
