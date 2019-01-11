@@ -5,7 +5,7 @@ import { isResolved } from './ResolverUtils';
 
 export default function createElements(routeMatches, Components, matchData) {
   return routeMatches.map((match, i) => {
-    const { route } = match;
+    const { router, route } = match;
 
     const Component = Components[i];
     const data = matchData[i];
@@ -20,7 +20,7 @@ export default function createElements(routeMatches, Components, matchData) {
       return route.render({
         match,
         Component: isComponentResolved ? Component : null,
-        props: areDataResolved ? { ...match, data } : null,
+        props: areDataResolved ? { match, router, data } : null,
         data: areDataResolved ? data : null,
       });
     }
@@ -42,6 +42,6 @@ export default function createElements(routeMatches, Components, matchData) {
       return null;
     }
 
-    return <Component {...match} data={data} />;
+    return <Component match={match} router={router} data={data} />;
   });
 }

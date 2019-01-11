@@ -27,7 +27,9 @@ describe('getFarceResult', () => {
           },
           {
             path: 'baz/:qux',
-            Component: ({ params }) => <div className="baz">{params.qux}</div>,
+            Component: ({ match }) => (
+              <div className="baz">{match.params.qux}</div>
+            ),
           },
         ],
       },
@@ -72,8 +74,8 @@ describe('getFarceResult', () => {
                 },
                 {
                   path: 'qux/:quux',
-                  Component: ({ params }) => (
-                    <div className="qux">{params.quux}</div>
+                  Component: ({ match }) => (
+                    <div className="qux">{match.params.quux}</div>
                   ),
                 },
               ],
