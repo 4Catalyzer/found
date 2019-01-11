@@ -3,13 +3,12 @@
   "version": "0.3.17",
   "description": "Extensible route-based routing for React applications",
   "files": [
-    "lib",
-    "types/index.d.ts"
+    "lib"
   ],
   "main": "lib/index.js",
-  "types": "types/index.d.ts",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "build": "rimraf lib && babel src -d lib",
+    "build": "rimraf lib && babel src -d lib && cpy types/*.d.ts lib",
     "format": "eslint --fix . && npm run prettier -- --write",
     "lint": "eslint . && npm run prettier -- -l",
     "prepublish": "npm run build",
@@ -101,6 +100,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "codecov": "^3.1.0",
+    "cpy-cli": "^2.0.0",
     "delay": "^4.1.0",
     "doctoc": "^1.4.0",
     "dtslint": "^0.4.2",
