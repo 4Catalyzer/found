@@ -1008,5 +1008,5 @@ import Route from 'found/lib/Route';
 
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg
 [build]: https://travis-ci.org/4Catalyzer/found
-[npm-badge]: https://img.shields.io/npm/v/found.svg
+[npm-badge]: https://img.shields.io/npm/v/found/next.svg
 [npm]: https://www.npmjs.org/package/found
