@@ -3,16 +3,17 @@
 import * as React from 'react';
 
 import {
+  createBrowserRouter,
   createConnectedRouter,
   createRender,
-  createBrowserRouter,
   makeRouteConfig,
-  Route,
-  resolver,
-  HttpError,
   Match,
+  Redirect,
+  resolver,
+  Route,
 } from 'found';
 
+// Just test that these imports work.
 import _1 from 'found/lib/HttpError';
 import _2 from 'found/lib/RedirectException';
 import _3 from 'found/lib/makeRouteConfig';
@@ -68,6 +69,8 @@ const routeConfig = makeRouteConfig(
     <Route path="/" Component={Component} />
     <Route path="/foo/:id" getComponent={() => Promise.resolve(Component2)} />
     <Route path="/bar/:id" getComponent={() => Component2} />
+    <Redirect from="/baz" to="/foo" />
+    <Redirect from="/quz" to={() => ({ pathname: '/foo', other: 9 })} />
   </Route>,
 );
 
