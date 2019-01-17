@@ -336,14 +336,14 @@ declare module 'found' {
 
   interface RedirectProps {
     from: string;
-    to: string;
+    to: string | ((match: Match) => LocationDescriptor);
   }
 
   class Redirect extends React.Component<RedirectProps> {}
 
   interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     Component?: React.ComponentType<any>;
-    to: string | LocationDescriptor;
+    to: LocationDescriptor;
     // match: Match,  provided by withRouter
     activeClassName?: string;
     activeStyle?: any;
@@ -368,7 +368,7 @@ declare module 'found' {
   ): React.ComponentType<Omit<Props, keyof WithRouter>>;
 
   class RedirectException {
-    constructor(location: string | LocationDescriptor);
+    constructor(location: LocationDescriptor);
   }
 
   /**
