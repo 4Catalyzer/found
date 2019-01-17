@@ -98,10 +98,6 @@ declare module 'found' {
      */
     routes: RouteConfig[];
     /**
-     * The base match, for symmetry with withRouter.
-     */
-    match: MatchBase;
-    /**
      * An object with static router properties.
      */
     router: Router;
