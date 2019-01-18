@@ -335,7 +335,7 @@ declare module 'found' {
   }
 
   interface RedirectProps {
-    from: string;
+    from?: string;
     to: string | ((match: Match) => LocationDescriptor);
   }
 
