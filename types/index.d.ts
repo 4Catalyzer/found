@@ -1,7 +1,5 @@
 // TypeScript Version: 3.0
 
-import * as React from 'react';
-
 declare module 'found' {
   import * as React from 'react';
   import { Store, Reducer, Action, StoreEnhancer } from 'redux';
@@ -360,14 +358,14 @@ declare module 'found' {
     onClick: (event: React.SyntheticEvent<any>) => void;
   }
 
-  interface WithRouter {
+  interface WithRouterProps {
     match: Match;
     router: Router;
   }
 
-  function withRouter<Props extends WithRouter>(
+  function withRouter<Props extends WithRouterProps>(
     Component: React.ComponentType<Props>,
-  ): React.ComponentType<Omit<Props, keyof WithRouter>>;
+  ): React.ComponentType<Omit<Props, keyof WithRouterProps>>;
 
   class RedirectException {
     constructor(location: LocationDescriptor);
