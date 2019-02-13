@@ -136,11 +136,11 @@ describe('<BaseLink>', () => {
       router.isActive.mockReturnValueOnce(true);
       const link = mount(
         <BaseLink
+          as={CustomComponent}
           to="/"
+          activePropName="active"
           match={{}}
           router={router}
-          Component={CustomComponent}
-          activePropName="active"
         />,
       );
 
@@ -151,11 +151,11 @@ describe('<BaseLink>', () => {
       router.isActive.mockReturnValueOnce(false);
       const link = mount(
         <BaseLink
+          as={CustomComponent}
           to="/"
+          activePropName="active"
           match={{}}
           router={router}
-          Component={CustomComponent}
-          activePropName="active"
         />,
       );
 

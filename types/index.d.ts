@@ -1,5 +1,7 @@
 // TypeScript Version: 3.0
 
+import * as React from 'react';
+
 declare module 'found' {
   import * as React from 'react';
   import { Store, Reducer, Action, StoreEnhancer } from 'redux';
@@ -334,7 +336,7 @@ declare module 'found' {
   class Redirect extends React.Component<RedirectProps> {}
 
   interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-    Component?: React.ComponentType<any>;
+    as?: React.ComponentType<any>;
     to: LocationDescriptor;
     // match: Match,  provided by withRouter
     activeClassName?: string;
@@ -343,7 +345,15 @@ declare module 'found' {
     // router: Router, provided by withRouter
     exact?: boolean;
     target?: string;
-    childProps?: any;
+    children?:
+      | React.ReactNode
+      | ((
+          linkRenderArgs: {
+            href: string;
+            active: boolean;
+            onClick: (event: React.SyntheticEvent<any>) => void;
+          },
+        ) => React.ReactNode);
   }
 
   class Link extends React.Component<LinkProps> {

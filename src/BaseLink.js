@@ -6,7 +6,7 @@ import warning from 'warning';
 import { routerShape } from './PropTypes';
 
 const propTypes = {
-  Component: elementType,
+  as: elementType,
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
@@ -16,11 +16,11 @@ const propTypes = {
   exact: PropTypes.bool,
   target: PropTypes.string,
   onClick: PropTypes.func,
-  childProps: PropTypes.object, // In case of name conflicts here.
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
 const defaultProps = {
-  Component: 'a',
+  as: 'a',
   exact: false,
 };
 
@@ -57,7 +57,7 @@ class BaseLink extends React.Component {
 
   render() {
     const {
-      Component,
+      as: Component,
       to,
       match,
       activeClassName,
@@ -65,7 +65,6 @@ class BaseLink extends React.Component {
       activePropName,
       router,
       exact,
-      childProps,
       ...props
     } = this.props;
 
@@ -80,9 +79,21 @@ class BaseLink extends React.Component {
       );
     }
 
-    if (activeClassName || activeStyle || activePropName) {
+    const href = router.createHref(to);
+    const childrenIsFunction = typeof props.children === 'function';
+
+    if (
+      childrenIsFunction ||
+      activeClassName ||
+      activeStyle ||
+      activePropName
+    ) {
       const toLocation = router.createLocation(to);
       const active = router.isActive(match, toLocation, { exact });
+
+      if (childrenIsFunction) {
+        return props.children({ href, active, onClick: this.onClick });
+      }
 
       if (active) {
         if (activeClassName) {
@@ -104,8 +115,7 @@ class BaseLink extends React.Component {
     return (
       <Component
         {...props}
-        {...childProps}
-        href={router.createHref(to)}
+        href={href}
         onClick={this.onClick} // This overrides props.onClick.
       />
     );
