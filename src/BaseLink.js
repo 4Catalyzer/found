@@ -68,15 +68,21 @@ class BaseLink extends React.Component {
       ...props
     } = this.props;
 
-    if (__DEV__ && props.component) {
-      warning(
-        typeof Component === 'function',
-        'Link to %s with `component` prop `%s` has an element type that ' +
-          'is not a component. The expected prop for the link component is ' +
-          '`Component`.',
-        JSON.stringify(to),
-        props.component.displayName || props.component.name,
-      );
+    if (__DEV__ && typeof Component !== 'function') {
+      for (const wrongPropName of ['component', 'Component']) {
+        const wrongPropValue = props[wrongPropName];
+        if (!wrongPropValue) {
+          continue;
+        }
+
+        warning(
+          false,
+          'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
+          JSON.stringify(to),
+          wrongPropName,
+          wrongPropValue.displayName || wrongPropValue.name || 'UNKNOWN',
+        );
+      }
     }
 
     const href = router.createHref(to);
