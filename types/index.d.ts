@@ -119,7 +119,7 @@ declare module 'found' {
   interface Resolver {
     resolveElements(
       match: Match,
-    ): AsyncIterableIterator<React.ReactElement<any> | null>;
+    ): AsyncIterableIterator<React.ReactElement | null>;
   }
 
   const resolver: Resolver;
@@ -294,12 +294,11 @@ declare module 'found' {
      */
     defer?: boolean;
     /**
-     *
-     * @returns never (RedirectException) | undefined | React.ReactElement<any> (typical)
+     * @throws {HttpError}
+     * @throws {RedirectException}
+     * @returns undefined | null | React.ReactElement<any> (typical)
      */
-    render?: (
-      args: RouteRenderArgs,
-    ) => never | undefined | React.ReactElement<any>;
+    render?: (args: RouteRenderArgs) => undefined | null | React.ReactElement;
     // Provide indexer allowing for any properties
     [key: string]: any;
   }
@@ -374,7 +373,7 @@ declare module 'found' {
   function makeRouteConfig(node: React.ReactNode): RouteConfig;
 
   type ReactElementOrGroup =
-    | React.ReactElement<any>
+    | React.ReactElement
     | { [key: string]: ReactElementOrGroup[] };
 
   interface RenderErrorArgs extends Match {
@@ -407,7 +406,7 @@ declare module 'found' {
 
   function createRender(
     args: CreateRenderArgs,
-  ): (renderArgs: Match) => React.ReactElement<any>;
+  ): (renderArgs: Match) => React.ReactElement;
 
   interface BaseCreateRouterArgs extends CreateRenderArgs {
     render?: (args: RouterRenderArgs) => React.ReactNode;
