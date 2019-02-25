@@ -8,8 +8,18 @@ export default function injectRouterProp(ConnectedComponent) {
   const baseRender = ConnectedComponent.prototype.render;
 
   function wrapSelectDerivedProps(baseSelectDerivedProps) {
-    return function selectDerivedProps(state, props, store) {
-      const derivedProps = baseSelectDerivedProps(state, props, store);
+    return function selectDerivedProps(
+      state,
+      props,
+      store,
+      selectorFactoryOptions,
+    ) {
+      const derivedProps = baseSelectDerivedProps(
+        state,
+        props,
+        store,
+        selectorFactoryOptions,
+      );
 
       if (!store[ROUTER]) {
         // Memoize the store router object.
