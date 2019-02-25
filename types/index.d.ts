@@ -280,10 +280,7 @@ declare module 'found' {
      */
     getComponent?: (
       match: RouteMatch,
-    ) =>
-      | React.ComponentType<any>
-      | Promise<React.ComponentType<any>>
-      | Promise<JSX.Element>;
+    ) => React.ComponentType<any> | Promise<React.ComponentType<any>>;
     /**
      * additional data for the route
      */
