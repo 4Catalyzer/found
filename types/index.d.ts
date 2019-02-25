@@ -294,10 +294,11 @@ declare module 'found' {
      */
     defer?: boolean;
     /**
-     *
-     * @returns never (RedirectException) | undefined | React.ReactElement<any> (typical)
+     * @throws {HttpError}
+     * @throws {RedirectException}
+     * @returns undefined | null | React.ReactElement<any> (typical)
      */
-    render?: (args: RouteRenderArgs) => never | undefined | React.ReactElement;
+    render?: (args: RouteRenderArgs) => undefined | null | React.ReactElement;
     // Provide indexer allowing for any properties
     [key: string]: any;
   }
