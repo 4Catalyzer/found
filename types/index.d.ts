@@ -216,7 +216,7 @@ declare module 'found' {
      * This method takes a transition hook function and returns a function to
      * remove the transition hook.
      */
-    addTransitionHook: (hook: TransitionHook) => (() => void);
+    addTransitionHook: (hook: TransitionHook) => () => void;
   }
 
   /**
