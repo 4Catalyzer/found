@@ -75,7 +75,7 @@
     "farce": "^0.2.6",
     "is-promise": "^2.1.0",
     "lodash": "^4.17.11",
-    "path-to-regexp": "^1.7.0",
+    "path-to-regexp": "^3.0.0",
     "prop-types": "^15.6.2",
     "prop-types-extra": "^1.1.0",
     "react-redux": "^5.1.1",
