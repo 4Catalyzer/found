@@ -13,3 +13,4 @@ branches:
   only:
     - master
     - next
+    - v0.3-dev
