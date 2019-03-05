@@ -12,7 +12,7 @@
     "format": "eslint --fix . && npm run prettier -- --write",
     "lint": "eslint . && npm run prettier -- -l",
     "prepublish": "npm run build",
-    "prettier": "prettier --ignore-path .eslintignore '**/*.{js,md,ts,tsx}'",
+    "prettier": "prettier --ignore-path .eslintignore '**/*.{md,ts,tsx}'",
     "tdd": "jest --watch",
     "test": "npm run lint && npm run test:ts && npm run testonly -- --coverage",
     "test:ts": "dtslint types",
@@ -37,7 +37,8 @@
         "git add"
       ],
       "README.md": [
-        "doctoc"
+        "doctoc",
+        "git add"
       ]
     }
   },
