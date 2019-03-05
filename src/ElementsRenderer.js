@@ -15,7 +15,7 @@ const propTypes = {
 
 function accumulateElement(children, element) {
   if (!children) {
-    return element instanceof Function ? element() : element;
+    return typeof element === 'function' ? element() : element;
   }
 
   if (!element) {
@@ -29,12 +29,12 @@ function accumulateElement(children, element) {
       groups[groupName] = groupElements.reduceRight(accumulateElement, null);
     });
 
-    return element instanceof Function
+    return typeof element === 'function'
       ? element(groups)
       : React.cloneElement(element, groups);
   }
 
-  return element instanceof Function
+  return typeof element === 'function'
     ? element(children)
     : React.cloneElement(element, { children });
 }
