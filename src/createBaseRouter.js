@@ -46,6 +46,7 @@ export default function createBaseRouter({
       };
 
       this.mounted = true;
+      this.lastRenderArgs = initialRenderArgs;
 
       this.shouldResolveMatch = false;
       this.pendingResolvedMatch = false;
@@ -114,6 +115,15 @@ export default function createBaseRouter({
       }
     }
 
+    handleMaybeRedirectException(e) {
+      if (!e.isFoundRedirectException) {
+        return false;
+      }
+
+      this.props.router.replace(e.location);
+      return true;
+    }
+
     async resolveMatch() {
       const pendingMatch = this.props.match;
 
@@ -132,7 +142,8 @@ export default function createBaseRouter({
             this.props.resolvedMatch !== pendingMatch
           );
 
-          this.setState({ element: render(renderArgs) });
+          this.lastRenderArgs = renderArgs;
+          this.updateElement();
 
           if (this.pendingResolvedMatch) {
             // If this is a new match, update the store, so we can rerender at
@@ -143,12 +154,28 @@ export default function createBaseRouter({
           }
         }
       } catch (e) {
-        if (e.isFoundRedirectException) {
-          this.props.router.replace(e.location);
+        if (this.handleMaybeRedirectException(e)) {
           return;
         }
 
         throw e;
+      }
+    }
+
+    updateElement() {
+      this.setState({
+        element: render(this.lastRenderArgs),
+      });
+    }
+
+    componentDidCatch(error) {
+      if (this.handleMaybeRedirectException(error)) {
+        return;
+      }
+
+      if (error.isFoundHttpError) {
+        this.lastRenderArgs = { ...this.lastRenderArgs, error };
+        this.updateElement();
       }
     }
 
