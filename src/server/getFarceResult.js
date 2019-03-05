@@ -4,7 +4,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import getStoreRenderArgs from '../getStoreRenderArgs';
-import RedirectException from '../RedirectException';
 import defaultResolver from '../resolver';
 import createFarceStore from '../utils/createFarceStore';
 
@@ -33,7 +32,7 @@ export default async function getFarceResult({
       resolver,
     });
   } catch (e) {
-    if (e instanceof RedirectException) {
+    if (e.isFoundRedirectException) {
       // The store is not exposed to the user, so we need to build the redirect
       // URL here.
       return {

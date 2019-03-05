@@ -55,7 +55,7 @@ export default async function* resolveRenderArgs({
       };
     }
   } catch (e) {
-    if (e instanceof HttpError) {
+    if (e.isFoundHttpError) {
       yield { ...augmentedMatch, error: e };
       return;
     }
