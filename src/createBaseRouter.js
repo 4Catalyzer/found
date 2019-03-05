@@ -5,7 +5,6 @@ import StaticContainer from 'react-static-container';
 import warning from 'warning';
 
 import { routerShape } from './PropTypes';
-import RedirectException from './RedirectException';
 import createRender from './createRender';
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
@@ -144,7 +143,7 @@ export default function createBaseRouter({
           }
         }
       } catch (e) {
-        if (e instanceof RedirectException) {
+        if (e.isFoundRedirectException) {
           this.props.router.replace(e.location);
           return;
         }

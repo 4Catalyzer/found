@@ -923,7 +923,7 @@ These behave similarly to their counterparts above, except that the options obje
 Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function.
 
 ```js
-import { getStoreRenderArgs, RedirectException } from 'found';
+import { getStoreRenderArgs } from 'found';
 
 /* ... */
 
@@ -939,7 +939,7 @@ app.use(async (req, res) => {
       resolver,
     });
   } catch (e) {
-    if (e instanceof RedirectException) {
+    if (e.isFoundRedirectException) {
       res.redirect(302, store.farce.createHref(e.location));
       return;
     }
