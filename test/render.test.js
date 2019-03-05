@@ -182,4 +182,59 @@ describe('render', () => {
       ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'foo'),
     ).toHaveLength(0);
   });
+
+  it('should support render returning a function', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [
+        {
+          path: '/foo',
+          render: () => children => <div className="foo">{children}</div>,
+          children: [
+            {
+              render: () => ({ nav, main }) => (
+                <div className="bar">
+                  {nav}
+                  {main}
+                </div>
+              ),
+              children: {
+                nav: [
+                  {
+                    render: () => <div className="baz" />,
+                  },
+                ],
+                main: [
+                  {
+                    render: () => () => null,
+                    children: [
+                      {
+                        render: () => () => <div className="qux" />,
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+
+      render: createRender({}),
+    });
+
+    const resolver = new InstrumentedResolver();
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Router resolver={resolver} />,
+    );
+
+    await resolver.done;
+
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'baz');
+    expect(
+      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'qux'),
+    ).toHaveLength(0);
+  });
 });

@@ -3,16 +3,19 @@ import React from 'react';
 
 const propTypes = {
   elements: PropTypes.arrayOf(
-    // This should be an object of this same type, but recursive checks would
-    // probably be too messy.
-    PropTypes.object,
-    PropTypes.element,
+    PropTypes.oneOfType([
+      // This should be an object of this same type, but recursive checks would
+      // probably be too messy.
+      PropTypes.object,
+      PropTypes.element,
+      PropTypes.func,
+    ]),
   ).isRequired,
 };
 
 function accumulateElement(children, element) {
   if (!children) {
-    return element;
+    return element instanceof Function ? element() : element;
   }
 
   if (!element) {
@@ -26,10 +29,14 @@ function accumulateElement(children, element) {
       groups[groupName] = groupElements.reduceRight(accumulateElement, null);
     });
 
-    return React.cloneElement(element, groups);
+    return element instanceof Function
+      ? element(groups)
+      : React.cloneElement(element, groups);
   }
 
-  return React.cloneElement(element, { children });
+  return element instanceof Function
+    ? element(children)
+    : React.cloneElement(element, { children });
 }
 
 function ElementsRenderer({ elements }) {
