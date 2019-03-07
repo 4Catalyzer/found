@@ -15,7 +15,7 @@ const propTypes = {
 
 function accumulateElement(children, element) {
   if (!children) {
-    return typeof element === 'function' ? element() : element;
+    return typeof element === 'function' ? element(null) : element;
   }
 
   if (!element) {

@@ -375,14 +375,24 @@ This should be a relatively rare scenario, as generally user experience is bette
 
 #### `render`
 
-Specify the `render` method to further customize how the route renders. This method should return a React element to render that element, `undefined` if it has a pending asynchronous component or data dependency and is not ready to render, or `null` to render no component. It receives an object with the following properties:
+Specify the `render` method to further customize how the route renders. It receives an object with the following properties:
 
 - `match`: the routing state object, as above
 - `Component`: the component for the route, if any; `null` if the component has not yet been loaded
 - `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
 - `data`: the data for the route, as above; `null` if the data have not yet been loaded
 
-Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`.
+It should return:
+
+- another function that receives its children as an argument and returns a React element; this function receives
+  - a React element when not using named child routes
+  - an object when using named child routes
+  - `null` when it has no children
+- a React element to render that element
+- `undefined` if it has a pending asynchronous component or data dependency and is not ready to render
+- `null` to render its children (or nothing of there are no children)
+
+Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`. Additionally, the behavior is different between returning a function that returns `null` and returning `null` directly; in the former case, nothing will be rendered, while in the latter case, the route's children will be rendered.
 
 You can use this method to render per-route loading state.
 
