@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
-import elementType from 'prop-types-extra/lib/elementType';
 import React from 'react';
 import warning from 'warning';
 
 import { routerShape } from './PropTypes';
 
 const propTypes = {
-  Component: elementType,
+  Component: PropTypes.elementType,
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
