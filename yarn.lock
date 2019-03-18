@@ -5099,6 +5099,11 @@ p-defer@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-1.0.0.tgz#9f6eb182f6c9aa8cd743004a7d4f96b196b0fb0c"
   integrity sha1-n26xgvbJqozXQwBKfU+WsZaw+ww=
 
+p-defer@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-2.0.0.tgz#9b94b91c6a9a21df6874f0a871835f7902843470"
+  integrity sha512-TmvBjYH4jfcfsOZK3NhGOqlD3UkuSSNaV5vFcvVIb/jvpk2XdvtDmkhybwZjO4/NyyTnqLDh1ctBq4XUyNp6SA==
+
 p-finally@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
