@@ -2293,19 +2293,24 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-4catalyzer-react@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer-react/-/eslint-config-4catalyzer-react-0.9.0.tgz#9e510b367572373825f16401e11ce6eb72056d0b"
-  integrity sha512-VV940ptGvfmdUWamhDmuwRuGipvwoKG83xhDLz3jSmdZit6khMw+Q8pZsRrZocKk0zc9uWYO2l0ye5PCSTDvAA==
+eslint-config-4catalyzer-jest@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer-jest/-/eslint-config-4catalyzer-jest-1.2.0.tgz#5654e9eae8c5075b707687c3c685de4b1f1a2019"
+  integrity sha512-HHlPDgixOkUSWdUizjQtDnD6E9gsIn7Zo2q9OHmhhevm+G2OUIHsdnfsSL/J+7ZEFq86cy3lDj4KD2kUrTfb+A==
+
+eslint-config-4catalyzer-react@^0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer-react/-/eslint-config-4catalyzer-react-0.9.2.tgz#dad4f8bd738f3e9400820fff5be0e5374e4dd46b"
+  integrity sha512-AMDsxpgSZ8Nnr1yFrM0boqgXtbzx1GSml0v7yNUNLu9AQXb7q6tC9mFnuSe1J7tyyO3xqNTEpJ10CXFeylt4Dw==
   dependencies:
-    eslint-config-4catalyzer "^0.7.2"
+    eslint-config-4catalyzer "^0.8.0"
     eslint-config-airbnb "^17.1.0"
     eslint-plugin-react-hooks "^1.3.0"
 
-eslint-config-4catalyzer@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer/-/eslint-config-4catalyzer-0.7.2.tgz#527b3bf6cea02b1d15cd9062b6517ed79625c81e"
-  integrity sha512-YwiQCNn08UA+eL+CS93A8fN/b7nJEKeHCmhs6lrd+hSy+QDnfPY76CxU7T3cCEM/l4hyu795WYlpkZAFogD8nA==
+eslint-config-4catalyzer@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer/-/eslint-config-4catalyzer-0.8.0.tgz#80291a523a69da516e6e5a174b5d90d82eb1da67"
+  integrity sha512-kF7eDI3QTvKEqAe9wvouFqfhH5D8ToDDVfCKkCIUDUmPqudBofbg31FcWiLogfVwwFvPc3YAUxmLv8liEupBuQ==
   dependencies:
     babel-eslint "^10.0.1"
     eslint-config-airbnb-base "^13.1.0"
@@ -2366,6 +2371,11 @@ eslint-plugin-import@^2.16.0:
     minimatch "^3.0.4"
     read-pkg-up "^2.0.0"
     resolve "^1.9.0"
+
+eslint-plugin-jest@^22.4.1:
+  version "22.4.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.4.1.tgz#a5fd6f7a2a41388d16f527073b778013c5189a9c"
+  integrity sha512-gcLfn6P2PrFAVx3AobaOzlIEevpAEf9chTpFZz7bYfc7pz8XRv7vuKTIE4hxPKZSha6XWKKplDQ0x9Pq8xX2mg==
 
 eslint-plugin-jsx-a11y@^6.2.1:
   version "6.2.1"
@@ -2437,10 +2447,10 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@^5.15.2:
-  version "5.15.2"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.15.2.tgz#0237bbb2362f89f4effef2f191eb0fea5279c0a5"
-  integrity sha512-I8VM4SILpMwUvsRt83bQVwIRQAJ2iPMXun1FVZ/lV1OHklH2tJaXqoDnNzdiFc6bnCtGKXvQIQNP3kj1eMskSw==
+eslint@^5.15.3:
+  version "5.15.3"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.15.3.tgz#c79c3909dc8a7fa3714fb340c11e30fd2526b8b5"
+  integrity sha512-vMGi0PjCHSokZxE0NLp2VneGw5sio7SSiDNgIUn2tC0XkWJRNOIoHIg3CliLVfXnJsiHxGAYrkw0PieAu8+KYQ==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.9.1"
@@ -5179,9 +5189,9 @@ p-try@^1.0.0:
   integrity sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=
 
 p-try@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.0.0.tgz#85080bb87c64688fa47996fe8f7dfbe8211760b1"
-  integrity sha512-hMp0onDKIajHfIkdRk3P4CdCmErkYAxxDtP3Wx/4nZ3aGlau2VKh3mZpcuFkH27WQkL/3WBCPOktzA9ZOAnMQQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.1.0.tgz#c1a0f1030e97de018bb2c718929d2af59463e505"
+  integrity sha512-H2RyIJ7+A3rjkwKC2l5GGtU4H1vkxKCAGsWasNVd0Set+6i4znxbWy6/j16YDPJDWxhsgZiKAstMEP8wCdSpjA==
 
 parent-module@^1.0.0:
   version "1.0.0"
@@ -6656,9 +6666,9 @@ typescript@^3.3.3333:
   integrity sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
 
 typescript@next:
-  version "3.4.0-dev.20190316"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.0-dev.20190316.tgz#484348eeae7e95e307d0f9ab9df81a8450303c39"
-  integrity sha512-BMkCN4Eb1L4pJi7aU+y6rvDrO9v0qEJ/vdXFapdCX3I3q5bT4/77oGXP7gFQkpaUDnxs+m907PGQYiClITDpng==
+  version "3.4.0-dev.20190319"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.0-dev.20190319.tgz#7b57c2e975aea2216e172993dbd51bf9f749a4e5"
+  integrity sha512-07xlAz0ntyntHs8sDMqy3JMjTV/yfWhOuPcmJWCQCQehDWBD/YyrBDOOvHgACTBuiE+bIjkTaT7J14nz32dkZw==
 
 uglify-js@^3.1.4:
   version "3.4.10"
