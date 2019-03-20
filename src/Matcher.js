@@ -112,7 +112,7 @@ export default class Matcher {
       return null;
     }
 
-    const params = Object.create(null);
+    const params = {};
     keys.forEach(({ name }, index) => {
       const value = match[index + 1];
       params[name] = value && decodeURIComponent(value);
@@ -153,7 +153,7 @@ export default class Matcher {
         Object.keys(routeMatch.groups).join(', '),
       );
 
-      const routeIndices = {};
+      const groupRouteIndices = {};
       const routeParams = [];
       const params = {};
 
@@ -163,7 +163,7 @@ export default class Matcher {
 
           // Retain the nested group structure for route indices so we can
           // reconstruct the element tree from flattened route elements.
-          routeIndices[groupName] = groupPayload.routeIndices;
+          groupRouteIndices[groupName] = groupPayload.routeIndices;
 
           // Flatten route groups for route params matching getRoutesFromIndices
           // below.
@@ -174,7 +174,11 @@ export default class Matcher {
         },
       );
 
-      return { routeIndices, routeParams, params };
+      return {
+        routeIndices: [groupRouteIndices],
+        routeParams,
+        params,
+      };
     }
 
     const { index, params } = routeMatch;

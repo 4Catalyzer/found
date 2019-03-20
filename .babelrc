@@ -1,14 +1,12 @@
 {
   "presets": [
-    ["env", {
-      "loose": true
-    }],
-    "stage-1",
-    "react"
+    ["@4c", {
+      "runtime": true,
+      "corejs": 2,
+      "targets": {}
+    }]
   ],
   "plugins": [
-    "dev-expression",
-    "transform-runtime", // Need stage-3 Symbol polyfill.
     "add-module-exports"
   ]
 }
