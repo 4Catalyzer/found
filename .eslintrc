@@ -1,15 +1,13 @@
 {
   "extends": [
     "4catalyzer-react",
+    "4catalyzer-jest",
     "prettier",
     "prettier/react"
   ],
   "plugins": [
     "prettier"
   ],
-  "globals": {
-    "__DEV__": false
-  },
   "rules": {
     "prettier/prettier": "error"
   }

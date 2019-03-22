@@ -2,6 +2,8 @@
 
 _Extensible route-based routing for React applications._
 
+**This branch tracks the [v0.4 prereleases](https://github.com/4Catalyzer/found/releases), tagged `next` on npm. For the v0.3 releases tagged `latest` on npm, see the [`v0.3-dev`](https://github.com/4Catalyzer/found/tree/v0.3-dev) branch.**
+
 Found is a router for [React](https://facebook.github.io/react/) applications with a focus on power and extensibility. Found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. Found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
 
 Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
@@ -373,14 +375,24 @@ This should be a relatively rare scenario, as generally user experience is bette
 
 #### `render`
 
-Specify the `render` method to further customize how the route renders. This method should return a React element to render that element, `undefined` if it has a pending asynchronous component or data dependency and is not ready to render, or `null` to render no component. It receives an object with the following properties:
+Specify the `render` method to further customize how the route renders. It receives an object with the following properties:
 
 - `match`: the routing state object, as above
 - `Component`: the component for the route, if any; `null` if the component has not yet been loaded
 - `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
 - `data`: the data for the route, as above; `null` if the data have not yet been loaded
 
-Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`.
+It should return:
+
+- another function that receives its children as an argument and returns a React element; this function receives
+  - a React element when not using named child routes
+  - an object when using named child routes
+  - `null` when it has no children
+- a React element to render that element
+- `undefined` if it has a pending asynchronous component or data dependency and is not ready to render
+- `null` to render its children (or nothing of there are no children)
+
+Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`. Additionally, the behavior is different between returning a function that returns `null` and returning `null` directly; in the former case, nothing will be rendered, while in the latter case, the route's children will be rendered.
 
 You can use this method to render per-route loading state.
 
@@ -927,7 +939,7 @@ These behave similarly to their counterparts above, except that the options obje
 Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function.
 
 ```js
-import { getStoreRenderArgs, RedirectException } from 'found';
+import { getStoreRenderArgs } from 'found';
 
 /* ... */
 
@@ -943,7 +955,7 @@ app.use(async (req, res) => {
       resolver,
     });
   } catch (e) {
-    if (e instanceof RedirectException) {
+    if (e.isFoundRedirectException) {
       res.redirect(302, store.farce.createHref(e.location));
       return;
     }

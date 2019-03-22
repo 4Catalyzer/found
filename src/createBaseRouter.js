@@ -5,7 +5,6 @@ import StaticContainer from 'react-static-container';
 import warning from 'warning';
 
 import { routerShape } from './PropTypes';
-import RedirectException from './RedirectException';
 import createRender from './createRender';
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
@@ -119,8 +118,6 @@ export default function createBaseRouter({
       const pendingMatch = this.props.match;
 
       try {
-        // ESLint doesn't handle for-await yet.
-        // eslint-disable-next-line semi
         for await (const renderArgs of resolveRenderArgs(this.props)) {
           if (!this.mounted || this.props.match !== pendingMatch) {
             return;
@@ -144,7 +141,7 @@ export default function createBaseRouter({
           }
         }
       } catch (e) {
-        if (e instanceof RedirectException) {
+        if (e.isFoundRedirectException) {
           this.props.router.replace(e.location);
           return;
         }
