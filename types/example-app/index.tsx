@@ -8,9 +8,10 @@ import {
   Redirect,
   Route,
 } from 'found';
-import { WidgetsPage } from './WidgetsPage';
+
 import { AppPage } from './AppPage';
 import { MainPage } from './MainPage';
+import { WidgetsPage } from './WidgetsPage';
 
 const fetchWidget = (widgetId: any) =>
   new Promise(resolve => {

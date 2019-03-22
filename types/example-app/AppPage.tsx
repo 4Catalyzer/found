@@ -1,7 +1,13 @@
+import Link from 'found/lib/Link';
 import * as React from 'react';
-import { Link } from 'found';
 
-function AppPage({ children }: { children: React.ReactNode }) {
+import { CustomLink } from './CustomLink';
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppPage({ children }: Props) {
   return (
     <div>
       <ul>
@@ -11,8 +17,17 @@ function AppPage({ children }: { children: React.ReactNode }) {
           </Link>
         </li>
         <li>
-          <Link to="/widgets/foo" activeClassName="active">
+          <Link as={CustomLink} to="/widgets/foo" activePropName="active">
             Foo widget
+          </Link>
+        </li>
+        <li>
+          <Link to="/widgets/bar">
+            {({ href, active, onClick }) => (
+              <CustomLink href={href} active={active} onClick={onClick}>
+                Bar widget
+              </CustomLink>
+            )}
           </Link>
         </li>
       </ul>
@@ -21,5 +36,3 @@ function AppPage({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-export { AppPage };

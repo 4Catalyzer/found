@@ -5,7 +5,7 @@ import warning from 'warning';
 import { routerShape } from './PropTypes';
 
 const propTypes = {
-  Component: PropTypes.elementType,
+  as: PropTypes.elementType,
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
@@ -15,11 +15,11 @@ const propTypes = {
   exact: PropTypes.bool,
   target: PropTypes.string,
   onClick: PropTypes.func,
-  childProps: PropTypes.object, // In case of name conflicts here.
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
 const defaultProps = {
-  Component: 'a',
+  as: 'a',
   exact: false,
 };
 
@@ -56,7 +56,7 @@ class BaseLink extends React.Component {
 
   render() {
     const {
-      Component,
+      as: Component,
       to,
       match,
       activeClassName,
@@ -64,24 +64,41 @@ class BaseLink extends React.Component {
       activePropName,
       router,
       exact,
-      childProps,
       ...props
     } = this.props;
 
-    if (__DEV__ && props.component) {
-      warning(
-        typeof Component === 'function',
-        'Link to %s with `component` prop `%s` has an element type that ' +
-          'is not a component. The expected prop for the link component is ' +
-          '`Component`.',
-        JSON.stringify(to),
-        props.component.displayName || props.component.name,
-      );
+    if (__DEV__ && typeof Component !== 'function') {
+      for (const wrongPropName of ['component', 'Component']) {
+        const wrongPropValue = props[wrongPropName];
+        if (!wrongPropValue) {
+          continue;
+        }
+
+        warning(
+          false,
+          'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
+          JSON.stringify(to),
+          wrongPropName,
+          wrongPropValue.displayName || wrongPropValue.name || 'UNKNOWN',
+        );
+      }
     }
 
-    if (activeClassName || activeStyle || activePropName) {
+    const href = router.createHref(to);
+    const childrenIsFunction = typeof props.children === 'function';
+
+    if (
+      childrenIsFunction ||
+      activeClassName ||
+      activeStyle ||
+      activePropName
+    ) {
       const toLocation = router.createLocation(to);
       const active = router.isActive(match, toLocation, { exact });
+
+      if (childrenIsFunction) {
+        return props.children({ href, active, onClick: this.onClick });
+      }
 
       if (active) {
         if (activeClassName) {
@@ -103,8 +120,7 @@ class BaseLink extends React.Component {
     return (
       <Component
         {...props}
-        {...childProps}
-        href={router.createHref(to)}
+        href={href}
         onClick={this.onClick} // This overrides props.onClick.
       />
     );

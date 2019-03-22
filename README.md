@@ -723,7 +723,7 @@ const link1 = (
 
 const link2 = (
   <Link
-    Component={CustomAnchor}
+    as={CustomAnchor}
     to={{
       pathname: '/widgets/bar',
       query: { the: query },
@@ -738,15 +738,21 @@ const link2 = (
 `<Link>` accepts the following props:
 
 - `to`: a [location descriptor](https://github.com/4Catalyzer/farce#locations-and-location-descriptors) for the link's destination
+- `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
 - `activeClassName`: if specified, a CSS class to append to the component's CSS classes when the link is active
 - `activeStyle`: if specified, a style object to append merge with the component's style object when the link is active
 - `activePropName`: if specified, a prop to inject with a boolean value with the link's active state
-- `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
-- `Component`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
-
-`<Link>` forwards additional props to the child element. If you need to pass in additional props to the custom link component that collide with the names of props used by `<Link>`, specify the optional `childProps` prop as an object containing those props.
+- `as`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
 
 A link will navigate per its `to` location descriptor when clicked. You can prevent this navigation by providing an `onClick` handler that calls `event.preventDefault()`.
+
+`<Link>` accepts a function for `children`. If `children` is a function, then `<Link>` will render the return value of that function, and will ignore `activeClassName`, `activeStyle`, `activePropName`, and `as` above. The function will be called with an object with the following properties:
+
+- `href`: the URL for the link
+- `active`: whether the link is active
+- `onClick`: the click event handler for the link element
+
+Otherwise, `<Link>` forwards additional props to the child element.
 
 If you have your own store with `foundReducer` installed on a key other than `found`, use `createConnectedLink` with a options object with a `getFound` function to create a custom link component class, as with `createConnectedRouter` above.
 

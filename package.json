@@ -51,6 +51,8 @@
     "collectCoverageFrom": [
       "src/**"
     ],
+    "resetMocks": true,
+    "restoreMocks": true,
     "setupFiles": [
       "<rootDir>/test/setup.js"
     ],
