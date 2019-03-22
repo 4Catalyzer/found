@@ -1,9 +1,11 @@
 {
   "presets": [
-    ["env", {
-      "loose": true
+    ["@babel/env", {
+      "loose": true,
+      "useBuiltIns": "usage",
+      "corejs": 3
     }],
-    "react"
+    "@babel/react"
   ],
   "plugins": [
     "react-hot-loader/babel"
