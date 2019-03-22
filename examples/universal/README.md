@@ -5,8 +5,8 @@ This example uses the same route configuration as the [basic JSX example](../bas
 ## Usage
 
 ```
-$ npm i
-$ npm start
+$ yarn
+$ yarn start
 ```
 
 Then open [http://localhost:3000/](http://localhost:3000/) in your browser.
