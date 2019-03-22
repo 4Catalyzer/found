@@ -345,13 +345,11 @@ declare module 'found' {
     target?: string;
     children?:
       | React.ReactNode
-      | ((
-          linkRenderArgs: {
-            href: string;
-            active: boolean;
-            onClick: (event: React.SyntheticEvent<any>) => void;
-          },
-        ) => React.ReactNode);
+      | ((linkRenderArgs: {
+          href: string;
+          active: boolean;
+          onClick: (event: React.SyntheticEvent<any>) => void;
+        }) => React.ReactNode);
   }
 
   class Link extends React.Component<LinkProps> {
