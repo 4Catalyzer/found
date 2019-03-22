@@ -733,6 +733,19 @@ const link2 = (
     Bar widget with query
   </Link>
 );
+
+const link3 = (
+  <Link
+    to={{
+      pathname: '/widgets/bar',
+      query: { the: query },
+    }}
+  >
+    {({ href, active, onClick }) => (
+      <CustomButton href={href} active={active} onClick={onClick} />
+    )}
+  </Link>
+);
 ```
 
 `<Link>` accepts the following props:

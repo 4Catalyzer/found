@@ -35,13 +35,8 @@ describe('<Link>', () => {
   it('should support functional children', async () => {
     const link = await mountWithRouter(
       <Link to="/" otherProp="foo">
-        {({ href, active, onClick, props }) => (
-          <CustomComponent
-            {...props}
-            href={href}
-            active={active}
-            onClick={onClick}
-          />
+        {({ href, active, onClick }) => (
+          <CustomComponent href={href} active={active} onClick={onClick} />
         )}
       </Link>,
     );
