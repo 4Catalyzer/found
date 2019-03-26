@@ -3,9 +3,9 @@
 
 
 "@4c/babel-preset@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@4c/babel-preset/-/babel-preset-5.0.4.tgz#3dd2c72c05664b7b0a9eaceb56888669c5117123"
-  integrity sha512-NL8cQ2De59bwuU6HVH1mbcu1WeXx0hLtOaTAu8ejeDdslb4tA/bFy/79w4TC2H23+iw7Uq3QtpIh804ORRpVKA==
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@4c/babel-preset/-/babel-preset-5.1.0.tgz#ade5a097f19b985c678c6d05b5ecc8660380df56"
+  integrity sha512-a1iWM1Iik75fVfOS3wE9SrxB0F9ge4VBGJqJvZANjwYPFJJaVoaJ69cdOQI82jl8YD2QLsWpNhj1yl7NMC4g+Q==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.4.0"
     "@babel/plugin-proposal-export-default-from" "^7.2.0"
@@ -19,6 +19,7 @@
     babel-plugin-react-intl "^3.0.1"
     browserslist "^4.5.1"
     lodash "^4.17.11"
+    read-pkg-up "^5.0.0"
 
 "@babel/cli@^7.2.3":
   version "7.2.3"
@@ -5522,6 +5523,14 @@ read-pkg-up@^4.0.0:
     find-up "^3.0.0"
     read-pkg "^3.0.0"
 
+read-pkg-up@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-5.0.0.tgz#b6a6741cb144ed3610554f40162aa07a6db621b8"
+  integrity sha512-XBQjqOBtTzyol2CpsQOw8LHV0XbDZVG7xMMjmXAJomlVY03WOBRmYgDJETlvcg0H63AJvPRwT7GFi5rvOzUOKg==
+  dependencies:
+    find-up "^3.0.0"
+    read-pkg "^5.0.0"
+
 read-pkg@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-2.0.0.tgz#8ef1c0623c6a6db0dc6713c4bfac46332b2368f8"
@@ -5548,6 +5557,14 @@ read-pkg@^4.0.1:
     normalize-package-data "^2.3.2"
     parse-json "^4.0.0"
     pify "^3.0.0"
+
+read-pkg@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-5.0.0.tgz#75449907ece8dfb89cbc76adcba2665316e32b94"
+  integrity sha512-OWufaRc67oJjcgrxckW/qO9q22iYzyiONh8h+GMcnOvSHAmhV1Dr3x+gyRjP+Qxc5jKupkSfoCQLS/98rDPh9A==
+  dependencies:
+    normalize-package-data "^2.3.2"
+    parse-json "^4.0.0"
 
 readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.6:
   version "2.3.6"
@@ -5898,7 +5915,7 @@ sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scheduler@^0.13.4, scheduler@^0.13.5:
+scheduler@^0.13.5:
   version "0.13.5"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.5.tgz#b7226625167041298af3b98088a9dbbf6d7733a8"
   integrity sha512-K98vjkQX9OIt/riLhp6F+XtDPtMQhqNcf045vsh+pcuvHq+PHy1xCrH3pq1P40m6yR46lpVvVhKdEOtnimuUJw==
