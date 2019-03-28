@@ -18,8 +18,11 @@ export class InstrumentedResolver {
       resolveDone = resolve;
     });
 
-    yield* resolver.resolveElements(match);
-    resolveDone();
+    try {
+      yield* resolver.resolveElements(match);
+    } finally {
+      resolveDone();
+    }
   }
 }
 
