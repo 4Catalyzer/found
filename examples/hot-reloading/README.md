@@ -5,8 +5,8 @@ This example uses the same route configuration as the [basic JSX example](../bas
 ## Usage
 
 ```
-$ npm i
-$ npm start
+$ yarn
+$ yarn start
 ```
 
 Then open [http://localhost:8080/](http://localhost:8080/) in your browser. Modify [`routeConfig.js`](src/routeConfig.js) to see the hot reloading in action.

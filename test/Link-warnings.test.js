@@ -1,0 +1,61 @@
+jest.mock('warning');
+
+import React from 'react';
+import warning from 'warning';
+
+import Link from '../src/Link';
+import { mountWithRouter } from './helpers';
+
+const CustomComponent = () => <div />;
+
+describe('<Link> warnings', () => {
+  it('should warn on component prop', async () => {
+    // The below will log a warning for an invalid prop.
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await mountWithRouter(<Link component={CustomComponent} to="/" />);
+
+    expect(warning).toHaveBeenCalledWith(
+      false,
+      'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
+      '"/"',
+      'component',
+      'CustomComponent',
+    );
+  });
+
+  it('should warn on Component prop', async () => {
+    // The below will log a warning for an invalid prop.
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await mountWithRouter(<Link Component={CustomComponent} to="/" />);
+
+    expect(warning).toHaveBeenCalledWith(
+      false,
+      'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
+      '"/"',
+      'Component',
+      'CustomComponent',
+    );
+  });
+
+  it('should not warn when as prop is specified', async () => {
+    await mountWithRouter(
+      <Link
+        as={CustomComponent}
+        to="/"
+        component={CustomComponent}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
+        Component={CustomComponent}
+      />,
+    );
+
+    expect(warning).not.toHaveBeenCalledWith(
+      false,
+      'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
+      expect.anything(),
+      expect.anything(),
+      expect.anything(),
+    );
+  });
+});

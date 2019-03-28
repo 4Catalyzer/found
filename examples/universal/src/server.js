@@ -14,7 +14,7 @@ const app = express();
 const webpackConfig = {
   mode: 'development',
 
-  entry: ['babel-polyfill', './src/client'],
+  entry: './src/client',
 
   output: {
     path: '/',

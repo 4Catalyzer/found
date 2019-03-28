@@ -1,4 +1,5 @@
 import * as React from 'react';
 
-const WidgetsPage = () => <div />;
-export { WidgetsPage };
+export function WidgetsPage() {
+  return <div />;
+}

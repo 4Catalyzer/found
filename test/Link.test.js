@@ -13,10 +13,42 @@ describe('<Link>', () => {
 
   it('should support a custom component', async () => {
     const link = await mountWithRouter(
-      <Link Component={CustomComponent} to="/" />,
+      <Link
+        as={CustomComponent}
+        to="/"
+        activePropName="active"
+        otherProp="foo"
+      />,
     );
     expect(link.find('a')).toHaveLength(0);
-    expect(link.find(CustomComponent)).toHaveLength(1);
+
+    const customNode = link.find(CustomComponent);
+    expect(customNode).toHaveLength(1);
+    expect(customNode.props()).toEqual({
+      href: '/',
+      active: true,
+      onClick: expect.any(Function),
+      otherProp: 'foo',
+    });
+  });
+
+  it('should support functional children', async () => {
+    const link = await mountWithRouter(
+      <Link to="/" otherProp="foo">
+        {({ href, active, onClick }) => (
+          <CustomComponent href={href} active={active} onClick={onClick} />
+        )}
+      </Link>,
+    );
+    expect(link.find('a')).toHaveLength(0);
+
+    const customNode = link.find(CustomComponent);
+    expect(customNode).toHaveLength(1);
+    expect(customNode.props()).toEqual({
+      href: '/',
+      active: true,
+      onClick: expect.any(Function),
+    });
   });
 
   describe('active state', () => {

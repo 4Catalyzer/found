@@ -128,8 +128,6 @@ export default function createBaseRouter({
       const pendingMatch = this.props.match;
 
       try {
-        // ESLint doesn't handle for-await yet.
-        // eslint-disable-next-line semi
         for await (const renderArgs of resolveRenderArgs(this.props)) {
           if (!this.mounted || this.props.match !== pendingMatch) {
             return;

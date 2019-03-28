@@ -375,14 +375,24 @@ This should be a relatively rare scenario, as generally user experience is bette
 
 #### `render`
 
-Specify the `render` method to further customize how the route renders. This method should return a React element to render that element, `undefined` if it has a pending asynchronous component or data dependency and is not ready to render, or `null` to render no component. It receives an object with the following properties:
+Specify the `render` method to further customize how the route renders. It receives an object with the following properties:
 
 - `match`: the routing state object, as above
 - `Component`: the component for the route, if any; `null` if the component has not yet been loaded
 - `props`: the default props for the route component, specifically `match` with `data` as an additional property; `null` if `data` have not yet been loaded
 - `data`: the data for the route, as above; `null` if the data have not yet been loaded
 
-Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`.
+It should return:
+
+- another function that receives its children as an argument and returns a React element; this function receives
+  - a React element when not using named child routes
+  - an object when using named child routes
+  - `null` when it has no children
+- a React element to render that element
+- `undefined` if it has a pending asynchronous component or data dependency and is not ready to render
+- `null` to render its children (or nothing of there are no children)
+
+Note that, when specifying this `render` method, `Component` or `getComponent` will have no effect other than controlling the value of the `Component` property on the argument to `render`. Additionally, the behavior is different between returning a function that returns `null` and returning `null` directly; in the former case, nothing will be rendered, while in the latter case, the route's children will be rendered.
 
 You can use this method to render per-route loading state.
 
@@ -713,7 +723,7 @@ const link1 = (
 
 const link2 = (
   <Link
-    Component={CustomAnchor}
+    as={CustomAnchor}
     to={{
       pathname: '/widgets/bar',
       query: { the: query },
@@ -723,20 +733,39 @@ const link2 = (
     Bar widget with query
   </Link>
 );
+
+const link3 = (
+  <Link
+    to={{
+      pathname: '/widgets/bar',
+      query: { the: query },
+    }}
+  >
+    {({ href, active, onClick }) => (
+      <CustomButton href={href} active={active} onClick={onClick} />
+    )}
+  </Link>
+);
 ```
 
 `<Link>` accepts the following props:
 
 - `to`: a [location descriptor](https://github.com/4Catalyzer/farce#locations-and-location-descriptors) for the link's destination
+- `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
 - `activeClassName`: if specified, a CSS class to append to the component's CSS classes when the link is active
 - `activeStyle`: if specified, a style object to append merge with the component's style object when the link is active
 - `activePropName`: if specified, a prop to inject with a boolean value with the link's active state
-- `exact`: if specified, the link will only render as active if the current location exactly matches the `to` location descriptor; by default, the link also will render as active on subpaths of the `to` location descriptor
-- `Component`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
-
-`<Link>` forwards additional props to the child element. If you need to pass in additional props to the custom link component that collide with the names of props used by `<Link>`, specify the optional `childProps` prop as an object containing those props.
+- `as`: if specified, the custom element type to use for the link; by default, the link will render an `<a>` element
 
 A link will navigate per its `to` location descriptor when clicked. You can prevent this navigation by providing an `onClick` handler that calls `event.preventDefault()`.
+
+`<Link>` accepts a function for `children`. If `children` is a function, then `<Link>` will render the return value of that function, and will ignore `activeClassName`, `activeStyle`, `activePropName`, and `as` above. The function will be called with an object with the following properties:
+
+- `href`: the URL for the link
+- `active`: whether the link is active
+- `onClick`: the click event handler for the link element
+
+Otherwise, `<Link>` forwards additional props to the child element.
 
 If you have your own store with `foundReducer` installed on a key other than `found`, use `createConnectedLink` with a options object with a `getFound` function to create a custom link component class, as with `createConnectedRouter` above.
 
