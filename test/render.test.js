@@ -106,9 +106,7 @@ describe('render', () => {
         },
       ],
 
-      render: createRender({
-        renderPending: () => <div className="pending" />,
-      }),
+      renderPending: () => <div className="pending" />,
     });
 
     const resolver = new InstrumentedResolver();
@@ -137,53 +135,7 @@ describe('render', () => {
     expect(quxNode.textContent).toBe('a');
   });
 
-  it('should support reloading the route configuration', async () => {
-    const Router = createFarceRouter({
-      historyProtocol: new ServerProtocol('/foo'),
-      routeConfig: [
-        {
-          path: '/foo',
-          getData: async () => {
-            await delay(20);
-          },
-          render: () => <div className="foo" />,
-        },
-      ],
-
-      render: createRender({}),
-    });
-
-    const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
-
-    await resolver.done;
-
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'bar'),
-    ).toHaveLength(0);
-
-    instance.store.found.replaceRouteConfig([
-      {
-        path: '/foo',
-        getData: async () => {
-          await delay(10);
-        },
-        render: () => <div className="bar" />,
-      },
-    ]);
-
-    await resolver.done;
-
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'foo'),
-    ).toHaveLength(0);
-  });
-
-  it('should support render returning a function', async () => {
+  it('should support route render method returning a function', async () => {
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo'),
       routeConfig: [
@@ -219,8 +171,6 @@ describe('render', () => {
           ],
         },
       ],
-
-      render: createRender({}),
     });
 
     const resolver = new InstrumentedResolver();
