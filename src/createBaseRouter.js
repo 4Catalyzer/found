@@ -47,6 +47,7 @@ export default function createBaseRouter({
       this.router = createStoreRouterObject(store);
 
       this.state = {
+        renderArgs: initialRenderArgs || null,
         element: initialRenderArgs ? render(initialRenderArgs) : null,
       };
 
