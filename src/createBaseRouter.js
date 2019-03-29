@@ -53,6 +53,7 @@ export default function createBaseRouter({
       this.router = createStoreRouterObject(store);
 
       this.state = {
+        isInitialRender: true,
         match,
         resolver,
         matchContext,
@@ -94,6 +95,10 @@ export default function createBaseRouter({
     }
 
     static getDerivedStateFromProps({ match, resolver, matchContext }, state) {
+      if (state.isInitialRender) {
+        return { isInitialRender: false };
+      }
+
       if (
         match !== state.match ||
         resolver !== state.resolver ||
