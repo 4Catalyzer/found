@@ -26,12 +26,10 @@ function foldElements(elementsRaw, routeIndices) {
   return elements;
 }
 
-export default async function* resolveRenderArgs({
+export default async function* resolveRenderArgs(
   router,
-  match,
-  matchContext,
-  resolver,
-}) {
+  { match, matchContext, resolver },
+) {
   const routes = router.matcher.getRoutes(match);
 
   const augmentedMatch = {

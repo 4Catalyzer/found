@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 import getStoreRenderArgs from '../getStoreRenderArgs';
 import defaultResolver from '../resolver';
+import RouterProvider from './RouterProvider';
 import createFarceStore from '../utils/createFarceStore';
 
 export default async function getFarceResult({
@@ -50,6 +51,12 @@ export default async function getFarceResult({
 
   return {
     status: renderArgs.error ? renderArgs.error.status : 200,
-    element: <Provider store={store}>{render(renderArgs)}</Provider>,
+    element: (
+      <Provider store={store}>
+        <RouterProvider renderArgs={renderArgs}>
+          {render(renderArgs)}
+        </RouterProvider>
+      </Provider>
+    ),
   };
 }

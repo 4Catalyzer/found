@@ -1,6 +1,7 @@
-import createConnectedLink from './createConnectedLink';
+import BaseLink from './BaseLink';
+import withRouter from './withRouter';
 
-const Link = createConnectedLink();
+const Link = withRouter(BaseLink);
 Link.displayName = 'Link';
 
 export default Link;
