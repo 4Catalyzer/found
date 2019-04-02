@@ -333,8 +333,8 @@ declare module 'found' {
 
   class Redirect extends React.Component<RedirectProps> {}
 
-  interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-    as?: React.ComponentType<any>;
+  interface BaseLinkProps
+    extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     to: LocationDescriptor;
     // match: Match,  provided by withRouter
     activeClassName?: string;
@@ -352,7 +352,32 @@ declare module 'found' {
         }) => React.ReactNode);
   }
 
-  class Link extends React.Component<LinkProps> {
+  export type PropsOf<
+    Tag extends React.ReactType
+  > = Tag extends keyof JSX.IntrinsicElements
+    ? JSX.IntrinsicElements[Tag]
+    : Tag extends React.SFC<infer Props>
+    ? Props & React.Attributes
+    : Tag extends React.ComponentClass<infer Props2>
+    ? (Tag extends new (...args: any[]) => infer Instance
+        ? Props2 & React.ClassAttributes<Instance>
+        : never)
+    : never;
+
+  export type ReplaceProps<Inner extends React.ReactType, P> = Omit<
+    PropsOf<Inner>,
+    keyof P
+  > &
+    P;
+
+  type LinkProps<As extends React.ReactType> = ReplaceProps<
+    As,
+    BaseLinkProps
+  > & { as?: As };
+
+  class Link<As extends React.ReactType = 'a'> extends React.Component<
+    LinkProps<As>
+  > {
     onClick: (event: React.SyntheticEvent<any>) => void;
   }
 
