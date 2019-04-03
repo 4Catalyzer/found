@@ -33,7 +33,7 @@ class BaseLink extends React.Component {
 
     // Don't do anything if the user's onClick handler prevented default.
     // Otherwise, let the browser handle the link with the computed href if the
-    // event wasn't an unmodified left click, or if the link has a target.
+    // event wasn't an unmodified left click, or if the link has a target different than self.
     if (
       event.defaultPrevented ||
       event.metaKey ||
@@ -41,7 +41,7 @@ class BaseLink extends React.Component {
       event.ctrlKey ||
       event.shiftKey ||
       event.button !== 0 ||
-      target
+      (target && target !== '_self')
     ) {
       return;
     }

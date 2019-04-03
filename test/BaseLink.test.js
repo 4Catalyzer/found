@@ -87,7 +87,7 @@ describe('<BaseLink>', () => {
       expect(router.push).not.toBeCalled();
     });
 
-    it('should not navigate if target is defined', () => {
+    it('should not navigate if target is defined and different than _self', () => {
       const link = mount(
         <BaseLink to="/" match={{}} router={router} target="_blank" />,
       );
@@ -95,6 +95,15 @@ describe('<BaseLink>', () => {
       link.find('a').simulate('click', { button: 0 });
       expect(router.push).not.toBeCalled();
     });
+  });
+
+  it('should navigate if target is _self', () => {
+    const link = mount(
+      <BaseLink to="/" match={{}} router={router} target="_self" />,
+    );
+
+    link.find('a').simulate('click', { button: 0 });
+    expect(router.push).toBeCalled();
   });
 
   describe('active state', () => {
