@@ -105,7 +105,7 @@
     "cpy-cli": "^2.0.0",
     "delay": "^4.1.0",
     "doctoc": "^1.4.0",
-    "dtslint": "^0.5.5",
+    "dtslint": "^0.6.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.11.2",
     "eslint": "^5.15.3",
