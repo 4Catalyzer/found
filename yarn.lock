@@ -5040,9 +5040,9 @@ p-defer@^1.0.0:
   integrity sha1-n26xgvbJqozXQwBKfU+WsZaw+ww=
 
 p-defer@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-2.0.1.tgz#76a8be7cb43ccaa2a8ed4b93b6eb4a0701e6c3b8"
-  integrity sha512-nFA6FNn+BhA7kZkzvUW/92c/XEA4I5zS8Skyn1DKUBJwqDLRYZqZCZLiCo2w+4/FlrvSQW4/ruorFEMlwtGhZQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-2.1.0.tgz#d9c97b40f8fb5c256a70b4aabec3c1c8c42f1fae"
+  integrity sha512-xMwL9id1bHn/UfNGFEMFwlULOprQUEOg6vhqSfr6oKxPFB0oSh0zhGq/9/tPSE+cyij2+RW6H8+0Ke4xsPdZ7Q==
 
 p-each-series@^1.0.0:
   version "1.0.0"
