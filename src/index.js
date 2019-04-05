@@ -25,4 +25,5 @@ export resolver from './resolver';
 export * as ResolverUtils from './ResolverUtils';
 export Route from './Route';
 export RouterContext from './RouterContext';
+export useRouter from './useRouter';
 export withRouter from './withRouter';

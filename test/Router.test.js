@@ -1,12 +1,14 @@
 import delay from 'delay';
 import MemoryProtocol from 'farce/lib/MemoryProtocol';
 import ServerProtocol from 'farce/lib/ServerProtocol';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
 
 import createFarceRouter from '../src/createFarceRouter';
 import HttpError from '../src/HttpError';
 import RedirectException from '../src/RedirectException';
+import useRouter from '../src/useRouter';
+import withRouter from '../src/withRouter';
 
 import { InstrumentedResolver } from './helpers';
 
@@ -107,5 +109,64 @@ describe('Router', () => {
     expect(
       ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'foo'),
     ).toHaveLength(0);
+  });
+
+  describe('context', () => {
+    async function assertRouterContext(Component) {
+      const Router = createFarceRouter({
+        historyProtocol: new MemoryProtocol('/foo'),
+        routeConfig: [
+          {
+            path: '/foo',
+            Component,
+          },
+          {
+            path: '/foo/bar',
+            render: () => <div className="bar" />,
+          },
+        ],
+      });
+
+      const resolver = new InstrumentedResolver();
+      const instance = ReactTestUtils.renderIntoDocument(
+        <Router resolver={resolver} />,
+      );
+
+      await resolver.done;
+      await delay(10);
+      await resolver.done;
+
+      ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
+    }
+
+    it('should provide router context for useRouter', async () => {
+      function MyComponent() {
+        const { match, router } = useRouter();
+
+        useEffect(() => {
+          router.push(`${match.location.pathname}/bar`);
+        });
+
+        return null;
+      }
+
+      await assertRouterContext(MyComponent);
+    });
+
+    it('should provide router context for withRouter', async () => {
+      class MyComponent extends React.Component {
+        componentDidMount() {
+          const { match, router } = this.props;
+
+          router.push(`${match.location.pathname}/bar`);
+        }
+
+        render() {
+          return null;
+        }
+      }
+
+      await assertRouterContext(withRouter(MyComponent));
+    });
   });
 });

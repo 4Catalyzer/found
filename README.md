@@ -796,6 +796,22 @@ MyButton.propTypes = propTypes;
 export default withRouter(MyButton);
 ```
 
+The `useRouter` Hook provides the same capabilities.
+
+```js
+function MyButton() {
+  const { match, router } = useRouter();
+
+  const onClick = useCallback(() => {
+    router.replace('/widgets');
+  }, [router]);
+
+  return (
+    <button onClick={onClick}>Current widget: {match.params.widgetId}</button>
+  );
+}
+```
+
 #### Blocking navigation
 
 The `router.addTransitionHook` method adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can block navigation. This method accepts a transition hook function. It returns a function that removes the transition hook.
