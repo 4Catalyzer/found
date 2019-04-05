@@ -352,7 +352,7 @@ declare module 'found' {
         }) => React.ReactNode);
   }
 
-  export type PropsOf<
+  type PropsOf<
     Tag extends React.ReactType
   > = Tag extends keyof JSX.IntrinsicElements
     ? JSX.IntrinsicElements[Tag]
@@ -364,7 +364,7 @@ declare module 'found' {
         : never)
     : never;
 
-  export type ReplaceProps<Inner extends React.ReactType, P> = Omit<
+  type ReplaceProps<Inner extends React.ReactType, P> = Omit<
     PropsOf<Inner>,
     keyof P
   > &
@@ -379,6 +379,7 @@ declare module 'found' {
     LinkProps<As>
   > {
     onClick: (event: React.SyntheticEvent<any>) => void;
+    readonly props: LinkProps<As>;
   }
 
   interface RouterState {
