@@ -4,7 +4,6 @@ import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
 
 import createFarceRouter from '../src/createFarceRouter';
-import createRender from '../src/createRender';
 
 import { InstrumentedResolver } from './helpers';
 
@@ -34,9 +33,7 @@ describe('render', () => {
         },
       ],
 
-      render: createRender({
-        renderPending: () => <div className="pending" />,
-      }),
+      renderPending: () => <div className="pending" />,
     });
 
     const resolver = new InstrumentedResolver();
@@ -186,5 +183,49 @@ describe('render', () => {
     expect(
       ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'qux'),
     ).toHaveLength(0);
+  });
+
+  it('should support custom renderReady', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [
+        {
+          path: 'foo',
+          render: () => null,
+        },
+      ],
+
+      renderReady: () => <div className="ready" />,
+    });
+
+    const resolver = new InstrumentedResolver();
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Router resolver={resolver} />,
+    );
+
+    await resolver.done;
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'ready');
+  });
+
+  it('should support fully custom render', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [
+        {
+          path: 'foo',
+          render: () => null,
+        },
+      ],
+
+      render: () => <div className="rendered" />,
+    });
+
+    const resolver = new InstrumentedResolver();
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Router resolver={resolver} />,
+    );
+
+    await resolver.done;
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'rendered');
   });
 });

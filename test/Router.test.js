@@ -6,13 +6,30 @@ import ReactTestUtils from 'react-dom/test-utils';
 
 import createFarceRouter from '../src/createFarceRouter';
 import HttpError from '../src/HttpError';
-import RedirectException from '../src/RedirectException';
 import useRouter from '../src/useRouter';
 import withRouter from '../src/withRouter';
 
 import { InstrumentedResolver } from './helpers';
 
 describe('Router', () => {
+  it('should render 404 when no routes match', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [],
+
+      renderError: ({ error }) => <div className={`error-${error.status}`} />,
+    });
+
+    const resolver = new InstrumentedResolver();
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Router resolver={resolver} />,
+    );
+
+    await delay(10);
+
+    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'error-404');
+  });
+
   it('should support throwing HttpError in route render method', async () => {
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo'),
@@ -37,34 +54,6 @@ describe('Router', () => {
     await delay(10);
 
     ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'error-404');
-  });
-
-  it('should support throwing RedirectException in route render method', async () => {
-    const Router = createFarceRouter({
-      historyProtocol: new MemoryProtocol('/foo'),
-      routeConfig: [
-        {
-          path: '/foo',
-          render: () => {
-            throw new RedirectException('/bar');
-          },
-        },
-        {
-          path: '/bar',
-          render: () => <div className="bar" />,
-        },
-      ],
-    });
-
-    const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
-
-    await resolver.done;
-    await delay(10);
-
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
   });
 
   it('should support reloading the route configuration', async () => {
