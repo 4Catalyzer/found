@@ -42,18 +42,29 @@ export default function createBaseRouter({
     constructor(props) {
       super(props);
 
-      const { store, initialRenderArgs } = props;
+      const {
+        store,
+        match,
+        resolver,
+        matchContext,
+        initialRenderArgs,
+      } = props;
 
       this.router = createStoreRouterObject(store);
 
       this.state = {
+        isInitialRender: true,
+        match,
+        resolver,
+        matchContext,
+        iteration: 0,
         renderArgs: initialRenderArgs || null,
         element: initialRenderArgs ? render(initialRenderArgs) : null,
       };
 
       this.mounted = true;
 
-      this.shouldResolveMatch = false;
+      this.lastIteration = 0;
       this.pendingResolvedMatch = false;
     }
 
@@ -73,8 +84,7 @@ export default function createBaseRouter({
         if (window.__FOUND_HOT_RELOAD__) {
           warning(
             !window.__FOUND_REPLACE_ROUTE_CONFIG__,
-            'Replacing existing hot reloading hook. Do not render more than ' +
-              'one router instance when using hot reloading.',
+            'Replacing existing hot reloading hook. Do not render more than one router instance when using hot reloading.',
           );
 
           window.__FOUND_REPLACE_ROUTE_CONFIG__ = this.router.replaceRouteConfig;
@@ -84,19 +94,30 @@ export default function createBaseRouter({
       }
     }
 
-    componentWillReceiveProps(nextProps) {
-      if (
-        nextProps.match !== this.props.match ||
-        nextProps.resolver !== this.props.resolver ||
-        !isEqual(nextProps.matchContext, this.props.matchContext)
-      ) {
-        this.shouldResolveMatch = true;
+    static getDerivedStateFromProps({ match, resolver, matchContext }, state) {
+      if (state.isInitialRender) {
+        return { isInitialRender: false };
       }
+
+      if (
+        match !== state.match ||
+        resolver !== state.resolver ||
+        !isEqual(matchContext, state.matchContext)
+      ) {
+        return {
+          match,
+          resolver,
+          matchContext,
+          iteration: state.iteration + 1,
+        };
+      }
+
+      return null;
     }
 
     componentDidUpdate() {
-      if (this.shouldResolveMatch) {
-        this.shouldResolveMatch = false;
+      if (this.state.iteration > this.lastIteration) {
+        this.lastIteration = this.state.iteration;
         this.resolveMatch();
       }
     }
@@ -158,14 +179,16 @@ export default function createBaseRouter({
     }
 
     render() {
-      const { renderArgs, element } = this.state;
+      const { iteration, renderArgs, element } = this.state;
 
       // Don't rerender synchronously if we have another rerender coming. Just
       // memoizing the element here doesn't do anything because we're using
       // context.
       return (
         <StaticContainer
-          shouldUpdate={!this.shouldResolveMatch && !this.pendingResolvedMatch}
+          shouldUpdate={
+            this.lastIteration === iteration && !this.pendingResolvedMatch
+          }
         >
           <RouterContext.Provider
             value={{
