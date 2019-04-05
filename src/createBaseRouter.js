@@ -1,11 +1,14 @@
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ReactReduxContext } from 'react-redux';
 import StaticContainer from 'react-static-container';
 import warning from 'warning';
+import mapContextToProps from '@restart/context/mapContextToProps';
 
-import { routerShape } from './PropTypes';
 import createRender from './createRender';
+import RouterContext from './RouterContext';
+import createStoreRouterObject from './utils/createStoreRouterObject';
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
 export default function createBaseRouter({
@@ -24,13 +27,13 @@ export default function createBaseRouter({
     });
 
   const propTypes = {
+    store: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     resolvedMatch: PropTypes.object.isRequired,
     matchContext: PropTypes.any,
     resolver: PropTypes.shape({
       resolveElements: PropTypes.func.isRequired,
     }).isRequired,
-    router: routerShape.isRequired,
     onResolveMatch: PropTypes.func.isRequired,
     initialRenderArgs: PropTypes.object,
   };
@@ -39,9 +42,12 @@ export default function createBaseRouter({
     constructor(props) {
       super(props);
 
-      const { initialRenderArgs } = props;
+      const { store, initialRenderArgs } = props;
+
+      this.router = createStoreRouterObject(store);
 
       this.state = {
+        renderArgs: initialRenderArgs || null,
         element: initialRenderArgs ? render(initialRenderArgs) : null,
       };
 
@@ -71,7 +77,7 @@ export default function createBaseRouter({
               'one router instance when using hot reloading.',
           );
 
-          window.__FOUND_REPLACE_ROUTE_CONFIG__ = this.props.router.replaceRouteConfig;
+          window.__FOUND_REPLACE_ROUTE_CONFIG__ = this.router.replaceRouteConfig;
         }
         /* eslint-enable no-underscore-dangle */
         /* eslint-env browser: false */
@@ -79,11 +85,6 @@ export default function createBaseRouter({
     }
 
     componentWillReceiveProps(nextProps) {
-      warning(
-        nextProps.router === this.props.router,
-        '<BaseRouter> does not support changing the router object.',
-      );
-
       if (
         nextProps.match !== this.props.match ||
         nextProps.resolver !== this.props.resolver ||
@@ -118,7 +119,10 @@ export default function createBaseRouter({
       const pendingMatch = this.props.match;
 
       try {
-        for await (const renderArgs of resolveRenderArgs(this.props)) {
+        for await (const renderArgs of resolveRenderArgs(
+          this.router,
+          this.props,
+        )) {
           if (!this.mounted || this.props.match !== pendingMatch) {
             return;
           }
@@ -130,7 +134,10 @@ export default function createBaseRouter({
             this.props.resolvedMatch !== pendingMatch
           );
 
-          this.setState({ element: render(renderArgs) });
+          this.setState({
+            renderArgs,
+            element: render(renderArgs),
+          });
 
           if (this.pendingResolvedMatch) {
             // If this is a new match, update the store, so we can rerender at
@@ -142,7 +149,7 @@ export default function createBaseRouter({
         }
       } catch (e) {
         if (e.isFoundRedirectException) {
-          this.props.router.replace(e.location);
+          this.router.replace(e.location);
           return;
         }
 
@@ -151,6 +158,8 @@ export default function createBaseRouter({
     }
 
     render() {
+      const { renderArgs, element } = this.state;
+
       // Don't rerender synchronously if we have another rerender coming. Just
       // memoizing the element here doesn't do anything because we're using
       // context.
@@ -158,7 +167,14 @@ export default function createBaseRouter({
         <StaticContainer
           shouldUpdate={!this.shouldResolveMatch && !this.pendingResolvedMatch}
         >
-          {this.state.element}
+          <RouterContext.Provider
+            value={{
+              router: this.router,
+              match: renderArgs,
+            }}
+          >
+            {element}
+          </RouterContext.Provider>
         </StaticContainer>
       );
     }
@@ -166,5 +182,13 @@ export default function createBaseRouter({
 
   BaseRouter.propTypes = propTypes;
 
-  return BaseRouter;
+  // FIXME: For some reason, using contextType doesn't work here.
+  return mapContextToProps(
+    {
+      consumers: ReactReduxContext,
+      mapToProps: ({ store }) => ({ store }),
+      displayName: 'withStore(BaseRouter)',
+    },
+    BaseRouter,
+  );
 }

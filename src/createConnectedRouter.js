@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 
 import ActionTypes from './ActionTypes';
 import createBaseRouter from './createBaseRouter';
-import injectRouterProp from './utils/injectRouterProp';
 
 function resolveMatch(match) {
   return {
@@ -15,22 +14,20 @@ export default function createConnectedRouter({
   getFound = ({ found }) => found,
   ...options
 }) {
-  return injectRouterProp(
-    connect(
-      state => {
-        const { match, resolvedMatch } = getFound(state);
-        return { match, resolvedMatch };
-      },
-      {
-        onResolveMatch: resolveMatch,
-      },
-      null,
-      {
-        // Don't block context propagation from above. The router should seldom
-        // be unnecessarily rerendering anyway.
-        pure: false,
-        getDisplayName: () => 'ConnectedRouter',
-      },
-    )(createBaseRouter(options)),
-  );
+  return connect(
+    state => {
+      const { match, resolvedMatch } = getFound(state);
+      return { match, resolvedMatch };
+    },
+    {
+      onResolveMatch: resolveMatch,
+    },
+    null,
+    {
+      // Don't block context propagation from above. The router should seldom
+      // be unnecessarily rerendering anyway.
+      pure: false,
+      getDisplayName: () => 'ConnectedRouter',
+    },
+  )(createBaseRouter(options));
 }

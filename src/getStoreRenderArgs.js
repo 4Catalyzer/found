@@ -12,10 +12,5 @@ export default function getStoreRenderArgs({
   const router = createStoreRouterObject(store);
   const match = getFound(store.getState()).resolvedMatch;
 
-  return getRenderArgs({
-    router,
-    match,
-    matchContext,
-    resolver,
-  });
+  return getRenderArgs(router, { match, matchContext, resolver });
 }

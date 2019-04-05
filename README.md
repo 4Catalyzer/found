@@ -767,11 +767,9 @@ A link will navigate per its `to` location descriptor when clicked. You can prev
 
 Otherwise, `<Link>` forwards additional props to the child element.
 
-If you have your own store with `foundReducer` installed on a key other than `found`, use `createConnectedLink` with a options object with a `getFound` function to create a custom link component class, as with `createConnectedRouter` above.
-
 #### Programmatic navigation
 
-The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above, but with only the `location` and `params` properties on `match`. You can use this HOC to create components that navigate programmatically in event handlers.
+The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above. You can use this HOC to create components that navigate programmatically in event handlers.
 
 ```js
 const propTypes = {
@@ -798,7 +796,21 @@ MyButton.propTypes = propTypes;
 export default withRouter(MyButton);
 ```
 
-If you have your own store with `foundReducer` installed on a key other than `found`, use `createWithRouter` with a options object with a `getFound` function to create a custom HOC, as with `createConnectedLink` above.
+The `useRouter` Hook provides the same capabilities.
+
+```js
+function MyButton() {
+  const { match, router } = useRouter();
+
+  const onClick = useCallback(() => {
+    router.replace('/widgets');
+  }, [router]);
+
+  return (
+    <button onClick={onClick}>Current widget: {match.params.widgetId}</button>
+  );
+}
+```
 
 #### Blocking navigation
 
@@ -949,10 +961,11 @@ These behave similarly to their counterparts above, except that the options obje
 
 #### Server-side rendering with custom Redux store
 
-Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function.
+Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
 
 ```js
 import { getStoreRenderArgs } from 'found';
+import { RouterProvider } from 'found/lib/server';
 
 /* ... */
 
@@ -976,14 +989,16 @@ app.use(async (req, res) => {
     throw e;
   }
 
-  res
-    .status(renderArgs.error ? renderArgs.error.status : 200)
-    .send(
-      renderPageToString(
-        <Provider store={store}>{render(renderArgs)}</Provider>,
-        store.getState(),
-      ),
-    );
+  res.status(renderArgs.error ? renderArgs.error.status : 200).send(
+    renderPageToString(
+      <Provider store={store}>
+        <RouterProvider renderArgs={renderArgs}>
+          {render(renderArgs)}
+        </RouterProvider>
+      </Provider>,
+      store.getState(),
+    ),
+  );
 });
 ```
 
