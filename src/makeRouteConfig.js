@@ -1,10 +1,13 @@
+import invariant from 'invariant';
 import React from 'react';
 
 function buildRouteConfig(node, routeConfig) {
   React.Children.forEach(node, child => {
-    if (!React.isValidElement(child)) {
-      return;
-    }
+    invariant(
+      React.isValidElement(child),
+      '`%s` is not a valid React element',
+      child,
+    );
 
     let Type = child.type;
     const { children, ...props } = child.props;

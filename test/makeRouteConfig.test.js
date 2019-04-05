@@ -33,6 +33,7 @@ describe('makeRouteConfig', () => {
       makeRouteConfig(
         <Route path="/" Component={AppPage}>
           <Route Component={MainPage} />
+          {/* This comment should be ignored. */}
           <Route path="foo" Component={FooPage}>
             <Route path="bar" Component={BarPage} />
           </Route>
@@ -187,6 +188,18 @@ describe('makeRouteConfig', () => {
         ],
       },
     ]);
+  });
+
+  it('should error on non-element children', () => {
+    expect(() => {
+      makeRouteConfig(
+        <Route path="/" Component={AppPage}>
+          {/* The comma below will fail the invariant. */}
+          <Route path="foo" Component={FooPage} />,
+          <Route path="bar" Component={BarPage} />
+        </Route>,
+      );
+    }).toThrowErrorMatchingSnapshot();
   });
 
   ['react-proxy', 'react-stand-in'].forEach(packageName => {
