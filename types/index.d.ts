@@ -2,7 +2,7 @@
 
 declare module 'found' {
   import * as React from 'react';
-  import { Store, Reducer, Action, StoreEnhancer } from 'redux';
+  import { Reducer, Store, StoreEnhancer } from 'redux';
 
   type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
