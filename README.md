@@ -166,7 +166,7 @@ export default AppPage;
 ### Installation
 
 ```
-$ npm i -S react react-redux
+$ npm i -S react
 $ npm i -S found
 ```
 
@@ -699,6 +699,8 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 ```
+
+> **Note:** Found uses `redux` and `react-redux` as direct dependencies for the convenience of users not directly using Redux. If you are directly using Redux, either ensure that you have the same versions of `redux` and `react-redux` installed as used in Found, or use package manager or bundler resolutions to force Found to use the same versions of those packages that you are using directly. Found is compatible with any current release of `redux` or `react-redux`.
 
 When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from Farce and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
 
