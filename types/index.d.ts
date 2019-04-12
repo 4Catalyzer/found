@@ -176,7 +176,7 @@ declare module 'found' {
     location: Location,
   ) => undefined | (boolean | string | Promise<boolean | string>);
 
-  class Router {
+  interface Router {
     /**
      * Navigates to a new location
      * @see farce
