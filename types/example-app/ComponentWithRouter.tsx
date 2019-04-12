@@ -1,23 +1,19 @@
-import { WithRouterProps } from 'found';
+import { Match, Router } from 'found';
 import withRouter from 'found/lib/withRouter';
 import * as React from 'react';
 
-interface Props extends WithRouterProps {
+interface Props {
   foo?: boolean;
+  match: Match;
+  router: Router;
 }
 
-class ComponentWithRouter extends React.Component<Props> {
-  render() {
-    const {
-      match: { location },
-      router,
-    } = this.props;
-    return (
-      <div>
-        {location.pathname}, {router}
-      </div>
-    );
-  }
+function ComponentWithRouter({ match, router }: Props) {
+  return (
+    <div>
+      {match.location.pathname}, {router}
+    </div>
+  );
 }
 
 const ComponentWithRouterContainer = withRouter(ComponentWithRouter);

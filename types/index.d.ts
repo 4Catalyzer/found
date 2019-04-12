@@ -356,14 +356,16 @@ declare module 'found' {
     onClick: (event: React.SyntheticEvent<any>) => void;
   }
 
-  interface WithRouterProps {
+  interface RouterState {
     match: Match;
     router: Router;
   }
 
-  function withRouter<Props extends WithRouterProps>(
+  function useRouter(): RouterState;
+
+  function withRouter<Props extends RouterState>(
     Component: React.ComponentType<Props>,
-  ): React.ComponentType<Omit<Props, keyof WithRouterProps>>;
+  ): React.ComponentType<Omit<Props, keyof RouterState>>;
 
   class RedirectException {
     constructor(location: LocationDescriptor);
