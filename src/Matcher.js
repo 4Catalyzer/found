@@ -11,8 +11,7 @@ export default class Matcher {
     // failure mode that it's worthwhile to add a dev-only warning here.
     warning(
       typeof pathToRegexp.compile === 'function',
-      'Incorrect version of path-to-regexp imported. If this is running ' +
-        'from a client bundle, check your bundler settings.',
+      'Incorrect version of path-to-regexp imported. If this is running from a client bundle, check your bundler settings.',
     );
   }
 
