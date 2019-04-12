@@ -86,13 +86,13 @@
     "lodash": "^4.17.11",
     "path-to-regexp": "^1.7.0",
     "prop-types": "^15.7.2",
+    "react-redux": "^7.0.1",
     "react-static-container": "^1.0.2",
     "redux": "^4.0.1",
     "warning": "^4.0.3"
   },
   "peerDependencies": {
-    "react": ">=16.4.0",
-    "react-redux": ">=5.0.0"
+    "react": ">=16.8.0"
   },
   "devDependencies": {
     "@4c/babel-preset": "^5.1.0",
@@ -127,7 +127,6 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-proxy": "^3.0.0-alpha.1",
-    "react-redux": "^7.0.1",
     "react-stand-in": "^4.0.0-beta.14",
     "react-test-renderer": "^16.8.6",
     "rimraf": "^2.6.3"
