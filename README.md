@@ -166,7 +166,7 @@ export default AppPage;
 ### Installation
 
 ```
-$ npm i -S react
+$ npm i -S react react-redux
 $ npm i -S found
 ```
 
