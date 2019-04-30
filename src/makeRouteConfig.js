@@ -3,7 +3,9 @@ import React from 'react';
 
 function buildRouteConfig(node, routeConfig) {
   React.Children.forEach(node, child => {
-    if (!child) {
+    // Falsy children get coerced to null. We check for this instead of
+    // implicit falsiness because we don't want to allow empty strings or 0.
+    if (child === null) {
       return;
     }
 
