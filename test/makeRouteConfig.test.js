@@ -213,6 +213,17 @@ describe('makeRouteConfig', () => {
     }).not.toThrow();
   });
 
+  it('should error on other falsy children', () => {
+    expect(() => {
+      makeRouteConfig(
+        <Route path="/" Component={AppPage}>
+          {0}
+          <Route path="foo" Component={FooPage} />
+        </Route>,
+      );
+    }).toThrowErrorMatchingSnapshot();
+  });
+
   ['react-proxy', 'react-stand-in'].forEach(packageName => {
     it(`should work with proxies from ${packageName}`, () => {
       // eslint-disable-next-line global-require, import/no-dynamic-require
