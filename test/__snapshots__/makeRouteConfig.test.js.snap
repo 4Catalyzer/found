@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`makeRouteConfig should allow empty children 1`] = `"\`,\` is not a valid React element"`;
+
 exports[`makeRouteConfig should error on non-element children 1`] = `"\`,\` is not a valid React element"`;

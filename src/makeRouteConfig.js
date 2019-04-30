@@ -3,6 +3,9 @@ import React from 'react';
 
 function buildRouteConfig(node, routeConfig) {
   React.Children.forEach(node, child => {
+    // falsely children are turned into `null` by `forEach`
+    if (child === null) return;
+
     invariant(
       React.isValidElement(child),
       '`%s` is not a valid React element',
