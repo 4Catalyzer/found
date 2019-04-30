@@ -3,6 +3,12 @@ import React from 'react';
 
 function buildRouteConfig(node, routeConfig) {
   React.Children.forEach(node, child => {
+    // Falsy children get coerced to null. We check for this instead of
+    // implicit falsiness because we don't want to allow empty strings or 0.
+    if (child === null) {
+      return;
+    }
+
     invariant(
       React.isValidElement(child),
       '`%s` is not a valid React element',
