@@ -2,8 +2,6 @@
 
 _Extensible route-based routing for React applications._
 
-**This branch tracks the [v0.4 prereleases](https://github.com/4Catalyzer/found/releases), tagged `next` on npm. For the v0.3 releases tagged `latest` on npm, see the [`v0.3-dev`](https://github.com/4Catalyzer/found/tree/v0.3-dev) branch.**
-
 Found is a router for [React](https://facebook.github.io/react/) applications with a focus on power and extensibility. Found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. Found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
 
 Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
@@ -1054,5 +1052,5 @@ import Route from 'found/lib/Route';
 
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg
 [build]: https://travis-ci.org/4Catalyzer/found
-[npm-badge]: https://img.shields.io/npm/v/found/next.svg
+[npm-badge]: https://img.shields.io/npm/v/found.svg
 [npm]: https://www.npmjs.org/package/found
