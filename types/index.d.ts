@@ -352,30 +352,18 @@ declare module 'found' {
         }) => React.ReactNode);
   }
 
-  type PropsOf<
-    Tag extends React.ReactType
-  > = Tag extends keyof JSX.IntrinsicElements
-    ? JSX.IntrinsicElements[Tag]
-    : Tag extends React.SFC<infer Props>
-    ? Props & React.Attributes
-    : Tag extends React.ComponentClass<infer Props2>
-    ? (Tag extends new (...args: any[]) => infer Instance
-        ? Props2 & React.ClassAttributes<Instance>
-        : never)
-    : never;
-
-  type ReplaceProps<Inner extends React.ReactType, P> = Omit<
-    PropsOf<Inner>,
+  type ReplaceProps<Inner extends React.ElementType, P> = Omit<
+    React.ComponentProps<Inner>,
     keyof P
   > &
     P;
 
-  type LinkProps<As extends React.ReactType> = ReplaceProps<
+  type LinkProps<As extends React.ElementType> = ReplaceProps<
     As,
     BaseLinkProps
   > & { as?: As };
 
-  class Link<As extends React.ReactType = 'a'> extends React.Component<
+  class Link<As extends React.ElementType = 'a'> extends React.Component<
     LinkProps<As>
   > {
     onClick: (event: React.SyntheticEvent<any>) => void;
