@@ -965,7 +965,7 @@ Found exposes lower-level functionality for doing server-side rendering for use 
 
 ```js
 import { getStoreRenderArgs } from 'found';
-import { RouterProvider } from 'found/lib/server';
+import RouterProvider from 'found/lib/server/RouterProvider';
 
 /* ... */
 
