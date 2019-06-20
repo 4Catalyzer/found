@@ -4,7 +4,7 @@ declare module 'found' {
   import * as React from 'react';
   import { Reducer, Store, StoreEnhancer } from 'redux';
 
-  type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+  type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
   interface ObjectMap {
     [key: string]: any;
@@ -342,33 +342,48 @@ declare module 'found' {
     onClick?: (event: React.SyntheticEvent<any>) => void;
   }
 
+  interface LinkInjectedProps {
+    href: string;
+    onClick: (event: React.SyntheticEvent<any>) => void;
+  }
+
   interface LinkPropsNodeChild extends LinkPropsCommon {
     activeClassName?: string;
     activeStyle?: {};
     children?: React.ReactNode;
   }
 
-  type ReplaceProps<TInner extends React.ElementType, TProps> = Omit<
+  type ReplaceLinkProps<TInner extends React.ElementType, TProps> = Omit<
     React.ComponentProps<TInner>,
-    keyof TProps
+    keyof TProps | keyof LinkInjectedProps
   > &
     TProps;
 
-  type LinkPropsSimple = ReplaceProps<'a', LinkPropsNodeChild>;
+  type LinkPropsSimple = ReplaceLinkProps<'a', LinkPropsNodeChild>;
 
-  type LinkPropsWithAs<TInner extends React.ElementType> = ReplaceProps<
+  type LinkPropsWithAs<
+    TInner extends React.ElementType<LinkInjectedProps>
+  > = ReplaceLinkProps<
     TInner,
-    LinkPropsNodeChild & { as: TInner }
+    LinkPropsNodeChild & {
+      as: TInner;
+      activePropName?: null;
+    }
   >;
 
   type LinkPropsWithActivePropName<
-    TInner extends React.ElementType<
-      { [activePropName in TActivePropName]: boolean }
+    TInner extends React.ComponentType<
+      LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
     >,
     TActivePropName extends string
-  > = ReplaceProps<
+  > = ReplaceLinkProps<
     TInner,
-    LinkPropsNodeChild & { as: TInner; activePropName: TActivePropName }
+    LinkPropsNodeChild & {
+      as: TInner;
+      activePropName: TActivePropName;
+    } & {
+        [activePropName in TActivePropName]?: null;
+      }
   >;
 
   interface LinkPropsWithFunctionChild extends LinkPropsCommon {
@@ -379,18 +394,29 @@ declare module 'found' {
     }) => React.ReactNode;
   }
 
+  type LinkProps<
+    TInner extends React.ElementType = never,
+    TInnerWithActivePropName extends React.ComponentType<
+      LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
+    > = never,
+    TActivePropName extends string = never
+  > =
+    | LinkPropsSimple
+    | LinkPropsWithAs<TInner>
+    | LinkPropsWithActivePropName<TInnerWithActivePropName, TActivePropName>
+    | LinkPropsWithFunctionChild;
+
   class Link<
     TInner extends React.ElementType = never,
-    TInnerWithActivePropName extends React.ElementType<
-      { [activePropName in TActivePropName]: boolean }
+    TInnerWithActivePropName extends React.ComponentType<
+      LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
     > = never,
     TActivePropName extends string = never
   > extends React.Component<
-    | LinkPropsWithFunctionChild
-    | LinkPropsWithActivePropName<TInnerWithActivePropName, TActivePropName>
-    | LinkPropsWithAs<TInner>
-    | LinkPropsSimple
-  > {}
+    LinkProps<TInner, TInnerWithActivePropName, TActivePropName>
+  > {
+    props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
+  }
 
   interface RouterState {
     match: Match;

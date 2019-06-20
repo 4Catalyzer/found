@@ -4,7 +4,7 @@ interface Props {
   href: string;
   active: boolean;
   onClick: (event: React.SyntheticEvent<any>) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export function CustomLink({ href, active, onClick, children }: Props) {
