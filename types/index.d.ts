@@ -333,42 +333,64 @@ declare module 'found' {
 
   class Redirect extends React.Component<RedirectProps> {}
 
-  interface BaseLinkProps
-    extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  interface LinkPropsCommon {
     to: LocationDescriptor;
     // match: Match,  provided by withRouter
-    activeClassName?: string;
-    activeStyle?: any;
-    activePropName?: string;
     // router: Router, provided by withRouter
     exact?: boolean;
     target?: string;
-    children?:
-      | React.ReactNode
-      | ((linkRenderArgs: {
-          href: string;
-          active: boolean;
-          onClick: (event: React.SyntheticEvent<any>) => void;
-        }) => React.ReactNode);
+    onClick?: (event: React.SyntheticEvent<any>) => void;
   }
 
-  type ReplaceProps<Inner extends React.ElementType, P> = Omit<
-    React.ComponentProps<Inner>,
-    keyof P
+  interface LinkPropsNodeChild extends LinkPropsCommon {
+    activeClassName?: string;
+    activeStyle?: {};
+    children?: React.ReactNode;
+  }
+
+  type ReplaceProps<TInner extends React.ElementType, TProps> = Omit<
+    React.ComponentProps<TInner>,
+    keyof TProps
   > &
-    P;
+    TProps;
 
-  type LinkProps<As extends React.ElementType> = ReplaceProps<
-    As,
-    BaseLinkProps
-  > & { as?: As };
+  type LinkPropsSimple = ReplaceProps<'a', LinkPropsNodeChild>;
 
-  class Link<As extends React.ElementType = 'a'> extends React.Component<
-    LinkProps<As>
-  > {
-    onClick: (event: React.SyntheticEvent<any>) => void;
-    readonly props: LinkProps<As>;
+  type LinkPropsWithAs<TInner extends React.ElementType> = ReplaceProps<
+    TInner,
+    LinkPropsNodeChild & { as: TInner }
+  >;
+
+  type LinkPropsWithActivePropName<
+    TInner extends React.ElementType<
+      { [activePropName in TActivePropName]: boolean }
+    >,
+    TActivePropName extends string
+  > = ReplaceProps<
+    TInner,
+    LinkPropsNodeChild & { as: TInner; activePropName: TActivePropName }
+  >;
+
+  interface LinkPropsWithFunctionChild extends LinkPropsCommon {
+    children: (linkRenderArgs: {
+      href: string;
+      active: boolean;
+      onClick: (event: React.SyntheticEvent<any>) => void;
+    }) => React.ReactNode;
   }
+
+  class Link<
+    TInner extends React.ElementType = never,
+    TInnerWithActivePropName extends React.ElementType<
+      { [activePropName in TActivePropName]: boolean }
+    > = never,
+    TActivePropName extends string = never
+  > extends React.Component<
+    | LinkPropsWithFunctionChild
+    | LinkPropsWithActivePropName<TInnerWithActivePropName, TActivePropName>
+    | LinkPropsWithAs<TInner>
+    | LinkPropsSimple
+  > {}
 
   interface RouterState {
     match: Match;

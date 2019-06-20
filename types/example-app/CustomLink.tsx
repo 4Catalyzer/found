@@ -2,7 +2,7 @@ import * as React from 'react';
 
 interface Props {
   href: string;
-  active?: boolean;
+  active: boolean;
   onClick: (event: React.SyntheticEvent<any>) => void;
   children: React.ReactNode;
 }
