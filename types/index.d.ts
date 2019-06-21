@@ -157,6 +157,8 @@ declare module 'found' {
 
   type LocationDescriptor = LocationDescriptorObject | string;
 
+  type TransitionHookResult = boolean | string | null | undefined;
+
   /**
    * The transition hook function receives the location to which the user is
    * attempting to navigate.
@@ -172,9 +174,9 @@ declare module 'found' {
    *
    * @see https://github.com/4Catalyzer/farce#transition-hooks
    */
-  type TransitionHook = (
-    location: Location,
-  ) => undefined | (boolean | string | Promise<boolean | string>);
+  interface TransitionHook {
+    (location: Location): TransitionHookResult | Promise<TransitionHookResult>;
+  }
 
   interface Router {
     /**
