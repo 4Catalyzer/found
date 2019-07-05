@@ -156,7 +156,8 @@ export default AppPage;
 
 ## Extensions
 
-- [Found Scroll](https://github.com/4Catalyzer/found-scroll): scroll management
+- [Found Scroll](https://github.com/4Catalyzer/found-scroll): browser scroll management
+- [Found Named Routes](https://github.com/4Catalyzer/found-named-routes): named route support
 - [Found Relay](https://github.com/4Catalyzer/found-relay): [Relay](https://facebook.github.io/relay/) integration
 
 ## Guide
