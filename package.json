@@ -73,7 +73,7 @@
   },
   "homepage": "https://github.com/4Catalyzer/found#readme",
   "dependencies": {
-    "@babel/runtime-corejs2": "^7.4.4",
+    "@babel/runtime-corejs3": "^7.4.5",
     "@restart/context": "^2.1.4",
     "farce": "^0.2.8",
     "invariant": "^2.2.4",
