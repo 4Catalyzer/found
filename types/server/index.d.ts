@@ -1,33 +1,33 @@
 declare module 'found/lib/server' {
   import * as React from 'react';
-  import { FarceCreateRouterArgs, Resolver, RenderArgs } from 'found';
+  import { FarceCreateRouterArgs, Resolver, RouterRenderArgs } from 'found';
 
   interface GetFarceResultArgs
-    extends Pick<
-      FarceCreateRouterArgs,
-      'historyMiddlewares' | 'historyOptions' | 'routeConfig' | 'render'
-    > {
+    extends Omit<FarceCreateRouterArgs, 'store' | 'historyProtocol'> {
     url: string;
-    resolver: Resolver;
+    resolver?: Resolver;
     matchContext?: any;
+  }
+
+  interface FarceElementResult {
+    status: number;
+    element: React.ReactElement;
+  }
+
+  interface FarceRedirectResult {
+    redirect: {
+      url: string;
+    };
   }
 
   function getFarceResult(
     args: GetFarceResultArgs,
-  ): {
-    status: number;
-    element: React.ComponentType;
-    redirect: {
-      url: string;
-    };
-  };
+  ): FarceElementResult | FarceRedirectResult;
 
   interface RouterProviderProps {
-    renderArgs: RenderArgs;
-    matchContext?: any;
+    renderArgs: RouterRenderArgs;
+    children?: React.ReactNode;
   }
 
-  const RouterProvider: React.FunctionComponent<
-    React.PropsWithChildren<RouterProviderProps>
-  >;
+  const RouterProvider: React.FunctionComponent<RouterProviderProps>;
 }

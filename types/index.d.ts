@@ -388,8 +388,9 @@ declare module 'found' {
   }
 
   interface RouterRenderArgs extends Match {
-    error?: HttpError;
     elements?: ReactElementOrGroup[];
+    error?: HttpError;
+    router: Router;
   }
 
   interface CreateRenderArgs {
@@ -484,10 +485,5 @@ declare module 'found' {
     resolver: Resolver;
   }
 
-  interface RenderArgs {
-    router: Router;
-    element?: React.ComponentType;
-    error?: Error;
-  }
-  function getStoreRenderArgs(args: GetStoreRenderArgsArgs): RenderArgs;
+  function getStoreRenderArgs(args: GetStoreRenderArgsArgs): RouterRenderArgs;
 }
