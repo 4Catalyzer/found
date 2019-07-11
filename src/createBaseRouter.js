@@ -12,20 +12,15 @@ import createStoreRouterObject from './utils/createStoreRouterObject';
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
 export default function createBaseRouter({
-  render,
   renderPending,
   renderReady,
   renderError,
+  render = createRender({
+    renderPending,
+    renderReady,
+    renderError,
+  }),
 }) {
-  // eslint-disable-next-line no-param-reassign
-  render =
-    render ||
-    createRender({
-      renderPending,
-      renderReady,
-      renderError,
-    });
-
   const propTypes = {
     store: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
