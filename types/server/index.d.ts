@@ -1,6 +1,11 @@
 declare module 'found/lib/server' {
   import * as React from 'react';
-  import { FarceCreateRouterArgs, Resolver, RouterRenderArgs } from 'found';
+  import {
+    FarceCreateRouterArgs,
+    Omit,
+    Resolver,
+    RouterRenderArgs,
+  } from 'found';
 
   interface GetFarceResultArgs
     extends Omit<FarceCreateRouterArgs, 'store' | 'historyProtocol'> {
