@@ -1,4 +1,4 @@
-declare module 'found/lib/RouterProvider' {
+declare module 'found/lib/server/RouterProvider' {
   import { RouterProvider, RouterProviderProps } from 'found/lib/server';
 
   export default RouterProvider;
