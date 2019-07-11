@@ -129,10 +129,7 @@ declare module 'found' {
    * since we use it for routerShape below.
    */
   class Matcher {
-    constructor(
-      routeConfig: RouteConfig,
-      options: { matchStemRoutes: boolean },
-    );
+    constructor(routeConfig: RouteConfig);
     match(
       location: Location,
     ): null | { routeIndices: number[]; routeParams: Params; params: Params };
@@ -463,4 +460,34 @@ declare module 'found' {
   function createBrowserRouter(
     options: CreateBrowserRouterArgs,
   ): BrowserRouter;
+
+  interface CreateInitialFarceRouterArgs
+    extends Omit<FarceCreateRouterArgs, 'store'> {
+    resolver: Resolver;
+    matchContext?: any;
+  }
+
+  function createInitialFarceRouter({
+    historyProtocol,
+    historyMiddlewares,
+    historyOptions,
+    routeConfig,
+    matchContext,
+    resolver,
+    ...options
+  }: CreateInitialFarceRouterArgs): ConnectedRouter;
+
+  interface GetStoreRenderArgsArgs {
+    store: Store;
+    getFound?: (store: any) => FoundState;
+    matchContext: any;
+    resolver: Resolver;
+  }
+
+  interface RenderArgs {
+    router: Router;
+    element?: React.ComponentType;
+    error?: Error;
+  }
+  function getStoreRenderArgs(args: GetStoreRenderArgsArgs): RenderArgs;
 }
