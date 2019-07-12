@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "babel src -d lib --delete-dir-on-start && cpy **/*.d.ts ../lib --cwd=types --parents",
+    "build": "babel src -d lib --delete-dir-on-start && cpy types/*.d.ts lib && cpy types/server/*.d.ts lib/server",
     "format": "eslint --fix . && npm run prettier -- --write",
     "lint": "eslint . && npm run prettier -- -l",
     "prepublish": "npm run build",
