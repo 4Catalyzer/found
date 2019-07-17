@@ -322,7 +322,7 @@ declare module 'found' {
   class HttpError {
     status: number;
     data: any;
-    constructor(status: number);
+    constructor(status: number, data?: any);
   }
 
   interface RedirectProps {
@@ -367,6 +367,7 @@ declare module 'found' {
   ): React.ComponentType<Omit<Props, keyof RouterState>>;
 
   class RedirectException {
+    location: LocationDescriptor;
     constructor(location: LocationDescriptor);
   }
 
@@ -437,6 +438,7 @@ declare module 'found' {
   type ConnectedRouter = React.ComponentType<{
     resolver: Resolver;
     matchContext?: any;
+    initialRenderArgs?: RouterRenderArgs;
   }>;
 
   type BrowserRouter = React.ComponentType<{
