@@ -486,7 +486,7 @@ declare module 'found' {
     matchContext,
     resolver,
     ...options
-  }: CreateInitialFarceRouterArgs): ConnectedRouter;
+  }: CreateInitialFarceRouterArgs): Promise<ConnectedRouter>;
 
   interface createInitialBrowserRouterArgs
     extends Omit<
@@ -498,7 +498,7 @@ declare module 'found' {
 
   function createInitialBrowserRouter(
     options: createInitialBrowserRouterArgs,
-  ): ConnectedRouter;
+  ): Promise<ConnectedRouter>;
 
   interface GetStoreRenderArgsArgs {
     store: Store;
@@ -507,5 +507,7 @@ declare module 'found' {
     resolver: Resolver;
   }
 
-  function getStoreRenderArgs(args: GetStoreRenderArgsArgs): RouterRenderArgs;
+  function getStoreRenderArgs(
+    args: GetStoreRenderArgsArgs,
+  ): Promise<RouterRenderArgs>;
 }
