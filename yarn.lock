@@ -762,9 +762,9 @@
     "@babel/plugin-transform-react-jsx-source" "^7.0.0"
 
 "@babel/runtime-corejs3@^7.4.5":
-  version "7.5.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.5.4.tgz#88dab70e4915c8e8c7212b01ebd73e57159190cf"
-  integrity sha512-zTLh6E+I7jk03bW4pBahDLW04XF+ZWhzBS+7CKtz/C5OG2/PKHJDxSmI8oDEznVDhmKskh6RblHluTjMWY/P7Q==
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.5.5.tgz#9744c03bdbef3091d277345bdd7131a29e67c957"
+  integrity sha512-bNxHJ+w7RfLzZJtIZdEjFgL1twwZ6ozuOmsEjtyuTqfi1hb1fqsDYYyi3Fi3i+RgAO4S9+wkSG102+GCqdpr7w==
   dependencies:
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.2"
