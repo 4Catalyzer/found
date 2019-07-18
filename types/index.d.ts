@@ -58,6 +58,12 @@ declare module 'found' {
      */
     state: S;
   }
+  interface ActionTypes {
+    UPDATE_MATCH: '@@found/UPDATE_MATCH';
+    RESOLVE_MATCH: '@@found/RESOLVE_MATCH';
+  }
+
+  const ActionTypes: ActionTypes;
 
   type Params = ObjectStringMap;
 
@@ -319,6 +325,8 @@ declare module 'found' {
     children?: RouteConfig[];
   }
 
+  function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
+
   class HttpError {
     constructor(status: number, data?: any);
     status: number;
@@ -402,7 +410,7 @@ declare module 'found' {
 
   function createMatchEnhancer(
     matcher: Matcher,
-  ): () => StoreEnhancer<{
+  ): StoreEnhancer<{
     found: {
       matcher: Matcher;
       replaceRouteConfig: (routes: RouteConfig) => void;
@@ -479,6 +487,18 @@ declare module 'found' {
     resolver,
     ...options
   }: CreateInitialFarceRouterArgs): ConnectedRouter;
+
+  interface createInitialBrowserRouterArgs
+    extends Omit<
+      CreateInitialFarceRouterArgs,
+      'resolver' | 'historyProtocol'
+    > {
+    matchContext?: any;
+  }
+
+  function createInitialBrowserRouter(
+    options: createInitialBrowserRouterArgs,
+  ): ConnectedRouter;
 
   interface GetStoreRenderArgsArgs {
     store: Store;
