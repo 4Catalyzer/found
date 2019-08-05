@@ -58,6 +58,7 @@ declare module 'found' {
      */
     state: S;
   }
+
   interface ActionTypes {
     UPDATE_MATCH: '@@found/UPDATE_MATCH';
     RESOLVE_MATCH: '@@found/RESOLVE_MATCH';
