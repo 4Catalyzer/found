@@ -27,7 +27,7 @@ declare module 'found/lib/server' {
 
   function getFarceResult(
     args: GetFarceResultArgs,
-  ): FarceElementResult | FarceRedirectResult;
+  ): Promise<FarceElementResult | FarceRedirectResult>;
 
   interface RouterProviderProps {
     renderArgs: RouterRenderArgs;
