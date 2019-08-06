@@ -6,14 +6,6 @@ declare module 'found' {
 
   type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-  interface ObjectMap {
-    [key: string]: any;
-  }
-
-  interface ObjectStringMap {
-    [key: string]: string;
-  }
-
   interface Location<S = any> {
     /**
      * 'PUSH' or 'REPLACE' if the location was reached via FarceActions.push or
@@ -48,7 +40,7 @@ declare module 'found' {
     /**
      * map version of search string
      */
-    query: ObjectStringMap;
+    query: Record<string, string | undefined>;
     /**
      * the search string; as on window.location e.g. '?bar=baz'
      */
@@ -66,7 +58,7 @@ declare module 'found' {
 
   const ActionTypes: ActionTypes;
 
-  type Params = ObjectStringMap;
+  type Params = Record<string, string | undefined>;
 
   /**
    * Location descriptor string:
@@ -150,7 +142,7 @@ declare module 'found' {
      * Returns the path string for a pattern of the same format as a route path
      * and a object of the corresponding path parameters
      */
-    format: (pattern: any, params: ObjectMap) => any;
+    format: (pattern: any, params: Record<string, any>) => any;
   }
 
   /**
