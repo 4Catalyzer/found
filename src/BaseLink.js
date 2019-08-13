@@ -5,14 +5,14 @@ import warning from 'warning';
 import { routerShape } from './PropTypes';
 
 const propTypes = {
-  as: PropTypes.elementType,
+  as: PropTypes.elementType.isRequired,
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
   activeStyle: PropTypes.object,
   activePropName: PropTypes.string,
   router: routerShape.isRequired,
-  exact: PropTypes.bool,
+  exact: PropTypes.bool.isRequired,
   target: PropTypes.string,
   onClick: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
