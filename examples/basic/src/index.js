@@ -79,9 +79,11 @@ const BrowserRouter = createBrowserRouter({
     },
   ],
 
-  renderError: (
-    { error }, // eslint-disable-line react/prop-types
-  ) => <div>{error.status === 404 ? 'Not found' : 'Error'}</div>,
+  /* eslint-disable react/prop-types */
+  renderError: ({ error }) => (
+    <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
+  ),
+  /* eslint-enable react/prop-types */
 });
 
 ReactDOM.render(<BrowserRouter />, document.getElementById('root'));

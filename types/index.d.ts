@@ -59,6 +59,13 @@ declare module 'found' {
     state: S;
   }
 
+  interface ActionTypes {
+    UPDATE_MATCH: '@@found/UPDATE_MATCH';
+    RESOLVE_MATCH: '@@found/RESOLVE_MATCH';
+  }
+
+  const ActionTypes: ActionTypes;
+
   type Params = ObjectStringMap;
 
   /**
@@ -129,10 +136,7 @@ declare module 'found' {
    * since we use it for routerShape below.
    */
   class Matcher {
-    constructor(
-      routeConfig: RouteConfig,
-      options: { matchStemRoutes: boolean },
-    );
+    constructor(routeConfig: RouteConfig);
     match(
       location: Location,
     ): null | { routeIndices: number[]; routeParams: Params; params: Params };
@@ -157,6 +161,8 @@ declare module 'found' {
 
   type LocationDescriptor = LocationDescriptorObject | string;
 
+  type TransitionHookResult = boolean | string | null | undefined;
+
   /**
    * The transition hook function receives the location to which the user is
    * attempting to navigate.
@@ -172,9 +178,9 @@ declare module 'found' {
    *
    * @see https://github.com/4Catalyzer/farce#transition-hooks
    */
-  type TransitionHook = (
-    location: Location,
-  ) => undefined | (boolean | string | Promise<boolean | string>);
+  interface TransitionHook {
+    (location: Location): TransitionHookResult | Promise<TransitionHookResult>;
+  }
 
   interface Router {
     /**
@@ -320,10 +326,12 @@ declare module 'found' {
     children?: RouteConfig[];
   }
 
+  function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
+
   class HttpError {
+    constructor(status: number, data?: any);
     status: number;
     data: any;
-    constructor(status: number);
   }
 
   interface RedirectProps {
@@ -431,6 +439,7 @@ declare module 'found' {
 
   class RedirectException {
     constructor(location: LocationDescriptor);
+    location: LocationDescriptor;
   }
 
   /**
@@ -451,8 +460,9 @@ declare module 'found' {
   }
 
   interface RouterRenderArgs extends Match {
-    error?: HttpError;
     elements?: ReactElementOrGroup[];
+    error?: HttpError;
+    router: Router;
   }
 
   interface CreateRenderArgs {
@@ -463,7 +473,7 @@ declare module 'found' {
 
   function createMatchEnhancer(
     matcher: Matcher,
-  ): () => StoreEnhancer<{
+  ): StoreEnhancer<{
     found: {
       matcher: Matcher;
       replaceRouteConfig: (routes: RouteConfig) => void;
@@ -497,8 +507,9 @@ declare module 'found' {
 
   // Improve these `any`s as needed
   type ConnectedRouter = React.ComponentType<{
-    resolver: Resolver;
     matchContext?: any;
+    resolver: Resolver;
+    initialRenderArgs?: RouterRenderArgs;
   }>;
 
   type BrowserRouter = React.ComponentType<{
@@ -523,4 +534,43 @@ declare module 'found' {
   function createBrowserRouter(
     options: CreateBrowserRouterArgs,
   ): BrowserRouter;
+
+  interface CreateInitialFarceRouterArgs
+    extends Omit<FarceCreateRouterArgs, 'store'> {
+    resolver: Resolver;
+    matchContext?: any;
+  }
+
+  function createInitialFarceRouter({
+    historyProtocol,
+    historyMiddlewares,
+    historyOptions,
+    routeConfig,
+    matchContext,
+    resolver,
+    ...options
+  }: CreateInitialFarceRouterArgs): Promise<ConnectedRouter>;
+
+  interface createInitialBrowserRouterArgs
+    extends Omit<
+      CreateInitialFarceRouterArgs,
+      'resolver' | 'historyProtocol'
+    > {
+    matchContext?: any;
+  }
+
+  function createInitialBrowserRouter(
+    options: createInitialBrowserRouterArgs,
+  ): Promise<ConnectedRouter>;
+
+  interface GetStoreRenderArgsArgs {
+    store: Store;
+    getFound?: (store: any) => FoundState;
+    matchContext: any;
+    resolver: Resolver;
+  }
+
+  function getStoreRenderArgs(
+    args: GetStoreRenderArgsArgs,
+  ): Promise<RouterRenderArgs>;
 }
