@@ -67,12 +67,12 @@ describe('makeRouteConfig', () => {
       makeRouteConfig(
         <Route path="/" Component={AppPage}>
           <Route Component={MainPage} />
-          <React.Fragment>
+          <>
             <Route path="foo" Component={FooPage} />
-            <React.Fragment>
+            <>
               <Route path="bar" Component={BarPage} />
-            </React.Fragment>
-          </React.Fragment>
+            </>
+          </>
           <Route path="baz" Component={BazPage} />
         </Route>,
       ),
