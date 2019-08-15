@@ -106,7 +106,7 @@
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "eslint": "^5.16.0",
-    "eslint-config-4catalyzer-jest": "^1.2.1",
+    "eslint-config-4catalyzer-jest": "^2.0.0",
     "eslint-config-4catalyzer-react": "^0.9.3",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.17.2",
