@@ -35,7 +35,9 @@ describe('getFarceResult', () => {
           ],
         },
       ]),
-    ).toMatchSnapshot();
+    ).toMatchInlineSnapshot(
+      `"<div class=\\"foo\\"><div class=\\"baz\\">a</div></div>"`,
+    );
   });
 
   it('should support named child routes', async () => {
@@ -76,6 +78,8 @@ describe('getFarceResult', () => {
           ],
         },
       ]),
-    ).toMatchSnapshot();
+    ).toMatchInlineSnapshot(
+      `"<div class=\\"foo\\"><div class=\\"bar-nav\\"></div><div class=\\"qux\\">a</div></div>"`,
+    );
   });
 });

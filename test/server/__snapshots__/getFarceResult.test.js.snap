@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`getFarceResult should support named child routes 1`] = `"<div class=\\"foo\\"><div class=\\"bar-nav\\"></div><div class=\\"qux\\">a</div></div>"`;
-
-exports[`getFarceResult should support nested routes 1`] = `"<div class=\\"foo\\"><div class=\\"baz\\">a</div></div>"`;

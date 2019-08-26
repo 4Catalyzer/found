@@ -2,7 +2,7 @@ import delay from 'delay';
 import MemoryProtocol from 'farce/lib/MemoryProtocol';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React, { useEffect } from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import TestRenderer, { act } from 'react-test-renderer';
 
 import createFarceRouter from '../src/createFarceRouter';
 import HttpError from '../src/HttpError';
@@ -21,13 +21,15 @@ describe('Router', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await delay(10);
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'error-404');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="error-404"
+      />
+    `);
   });
 
   it('should support throwing HttpError in route render method', async () => {
@@ -46,14 +48,16 @@ describe('Router', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
     await delay(10);
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'error-404');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="error-404"
+      />
+    `);
   });
 
   it('should support reloading the route configuration', async () => {
@@ -71,43 +75,47 @@ describe('Router', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'bar'),
-    ).toHaveLength(0);
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      />
+    `);
 
-    instance.store.found.replaceRouteConfig([
-      {
-        path: '/foo',
-        getData: async () => {
-          await delay(10);
+    await act(async () => {
+      testRenderer.getInstance().store.found.replaceRouteConfig([
+        {
+          path: '/foo',
+          getData: async () => {
+            await delay(10);
+          },
+          render: () => <div className="bar" />,
         },
-        render: () => <div className="bar" />,
-      },
-    ]);
+      ]);
+
+      await delay(10);
+    });
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'foo'),
-    ).toHaveLength(0);
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="bar"
+      />
+    `);
   });
 
   describe('context', () => {
-    async function assertRouterContext(Component) {
+    async function getTestRenderer(Component) {
       const Router = createFarceRouter({
         historyProtocol: new MemoryProtocol('/foo'),
         routeConfig: [
           {
             path: '/foo',
-            Component,
+            render: () => <Component />,
           },
           {
             path: '/foo/bar',
@@ -117,15 +125,17 @@ describe('Router', () => {
       });
 
       const resolver = new InstrumentedResolver();
-      const instance = ReactTestUtils.renderIntoDocument(
-        <Router resolver={resolver} />,
-      );
+      const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
       await resolver.done;
-      await delay(10);
+
+      await act(async () => {
+        await delay(10);
+      });
+
       await resolver.done;
 
-      ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
+      return testRenderer;
     }
 
     it('should provide router context for useRouter', async () => {
@@ -139,7 +149,12 @@ describe('Router', () => {
         return null;
       }
 
-      await assertRouterContext(MyComponent);
+      const testRenderer = await getTestRenderer(MyComponent);
+      expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+        <div
+          className="bar"
+        />
+      `);
     });
 
     it('should provide router context for withRouter', async () => {
@@ -155,7 +170,12 @@ describe('Router', () => {
         }
       }
 
-      await assertRouterContext(withRouter(MyComponent));
+      const testRenderer = await getTestRenderer(withRouter(MyComponent));
+      expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+        <div
+          className="bar"
+        />
+      `);
     });
   });
 });

@@ -1,7 +1,7 @@
 import delay from 'delay';
 import MemoryProtocol from 'farce/lib/MemoryProtocol';
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import TestRenderer, { act } from 'react-test-renderer';
 
 import createFarceRouter from '../src/createFarceRouter';
 import Redirect from '../src/Redirect';
@@ -23,40 +23,60 @@ describe('redirect', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
-    await delay(10);
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
+    // Let the redirect actually run.
+    await act(async () => {
+      await delay(10);
+    });
+
+    return testRenderer;
   }
 
   it('should support static redirects', async () => {
-    await assertRedirect(
+    const testRenderer = await assertRedirect(
       new Redirect({
         from: '/foo',
         to: '/bar',
       }),
     );
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="bar"
+      />
+    `);
   });
 
   it('should support function redirects', async () => {
-    await assertRedirect(
+    const testRenderer = await assertRedirect(
       new Redirect({
         from: '/foo',
         to: ({ location }) => location.pathname.replace('foo', 'bar'),
       }),
     );
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="bar"
+      />
+    `);
   });
 
   it('should support throwing RedirectException in route render method', async () => {
-    await assertRedirect({
+    const testRenderer = await assertRedirect({
       path: '/foo',
       render: () => {
         throw new RedirectException('/bar');
       },
     });
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="bar"
+      />
+    `);
   });
 });

@@ -1,7 +1,7 @@
+import delay from 'delay';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
+import TestRenderer, { act } from 'react-test-renderer';
 
 import createFarceRouter from '../src/createFarceRouter';
 import createRender from '../src/createRender';
@@ -10,15 +10,7 @@ import hotRouteConfig from '../src/hotRouteConfig';
 import { InstrumentedResolver } from './helpers';
 
 describe('hotRouteConfig', () => {
-  let container;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-  });
-
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-
     /* eslint-env browser */
     // eslint-disable-next-line no-underscore-dangle
     delete window.__FOUND_HOT_RELOAD__;
@@ -41,31 +33,33 @@ describe('hotRouteConfig', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    // eslint-disable-next-line react/no-render-return-value
-    const instance = ReactDOM.render(
-      <Router resolver={resolver} />,
-      container,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'bar'),
-    ).toHaveLength(0);
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      />
+    `);
 
-    hotRouteConfig([
-      {
-        path: '/foo',
-        render: () => <div className="bar" />,
-      },
-    ]);
+    await act(async () => {
+      hotRouteConfig([
+        {
+          path: '/foo',
+          render: () => <div className="bar" />,
+        },
+      ]);
+
+      await delay(10);
+    });
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'foo'),
-    ).toHaveLength(0);
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="bar"
+      />
+    `);
   });
 });
