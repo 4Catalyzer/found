@@ -1,7 +1,6 @@
 import FarceActions from 'farce/lib/Actions';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
-import { Provider } from 'react-redux';
 
 import getStoreRenderArgs from '../getStoreRenderArgs';
 import defaultResolver from '../resolver';
@@ -60,11 +59,9 @@ export default async function getFarceResult({
   return {
     status: renderArgs.error ? renderArgs.error.status : 200,
     element: (
-      <Provider store={store}>
-        <RouterProvider renderArgs={renderArgs}>
-          {render(renderArgs)}
-        </RouterProvider>
-      </Provider>
+      <RouterProvider renderArgs={renderArgs}>
+        {render(renderArgs)}
+      </RouterProvider>
     ),
   };
 }
