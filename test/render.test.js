@@ -1,7 +1,7 @@
 import delay from 'delay';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import TestRenderer from 'react-test-renderer';
 
 import createFarceRouter from '../src/createFarceRouter';
 
@@ -37,27 +37,30 @@ describe('render', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
     await delay(10);
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="pending"
+      />
+    `);
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'bar'),
-    ).toHaveLength(0);
-
-    const bazNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance,
-      'baz',
-    );
-    expect(bazNode.textContent).toBe('a');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      >
+        <div
+          className="baz"
+        >
+          a
+        </div>
+      </div>
+    `);
   });
 
   it('should support named child routes', async () => {
@@ -107,29 +110,33 @@ describe('render', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
     await delay(10);
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="pending"
+      />
+    `);
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar-nav');
-
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'baz'),
-    ).toHaveLength(0);
-
-    const quxNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance,
-      'qux',
-    );
-    expect(quxNode.textContent).toBe('a');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      >
+        <div
+          className="bar-nav"
+        />
+        <div
+          className="qux"
+        >
+          a
+        </div>
+      </div>
+    `);
   });
 
   it('should support route render method returning a function', async () => {
@@ -171,18 +178,23 @@ describe('render', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'baz');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'qux'),
-    ).toHaveLength(0);
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      >
+        <div
+          className="bar"
+        >
+          <div
+            className="baz"
+          />
+        </div>
+      </div>
+    `);
   });
 
   it('should support custom renderReady', async () => {
@@ -199,12 +211,15 @@ describe('render', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'ready');
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="ready"
+      />
+    `);
   });
 
   it('should support fully custom render', async () => {
@@ -221,11 +236,14 @@ describe('render', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'rendered');
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="rendered"
+      />
+    `);
   });
 });
