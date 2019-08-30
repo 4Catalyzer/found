@@ -67,7 +67,7 @@ describe('Router', () => {
         {
           path: '/foo',
           getData: async () => {
-            await delay(20);
+            await delay(10);
           },
           render: () => <div className="foo" />,
         },
