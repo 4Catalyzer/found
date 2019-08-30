@@ -15,7 +15,7 @@ describe('render', () => {
         {
           path: 'foo',
           getComponent: async () => {
-            await delay(20);
+            await delay(10);
             return ({ children }) => <div className="foo">{children}</div>;
           },
           children: [
@@ -40,7 +40,7 @@ describe('render', () => {
     const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
-    await delay(10);
+    await delay(0);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -70,7 +70,7 @@ describe('render', () => {
         {
           path: 'foo',
           getComponent: async () => {
-            await delay(20);
+            await delay(10);
             return ({ nav, main }) => (
               <div className="foo">
                 {nav}
@@ -113,7 +113,7 @@ describe('render', () => {
     const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
-    await delay(10);
+    await delay(0);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
