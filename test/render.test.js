@@ -1,5 +1,6 @@
 import delay from 'delay';
 import ServerProtocol from 'farce/lib/ServerProtocol';
+import pDefer from 'p-defer';
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 
@@ -9,13 +10,15 @@ import { InstrumentedResolver } from './helpers';
 
 describe('render', () => {
   it('should support nested routes', async () => {
+    const deferred = pDefer();
+
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo/baz/a'),
       routeConfig: [
         {
           path: 'foo',
           getComponent: async () => {
-            await delay(10);
+            await deferred.promise;
             return ({ children }) => <div className="foo">{children}</div>;
           },
           children: [
@@ -40,7 +43,7 @@ describe('render', () => {
     const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
-    await delay(0);
+    await delay(10);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -48,6 +51,7 @@ describe('render', () => {
       />
     `);
 
+    deferred.resolve();
     await resolver.done;
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
@@ -64,13 +68,15 @@ describe('render', () => {
   });
 
   it('should support named child routes', async () => {
+    const deferred = pDefer();
+
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo/bar/qux/a'),
       routeConfig: [
         {
           path: 'foo',
           getComponent: async () => {
-            await delay(10);
+            await deferred.promise;
             return ({ nav, main }) => (
               <div className="foo">
                 {nav}
@@ -113,7 +119,7 @@ describe('render', () => {
     const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
-    await delay(0);
+    await delay(10);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -121,6 +127,7 @@ describe('render', () => {
       />
     `);
 
+    deferred.resolve();
     await resolver.done;
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
