@@ -139,6 +139,7 @@ export default function createBaseRouter({
           this.router,
           this.props,
         )) {
+          // Don't do anything if we're resolving an outdated match.
           if (!this.mounted || this.props.match !== pendingMatch) {
             return;
           }
@@ -164,6 +165,10 @@ export default function createBaseRouter({
           }
         }
       } catch (e) {
+        if (!this.mounted || this.props.match !== pendingMatch) {
+          return;
+        }
+
         if (e.isFoundRedirectException) {
           this.router.replace(e.location);
           return;
