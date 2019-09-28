@@ -45,7 +45,7 @@ export default class Matcher {
     return `${basePath}${this.getCanonicalPattern(path)}`;
   }
 
-  isActive({ location: matchLocation }, location, { exact } = {}) {
+  isActive({ location: matchLocation }, location, { exact = false } = {}) {
     return (
       this.isPathnameActive(
         matchLocation.pathname,
