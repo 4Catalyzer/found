@@ -6,13 +6,11 @@ declare module 'found' {
 
   type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
-  interface ObjectMap {
-    [key: string]: any;
-  }
-
-  interface ObjectStringMap {
-    [key: string]: string;
-  }
+  type Query = Record<string, string>;
+  type QueryDescriptor = Record<
+    string,
+    string | number | boolean | object | null | undefined
+  >;
 
   interface Location<S = any> {
     /**
@@ -48,7 +46,7 @@ declare module 'found' {
     /**
      * map version of search string
      */
-    query: ObjectStringMap;
+    query: Query;
     /**
      * the search string; as on window.location e.g. '?bar=baz'
      */
@@ -66,7 +64,8 @@ declare module 'found' {
 
   const ActionTypes: ActionTypes;
 
-  type Params = ObjectStringMap;
+  type Params = Record<string, string>;
+  type ParamsDescriptor = Record<string, string | number | boolean | object>;
 
   /**
    * Location descriptor string:
@@ -116,7 +115,7 @@ declare module 'found' {
 
   interface FoundState {
     match: Match;
-    resolvedMatch: any;
+    resolvedMatch: Match;
   }
 
   interface Resolver {
@@ -144,20 +143,25 @@ declare module 'found' {
     isActive: (
       match: Match,
       location: Location,
-      options: { exact: boolean },
+      options?: { exact?: boolean },
     ) => boolean;
     /**
      * Returns the path string for a pattern of the same format as a route path
      * and a object of the corresponding path parameters
      */
-    format: (pattern: any, params: ObjectMap) => any;
+    format: (pattern: string, params: ParamsDescriptor) => string;
   }
 
   /**
    * Location descriptor object used in #push and #replace.
    */
-  type LocationDescriptorObject = Pick<Location, 'pathname'> &
-    Partial<Pick<Location, 'search' | 'hash' | 'state' | 'query'>>;
+  interface LocationDescriptorObject {
+    pathname: Location['pathname'];
+    search?: Location['search'];
+    hash?: Location['hash'];
+    state?: Location['state'];
+    query?: QueryDescriptor;
+  }
 
   type LocationDescriptor = LocationDescriptorObject | string;
 
@@ -209,7 +213,7 @@ declare module 'found' {
     isActive: (
       match: Match,
       location: Location,
-      options: { exact?: boolean },
+      options?: { exact?: boolean },
     ) => boolean;
     matcher: Matcher;
     /**
@@ -329,9 +333,10 @@ declare module 'found' {
   function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
 
   class HttpError {
-    constructor(status: number, data?: any);
     status: number;
     data: any;
+
+    constructor(status: number, data?: any);
   }
 
   interface RedirectProps {
@@ -489,7 +494,7 @@ declare module 'found' {
   }
 
   interface CreateConnectedRouterArgs extends BaseCreateRouterArgs {
-    getFound?: (store: any) => FoundState;
+    getFound?: (store: Store) => FoundState;
   }
 
   interface FarceCreateRouterArgs extends BaseCreateRouterArgs {
@@ -513,8 +518,8 @@ declare module 'found' {
   }>;
 
   type BrowserRouter = React.ComponentType<{
-    resolver?: Resolver;
     matchContext?: any;
+    resolver?: Resolver;
   }>;
 
   function createConnectedRouter({
