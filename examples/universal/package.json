@@ -6,18 +6,18 @@
     "start": "babel-node src/server"
   },
   "dependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/node": "^7.2.2",
-    "@babel/preset-env": "^7.4.2",
+    "@babel/core": "^7.6.2",
+    "@babel/node": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.5",
-    "core-js": "^3.0.0",
-    "express": "^4.16.4",
-    "found": "^0.4.0-alpha.10",
+    "babel-loader": "^8.0.6",
+    "core-js": "^3.2.1",
+    "express": "^4.17.1",
+    "found": "^0.4.9",
     "prop-types": "^15.7.2",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "webpack": "^4.29.6",
-    "webpack-dev-middleware": "^3.6.1"
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "webpack": "^4.41.0",
+    "webpack-dev-middleware": "^3.7.2"
   }
 }
