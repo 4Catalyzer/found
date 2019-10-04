@@ -1,6 +1,7 @@
 import express from 'express';
 import { Actions as FarceActions, ServerProtocol } from 'farce';
 import { getStoreRenderArgs, resolver, RedirectException } from 'found';
+import { RouterProvider } from 'found/lib/server';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { Provider } from 'react-redux';
@@ -80,14 +81,16 @@ app.use(async (req, res) => {
     throw e;
   }
 
-  res
-    .status(renderArgs.error ? renderArgs.error.status : 200)
-    .send(
-      renderPageToString(
-        <Provider store={store}>{render(renderArgs)}</Provider>,
-        store.getState(),
-      ),
-    );
+  res.status(renderArgs.error ? renderArgs.error.status : 200).send(
+    renderPageToString(
+      <Provider store={store}>
+        <RouterProvider renderArgs={renderArgs}>
+          {render(renderArgs)}
+        </RouterProvider>
+      </Provider>,
+      store.getState(),
+    ),
+  );
 });
 
 app.listen(PORT, () => {
