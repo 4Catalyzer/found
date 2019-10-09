@@ -3,9 +3,9 @@
 
 
 "@4c/babel-preset@^7.0.0":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@4c/babel-preset/-/babel-preset-7.0.1.tgz#18757b2e23c5edb90481fac263ebc0f4ffa9c106"
-  integrity sha512-1CAhxTNHrwfNh0o6fmKetQvSm+of7qe8t4DZEwyZW7UoFtgZXZMJP2aQGdZykBcpVSb+EXnrHIWVlwQnwdGn8Q==
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@4c/babel-preset/-/babel-preset-7.1.0.tgz#dfa3fef38df2272ad9a0be5947618219215c927c"
+  integrity sha512-VBlZEGUmS1GeOkx2OZW4DHijd8GE708LW00NrbDBjoKAmVlw0iEzJ7ip2eQMLqXjKNQ0Z2u1q/iXGkK4Xw79WA==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.5.5"
     "@babel/plugin-proposal-export-default-from" "^7.5.2"
