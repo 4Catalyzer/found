@@ -79,7 +79,7 @@
     "invariant": "^2.2.4",
     "is-promise": "^2.1.0",
     "lodash": "^4.17.15",
-    "path-to-regexp": "^1.7.0",
+    "path-to-regexp": "^6.1.0",
     "prop-types": "^15.7.2",
     "react-redux": "^7.0.0",
     "react-static-container": "^1.0.2",
