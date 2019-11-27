@@ -10,12 +10,15 @@ function createMatchMiddleware(matcher) {
       if (type !== FarceActionTypes.UPDATE_LOCATION) {
         return next(action);
       }
-
+      const match = matcher.match(payload);
+      if (!match) {
+        throw new Error('Route not found: ' + payload.pathname);
+      }
       return next({
         type: ActionTypes.UPDATE_MATCH,
         payload: {
           location: payload,
-          ...matcher.match(payload),
+          ...match,
         },
       });
     };
