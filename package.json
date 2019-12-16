@@ -98,7 +98,7 @@
     "babel-jest": "^24.9.0",
     "babel-plugin-add-module-exports": "^1.0.2",
     "codecov": "^3.6.1",
-    "cpy-cli": "^2.0.0",
+    "cpy-cli": "^3.0.0",
     "delay": "^4.3.0",
     "doctoc": "^1.4.0",
     "dtslint": "^2.0.2",
