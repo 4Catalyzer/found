@@ -5,14 +5,14 @@ import warning from 'warning';
 import { routerShape } from './PropTypes';
 
 const propTypes = {
-  as: PropTypes.elementType,
+  as: PropTypes.elementType.isRequired,
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   match: PropTypes.object.isRequired,
   activeClassName: PropTypes.string,
   activeStyle: PropTypes.object,
   activePropName: PropTypes.string,
   router: routerShape.isRequired,
-  exact: PropTypes.bool,
+  exact: PropTypes.bool.isRequired,
   target: PropTypes.string,
   onClick: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
@@ -33,7 +33,8 @@ class BaseLink extends React.Component {
 
     // Don't do anything if the user's onClick handler prevented default.
     // Otherwise, let the browser handle the link with the computed href if the
-    // event wasn't an unmodified left click, or if the link has a target.
+    // event wasn't an unmodified left click, or if the link has a target other
+    // than _self.
     if (
       event.defaultPrevented ||
       event.metaKey ||
@@ -41,7 +42,7 @@ class BaseLink extends React.Component {
       event.ctrlKey ||
       event.shiftKey ||
       event.button !== 0 ||
-      target
+      (target && target !== '_self')
     ) {
       return;
     }

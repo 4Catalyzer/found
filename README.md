@@ -2,8 +2,6 @@
 
 _Extensible route-based routing for React applications._
 
-**This branch tracks the [v0.4 prereleases](https://github.com/4Catalyzer/found/releases), tagged `next` on npm. For the v0.3 releases tagged `latest` on npm, see the [`v0.3-dev`](https://github.com/4Catalyzer/found/tree/v0.3-dev) branch.**
-
 Found is a router for [React](https://facebook.github.io/react/) applications with a focus on power and extensibility. Found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. Found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
 
 Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
@@ -158,7 +156,8 @@ export default AppPage;
 
 ## Extensions
 
-- [Found Scroll](https://github.com/4Catalyzer/found-scroll): scroll management
+- [Found Scroll](https://github.com/4Catalyzer/found-scroll): browser scroll management
+- [Found Named Routes](https://github.com/4Catalyzer/found-named-routes): named route support
 - [Found Relay](https://github.com/4Catalyzer/found-relay): [Relay](https://facebook.github.io/relay/) integration
 
 ## Guide
@@ -700,6 +699,8 @@ ReactDOM.render(
 );
 ```
 
+> **Note:** Found uses `redux` and `react-redux` as direct dependencies for the convenience of users not directly using Redux. If you are directly using Redux, either ensure that you have the same versions of `redux` and `react-redux` installed as used in Found, or use package manager or bundler resolutions to force Found to use the same versions of those packages that you are using directly. Found is compatible with any current release of `redux` or `react-redux`.
+
 When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from Farce and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
 
 `createConnectedRouter` ignores the `historyProtocol`, `historyMiddlewares`, and `historyOptions` properties on its options object.
@@ -767,11 +768,9 @@ A link will navigate per its `to` location descriptor when clicked. You can prev
 
 Otherwise, `<Link>` forwards additional props to the child element.
 
-If you have your own store with `foundReducer` installed on a key other than `found`, use `createConnectedLink` with a options object with a `getFound` function to create a custom link component class, as with `createConnectedRouter` above.
-
 #### Programmatic navigation
 
-The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above, but with only the `location` and `params` properties on `match`. You can use this HOC to create components that navigate programmatically in event handlers.
+The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above. You can use this HOC to create components that navigate programmatically in event handlers.
 
 ```js
 const propTypes = {
@@ -798,7 +797,21 @@ MyButton.propTypes = propTypes;
 export default withRouter(MyButton);
 ```
 
-If you have your own store with `foundReducer` installed on a key other than `found`, use `createWithRouter` with a options object with a `getFound` function to create a custom HOC, as with `createConnectedLink` above.
+The `useRouter` Hook provides the same capabilities.
+
+```js
+function MyButton() {
+  const { match, router } = useRouter();
+
+  const onClick = useCallback(() => {
+    router.replace('/widgets');
+  }, [router]);
+
+  return (
+    <button onClick={onClick}>Current widget: {match.params.widgetId}</button>
+  );
+}
+```
 
 #### Blocking navigation
 
@@ -949,10 +962,11 @@ These behave similarly to their counterparts above, except that the options obje
 
 #### Server-side rendering with custom Redux store
 
-Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function.
+Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
 
 ```js
 import { getStoreRenderArgs } from 'found';
+import { RouterProvider } from 'found/lib/server';
 
 /* ... */
 
@@ -976,14 +990,16 @@ app.use(async (req, res) => {
     throw e;
   }
 
-  res
-    .status(renderArgs.error ? renderArgs.error.status : 200)
-    .send(
-      renderPageToString(
-        <Provider store={store}>{render(renderArgs)}</Provider>,
-        store.getState(),
-      ),
-    );
+  res.status(renderArgs.error ? renderArgs.error.status : 200).send(
+    renderPageToString(
+      <Provider store={store}>
+        <RouterProvider renderArgs={renderArgs}>
+          {render(renderArgs)}
+        </RouterProvider>
+      </Provider>,
+      store.getState(),
+    ),
+  );
 });
 ```
 
@@ -1037,5 +1053,5 @@ import Route from 'found/lib/Route';
 
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg
 [build]: https://travis-ci.org/4Catalyzer/found
-[npm-badge]: https://img.shields.io/npm/v/found/next.svg
+[npm-badge]: https://img.shields.io/npm/v/found.svg
 [npm]: https://www.npmjs.org/package/found

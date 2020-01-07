@@ -1,12 +1,13 @@
 {
   "presets": [
-    ["@4c", {
-      "runtime": true,
-      "corejs": 2,
-      "targets": {}
-    }]
+    [
+      "@4c",
+      {
+        "runtime": true,
+        "corejs": 3,
+        "targets": {}
+      }
+    ]
   ],
-  "plugins": [
-    "add-module-exports"
-  ]
+  "plugins": ["add-module-exports"]
 }

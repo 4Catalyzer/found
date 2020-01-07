@@ -1,11 +1,12 @@
 import FarceActions from 'farce/lib/Actions';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
-import { Provider } from 'react-redux';
 
 import getStoreRenderArgs from '../getStoreRenderArgs';
 import defaultResolver from '../resolver';
+import RouterProvider from './RouterProvider';
 import createFarceStore from '../utils/createFarceStore';
+import createRender from '../createRender';
 
 export default async function getFarceResult({
   url,
@@ -14,7 +15,14 @@ export default async function getFarceResult({
   routeConfig,
   matchContext,
   resolver = defaultResolver,
-  render,
+  renderPending,
+  renderReady,
+  renderError,
+  render = createRender({
+    renderPending,
+    renderReady,
+    renderError,
+  }),
 }) {
   const store = createFarceStore({
     historyProtocol: new ServerProtocol(url),
@@ -50,6 +58,10 @@ export default async function getFarceResult({
 
   return {
     status: renderArgs.error ? renderArgs.error.status : 200,
-    element: <Provider store={store}>{render(renderArgs)}</Provider>,
+    element: (
+      <RouterProvider renderArgs={renderArgs}>
+        {render(renderArgs)}
+      </RouterProvider>
+    ),
   };
 }

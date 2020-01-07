@@ -92,9 +92,7 @@ function getRouteComponent(route) {
   if (__DEV__ && route.component) {
     warning(
       route.Component,
-      'Route with `component` property `%s` has no `Component` ' +
-        'property. The expected property for the route component ' +
-        'is `Component`.',
+      'Route with `component` property `%s` has no `Component` property. The expected property for the route component is `Component`.',
       route.component.displayName || route.component.name,
     );
   }

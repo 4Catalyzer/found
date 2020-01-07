@@ -33,6 +33,7 @@ describe('makeRouteConfig', () => {
       makeRouteConfig(
         <Route path="/" Component={AppPage}>
           <Route Component={MainPage} />
+          {/* This comment should be ignored. */}
           <Route path="foo" Component={FooPage}>
             <Route path="bar" Component={BarPage} />
           </Route>
@@ -66,12 +67,12 @@ describe('makeRouteConfig', () => {
       makeRouteConfig(
         <Route path="/" Component={AppPage}>
           <Route Component={MainPage} />
-          <React.Fragment>
+          <>
             <Route path="foo" Component={FooPage} />
-            <React.Fragment>
+            <>
               <Route path="bar" Component={BarPage} />
-            </React.Fragment>
-          </React.Fragment>
+            </>
+          </>
           <Route path="baz" Component={BazPage} />
         </Route>,
       ),
@@ -187,6 +188,40 @@ describe('makeRouteConfig', () => {
         ],
       },
     ]);
+  });
+
+  it('should error on non-element children', () => {
+    expect(() => {
+      makeRouteConfig(
+        <Route path="/" Component={AppPage}>
+          {/* The comma below will fail the invariant. */}
+          <Route path="foo" Component={FooPage} />,
+          <Route path="bar" Component={BarPage} />
+        </Route>,
+      );
+    }).toThrowErrorMatchingSnapshot();
+  });
+
+  it('should allow empty children', () => {
+    expect(() => {
+      makeRouteConfig(
+        <Route path="/" Component={AppPage}>
+          {false}
+          <Route path="foo" Component={FooPage} />
+        </Route>,
+      );
+    }).not.toThrow();
+  });
+
+  it('should error on other falsy children', () => {
+    expect(() => {
+      makeRouteConfig(
+        <Route path="/" Component={AppPage}>
+          {0}
+          <Route path="foo" Component={FooPage} />
+        </Route>,
+      );
+    }).toThrowErrorMatchingSnapshot();
   });
 
   ['react-proxy', 'react-stand-in'].forEach(packageName => {

@@ -1,22 +1,24 @@
 import delay from 'delay';
 import ServerProtocol from 'farce/lib/ServerProtocol';
+import pDefer from 'p-defer';
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import TestRenderer from 'react-test-renderer';
 
 import createFarceRouter from '../src/createFarceRouter';
-import createRender from '../src/createRender';
 
 import { InstrumentedResolver } from './helpers';
 
 describe('render', () => {
   it('should support nested routes', async () => {
+    const deferred = pDefer();
+
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo/baz/a'),
       routeConfig: [
         {
           path: 'foo',
           getComponent: async () => {
-            await delay(20);
+            await deferred.promise;
             return ({ children }) => <div className="foo">{children}</div>;
           },
           children: [
@@ -34,43 +36,47 @@ describe('render', () => {
         },
       ],
 
-      render: createRender({
-        renderPending: () => <div className="pending" />,
-      }),
+      renderPending: () => <div className="pending" />,
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
     await delay(10);
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="pending"
+      />
+    `);
 
+    deferred.resolve();
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'bar'),
-    ).toHaveLength(0);
-
-    const bazNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance,
-      'baz',
-    );
-    expect(bazNode.textContent).toBe('a');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      >
+        <div
+          className="baz"
+        >
+          a
+        </div>
+      </div>
+    `);
   });
 
   it('should support named child routes', async () => {
+    const deferred = pDefer();
+
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo/bar/qux/a'),
       routeConfig: [
         {
           path: 'foo',
           getComponent: async () => {
-            await delay(20);
+            await deferred.promise;
             return ({ nav, main }) => (
               <div className="foo">
                 {nav}
@@ -110,29 +116,34 @@ describe('render', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     // Initial pending render is asynchronous.
     await delay(10);
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'pending');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="pending"
+      />
+    `);
 
+    deferred.resolve();
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar-nav');
-
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'baz'),
-    ).toHaveLength(0);
-
-    const quxNode = ReactTestUtils.findRenderedDOMComponentWithClass(
-      instance,
-      'qux',
-    );
-    expect(quxNode.textContent).toBe('a');
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      >
+        <div
+          className="bar-nav"
+        />
+        <div
+          className="qux"
+        >
+          a
+        </div>
+      </div>
+    `);
   });
 
   it('should support route render method returning a function', async () => {
@@ -174,17 +185,72 @@ describe('render', () => {
     });
 
     const resolver = new InstrumentedResolver();
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Router resolver={resolver} />,
-    );
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
     await resolver.done;
 
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'foo');
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'bar');
-    ReactTestUtils.findRenderedDOMComponentWithClass(instance, 'baz');
-    expect(
-      ReactTestUtils.scryRenderedDOMComponentsWithClass(instance, 'qux'),
-    ).toHaveLength(0);
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      >
+        <div
+          className="bar"
+        >
+          <div
+            className="baz"
+          />
+        </div>
+      </div>
+    `);
+  });
+
+  it('should support custom renderReady', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [
+        {
+          path: 'foo',
+          render: () => null,
+        },
+      ],
+
+      renderReady: () => <div className="ready" />,
+    });
+
+    const resolver = new InstrumentedResolver();
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+
+    await resolver.done;
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="ready"
+      />
+    `);
+  });
+
+  it('should support fully custom render', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [
+        {
+          path: 'foo',
+          render: () => null,
+        },
+      ],
+
+      render: () => <div className="rendered" />,
+    });
+
+    const resolver = new InstrumentedResolver();
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+
+    await resolver.done;
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="rendered"
+      />
+    `);
   });
 });

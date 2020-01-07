@@ -2,17 +2,15 @@
 
 declare module 'found' {
   import * as React from 'react';
-  import { Store, Reducer, Action, StoreEnhancer } from 'redux';
+  import { Reducer, Store, StoreEnhancer } from 'redux';
 
-  type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+  type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
-  interface ObjectMap {
-    [key: string]: any;
-  }
-
-  interface ObjectStringMap {
-    [key: string]: string;
-  }
+  type Query = Record<string, string>;
+  type QueryDescriptor = Record<
+    string,
+    string | number | boolean | object | null | undefined
+  >;
 
   interface Location<S = any> {
     /**
@@ -48,7 +46,7 @@ declare module 'found' {
     /**
      * map version of search string
      */
-    query: ObjectStringMap;
+    query: Query;
     /**
      * the search string; as on window.location e.g. '?bar=baz'
      */
@@ -59,7 +57,15 @@ declare module 'found' {
     state: S;
   }
 
-  type Params = ObjectStringMap;
+  interface ActionTypes {
+    UPDATE_MATCH: '@@found/UPDATE_MATCH';
+    RESOLVE_MATCH: '@@found/RESOLVE_MATCH';
+  }
+
+  const ActionTypes: ActionTypes;
+
+  type Params = Record<string, string>;
+  type ParamsDescriptor = Record<string, string | number | boolean | object>;
 
   /**
    * Location descriptor string:
@@ -109,7 +115,7 @@ declare module 'found' {
 
   interface FoundState {
     match: Match;
-    resolvedMatch: any;
+    resolvedMatch: Match;
   }
 
   interface Resolver {
@@ -129,10 +135,7 @@ declare module 'found' {
    * since we use it for routerShape below.
    */
   class Matcher {
-    constructor(
-      routeConfig: RouteConfig,
-      options: { matchStemRoutes: boolean },
-    );
+    constructor(routeConfig: RouteConfig);
     match(
       location: Location,
     ): null | { routeIndices: number[]; routeParams: Params; params: Params };
@@ -140,22 +143,29 @@ declare module 'found' {
     isActive: (
       match: Match,
       location: Location,
-      options: { exact: boolean },
+      options?: { exact?: boolean },
     ) => boolean;
     /**
      * Returns the path string for a pattern of the same format as a route path
      * and a object of the corresponding path parameters
      */
-    format: (pattern: any, params: ObjectMap) => any;
+    format: (pattern: string, params: ParamsDescriptor) => string;
   }
 
   /**
    * Location descriptor object used in #push and #replace.
    */
-  type LocationDescriptorObject = Pick<Location, 'pathname'> &
-    Partial<Pick<Location, 'search' | 'hash' | 'state' | 'query'>>;
+  interface LocationDescriptorObject {
+    pathname: Location['pathname'];
+    search?: Location['search'];
+    hash?: Location['hash'];
+    state?: Location['state'];
+    query?: QueryDescriptor;
+  }
 
   type LocationDescriptor = LocationDescriptorObject | string;
+
+  type TransitionHookResult = boolean | string | null | undefined;
 
   /**
    * The transition hook function receives the location to which the user is
@@ -172,11 +182,11 @@ declare module 'found' {
    *
    * @see https://github.com/4Catalyzer/farce#transition-hooks
    */
-  type TransitionHook = (
-    location: Location,
-  ) => undefined | (boolean | string | Promise<boolean | string>);
+  interface TransitionHook {
+    (location: Location): TransitionHookResult | Promise<TransitionHookResult>;
+  }
 
-  class Router {
+  interface Router {
     /**
      * Navigates to a new location
      * @see farce
@@ -203,7 +213,7 @@ declare module 'found' {
     isActive: (
       match: Match,
       location: Location,
-      options: { exact?: boolean },
+      options?: { exact?: boolean },
     ) => boolean;
     matcher: Matcher;
     /**
@@ -320,10 +330,13 @@ declare module 'found' {
     children?: RouteConfig[];
   }
 
+  function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
+
   class HttpError {
     status: number;
     data: any;
-    constructor(status: number);
+
+    constructor(status: number, data?: any);
   }
 
   interface RedirectProps {
@@ -333,40 +346,105 @@ declare module 'found' {
 
   class Redirect extends React.Component<RedirectProps> {}
 
-  interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-    as?: React.ComponentType<any>;
+  interface LinkPropsCommon {
     to: LocationDescriptor;
     // match: Match,  provided by withRouter
-    activeClassName?: string;
-    activeStyle?: any;
-    activePropName?: string;
     // router: Router, provided by withRouter
     exact?: boolean;
     target?: string;
-    children?:
-      | React.ReactNode
-      | ((linkRenderArgs: {
-          href: string;
-          active: boolean;
-          onClick: (event: React.SyntheticEvent<any>) => void;
-        }) => React.ReactNode);
+    onClick?: (event: React.SyntheticEvent<any>) => void;
   }
 
-  class Link extends React.Component<LinkProps> {
+  interface LinkInjectedProps {
+    href: string;
     onClick: (event: React.SyntheticEvent<any>) => void;
   }
 
-  interface WithRouterProps {
+  interface LinkPropsNodeChild extends LinkPropsCommon {
+    activeClassName?: string;
+    activeStyle?: {};
+    children?: React.ReactNode;
+  }
+
+  type ReplaceLinkProps<TInner extends React.ElementType, TProps> = Omit<
+    React.ComponentProps<TInner>,
+    keyof TProps | keyof LinkInjectedProps
+  > &
+    TProps;
+
+  type LinkPropsSimple = ReplaceLinkProps<'a', LinkPropsNodeChild>;
+
+  type LinkPropsWithAs<
+    TInner extends React.ElementType<LinkInjectedProps>
+  > = ReplaceLinkProps<
+    TInner,
+    LinkPropsNodeChild & {
+      as: TInner;
+      activePropName?: null;
+    }
+  >;
+
+  type LinkPropsWithActivePropName<
+    TInner extends React.ComponentType<
+      LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
+    >,
+    TActivePropName extends string
+  > = ReplaceLinkProps<
+    TInner,
+    LinkPropsNodeChild & {
+      as: TInner;
+      activePropName: TActivePropName;
+    } & {
+        [activePropName in TActivePropName]?: null;
+      }
+  >;
+
+  interface LinkPropsWithFunctionChild extends LinkPropsCommon {
+    children: (linkRenderArgs: {
+      href: string;
+      active: boolean;
+      onClick: (event: React.SyntheticEvent<any>) => void;
+    }) => React.ReactNode;
+  }
+
+  type LinkProps<
+    TInner extends React.ElementType = never,
+    TInnerWithActivePropName extends React.ComponentType<
+      LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
+    > = never,
+    TActivePropName extends string = never
+  > =
+    | LinkPropsSimple
+    | LinkPropsWithAs<TInner>
+    | LinkPropsWithActivePropName<TInnerWithActivePropName, TActivePropName>
+    | LinkPropsWithFunctionChild;
+
+  class Link<
+    TInner extends React.ElementType = never,
+    TInnerWithActivePropName extends React.ComponentType<
+      LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
+    > = never,
+    TActivePropName extends string = never
+  > extends React.Component<
+    LinkProps<TInner, TInnerWithActivePropName, TActivePropName>
+  > {
+    props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
+  }
+
+  interface RouterState {
     match: Match;
     router: Router;
   }
 
-  function withRouter<Props extends WithRouterProps>(
+  function useRouter(): RouterState;
+
+  function withRouter<Props extends RouterState>(
     Component: React.ComponentType<Props>,
-  ): React.ComponentType<Omit<Props, keyof WithRouterProps>>;
+  ): React.ComponentType<Omit<Props, keyof RouterState>>;
 
   class RedirectException {
     constructor(location: LocationDescriptor);
+    location: LocationDescriptor;
   }
 
   /**
@@ -387,8 +465,9 @@ declare module 'found' {
   }
 
   interface RouterRenderArgs extends Match {
-    error?: HttpError;
     elements?: ReactElementOrGroup[];
+    error?: HttpError;
+    router: Router;
   }
 
   interface CreateRenderArgs {
@@ -399,7 +478,7 @@ declare module 'found' {
 
   function createMatchEnhancer(
     matcher: Matcher,
-  ): () => StoreEnhancer<{
+  ): StoreEnhancer<{
     found: {
       matcher: Matcher;
       replaceRouteConfig: (routes: RouteConfig) => void;
@@ -415,7 +494,7 @@ declare module 'found' {
   }
 
   interface CreateConnectedRouterArgs extends BaseCreateRouterArgs {
-    getFound?: (store: any) => FoundState;
+    getFound?: (store: Store) => FoundState;
   }
 
   interface FarceCreateRouterArgs extends BaseCreateRouterArgs {
@@ -433,13 +512,14 @@ declare module 'found' {
 
   // Improve these `any`s as needed
   type ConnectedRouter = React.ComponentType<{
-    resolver: Resolver;
     matchContext?: any;
+    resolver: Resolver;
+    initialRenderArgs?: RouterRenderArgs;
   }>;
 
   type BrowserRouter = React.ComponentType<{
-    resolver?: Resolver;
     matchContext?: any;
+    resolver?: Resolver;
   }>;
 
   function createConnectedRouter({
@@ -459,4 +539,43 @@ declare module 'found' {
   function createBrowserRouter(
     options: CreateBrowserRouterArgs,
   ): BrowserRouter;
+
+  interface CreateInitialFarceRouterArgs
+    extends Omit<FarceCreateRouterArgs, 'store'> {
+    resolver: Resolver;
+    matchContext?: any;
+  }
+
+  function createInitialFarceRouter({
+    historyProtocol,
+    historyMiddlewares,
+    historyOptions,
+    routeConfig,
+    matchContext,
+    resolver,
+    ...options
+  }: CreateInitialFarceRouterArgs): Promise<ConnectedRouter>;
+
+  interface createInitialBrowserRouterArgs
+    extends Omit<
+      CreateInitialFarceRouterArgs,
+      'resolver' | 'historyProtocol'
+    > {
+    matchContext?: any;
+  }
+
+  function createInitialBrowserRouter(
+    options: createInitialBrowserRouterArgs,
+  ): Promise<ConnectedRouter>;
+
+  interface GetStoreRenderArgsArgs {
+    store: Store;
+    getFound?: (store: any) => FoundState;
+    matchContext: any;
+    resolver: Resolver;
+  }
+
+  function getStoreRenderArgs(
+    args: GetStoreRenderArgsArgs,
+  ): Promise<RouterRenderArgs>;
 }

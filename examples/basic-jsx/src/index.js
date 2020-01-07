@@ -46,11 +46,7 @@ const BrowserRouter = createBrowserRouter({
       <Route path="foo" Component={() => <div>Foo</div>} />
       <Route
         path="bar"
-        getComponent={() =>
-          new Promise(resolve => {
-            setTimeout(resolve, 1000, ({ data }) => <div>{data}</div>);
-          })
-        }
+        getComponent={() => import('./Bar').then(m => m.default)}
         getData={() =>
           new Promise(resolve => {
             setTimeout(resolve, 1000, 'Bar');
@@ -70,9 +66,11 @@ const BrowserRouter = createBrowserRouter({
     </Route>,
   ),
 
-  renderError: (
-    { error }, // eslint-disable-line react/prop-types
-  ) => <div>{error.status === 404 ? 'Not found' : 'Error'}</div>,
+  /* eslint-disable react/prop-types */
+  renderError: ({ error }) => (
+    <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
+  ),
+  /* eslint-enable react/prop-types */
 });
 
 ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
