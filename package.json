@@ -24,18 +24,9 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{md,ts,tsx}": [
-      "prettier --write",
-      "git add"
-    ],
-    "/README.md": [
-      "doctoc",
-      "git add"
-    ]
+    "*.js": "eslint --fix",
+    "*.{md,ts,tsx}": "prettier --write",
+    "/README.md": "doctoc"
   },
   "prettier": {
     "printWidth": 79,
