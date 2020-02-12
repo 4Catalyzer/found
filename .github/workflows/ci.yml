@@ -1,6 +1,6 @@
 name: Node.js Package
 
-on: [push]
+on: [pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -9,5 +9,31 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: npm ci
-      - run: npm test
+      - uses: actions/cache@v1
+        name: Restore node_modules cache
+        id: node_modules
+        with:
+          path: node_modules
+          key: ${{runner.os}}-node_modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{runner.os}}-node_modules
+      - run: yarn install --frozen-lockfile
+        if: steps.node_modules.outputs.cache-hit != 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Deploy
+      ## Create deployment
+      - uses: whatever-company/deployment-action@releases/v1
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: '${{ github.token }}'
+          environment: qa
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: '${{ github.token }}'
+          state: 'success'
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
