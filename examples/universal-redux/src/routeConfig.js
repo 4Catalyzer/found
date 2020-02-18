@@ -1,5 +1,5 @@
-import React from 'react';
 import Redirect from 'found/lib/Redirect';
+import React from 'react';
 
 import App from './App';
 

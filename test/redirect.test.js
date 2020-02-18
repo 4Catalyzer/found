@@ -3,10 +3,9 @@ import MemoryProtocol from 'farce/lib/MemoryProtocol';
 import React from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
 
-import createFarceRouter from '../src/createFarceRouter';
 import Redirect from '../src/Redirect';
 import RedirectException from '../src/RedirectException';
-
+import createFarceRouter from '../src/createFarceRouter';
 import { InstrumentedResolver } from './helpers';
 
 describe('redirect', () => {

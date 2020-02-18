@@ -1,9 +1,9 @@
 import React from 'react';
 
-import makeRouteConfig from '../src/makeRouteConfig';
 import Redirect from '../src/Redirect';
 import RedirectException from '../src/RedirectException';
 import Route from '../src/Route';
+import makeRouteConfig from '../src/makeRouteConfig';
 
 describe('makeRouteConfig', () => {
   const AppPage = () => {};

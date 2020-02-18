@@ -6,7 +6,6 @@ import TestRenderer, { act } from 'react-test-renderer';
 import createFarceRouter from '../src/createFarceRouter';
 import createRender from '../src/createRender';
 import hotRouteConfig from '../src/hotRouteConfig';
-
 import { InstrumentedResolver } from './helpers';
 
 describe('hotRouteConfig', () => {
