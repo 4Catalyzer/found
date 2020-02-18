@@ -2,11 +2,11 @@ import FarceActions from 'farce/lib/Actions';
 import ServerProtocol from 'farce/lib/ServerProtocol';
 import React from 'react';
 
+import createRender from '../createRender';
 import getStoreRenderArgs from '../getStoreRenderArgs';
 import defaultResolver from '../resolver';
-import RouterProvider from './RouterProvider';
 import createFarceStore from '../utils/createFarceStore';
-import createRender from '../createRender';
+import RouterProvider from './RouterProvider';
 
 export default async function getFarceResult({
   url,

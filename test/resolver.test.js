@@ -1,8 +1,8 @@
 import delay from 'delay';
 import pDefer from 'p-defer';
 
-import resolver from '../src/resolver';
 import { getRouteMatches } from '../src/ResolverUtils';
+import resolver from '../src/resolver';
 
 describe('resolver', () => {
   describe('getData', () => {

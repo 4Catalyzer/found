@@ -4,11 +4,10 @@ import ServerProtocol from 'farce/lib/ServerProtocol';
 import React, { useEffect } from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
 
-import createFarceRouter from '../src/createFarceRouter';
 import HttpError from '../src/HttpError';
+import createFarceRouter from '../src/createFarceRouter';
 import useRouter from '../src/useRouter';
 import withRouter from '../src/withRouter';
-
 import { InstrumentedResolver } from './helpers';
 
 describe('Router', () => {

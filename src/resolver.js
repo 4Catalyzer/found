@@ -1,14 +1,14 @@
 import isPromise from 'is-promise';
 
-import createElements from './createElements';
 import {
+  accumulateRouteValues,
   checkResolved,
   getComponents,
   getRouteMatches,
   getRouteValue,
   isResolved,
-  accumulateRouteValues,
 } from './ResolverUtils';
+import createElements from './createElements';
 
 function getRouteGetData(route) {
   return route.getData;

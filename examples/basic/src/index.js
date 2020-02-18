@@ -1,6 +1,6 @@
-import createBrowserRouter from 'found/lib/createBrowserRouter';
 import Link from 'found/lib/Link';
 import Redirect from 'found/lib/Redirect';
+import createBrowserRouter from 'found/lib/createBrowserRouter';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';

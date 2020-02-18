@@ -1,6 +1,6 @@
-import createBrowserRouter from 'found/lib/createBrowserRouter';
-import { routerShape } from 'found/lib/PropTypes';
 import Link from 'found/lib/Link';
+import { routerShape } from 'found/lib/PropTypes';
+import createBrowserRouter from 'found/lib/createBrowserRouter';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';

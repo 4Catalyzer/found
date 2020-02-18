@@ -1,5 +1,5 @@
-import React from 'react';
 import createRender from 'found/lib/createRender';
+import React from 'react';
 
 export default createRender({
   /* eslint-disable react/prop-types */

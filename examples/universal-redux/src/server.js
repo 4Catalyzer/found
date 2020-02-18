@@ -1,6 +1,6 @@
 import express from 'express';
 import { Actions as FarceActions, ServerProtocol } from 'farce';
-import { getStoreRenderArgs, resolver, RedirectException } from 'found';
+import { RedirectException, getStoreRenderArgs, resolver } from 'found';
 import { RouterProvider } from 'found/lib/server';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';

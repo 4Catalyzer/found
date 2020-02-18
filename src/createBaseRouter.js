@@ -1,13 +1,13 @@
+import mapContextToProps from '@restart/context/mapContextToProps';
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ReactReduxContext } from 'react-redux';
 import StaticContainer from 'react-static-container';
 import warning from 'warning';
-import mapContextToProps from '@restart/context/mapContextToProps';
 
-import createRender from './createRender';
 import RouterContext from './RouterContext';
+import createRender from './createRender';
 import createStoreRouterObject from './utils/createStoreRouterObject';
 import resolveRenderArgs from './utils/resolveRenderArgs';
 
