@@ -2,7 +2,7 @@ import invariant from 'invariant';
 import React from 'react';
 
 function buildRouteConfig(node, routeConfig) {
-  React.Children.forEach(node, child => {
+  React.Children.forEach(node, (child) => {
     // Falsy children get coerced to null. We check for this instead of
     // implicit falsiness because we don't want to allow empty strings or 0.
     if (child === null) {

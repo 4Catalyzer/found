@@ -224,7 +224,7 @@ describe('makeRouteConfig', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  ['react-proxy', 'react-stand-in'].forEach(packageName => {
+  ['react-proxy', 'react-stand-in'].forEach((packageName) => {
     it(`should work with proxies from ${packageName}`, () => {
       // eslint-disable-next-line global-require, import/no-dynamic-require
       const createProxy = require(packageName).default;
@@ -247,7 +247,7 @@ describe('makeRouteConfig', () => {
           match: {
             router: {
               matcher: {
-                format: to => to,
+                format: (to) => to,
               },
             },
           },

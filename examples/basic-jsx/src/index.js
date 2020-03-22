@@ -46,9 +46,9 @@ const BrowserRouter = createBrowserRouter({
       <Route path="foo" Component={() => <div>Foo</div>} />
       <Route
         path="bar"
-        getComponent={() => import('./Bar').then(m => m.default)}
+        getComponent={() => import('./Bar').then((m) => m.default)}
         getData={() =>
-          new Promise(resolve => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1000, 'Bar');
           })
         }

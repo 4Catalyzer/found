@@ -44,12 +44,12 @@ export default makeRouteConfig(
     <Route
       path="bar"
       getComponent={() =>
-        new Promise(resolve => {
+        new Promise((resolve) => {
           setTimeout(resolve, 1000, ({ data }) => <div>{data}</div>);
         })
       }
       getData={() =>
-        new Promise(resolve => {
+        new Promise((resolve) => {
           setTimeout(resolve, 1000, 'Bar');
         })
       }

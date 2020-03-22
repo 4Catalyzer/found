@@ -48,7 +48,7 @@ const BrowserRouter = createBrowserRouter({
         {
           path: 'foo',
           getComponent: () =>
-            new Promise(resolve => {
+            new Promise((resolve) => {
               setTimeout(resolve, 1000, () => <div>Foo</div>);
             }),
         },
@@ -56,7 +56,7 @@ const BrowserRouter = createBrowserRouter({
           path: 'bar',
           Component: ({ data }) => <div>{data}</div>, // eslint-disable-line react/prop-types
           getData: () =>
-            new Promise(resolve => {
+            new Promise((resolve) => {
               setTimeout(resolve, 1000, 'Bar');
             }),
         },

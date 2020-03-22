@@ -50,7 +50,7 @@ describe('ResolverUtils', () => {
 
       expect(
         isResolved(
-          await checkResolved(Promise.resolve({}).then(value => value)),
+          await checkResolved(Promise.resolve({}).then((value) => value)),
         ),
       ).toBe(true);
     });
@@ -101,8 +101,8 @@ describe('ResolverUtils', () => {
       expect(
         getRouteValues(
           getRouteMatches(match),
-          route => route.getValue,
-          route => route.value,
+          (route) => route.getValue,
+          (route) => route.value,
         ),
       ).toEqual([9, 'a', undefined, undefined]);
     });

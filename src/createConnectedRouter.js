@@ -15,7 +15,7 @@ export default function createConnectedRouter({
   ...options
 }) {
   return connect(
-    state => {
+    (state) => {
       const { match, resolvedMatch } = getFound(state);
       return { match, resolvedMatch };
     },

@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 class BaseLink extends React.Component {
-  onClick = event => {
+  onClick = (event) => {
     const { onClick, target, router, to } = this.props;
 
     if (onClick) {

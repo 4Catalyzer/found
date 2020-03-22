@@ -52,7 +52,7 @@ describe('<BaseLink>', () => {
           to="/"
           match={{}}
           router={router}
-          onClick={event => {
+          onClick={(event) => {
             event.preventDefault();
           }}
         />,

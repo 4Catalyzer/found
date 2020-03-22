@@ -10,7 +10,7 @@ export function checkResolved(value) {
 
   return Promise.race([
     value,
-    new Promise(resolve => {
+    new Promise((resolve) => {
       setImmediate(resolve, UNRESOLVED);
     }),
   ]);
@@ -32,7 +32,7 @@ function accumulateRouteValuesImpl(
   for (const routeIndex of routeIndices) {
     if (typeof routeIndex === 'object') {
       // eslint-disable-next-line no-loop-func
-      Object.values(routeIndex).forEach(groupRouteIndices => {
+      Object.values(routeIndex).forEach((groupRouteIndices) => {
         accumulated.push(
           ...accumulateRouteValuesImpl(
             routeValues,
@@ -81,7 +81,9 @@ export function getRouteValue(match, getGetter, getValue) {
 
 // This is a little more versatile than if we only passed in keys.
 export function getRouteValues(routeMatches, getGetter, getValue) {
-  return routeMatches.map(match => getRouteValue(match, getGetter, getValue));
+  return routeMatches.map((match) =>
+    getRouteValue(match, getGetter, getValue),
+  );
 }
 
 function getRouteGetComponent(route) {

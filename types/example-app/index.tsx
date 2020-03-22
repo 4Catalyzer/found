@@ -14,7 +14,7 @@ import { MainPage } from './MainPage';
 import { WidgetsPage } from './WidgetsPage';
 
 const fetchWidget = (widgetId: any) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     throw new Error('oops');
   });
 
@@ -33,7 +33,7 @@ const BrowserRouter = createBrowserRouter({
         <Route
           path="widgets/:widgetId"
           getComponent={() =>
-            import('./WidgetsPage').then(module => module.WidgetsPage)
+            import('./WidgetsPage').then((module) => module.WidgetsPage)
           }
           getData={({ params: { widgetId } }) =>
             fetchWidget(widgetId).catch(() => {
@@ -54,7 +54,7 @@ const BrowserRouter = createBrowserRouter({
       <Route
         path="bar"
         getData={() =>
-          new Promise(resolve => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1000, 'Bar');
           })
         }
