@@ -58,7 +58,7 @@ class Main extends React.Component {
     this.removeTransitionHook();
   }
 
-  onTransition = location => {
+  onTransition = (location) => {
     switch (this.state.transitionType) {
       case 'confirm':
         return 'Confirm';
@@ -71,12 +71,12 @@ class Main extends React.Component {
         return false;
       case 'delayedConfirm':
         // This won't prompt on before unload.
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(resolve, 1000, 'Confirm');
         });
       case 'delayedAllow':
         // This won't prompt on before unload.
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(resolve, 1000, true);
         });
       default:
@@ -84,7 +84,7 @@ class Main extends React.Component {
     }
   };
 
-  onChangeSelect = event => {
+  onChangeSelect = (event) => {
     this.setState({ transitionType: event.target.value });
   };
 
@@ -99,8 +99,8 @@ class Main extends React.Component {
   showCustomConfirm() {
     this.setState({ showCustomConfirm: true });
 
-    return new Promise(resolve => {
-      this.resolveCustomConfirm = result => {
+    return new Promise((resolve) => {
+      this.resolveCustomConfirm = (result) => {
         this.setState({ showCustomConfirm: false });
         this.resolveCustomConfirm = null;
         resolve(result);

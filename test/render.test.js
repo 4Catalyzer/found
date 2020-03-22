@@ -151,7 +151,7 @@ describe('render', () => {
       routeConfig: [
         {
           path: '/foo',
-          render: () => children => <div className="foo">{children}</div>,
+          render: () => (children) => <div className="foo">{children}</div>,
           children: [
             {
               render: () => ({ nav, main }) => (

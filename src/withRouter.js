@@ -6,7 +6,7 @@ export default function withRouter(Component) {
   return mapContextToProps(
     {
       consumers: RouterContext,
-      mapToProps: context => context,
+      mapToProps: (context) => context,
       displayName: `withRouter(${Component.displayName || Component.name})`,
     },
     Component,

@@ -14,7 +14,7 @@ export class InstrumentedResolver {
   // eslint-disable-next-line require-await
   async *resolveElements(match) {
     let resolveDone;
-    this.done = new Promise(resolve => {
+    this.done = new Promise((resolve) => {
       resolveDone = resolve;
     });
 

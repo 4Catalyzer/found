@@ -42,7 +42,7 @@ export default {
         earlyData,
       );
 
-      yield pendingElements.every(element => element !== undefined)
+      yield pendingElements.every((element) => element !== undefined)
         ? pendingElements
         : undefined;
 

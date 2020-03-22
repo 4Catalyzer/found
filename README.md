@@ -68,7 +68,7 @@ const BrowserRouter = createBrowserRouter({
         <Route
           path="widgets/:widgetId"
           getComponent={() =>
-            System.import('./WidgetPage').then(module => module.default)
+            System.import('./WidgetPage').then((module) => module.default)
           }
           getData={({ params: { widgetId } }) =>
             fetchWidget(widgetId).catch(() => {
