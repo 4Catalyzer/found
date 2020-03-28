@@ -50,6 +50,7 @@ export default async function getFarceResult({
       };
     }
 
+    /* istanbul ignore next: paranoid guard */
     throw e;
   } finally {
     // This is a no-op with ServerProtocol, but it doesn't hurt.

@@ -175,6 +175,7 @@ export default function createBaseRouter({
           return;
         }
 
+        /* istanbul ignore next: paranoid guard */
         throw e;
       }
     }

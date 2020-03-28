@@ -1,4 +1,5 @@
 import { mount } from 'enzyme';
+import pDefer from 'p-defer';
 
 import createRender from '../src/createRender';
 import resolver from '../src/resolver';
@@ -13,15 +14,13 @@ export class InstrumentedResolver {
 
   // eslint-disable-next-line require-await
   async *resolveElements(match) {
-    let resolveDone;
-    this.done = new Promise((resolve) => {
-      resolveDone = resolve;
-    });
+    const deferred = pDefer();
+    this.done = deferred.promise;
 
     try {
       yield* resolver.resolveElements(match);
     } finally {
-      resolveDone();
+      deferred.resolve();
     }
   }
 }

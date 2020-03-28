@@ -1,23 +1,18 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import createRender from '../../src/createRender';
-import getFarceResult from '../../src/server/getFarceResult';
+import RedirectException from '../../src/RedirectException';
+import { getFarceResult } from '../../src/server';
 
-async function renderToString(url, routeConfig) {
-  const { element } = await getFarceResult({
-    url,
-    routeConfig,
-    render: createRender({}),
-  });
-
-  return ReactDOMServer.renderToString(element);
+async function getRenderedResult(url, routeConfig) {
+  const { status, element } = await getFarceResult({ url, routeConfig });
+  return [status, ReactDOMServer.renderToString(element)];
 }
 
 describe('getFarceResult', () => {
   it('should support nested routes', async () => {
     expect(
-      await renderToString('/foo/baz/a', [
+      await getRenderedResult('/foo/baz/a', [
         {
           path: 'foo',
           Component: ({ children }) => <div className="foo">{children}</div>,
@@ -35,14 +30,17 @@ describe('getFarceResult', () => {
           ],
         },
       ]),
-    ).toMatchInlineSnapshot(
-      `"<div class=\\"foo\\"><div class=\\"baz\\">a</div></div>"`,
-    );
+    ).toMatchInlineSnapshot(`
+      Array [
+        200,
+        "<div class=\\"foo\\"><div class=\\"baz\\">a</div></div>",
+      ]
+    `);
   });
 
   it('should support named child routes', async () => {
     expect(
-      await renderToString('/foo/bar/qux/a', [
+      await getRenderedResult('/foo/bar/qux/a', [
         {
           path: 'foo',
           Component: ({ nav, main }) => (
@@ -78,8 +76,33 @@ describe('getFarceResult', () => {
           ],
         },
       ]),
-    ).toMatchInlineSnapshot(
-      `"<div class=\\"foo\\"><div class=\\"bar-nav\\"></div><div class=\\"qux\\">a</div></div>"`,
-    );
+    ).toMatchInlineSnapshot(`
+      Array [
+        200,
+        "<div class=\\"foo\\"><div class=\\"bar-nav\\"></div><div class=\\"qux\\">a</div></div>",
+      ]
+    `);
+  });
+
+  it('should support redirects', async () => {
+    expect(
+      await getFarceResult({
+        url: '/foo',
+        routeConfig: [
+          {
+            path: 'foo',
+            render: () => {
+              throw new RedirectException('/bar');
+            },
+          },
+        ],
+      }),
+    ).toMatchInlineSnapshot(`
+      Object {
+        "redirect": Object {
+          "url": "/bar",
+        },
+      }
+    `);
   });
 });
