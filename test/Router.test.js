@@ -1,16 +1,44 @@
 import delay from 'delay';
+import FarceActions from 'farce/lib/Actions';
 import MemoryProtocol from 'farce/lib/MemoryProtocol';
 import ServerProtocol from 'farce/lib/ServerProtocol';
+import pDefer from 'p-defer';
 import React, { useEffect } from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
 
 import HttpError from '../src/HttpError';
+import RedirectException from '../src/RedirectException';
 import createFarceRouter from '../src/createFarceRouter';
 import useRouter from '../src/useRouter';
 import withRouter from '../src/withRouter';
 import { InstrumentedResolver } from './helpers';
 
 describe('Router', () => {
+  it('should render match', async () => {
+    const Router = createFarceRouter({
+      historyProtocol: new ServerProtocol('/foo'),
+      routeConfig: [
+        {
+          path: '/foo',
+          render: () => <div className="foo" />,
+        },
+      ],
+    });
+
+    const resolver = new InstrumentedResolver();
+    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+
+    await resolver.done;
+
+    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+      <div
+        className="foo"
+      />
+    `);
+
+    testRenderer.unmount();
+  });
+
   it('should render 404 when no routes match', async () => {
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo'),
@@ -173,6 +201,96 @@ describe('Router', () => {
       expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
         <div
           className="bar"
+        />
+      `);
+    });
+  });
+
+  describe('stale match resolution', () => {
+    it('should not render stale location', async () => {
+      const Component = jest.fn(() => null);
+      const deferred = pDefer();
+
+      const Router = createFarceRouter({
+        historyProtocol: new MemoryProtocol('/foo'),
+        routeConfig: [
+          {
+            path: '/foo',
+            Component,
+            getData: () => deferred.promise,
+          },
+          {
+            path: '/bar',
+            render: () => <div className="bar" />,
+          },
+        ],
+      });
+
+      const resolver = new InstrumentedResolver();
+      const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+
+      await act(async () => {
+        testRenderer.getInstance().store.dispatch(FarceActions.push('/bar'));
+        await delay(10);
+
+        await resolver.done;
+
+        deferred.resolve();
+        await delay(10);
+      });
+
+      expect(Component).not.toHaveBeenCalled();
+      expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+        <div
+          className="bar"
+        />
+      `);
+    });
+
+    it('should not run stale redirect', async () => {
+      const Component = jest.fn(() => null);
+      const deferred1 = pDefer();
+      const deferred2 = pDefer();
+      const deferreds = [deferred1, deferred2];
+
+      const Router = createFarceRouter({
+        historyProtocol: new MemoryProtocol('/foo'),
+        routeConfig: [
+          {
+            path: '/foo',
+            getData: () => deferreds.shift().promise,
+            render: () => <div className="foo" />,
+          },
+          {
+            path: '/bar',
+            Component,
+          },
+        ],
+      });
+
+      const resolver1 = new InstrumentedResolver();
+      const testRenderer = TestRenderer.create(
+        <Router resolver={resolver1} />,
+      );
+
+      await delay(10);
+
+      await act(async () => {
+        const resolver2 = new InstrumentedResolver();
+        testRenderer.update(<Router resolver={resolver2} />);
+        await delay(10);
+
+        deferred2.resolve();
+        await resolver2.done;
+
+        deferred1.reject(new RedirectException('/bar'));
+        await resolver1.done;
+      });
+
+      expect(Component).not.toHaveBeenCalled();
+      expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+        <div
+          className="foo"
         />
       `);
     });

@@ -132,6 +132,7 @@ export default function createBaseRouter({
     }
 
     async resolveMatch() {
+      const pendingIteration = this.lastIteration;
       const pendingMatch = this.props.match;
 
       try {
@@ -140,7 +141,7 @@ export default function createBaseRouter({
           this.props,
         )) {
           // Don't do anything if we're resolving an outdated match.
-          if (!this.mounted || this.props.match !== pendingMatch) {
+          if (!this.mounted || this.lastIteration !== pendingIteration) {
             return;
           }
 
@@ -165,7 +166,7 @@ export default function createBaseRouter({
           }
         }
       } catch (e) {
-        if (!this.mounted || this.props.match !== pendingMatch) {
+        if (!this.mounted || this.lastIteration !== pendingIteration) {
           return;
         }
 
@@ -174,6 +175,7 @@ export default function createBaseRouter({
           return;
         }
 
+        /* istanbul ignore next: paranoid guard */
         throw e;
       }
     }
