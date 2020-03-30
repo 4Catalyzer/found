@@ -819,9 +819,8 @@ The `router.addNavigationListener` method adds a [navigation listener](https://g
 
 ```js
 function MyForm(props) {
-  const { router } = useRouter();
-
   const [dirty, setDirty] = useState(false);
+  const { router } = useRouter();
 
   useEffect(
     () =>
@@ -845,7 +844,7 @@ If you want to run your navigation listeners when the user attempts to leave the
 ```js
 router.addNavigationListener(
   (location) => {
-    if (location === null) {
+    if (!location) {
       return false;
     }
 
