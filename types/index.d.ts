@@ -165,25 +165,27 @@ declare module 'found' {
 
   type LocationDescriptor = LocationDescriptorObject | string;
 
-  type TransitionHookResult = boolean | string | null | undefined;
+  type NavigationListenerResult = boolean | string | null | undefined;
 
   /**
-   * The transition hook function receives the location to which the user is
-   * attempting to navigate.
+   * The navigation listener function receives the location to which the user
+   * is attempting to navigate.
    *
    * This function may return:
-   *  - true to allow the transition
-   *  - false to block the transition
+   *  - true to allow navigation
+   *  - false to block navigation
    *  - A string to prompt the user with that string as the message
-   *  - A nully value to call the next transition hook and use its return
-   *    value, if present, or else to allow the transition
+   *  - A nully value to call the next navigation and use its return value, if
+   *    present, or else to allow navigation
    *  - A promise that resolves to any of the above values, to allow or block
-   *    the transition once the promise resolves
+   *    navigation once the promise resolves
    *
-   * @see https://github.com/4Catalyzer/farce#transition-hooks
+   * @see https://github.com/4Catalyzer/farce#navigation-listeners
    */
-  interface TransitionHook {
-    (location: Location): TransitionHookResult | Promise<TransitionHookResult>;
+  interface NavigationListener {
+    (location: Location):
+      | NavigationListenerResult
+      | Promise<NavigationListenerResult>;
   }
 
   interface Router {
@@ -217,12 +219,12 @@ declare module 'found' {
     ) => boolean;
     matcher: Matcher;
     /**
-     * Adds a transition hook that can block navigation.
+     * Adds a navigation listener that can block navigation.
      *
-     * This method takes a transition hook function and returns a function to
-     * remove the transition hook.
+     * This method takes a navigation listener function and returns a function
+     * to remove the navigation listener.
      */
-    addTransitionHook: (hook: TransitionHook) => () => void;
+    addNavigationListener: (listener: NavigationListener) => () => void;
   }
 
   /**

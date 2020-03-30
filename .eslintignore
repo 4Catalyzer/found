@@ -1,3 +1,6 @@
+!.babelrc.js
+!.eslintrc.js
+
 **/coverage/
 **/lib/
 **/node_modules/

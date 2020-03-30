@@ -30,5 +30,5 @@ export const routerShape = PropTypes.shape({
   isActive: PropTypes.func.isRequired,
   matcher: matcherShape.isRequired,
 
-  addTransitionHook: PropTypes.func.isRequired,
+  addNavigationListener: PropTypes.func.isRequired,
 });
