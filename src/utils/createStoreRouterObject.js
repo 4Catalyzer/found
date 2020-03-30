@@ -1,4 +1,4 @@
-import FarceActions from 'farce/lib/Actions';
+import FarceActions from 'farce/Actions';
 import { bindActionCreators } from 'redux';
 
 const NAVIGATION_ACTION_CREATORS = {

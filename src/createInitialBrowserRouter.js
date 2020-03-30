@@ -1,4 +1,4 @@
-import BrowserProtocol from 'farce/lib/BrowserProtocol';
+import BrowserProtocol from 'farce/BrowserProtocol';
 
 import createInitialFarceRouter from './createInitialFarceRouter';
 import resolver from './resolver';

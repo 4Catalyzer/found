@@ -1,7 +1,7 @@
 import delay from 'delay';
-import FarceActions from 'farce/lib/Actions';
-import MemoryProtocol from 'farce/lib/MemoryProtocol';
-import ServerProtocol from 'farce/lib/ServerProtocol';
+import FarceActions from 'farce/Actions';
+import MemoryProtocol from 'farce/MemoryProtocol';
+import ServerProtocol from 'farce/ServerProtocol';
 import pDefer from 'p-defer';
 import React, { useEffect } from 'react';
 import TestRenderer, { act } from 'react-test-renderer';

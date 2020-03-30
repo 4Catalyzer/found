@@ -1,6 +1,6 @@
-import FarceActions from 'farce/lib/Actions';
-import createHistoryEnhancer from 'farce/lib/createHistoryEnhancer';
-import queryMiddleware from 'farce/lib/queryMiddleware';
+import FarceActions from 'farce/Actions';
+import createHistoryEnhancer from 'farce/createHistoryEnhancer';
+import queryMiddleware from 'farce/queryMiddleware';
 import { combineReducers, compose, createStore } from 'redux';
 
 import Matcher from '../Matcher';

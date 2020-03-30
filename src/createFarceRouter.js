@@ -1,4 +1,4 @@
-import FarceActions from 'farce/lib/Actions';
+import FarceActions from 'farce/Actions';
 import React from 'react';
 import { Provider } from 'react-redux';
 
