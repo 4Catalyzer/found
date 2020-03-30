@@ -26,7 +26,7 @@
   "lint-staged": {
     "*.js": "eslint --fix",
     "*.{md,ts,tsx}": "prettier --write",
-    "/README.md": "doctoc"
+    "./README.md": "doctoc"
   },
   "prettier": {
     "printWidth": 79,
@@ -66,7 +66,7 @@
   "dependencies": {
     "@babel/runtime-corejs3": "^7.6.2",
     "@restart/context": "^2.1.4",
-    "farce": "^0.3.0",
+    "farce": "^0.4.1",
     "invariant": "^2.2.4",
     "is-promise": "^2.1.0",
     "lodash": "^4.17.15",

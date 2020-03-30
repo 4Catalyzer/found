@@ -1,5 +1,5 @@
 import delay from 'delay';
-import MemoryProtocol from 'farce/lib/MemoryProtocol';
+import MemoryProtocol from 'farce/MemoryProtocol';
 import React from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
 

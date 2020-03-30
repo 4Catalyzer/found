@@ -1,4 +1,4 @@
-import FarceActionTypes from 'farce/lib/ActionTypes';
+import FarceActionTypes from 'farce/ActionTypes';
 import { applyMiddleware } from 'redux';
 
 import ActionTypes from './ActionTypes';

@@ -1,5 +1,5 @@
 import delay from 'delay';
-import ServerProtocol from 'farce/lib/ServerProtocol';
+import ServerProtocol from 'farce/ServerProtocol';
 import pDefer from 'p-defer';
 import React from 'react';
 import TestRenderer from 'react-test-renderer';

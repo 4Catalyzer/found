@@ -1,5 +1,5 @@
-import FarceActions from 'farce/lib/Actions';
-import ServerProtocol from 'farce/lib/ServerProtocol';
+import FarceActions from 'farce/Actions';
+import ServerProtocol from 'farce/ServerProtocol';
 import React from 'react';
 
 import createRender from '../createRender';

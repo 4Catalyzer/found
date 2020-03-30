@@ -1,5 +1,5 @@
 {
-  "name": "transition-hook",
+  "name": "navigation-listener",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

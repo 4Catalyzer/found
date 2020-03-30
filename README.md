@@ -148,7 +148,7 @@ export default AppPage;
 - [Basic usage](/examples/basic)
 - [Basic usage with JSX route configuration](/examples/basic-jsx)
 - [Global pending state](/examples/global-pending)
-- [Transition hook usage](/examples/transition-hook)
+- [Navigation listener usage](/examples/navigation-listener)
 - [Shared Redux store](/examples/redux)
 - [Hot reloading](/examples/hot-reloading)
 - [Server-side rendering](/examples/universal)
@@ -333,7 +333,7 @@ By default, route components receive the following additional props describing t
   - `isActive(match, location, { exact })`: for `match` as above, returns whether `match` corresponds to `location` or a subpath of `location`; if `exact` is set, returns whether `match` corresponds exactly to `location`
   - `matcher`: an object implementing the matching algorithm
     - `format(pattern, params)`: returns the path string for a pattern of the same format as a route `path` and a object of the corresponding path parameters
-  - `addTransitionHook(hook)`: adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can [block navigation](#blocking-navigation)
+  - `addNavigationListener(listener)`: adds a [navigation listener](https://github.com/4Catalyzer/farce#navigation-listeners) that can [block navigation](#blocking-navigation)
 
 The `getComponent` method receives an object containing the same properties as the `match` object above, with an additional `router` property as above.
 
@@ -815,37 +815,46 @@ function MyButton() {
 
 #### Blocking navigation
 
-The `router.addTransitionHook` method adds a [transition hook](https://github.com/4Catalyzer/farce#transition-hooks) that can block navigation. This method accepts a transition hook function. It returns a function that removes the transition hook.
+The `router.addNavigationListener` method adds a [navigation listener](https://github.com/4Catalyzer/farce#navigation-listeners) that can block navigation. This method accepts a navigation listener function and an optional options object. It returns a function that removes the navigation listener.
 
 ```js
-class MyForm extends React.Component {
-  constructor(props) {
-    super(props);
+function MyForm(props) {
+  const [dirty, setDirty] = useState(false);
+  const { router } = useRouter();
 
-    this.dirty = false;
-
-    this.removeTransitionHook = props.router.addTransitionHook(() =>
-      this.dirty
-        ? 'You have unsaved input. Are you sure you want to leave this page?'
-        : true,
-    );
-  }
-
-  componentWillUnmount() {
-    this.removeTransitionHook();
-  }
+  useEffect(
+    () =>
+      dirty
+        ? router.addNavigationListener(
+            () =>
+              'You have unsaved input. Are you sure you want to leave this page?',
+          )
+        : undefined,
+    [dirty],
+  );
 
   /* ... */
 }
-
-export default withRouter(MyForm);
 ```
 
-The transition hook function receives the location to which the user is attempting to navigate as its argument. Return `true` or `false` from this function to allow or block the transition respectively. Return a string to display a default confirmation dialog to the user. Return a nully value to use the next transition hook if present, or else allow the transition. Return a promise to defer allowing or blocking the transition until the promise resolves; you can use this to display a custom confirmation dialog.
+The navigation listener function receives the location to which the user is attempting to navigate as its argument. Return `true` or `false` from this function to allow or block navigation respectively. Return a string to display a default confirmation dialog to the user. Return a nully value to use the next navigation listener if present, or else allow navigation. Return a promise to defer allowing or blocking navigation until the promise resolves; you can use this to display a custom confirmation dialog.
 
-If you want to run your transition hooks when the user attempts to leave the page, set `useBeforeUnload` to `true` in `historyOptions` when creating your router component class, or when creating the Farce history store enhancer. If this option is enabled, your transition hooks will be called with a `null` location when the user attempts to leave the page. In this scenario, the transition hook must return a non-promise value.
+If you want to run your navigation listeners when the user attempts to leave the page, set `beforeUnload` in the options object. If this option is enabled, your navigation listeners will be called with a `null` location when the user attempts to leave the page. In this scenario, the navigation listener must return a non-promise value.
 
-The [transition hook usage example](/examples/transition-hook) demonstrates the use of transition hooks in more detail, including the use of the `useBeforeUnload` option.
+```js
+router.addNavigationListener(
+  (location) => {
+    if (!location) {
+      return false;
+    }
+
+    return asyncConfirm(location);
+  },
+  { beforeUnload: true },
+);
+```
+
+The [navigation listener usage example](/examples/navigation-listener) demonstrates the use of navigation listeners in more detail, including the use of the `beforeUnload` option.
 
 ### Redux integration
 
