@@ -1,5 +1,5 @@
 import express from 'express';
-import { getFarceResult } from 'found/lib/server';
+import { getFarceResult } from 'found/server';
 import ReactDOMServer from 'react-dom/server';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';

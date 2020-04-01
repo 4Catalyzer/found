@@ -1,6 +1,6 @@
-import Link from 'found/lib/Link';
-import { routerShape } from 'found/lib/PropTypes';
-import createBrowserRouter from 'found/lib/createBrowserRouter';
+import Link from 'found/Link';
+import { routerShape } from 'found/PropTypes';
+import createBrowserRouter from 'found/createBrowserRouter';
 import PropTypes from 'prop-types';
 import React, {
   useCallback,

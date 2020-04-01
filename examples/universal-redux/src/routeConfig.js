@@ -1,4 +1,4 @@
-import Redirect from 'found/lib/Redirect';
+import Redirect from 'found/Redirect';
 import React from 'react';
 
 import App from './App';

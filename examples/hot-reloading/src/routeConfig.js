@@ -1,8 +1,8 @@
-import Link from 'found/lib/Link';
-import Redirect from 'found/lib/Redirect';
-import Route from 'found/lib/Route';
-import hotRouteConfig from 'found/lib/hotRouteConfig';
-import makeRouteConfig from 'found/lib/makeRouteConfig';
+import Link from 'found/Link';
+import Redirect from 'found/Redirect';
+import Route from 'found/Route';
+import hotRouteConfig from 'found/hotRouteConfig';
+import makeRouteConfig from 'found/makeRouteConfig';
 import PropTypes from 'prop-types';
 import React from 'react';
 

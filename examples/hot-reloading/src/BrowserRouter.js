@@ -1,4 +1,4 @@
-import createBrowserRouter from 'found/lib/createBrowserRouter';
+import createBrowserRouter from 'found/createBrowserRouter';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 

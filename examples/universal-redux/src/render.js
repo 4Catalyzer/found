@@ -1,4 +1,4 @@
-import createRender from 'found/lib/createRender';
+import createRender from 'found/createRender';
 import React from 'react';
 
 export default createRender({
