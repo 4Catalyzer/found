@@ -14,10 +14,10 @@ import {
 } from 'found';
 
 // Just test that these imports work.
-import _1 from 'found/lib/HttpError';
-import _2 from 'found/lib/RedirectException';
-import _3 from 'found/lib/makeRouteConfig';
-import _4 from 'found/lib/createRender';
+import _1 from 'found/HttpError';
+import _2 from 'found/RedirectException';
+import _3 from 'found/makeRouteConfig';
+import _4 from 'found/createRender';
 
 const render = createRender({
   renderError: ({ error, context }) => {

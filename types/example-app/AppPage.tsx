@@ -1,4 +1,4 @@
-import Link from 'found/lib/Link';
+import Link from 'found/Link';
 import * as React from 'react';
 
 import { CustomLink } from './CustomLink';

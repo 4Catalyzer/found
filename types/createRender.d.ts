@@ -1,4 +1,4 @@
-declare module 'found/lib/createRender' {
+declare module 'found/createRender' {
   import { createRender } from 'found';
 
   export default createRender;

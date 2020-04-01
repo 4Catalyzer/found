@@ -1,4 +1,4 @@
-declare module 'found/lib/withRouter' {
+declare module 'found/withRouter' {
   import { withRouter } from 'found';
 
   export default withRouter;

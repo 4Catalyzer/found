@@ -1,5 +1,5 @@
 import { Match, Router } from 'found';
-import withRouter from 'found/lib/withRouter';
+import withRouter from 'found/withRouter';
 import * as React from 'react';
 
 interface Props {

@@ -1,4 +1,4 @@
-declare module 'found/lib/Route' {
+declare module 'found/Route' {
   import { Route } from 'found';
 
   export default Route;

@@ -897,12 +897,12 @@ You can also manually replace the route configuration and rerun the match by cal
 
 ### Server-side rendering
 
-Found supports server-side rendering for universal applications. Functionality specific to server-side rendering is available in `found/lib/server`.
+Found supports server-side rendering for universal applications. Functionality specific to server-side rendering is available in `found/server`.
 
 To render your application on the server, use `getFarceResult`.
 
 ```js
-import { getFarceResult } from 'found/lib/server';
+import { getFarceResult } from 'found/server';
 
 /* ... */
 
@@ -975,7 +975,7 @@ Found exposes lower-level functionality for doing server-side rendering for use 
 
 ```js
 import { getStoreRenderArgs } from 'found';
-import { RouterProvider } from 'found/lib/server';
+import { RouterProvider } from 'found/server';
 
 /* ... */
 
@@ -1043,13 +1043,13 @@ import { getStoreRenderArgs } from 'found';
 
 ### Minimizing bundle size
 
-The top-level `found` package exports everything available in this library. It is unlikely that any single application will use all the features available. As such, for real applications, you should import the modules that you need from `found/lib` directly, to pull in only the code that you use.
+The top-level `found` package exports everything available in this library. It is unlikely that any single application will use all the features available. As such, for real applications, you should import the modules you need directly, to pull in only the code that you use.
 
 ```js
-import createBrowserRouter from 'found/lib/createBrowserRouter';
-import makeRouteConfig from 'found/lib/makeRouteConfig';
-import { routerShape } from 'found/lib/PropTypes';
-import Route from 'found/lib/Route';
+import createBrowserRouter from 'found/createBrowserRouter';
+import makeRouteConfig from 'found/makeRouteConfig';
+import { routerShape } from 'found/PropTypes';
+import Route from 'found/Route';
 
 // Instead of:
 // import {

@@ -1,4 +1,4 @@
-import useRouter from 'found/lib/useRouter';
+import useRouter from 'found/useRouter';
 import * as React from 'react';
 
 interface Props {

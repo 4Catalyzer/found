@@ -8,8 +8,8 @@ import warning from 'warning';
 
 import RouterContext from './RouterContext';
 import createRender from './createRender';
-import createStoreRouterObject from './utils/createStoreRouterObject';
-import resolveRenderArgs from './utils/resolveRenderArgs';
+import createStoreRouterObject from './createStoreRouterObject';
+import resolveRenderArgs from './resolveRenderArgs';
 
 export default function createBaseRouter({
   renderPending,

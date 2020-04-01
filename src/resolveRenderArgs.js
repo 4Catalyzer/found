@@ -1,4 +1,4 @@
-import HttpError from '../HttpError';
+import HttpError from './HttpError';
 
 function foldElements(elementsRaw, routeIndices) {
   const elements = [];

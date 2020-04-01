@@ -1,4 +1,4 @@
-declare module 'found/lib/foundReducer' {
+declare module 'found/foundReducer' {
   import { foundReducer } from 'found';
 
   export default foundReducer;
