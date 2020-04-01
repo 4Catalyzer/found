@@ -1,7 +1,7 @@
 import { BrowserProtocol } from 'farce';
-import createConnectedRouter from 'found/lib/createConnectedRouter';
-import getStoreRenderArgs from 'found/lib/getStoreRenderArgs';
-import resolver from 'found/lib/resolver';
+import createConnectedRouter from 'found/createConnectedRouter';
+import getStoreRenderArgs from 'found/getStoreRenderArgs';
+import resolver from 'found/resolver';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

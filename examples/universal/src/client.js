@@ -1,4 +1,4 @@
-import createInitialBrowserRouter from 'found/lib/createInitialBrowserRouter';
+import createInitialBrowserRouter from 'found/createInitialBrowserRouter';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

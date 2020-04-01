@@ -1,4 +1,4 @@
-import Link from 'found/lib/Link';
+import Link from 'found/Link';
 import PropTypes from 'prop-types';
 import React from 'react';
 
