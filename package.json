@@ -53,6 +53,9 @@
       "<rootDir>/types/"
     ]
   },
+  "publishConfig": {
+    "directory": "lib"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/4Catalyzer/found.git"
