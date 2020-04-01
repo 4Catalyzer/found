@@ -1,4 +1,4 @@
-declare module 'found/lib/HttpError' {
+declare module 'found/HttpError' {
   import { HttpError } from 'found';
 
   export default HttpError;

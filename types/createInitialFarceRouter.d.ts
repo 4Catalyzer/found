@@ -1,4 +1,4 @@
-declare module 'found/lib/createInitialFarceRouter' {
+declare module 'found/createInitialFarceRouter' {
   import { createInitialFarceRouter } from 'found';
 
   export default createInitialFarceRouter;

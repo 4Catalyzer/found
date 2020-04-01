@@ -1,4 +1,4 @@
-declare module 'found/lib/hotRouteConfig' {
+declare module 'found/hotRouteConfig' {
   import { hotRouteConfig } from 'found';
 
   export default hotRouteConfig;

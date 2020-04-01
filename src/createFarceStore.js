@@ -3,9 +3,9 @@ import createHistoryEnhancer from 'farce/createHistoryEnhancer';
 import queryMiddleware from 'farce/queryMiddleware';
 import { combineReducers, compose, createStore } from 'redux';
 
-import Matcher from '../Matcher';
-import createMatchEnhancer from '../createMatchEnhancer';
-import foundReducer from '../foundReducer';
+import Matcher from './Matcher';
+import createMatchEnhancer from './createMatchEnhancer';
+import foundReducer from './foundReducer';
 
 export default function createFarceStore({
   historyProtocol,

@@ -1,4 +1,4 @@
-declare module 'found/lib/createInitialBrowserRouter' {
+declare module 'found/createInitialBrowserRouter' {
   import { createInitialBrowserRouter } from 'found';
 
   export default createInitialBrowserRouter;

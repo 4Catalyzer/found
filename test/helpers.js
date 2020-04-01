@@ -3,7 +3,7 @@ import pDefer from 'p-defer';
 
 import createRender from '../src/createRender';
 import resolver from '../src/resolver';
-import getFarceResult from '../src/server/getFarceResult';
+import { getFarceResult } from '../src/server';
 
 export class InstrumentedResolver {
   constructor() {

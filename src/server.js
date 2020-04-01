@@ -1,14 +1,40 @@
 import FarceActions from 'farce/Actions';
 import ServerProtocol from 'farce/ServerProtocol';
+import PropTypes from 'prop-types';
 import React from 'react';
 
-import createRender from '../createRender';
-import getStoreRenderArgs from '../getStoreRenderArgs';
-import defaultResolver from '../resolver';
-import createFarceStore from '../utils/createFarceStore';
-import RouterProvider from './RouterProvider';
+import { routerShape } from './PropTypes';
+import RouterContext from './RouterContext';
+import createFarceStore from './createFarceStore';
+import createRender from './createRender';
+import getStoreRenderArgs from './getStoreRenderArgs';
+import defaultResolver from './resolver';
 
-export default async function getFarceResult({
+const propTypes = {
+  renderArgs: PropTypes.shape({
+    router: routerShape.isRequired,
+  }).isRequired,
+  children: PropTypes.node,
+};
+
+function RouterProvider({ renderArgs, children }) {
+  return (
+    <RouterContext.Provider
+      value={{
+        router: renderArgs.router,
+        match: renderArgs,
+      }}
+    >
+      {children}
+    </RouterContext.Provider>
+  );
+}
+
+RouterProvider.propTypes = propTypes;
+
+export { RouterProvider };
+
+export async function getFarceResult({
   url,
   historyMiddlewares,
   historyOptions,

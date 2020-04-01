@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import createConnectedRouter from './createConnectedRouter';
-import createFarceStore from './utils/createFarceStore';
+import createFarceStore from './createFarceStore';
 
 export default function createFarceRouter({
   store,

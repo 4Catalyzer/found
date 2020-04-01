@@ -1,4 +1,4 @@
-declare module 'found/lib/Link' {
+declare module 'found/Link' {
   import { Link } from 'found';
 
   export default Link;

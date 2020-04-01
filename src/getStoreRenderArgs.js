@@ -1,5 +1,5 @@
+import createStoreRouterObject from './createStoreRouterObject';
 import getRenderArgs from './getRenderArgs';
-import createStoreRouterObject from './utils/createStoreRouterObject';
 
 // This function returns a promise. It doesn't need to be an async function
 // because it doesn't use the promise's value.

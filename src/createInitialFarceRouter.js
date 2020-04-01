@@ -1,6 +1,6 @@
 import createFarceRouter from './createFarceRouter';
+import createFarceStore from './createFarceStore';
 import getStoreRenderArgs from './getStoreRenderArgs';
-import createFarceStore from './utils/createFarceStore';
 
 export default async function createInitialFarceRouter({
   historyProtocol,

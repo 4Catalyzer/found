@@ -1,4 +1,4 @@
-declare module 'found/lib/server' {
+declare module 'found/server' {
   import * as React from 'react';
   import {
     FarceCreateRouterArgs,

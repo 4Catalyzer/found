@@ -1,4 +1,4 @@
-declare module 'found/lib/Redirect' {
+declare module 'found/Redirect' {
   import { Redirect } from 'found';
 
   export default Redirect;

@@ -1,4 +1,4 @@
-import resolveRenderArgs from './utils/resolveRenderArgs';
+import resolveRenderArgs from './resolveRenderArgs';
 
 export default async function getRenderArgs(router, props) {
   let elements;

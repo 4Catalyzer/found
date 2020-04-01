@@ -2,7 +2,9 @@ language: node_js
 node_js:
   - stable
 
-cache: yarn
+cache:
+  yarn: true
+  npm: true
 
 after_script:
   - node_modules/.bin/codecov
