@@ -224,7 +224,10 @@ declare module 'found' {
      * This method takes a navigation listener function and returns a function
      * to remove the navigation listener.
      */
-    addNavigationListener: (listener: NavigationListener) => () => void;
+    addNavigationListener: (
+      listener: NavigationListener,
+      options?: { beforeUnload?: boolean },
+    ) => () => void;
   }
 
   /**
