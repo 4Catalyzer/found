@@ -2,7 +2,7 @@
 
 _Extensible route-based routing for React applications._
 
-Found is a router for [React](https://facebook.github.io/react/) applications with a focus on power and extensibility. Found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. Found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
+Found is a router for [React](https://reactjs.org/) applications with a focus on power and extensibility. Found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. Found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
 
 Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
 
@@ -158,7 +158,7 @@ export default AppPage;
 
 - [Found Scroll](https://github.com/4Catalyzer/found-scroll): browser scroll management
 - [Found Named Routes](https://github.com/4Catalyzer/found-named-routes): named route support
-- [Found Relay](https://github.com/4Catalyzer/found-relay): [Relay](https://facebook.github.io/relay/) integration
+- [Found Relay](https://github.com/4Catalyzer/found-relay): [Relay](https://relay.dev/) integration
 
 ## Guide
 
