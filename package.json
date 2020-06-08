@@ -126,6 +126,7 @@
     "react-proxy": "^3.0.0-alpha.1",
     "react-stand-in": "^4.0.0-beta.21",
     "react-test-renderer": "^16.13.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.5"
   }
 }
