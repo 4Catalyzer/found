@@ -51,10 +51,10 @@
     read-pkg-up "^7.0.1"
     yargs "^15.0.1"
 
-"@4c/rollout@^2.1.9":
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/@4c/rollout/-/rollout-2.1.9.tgz#a6a80d6159f1b6995ba12749456e0553a88cf35c"
-  integrity sha512-5p3gAeMyzxhSKOL35I+zzlobqb6F/Ky9SsTdsTqnkdG3VEBwqYarBKbo3So1h3d0EPmSqFAgG6kZXwW62RYaxg==
+"@4c/rollout@^2.1.10":
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/@4c/rollout/-/rollout-2.1.10.tgz#f7eae1d55ba7ebcd7b28493ba32bbfd3d8be5a67"
+  integrity sha512-7j6sTILNUwZEhA7KR0pYfn9Kex96531jgLUDcuVOtxTFEvCfkQlmuY2YR5DyEBwUk1GeMjTxj+E47lRClaLA9w==
   dependencies:
     "@4c/cli-core" "^2.1.5"
     "@4c/file-butler" "^4.1.7"
@@ -3522,10 +3522,10 @@ eslint-plugin-prettier@^3.1.4:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-react-hooks@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.0.5.tgz#4879003aa38e5d05d0312175beb6e4a1f617bfcf"
-  integrity sha512-3YLSjoArsE2rUwL8li4Yxx1SUg3DQWp+78N3bcJQGWVZckcp+yeQGsap/MSq05+thJk57o+Ww4PtZukXGL02TQ==
+eslint-plugin-react-hooks@^4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.0.7.tgz#19f9e3d07dd3a0fb9e6f0f07153707feedea8108"
+  integrity sha512-5PuW2OMHQyMLr/+MqTluYN3/NeJJ1RuvmEp5TR9Xl2gXKxvcusUZuMz8XBUtbELNaiRYWs693LQs0cljKuuHRQ==
 
 eslint-plugin-react@^7.20.3:
   version "7.20.3"
