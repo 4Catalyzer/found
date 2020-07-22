@@ -53,7 +53,10 @@ export default function createBaseRouter({
         resolver,
         matchContext,
         iteration: 0,
-        renderArgs: initialRenderArgs || null,
+        routerContext: {
+          router: this.router,
+          match: initialRenderArgs || null,
+        },
         element: initialRenderArgs ? render(initialRenderArgs) : null,
       };
 
@@ -64,9 +67,9 @@ export default function createBaseRouter({
     }
 
     // We use componentDidMount and componentDidUpdate to resolve the match if
-    // needed because element resolution is asynchronous anyway, and this lets
-    // us not worry about setState not being available in the constructor, or
-    // about having to pass around nextProps.
+    //  needed because element resolution is asynchronous anyway, and this lets
+    //  us not worry about setState not being available in the constructor, or
+    //  about having to pass around nextProps.
 
     componentDidMount() {
       if (!this.props.initialRenderArgs) {
@@ -146,21 +149,24 @@ export default function createBaseRouter({
           }
 
           // If we're about to mark the match resolved, delay the rerender
-          // until we do so.
+          //  until we do so.
           this.pendingResolvedMatch = !!(
             (renderArgs.elements || renderArgs.error) &&
             this.props.resolvedMatch !== pendingMatch
           );
 
           this.setState({
-            renderArgs,
+            routerContext: {
+              router: this.router,
+              match: renderArgs,
+            },
             element: render(renderArgs),
           });
 
           if (this.pendingResolvedMatch) {
             // If this is a new match, update the store, so we can rerender at
-            // the same time as all of the links and other components connected
-            // to the router state.
+            //  the same time as all of the links and other components
+            //  connected to the router state.
             this.pendingResolvedMatch = false;
             this.props.onResolveMatch(pendingMatch);
           }
@@ -181,23 +187,16 @@ export default function createBaseRouter({
     }
 
     render() {
-      const { iteration, renderArgs, element } = this.state;
+      const { iteration, routerContext, element } = this.state;
 
-      // Don't rerender synchronously if we have another rerender coming. Just
-      // memoizing the element here doesn't do anything because we're using
-      // context.
+      // Don't rerender synchronously if we have another rerender coming.
       return (
         <StaticContainer
           shouldUpdate={
             this.lastIteration === iteration && !this.pendingResolvedMatch
           }
         >
-          <RouterContext.Provider
-            value={{
-              router: this.router,
-              match: renderArgs,
-            }}
-          >
+          <RouterContext.Provider value={routerContext}>
             {element}
           </RouterContext.Provider>
         </StaticContainer>
