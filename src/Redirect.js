@@ -1,13 +1,14 @@
 import RedirectException from './RedirectException';
 
 export default class Redirect {
-  constructor({ from, to }) {
+  constructor({ from, to, status }) {
     this.path = from;
     this.to = to;
+    this.status = status;
   }
 
   render({ match }) {
-    const { to } = this;
+    const { to, status } = this;
     let toLocation;
 
     if (typeof to === 'function') {
@@ -17,7 +18,7 @@ export default class Redirect {
       toLocation = router.matcher.format(to, params);
     }
 
-    throw new RedirectException(toLocation);
+    throw new RedirectException(toLocation, status);
   }
 }
 

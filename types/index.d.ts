@@ -347,6 +347,7 @@ declare module 'found' {
   interface RedirectProps {
     from?: string;
     to: string | ((match: Match) => LocationDescriptor);
+    status?: number;
   }
 
   class Redirect extends React.Component<RedirectProps> {}
