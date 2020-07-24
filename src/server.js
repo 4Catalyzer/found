@@ -70,6 +70,7 @@ export async function getFarceResult({
       // The store is not exposed to the user, so we need to build the redirect
       // URL here.
       return {
+        status: e.status,
         redirect: {
           url: store.farce.createHref(e.location),
         },

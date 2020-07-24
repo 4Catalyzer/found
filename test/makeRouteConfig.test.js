@@ -258,6 +258,7 @@ describe('makeRouteConfig', () => {
 
       expect(redirectException).toBeInstanceOf(RedirectException);
       expect(redirectException.location).toBe('/bar');
+      expect(redirectException.status).toBe(302);
     });
   });
 });

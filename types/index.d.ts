@@ -347,6 +347,7 @@ declare module 'found' {
   interface RedirectProps {
     from?: string;
     to: string | ((match: Match) => LocationDescriptor);
+    status?: number;
   }
 
   class Redirect extends React.Component<RedirectProps> {}
@@ -448,8 +449,9 @@ declare module 'found' {
   ): React.ComponentType<Omit<Props, keyof RouterState>>;
 
   class RedirectException {
-    constructor(location: LocationDescriptor);
+    constructor(location: LocationDescriptor, status?: number);
     location: LocationDescriptor;
+    status: number;
   }
 
   /**

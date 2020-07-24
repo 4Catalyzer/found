@@ -21,6 +21,7 @@ declare module 'found/server' {
 
   interface FarceRedirectResult {
     redirect: {
+      status: number;
       url: string;
     };
   }
