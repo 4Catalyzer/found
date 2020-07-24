@@ -513,14 +513,14 @@ const jsxRedirect2 = (
 );
 ```
 
-If you need more custom control over redirection, throw a `RedirectException` in your route's `render` method with a [location descriptor](https://github.com/4Catalyzer/farce#locations-and-location-descriptors) for the redirect destination.
+If you need more custom control over redirection, throw a `RedirectException` in your route's `render` method with a [location descriptor](https://github.com/4Catalyzer/farce#locations-and-location-descriptors) and optional status code (defaults to `302`) for the redirect destination.
 
 ```js
 const customRedirect = {
   getData: fetchRedirectInfo,
   render: ({ data }) => {
     if (data) {
-      throw new RedirectException(data.redirectLocation);
+      throw new RedirectException(data.redirectLocation, 301);
     }
   },
 };
@@ -914,7 +914,7 @@ app.use(async (req, res) => {
   });
 
   if (redirect) {
-    res.redirect(302, redirect.url);
+    res.redirect(redirect.status, redirect.url);
     return;
   }
 
@@ -992,7 +992,7 @@ app.use(async (req, res) => {
     });
   } catch (e) {
     if (e.isFoundRedirectException) {
-      res.redirect(302, store.farce.createHref(e.location));
+      res.redirect(e.status, store.farce.createHref(e.location));
       return;
     }
 

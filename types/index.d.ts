@@ -448,8 +448,9 @@ declare module 'found' {
   ): React.ComponentType<Omit<Props, keyof RouterState>>;
 
   class RedirectException {
-    constructor(location: LocationDescriptor);
+    constructor(location: LocationDescriptor, status?: number);
     location: LocationDescriptor;
+    status: number;
   }
 
   /**

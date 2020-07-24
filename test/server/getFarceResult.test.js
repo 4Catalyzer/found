@@ -102,6 +102,30 @@ describe('getFarceResult', () => {
         "redirect": Object {
           "url": "/bar",
         },
+        "status": 302,
+      }
+    `);
+  });
+
+  it('should support redirect with custom status codes', async () => {
+    expect(
+      await getFarceResult({
+        url: '/foo',
+        routeConfig: [
+          {
+            path: 'foo',
+            render: () => {
+              throw new RedirectException('/bar', 301);
+            },
+          },
+        ],
+      }),
+    ).toMatchInlineSnapshot(`
+      Object {
+        "redirect": Object {
+          "url": "/bar",
+        },
+        "status": 301,
       }
     `);
   });

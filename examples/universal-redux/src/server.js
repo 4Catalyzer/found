@@ -74,7 +74,7 @@ app.use(async (req, res) => {
     });
   } catch (e) {
     if (e instanceof RedirectException) {
-      res.redirect(302, store.farce.createHref(e.location));
+      res.redirect(e.status, store.farce.createHref(e.location));
       return;
     }
 
