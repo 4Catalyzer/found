@@ -23,7 +23,7 @@ const render = createRender({
       case 404:
         return (
           <div>
-            <h3>Couldn&rsquo;t find page</h3>
+            <h3>Couldn’t find page</h3>
           </div>
         );
       case 401:
