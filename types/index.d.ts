@@ -85,7 +85,7 @@ export interface Match extends MatchBase {
 }
 
 export interface Resolver {
-  resolveElements(match: Match): AsyncIterable<React.ReactElement | null>;
+  resolveElements(match: Match): AsyncIterable<ResolvedElements>;
 }
 
 export const resolver: Resolver;
@@ -196,6 +196,16 @@ export interface RouteRenderArgs {
   data?: any;
 }
 
+export type ResolvedElementValue = React.ReactElement | null;
+export type ResolvedElement =
+  | ResolvedElementValue
+  | ((element: React.ReactElement) => ResolvedElementValue)
+  | ((groups: Record<string, React.ReactElement>) => ResolvedElementValue);
+
+export interface RouteRenderMethod {
+  (args: RouteRenderArgs): ResolvedElement | undefined;
+}
+
 /**
  * Plain JavaScript route object, possibly from a resolved JSX route.
  */
@@ -229,9 +239,8 @@ export interface RouteObject {
   /**
    * @throws {HttpError}
    * @throws {RedirectException}
-   * @returns undefined | null | React.ReactElement<any> (typical)
    */
-  render?: (args: RouteRenderArgs) => undefined | null | React.ReactElement;
+  render?: RouteRenderMethod;
 
   children?: RouteConfig | Record<string, RouteConfig>;
 
@@ -248,7 +257,9 @@ export interface RouteProps extends Omit<RouteObject, 'children'> {
 /**
  * JSX Route
  */
-export class Route extends React.Component<RouteProps> {}
+export class Route extends React.Component<RouteProps> {
+  constructor(options: RouteObject);
+}
 
 export function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
 
@@ -392,14 +403,14 @@ export function createMatchEnhancer(
   matcher: Matcher,
 ): StoreEnhancer<{ found: FoundStoreExtension }>;
 
-type ReactElementOrGroup =
-  | React.ReactElement
-  | { [key: string]: ReactElementOrGroup[] };
-
 export type RenderPendingArgs = Match;
 
+export type ResolvedElements = Array<
+  ResolvedElement | Record<string, ResolvedElement[]>
+>;
+
 export interface RenderReadyArgs extends Match {
-  elements: ReactElementOrGroup[];
+  elements: ResolvedElements;
 }
 
 export interface RenderErrorArgs extends Match {
