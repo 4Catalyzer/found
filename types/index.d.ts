@@ -207,9 +207,9 @@ export interface RouteRenderMethod {
 }
 
 /**
- * Plain JavaScript route object, possibly from a resolved JSX route.
+ * Shared properties between JSX and object routes.
  */
-export interface RouteObject {
+export interface RouteObjectBase {
   /**
    * a string defining the pattern for the route
    */
@@ -242,15 +242,20 @@ export interface RouteObject {
    */
   render?: RouteRenderMethod;
 
-  children?: RouteConfig | Record<string, RouteConfig>;
-
   // Provide indexer allowing for other properties.
   [key: string]: any;
 }
 
+/**
+ * Plain JavaScript route object, possibly from a resolved JSX route.
+ */
+export interface RouteObject extends RouteObjectBase {
+  children?: RouteConfig | Record<string, RouteConfig>;
+}
+
 export type RouteConfig = RouteObject[];
 
-export interface RouteProps extends Omit<RouteObject, 'children'> {
+export interface RouteProps extends RouteObjectBase {
   children?: React.ReactNode | Record<string, React.ReactNode>;
 }
 
