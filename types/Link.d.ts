@@ -1,5 +1,13 @@
-declare module 'found/Link' {
-  import { Link } from 'found';
+// TypeScript Version: 3.0
 
-  export default Link;
-}
+export {
+  Link as default,
+  LinkInjectedProps,
+  LinkProps,
+  LinkPropsCommon,
+  LinkPropsNodeChild,
+  LinkPropsSimple,
+  LinkPropsWithActivePropName,
+  LinkPropsWithAs,
+  LinkPropsWithFunctionChild,
+} from 'found';

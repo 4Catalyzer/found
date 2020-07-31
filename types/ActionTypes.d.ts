@@ -1,5 +1,3 @@
-declare module 'found/ActionTypes' {
-  import { ActionTypes } from 'found';
+// TypeScript Version: 3.0
 
-  export default ActionTypes;
-}
+export { ActionTypes as default } from 'found';

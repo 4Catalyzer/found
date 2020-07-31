@@ -1,5 +1,10 @@
-declare module 'found/createRender' {
-  import { createRender } from 'found';
+// TypeScript Version: 3.0
 
-  export default createRender;
-}
+export {
+  createRender as default,
+  CreateRenderOptions,
+  RenderArgs,
+  RenderErrorArgs,
+  RenderPendingArgs,
+  RenderReadyArgs,
+} from 'found';

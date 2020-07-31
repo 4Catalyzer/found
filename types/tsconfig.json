@@ -9,7 +9,8 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "found": ["."]
+      "found": ["."],
+      "found/*": ["*"]
     }
   }
 }

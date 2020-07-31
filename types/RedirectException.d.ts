@@ -1,5 +1,3 @@
-declare module 'found/RedirectException' {
-  import { RedirectException } from 'found';
+// TypeScript Version: 3.0
 
-  export default RedirectException;
-}
+export { RedirectException as default } from 'found';

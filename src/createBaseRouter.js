@@ -40,8 +40,8 @@ export default function createBaseRouter({
       const {
         store,
         match,
-        resolver,
         matchContext,
+        resolver,
         initialRenderArgs,
       } = props;
 
@@ -50,8 +50,8 @@ export default function createBaseRouter({
       this.state = {
         isInitialRender: true,
         match,
-        resolver,
         matchContext,
+        resolver,
         iteration: 0,
         routerContext: {
           router: this.router,

@@ -1,5 +1,6 @@
-declare module 'found/getStoreRenderArgs' {
-  import { getStoreRenderArgs } from 'found';
+// TypeScript Version: 3.0
 
-  export default getStoreRenderArgs;
-}
+export {
+  getStoreRenderArgs as default,
+  GetStoreRenderArgsOptions,
+} from 'found';

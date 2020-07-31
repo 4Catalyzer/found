@@ -1,5 +1,3 @@
-declare module 'found/resolver' {
-  import { resolver } from 'found';
+// TypeScript Version: 3.0
 
-  export default resolver;
-}
+export { resolver as default } from 'found';

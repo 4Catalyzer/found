@@ -1,5 +1,6 @@
-declare module 'found/createInitialBrowserRouter' {
-  import { createInitialBrowserRouter } from 'found';
+// TypeScript Version: 3.0
 
-  export default createInitialBrowserRouter;
-}
+export {
+  createInitialBrowserRouter as default,
+  InitialBrowserRouterOptions,
+} from 'found';

@@ -2,23 +2,36 @@
   "name": "found",
   "version": "0.5.5",
   "description": "Extensible route-based routing for React applications",
+  "keywords": [
+    "react",
+    "router",
+    "routes",
+    "routing"
+  ],
+  "homepage": "https://github.com/4Catalyzer/found#readme",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/found/issues"
+  },
+  "license": "MIT",
+  "author": "4Catalyzer",
   "files": [
     "lib"
   ],
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/found.git"
+  },
   "scripts": {
-    "build": "rimraf lib && npm run build:cjs && npm run build:esm && npm run build:pick && npm run build:types",
-    "build:cjs": "babel -d lib/cjs src",
-    "build:esm": "babel --env-name esm -d lib/esm src",
+    "build": "rimraf lib && 4c build --types false src && npm run build:pick && npm run build:types",
     "build:pick": "cherry-pick --cjs-dir cjs --esm-dir esm --cwd lib ../src",
     "build:types": "cpy types/*.d.ts lib",
-    "format": "eslint --fix . && npm run prettier -- --write",
-    "lint": "eslint . && npm run prettier -- -l",
+    "format": "4c format --prettier-ignore .eslintignore .",
+    "lint": "4c lint --prettier-ignore .eslintignore .",
     "prepublish": "npm run build",
-    "prettier": "prettier --ignore-path .eslintignore '**/*.{md,ts,tsx}'",
-    "release": "rollout",
+    "release": "4c release",
     "tdd": "jest --watch",
     "test": "npm run lint && npm run test:ts && npm run testonly -- --coverage",
     "test:ts": "dtslint types",
@@ -30,15 +43,10 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint --fix",
-    "*.{md,ts,tsx}": "prettier --write",
+    "*": "yarn 4c lint --fix --prettier-ignore .eslintignore",
     "./README.md": "doctoc"
   },
-  "prettier": {
-    "printWidth": 79,
-    "singleQuote": true,
-    "trailingComma": "all"
-  },
+  "prettier": "@4c/prettier-config",
   "jest": {
     "collectCoverageFrom": [
       "src/**"
@@ -53,30 +61,11 @@
       "<rootDir>/types/"
     ]
   },
-  "publishConfig": {
-    "directory": "lib"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/4Catalyzer/found.git"
-  },
-  "keywords": [
-    "react",
-    "router",
-    "routes",
-    "routing"
-  ],
-  "author": "4Catalyzer",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/4Catalyzer/found/issues"
-  },
-  "homepage": "https://github.com/4Catalyzer/found#readme",
   "dependencies": {
     "@babel/runtime-corejs3": "^7.6.2",
     "@restart/context": "^2.1.4",
     "@types/react": "^16.9.31",
-    "farce": "^0.4.1",
+    "farce": "^0.4.3",
     "invariant": "^2.2.4",
     "is-promise": "^4.0.0",
     "lodash": "^4.17.15",
@@ -87,16 +76,16 @@
     "redux": "^4.0.4",
     "warning": "^4.0.3"
   },
-  "peerDependencies": {
-    "react": ">=16.8.0"
-  },
   "devDependencies": {
     "@4c/babel-preset": "^7.3.6",
-    "@4c/rollout": "^2.1.10",
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.10.5",
+    "@4c/cli": "^2.1.11",
+    "@4c/prettier-config": "^1.1.0",
+    "@4c/tsconfig": "^0.3.1",
+    "@babel/core": "^7.11.0",
     "@types/react-dom": "^16.9.8",
-    "babel-jest": "^26.1.0",
+    "@typescript-eslint/eslint-plugin": "^3.7.1",
+    "@typescript-eslint/parser": "^3.7.1",
+    "babel-jest": "^26.2.1",
     "babel-plugin-add-module-exports": "^1.0.2",
     "cherry-pick": "^0.5.0",
     "codecov": "^3.7.2",
@@ -109,15 +98,16 @@
     "eslint": "^7.5.0",
     "eslint-config-4catalyzer-jest": "^2.0.7",
     "eslint-config-4catalyzer-react": "^1.0.8",
+    "eslint-config-4catalyzer-typescript": "^2.0.2",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^23.18.2",
+    "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react": "^7.20.5",
     "eslint-plugin-react-hooks": "^4.0.8",
     "husky": "^4.2.5",
-    "jest": "^26.1.0",
+    "jest": "^26.2.1",
     "lint-staged": "^10.2.11",
     "p-defer": "^3.0.0",
     "prettier": "^2.0.5",
@@ -128,5 +118,11 @@
     "react-test-renderer": "^16.13.1",
     "rimraf": "^3.0.2",
     "typescript": "^3.9.7"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "publishConfig": {
+    "directory": "lib"
   }
 }

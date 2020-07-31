@@ -1,5 +1,3 @@
-declare module 'found/Matcher' {
-  import { Matcher } from 'found';
+// TypeScript Version: 3.0
 
-  export default Matcher;
-}
+export { Matcher as default, IsActiveOptions, MatcherResult } from 'found';

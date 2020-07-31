@@ -1,5 +1,3 @@
-declare module 'found/Route' {
-  import { Route } from 'found';
+// TypeScript Version: 3.0
 
-  export default Route;
-}
+export { Route as default, RouteProps } from 'found';
