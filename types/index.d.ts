@@ -73,7 +73,7 @@ export interface Match extends MatchBase {
   /**
    * An array of all matched route objects
    */
-  routes: RouteConfig[];
+  routes: RouteObject[];
   /**
    * An object with static router properties.
    */
@@ -85,7 +85,7 @@ export interface Match extends MatchBase {
 }
 
 export interface Resolver {
-  resolveElements(match: Match): AsyncIterable<React.ReactElement | null>;
+  resolveElements(match: Match): AsyncIterable<ResolvedElement[]>;
 }
 
 export const resolver: Resolver;
@@ -121,7 +121,7 @@ export class Matcher {
    */
   isActive: (
     match: Match,
-    location: Location,
+    location: LocationDescriptorObject,
     options?: IsActiveOptions,
   ) => boolean;
 
@@ -196,10 +196,20 @@ export interface RouteRenderArgs {
   data?: any;
 }
 
+export type ResolvedElementValue = React.ReactElement | null;
+export type ResolvedElement =
+  | ResolvedElementValue
+  | ((element: React.ReactElement) => ResolvedElementValue)
+  | ((groups: Record<string, React.ReactElement>) => ResolvedElementValue);
+
+export interface RouteRenderMethod {
+  (args: RouteRenderArgs): ResolvedElement | undefined;
+}
+
 /**
- * Shared properties between JSX Route and the resolved RouteConfig
+ * Shared properties between JSX and object routes.
  */
-interface BaseRouteObject {
+export interface RouteObjectBase {
   /**
    * a string defining the pattern for the route
    */
@@ -229,35 +239,32 @@ interface BaseRouteObject {
   /**
    * @throws {HttpError}
    * @throws {RedirectException}
-   * @returns undefined | null | React.ReactElement<any> (typical)
    */
-  render?: (args: RouteRenderArgs) => undefined | null | React.ReactElement;
-  // Provide indexer allowing for any properties
+  render?: RouteRenderMethod;
+
+  // Provide indexer allowing for other properties.
   [key: string]: any;
 }
 
-export interface RouteProps extends BaseRouteObject {
-  children?:
-    | React.ReactNode
-    | false
-    | null
-    | Array<false | null | React.ReactElement<RouteProps>>
-    | React.ReactElement<RouteProps>;
+/**
+ * Plain JavaScript route object, possibly from a resolved JSX route.
+ */
+export interface RouteObject extends RouteObjectBase {
+  children?: RouteConfig | Record<string, RouteConfig>;
+}
+
+export type RouteConfig = RouteObject[];
+
+export interface RouteProps extends RouteObjectBase {
+  children?: React.ReactNode | Record<string, React.ReactNode>;
 }
 
 /**
  * JSX Route
  */
-export class Route extends React.Component<RouteProps> {}
-
-/**
- * e.g. Resolved JSX Route
- */
-export interface RouteObject extends BaseRouteObject {
-  children?: RouteObject[];
+export class Route extends React.Component<RouteProps> {
+  constructor(options: RouteObject);
 }
-
-export type RouteConfig = RouteObject[];
 
 export function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
 
@@ -401,14 +408,10 @@ export function createMatchEnhancer(
   matcher: Matcher,
 ): StoreEnhancer<{ found: FoundStoreExtension }>;
 
-type ReactElementOrGroup =
-  | React.ReactElement
-  | { [key: string]: ReactElementOrGroup[] };
-
 export type RenderPendingArgs = Match;
 
 export interface RenderReadyArgs extends Match {
-  elements: ReactElementOrGroup[];
+  elements: Array<ResolvedElement | Record<string, ResolvedElement[]>>;
 }
 
 export interface RenderErrorArgs extends Match {
