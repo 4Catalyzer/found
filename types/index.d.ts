@@ -73,7 +73,7 @@ export interface Match extends MatchBase {
   /**
    * An array of all matched route objects
    */
-  routes: RouteConfig[];
+  routes: RouteObject[];
   /**
    * An object with static router properties.
    */
@@ -197,9 +197,9 @@ export interface RouteRenderArgs {
 }
 
 /**
- * Shared properties between JSX Route and the resolved RouteConfig
+ * Plain JavaScript route object, possibly from a resolved JSX route.
  */
-interface BaseRouteObject {
+export interface RouteObject {
   /**
    * a string defining the pattern for the route
    */
@@ -232,32 +232,23 @@ interface BaseRouteObject {
    * @returns undefined | null | React.ReactElement<any> (typical)
    */
   render?: (args: RouteRenderArgs) => undefined | null | React.ReactElement;
-  // Provide indexer allowing for any properties
+
+  children?: RouteConfig | Record<string, RouteConfig>;
+
+  // Provide indexer allowing for other properties.
   [key: string]: any;
 }
 
-export interface RouteProps extends BaseRouteObject {
-  children?:
-    | React.ReactNode
-    | false
-    | null
-    | Array<false | null | React.ReactElement<RouteProps>>
-    | React.ReactElement<RouteProps>;
+export type RouteConfig = RouteObject[];
+
+export interface RouteProps extends Omit<RouteObject, 'children'> {
+  children?: React.ReactNode | Record<string, React.ReactNode>;
 }
 
 /**
  * JSX Route
  */
 export class Route extends React.Component<RouteProps> {}
-
-/**
- * e.g. Resolved JSX Route
- */
-export interface RouteObject extends BaseRouteObject {
-  children?: RouteObject[];
-}
-
-export type RouteConfig = RouteObject[];
 
 export function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
 
