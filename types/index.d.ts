@@ -121,7 +121,7 @@ export class Matcher {
    */
   isActive: (
     match: Match,
-    location: Location,
+    location: LocationDescriptorObject,
     options?: IsActiveOptions,
   ) => boolean;
 
