@@ -1,24 +1,24 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import {
-  createBrowserRouter,
-  RouteMatch,
   HttpError,
-  makeRouteConfig,
   Redirect,
   Route,
+  RouteMatch,
+  createBrowserRouter,
+  makeRouteConfig,
 } from 'found';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import { AppPage } from './AppPage';
 import { MainPage } from './MainPage';
 import { WidgetsPage } from './WidgetsPage';
 
-const fetchWidget = (widgetId: any) =>
-  new Promise((resolve) => {
+const fetchWidget = (_widgetId: any) =>
+  new Promise((_resolve) => {
     throw new Error('oops');
   });
 
-const fetchWidgets = ({ params, context }: RouteMatch) => [
+const fetchWidgets = ({ params: _p, context: _c }: RouteMatch) => [
   'foo',
   'bar',
   'baz',
