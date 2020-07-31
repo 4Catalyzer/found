@@ -85,7 +85,7 @@ export interface Match extends MatchBase {
 }
 
 export interface Resolver {
-  resolveElements(match: Match): AsyncIterable<ResolvedElements>;
+  resolveElements(match: Match): AsyncIterable<ResolvedElement[]>;
 }
 
 export const resolver: Resolver;
@@ -405,12 +405,8 @@ export function createMatchEnhancer(
 
 export type RenderPendingArgs = Match;
 
-export type ResolvedElements = Array<
-  ResolvedElement | Record<string, ResolvedElement[]>
->;
-
 export interface RenderReadyArgs extends Match {
-  elements: ResolvedElements;
+  elements: Array<ResolvedElement | Record<string, ResolvedElement[]>>;
 }
 
 export interface RenderErrorArgs extends Match {
