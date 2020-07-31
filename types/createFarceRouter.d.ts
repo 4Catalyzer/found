@@ -1,5 +1,8 @@
-declare module 'found/createFarceRouter' {
-  import { createFarceRouter } from 'found';
+// TypeScript Version: 3.0
 
-  export default createFarceRouter;
-}
+export {
+  createFarceRouter as default,
+  FarceRouter,
+  FarceRouterOptions,
+  FarceRouterProps,
+} from 'found';

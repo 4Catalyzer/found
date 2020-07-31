@@ -1,5 +1,8 @@
-declare module 'found/createConnectedRouter' {
-  import { createConnectedRouter } from 'found';
+// TypeScript Version: 3.0
 
-  export default createConnectedRouter;
-}
+export {
+  createConnectedRouter as default,
+  ConnectedRouter,
+  ConnectedRouterOptions,
+  ConnectedRouterProps,
+} from 'found';

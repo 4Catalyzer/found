@@ -1,39 +1,40 @@
-declare module 'found/server' {
-  import * as React from 'react';
-  import {
-    FarceCreateRouterArgs,
-    Omit,
-    Resolver,
-    RouterRenderArgs,
-  } from 'found';
+// TypeScript Version: 3.0
 
-  interface GetFarceResultArgs
-    extends Omit<FarceCreateRouterArgs, 'store' | 'historyProtocol'> {
-    url: string;
-    resolver?: Resolver;
-    matchContext?: any;
-  }
+import { FarceRouterOptions, RenderArgs, Resolver } from 'found';
+import * as React from 'react';
 
-  interface FarceElementResult {
-    status: number;
-    element: React.ReactElement;
-  }
+export {};
 
-  interface FarceRedirectResult {
-    redirect: {
-      status: number;
-      url: string;
-    };
-  }
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
-  function getFarceResult(
-    args: GetFarceResultArgs,
-  ): Promise<FarceElementResult | FarceRedirectResult>;
-
-  interface RouterProviderProps {
-    renderArgs: RouterRenderArgs;
-    children?: React.ReactNode;
-  }
-
-  const RouterProvider: React.FunctionComponent<RouterProviderProps>;
+export interface GetFarceResultOptions
+  extends Omit<FarceRouterOptions, 'store' | 'historyProtocol'> {
+  url: string;
+  resolver?: Resolver;
+  matchContext?: any;
 }
+
+export interface FarceElementResult {
+  status: number;
+  element: React.ReactElement;
+}
+
+export interface FarceRedirectResult {
+  status: number;
+  redirect: {
+    url: string;
+  };
+}
+
+export type FarceResult = FarceElementResult | FarceRedirectResult;
+
+export function getFarceResult(
+  options: GetFarceResultOptions,
+): Promise<FarceResult>;
+
+export interface RouterProviderProps {
+  renderArgs: RenderArgs;
+  children?: React.ReactNode;
+}
+
+export type RouterProvider = React.ComponentType<RouterProviderProps>;

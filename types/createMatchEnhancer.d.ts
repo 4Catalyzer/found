@@ -1,5 +1,3 @@
-declare module 'found/createMatchEnhancer' {
-  import { createMatchEnhancer } from 'found';
+// TypeScript Version: 3.0
 
-  export default createMatchEnhancer;
-}
+export { createMatchEnhancer as default, FoundStoreExtension } from 'found';

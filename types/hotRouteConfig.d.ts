@@ -1,5 +1,3 @@
-declare module 'found/hotRouteConfig' {
-  import { hotRouteConfig } from 'found';
+// TypeScript Version: 3.0
 
-  export default hotRouteConfig;
-}
+export { hotRouteConfig as default } from 'found';

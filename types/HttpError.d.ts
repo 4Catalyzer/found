@@ -1,5 +1,3 @@
-declare module 'found/HttpError' {
-  import { HttpError } from 'found';
+// TypeScript Version: 3.0
 
-  export default HttpError;
-}
+export { HttpError as default } from 'found';

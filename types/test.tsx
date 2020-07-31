@@ -1,31 +1,29 @@
 // TypeScript Version: 3.0
 
-import * as React from 'react';
-
 import {
+  Match,
+  Redirect,
+  Route,
   createBrowserRouter,
   createConnectedRouter,
   createRender,
   makeRouteConfig,
-  Match,
-  Redirect,
   resolver,
-  Route,
 } from 'found';
-
 // Just test that these imports work.
 import _1 from 'found/HttpError';
 import _2 from 'found/RedirectException';
-import _3 from 'found/makeRouteConfig';
-import _4 from 'found/createRender';
+import _3 from 'found/createRender';
+import _4 from 'found/makeRouteConfig';
+import * as React from 'react';
 
 const render = createRender({
-  renderError: ({ error, context }) => {
+  renderError: ({ error, context: _context }) => {
     switch (error.status) {
       case 404:
         return (
           <div>
-            <h3>Couldn't find page</h3>
+            <h3>Couldn’t find page</h3>
           </div>
         );
       case 401:
@@ -48,7 +46,9 @@ const ConnectedRouter = createConnectedRouter({
 });
 
 class Api {
-  getData(): any {}
+  getData(): any {
+    // Ignored.
+  }
 }
 
 <ConnectedRouter
@@ -80,12 +80,12 @@ const routeConfig = makeRouteConfig(
 // $ExpectError
 <Route path="/baz/:id" getComponent={() => 'string'} />;
 
-const browserRouter = createBrowserRouter({
+const BrowserRouter = createBrowserRouter({
   render,
   routeConfig,
 });
 
-const BrowserRouter = createBrowserRouter({
+createBrowserRouter({
   render,
   routeConfig,
   // $ExpectError
@@ -94,4 +94,4 @@ const BrowserRouter = createBrowserRouter({
 
 <BrowserRouter />;
 <BrowserRouter resolver={createResolver()} />;
-<BrowserRouter matchContext={'foo'} />;
+<BrowserRouter matchContext="foo" />;

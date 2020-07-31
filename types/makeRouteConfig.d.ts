@@ -1,5 +1,3 @@
-declare module 'found/makeRouteConfig' {
-  import { makeRouteConfig } from 'found';
+// TypeScript Version: 3.0
 
-  export default makeRouteConfig;
-}
+export { makeRouteConfig as default } from 'found';

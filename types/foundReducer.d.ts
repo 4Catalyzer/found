@@ -1,5 +1,3 @@
-declare module 'found/foundReducer' {
-  import { foundReducer } from 'found';
+// TypeScript Version: 3.0
 
-  export default foundReducer;
-}
+export { foundReducer as default, FoundState } from 'found';

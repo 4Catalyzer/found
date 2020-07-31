@@ -1,5 +1,3 @@
-declare module 'found/Redirect' {
-  import { Redirect } from 'found';
+// TypeScript Version: 3.0
 
-  export default Redirect;
-}
+export { Redirect as default, RedirectOptions, RedirectProps } from 'found';

@@ -1,5 +1,3 @@
-declare module 'found/withRouter' {
-  import { withRouter } from 'found';
+// TypeScript Version: 3.0
 
-  export default withRouter;
-}
+export { withRouter as default } from 'found';
