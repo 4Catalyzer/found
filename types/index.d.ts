@@ -263,7 +263,7 @@ export interface RouteProps extends RouteObjectBase {
  * JSX Route
  */
 export class Route extends React.Component<RouteProps> {
-  constructor(options: RouteObject);
+  constructor(options: RouteObject | RouteProps);
 }
 
 export function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
