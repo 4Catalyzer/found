@@ -410,8 +410,13 @@ export function createMatchEnhancer(
 
 export type RenderPendingArgs = Match;
 
+// This is the folded resolver output from resolveRenderArgs.
+export type RenderArgsElements = Array<
+  ResolvedElement | Record<string, ResolvedElement[]>
+>;
+
 export interface RenderReadyArgs extends Match {
-  elements: Array<ResolvedElement | Record<string, ResolvedElement[]>>;
+  elements: RenderArgsElements;
 }
 
 export interface RenderErrorArgs extends Match {
@@ -495,6 +500,12 @@ export type InitialBrowserRouterOptions = Omit<
 export function createInitialBrowserRouter(
   options: InitialBrowserRouterOptions,
 ): Promise<BrowserRouter>;
+
+export interface ElementsRendererProps {
+  elements: RenderArgsElements;
+}
+
+export type ElementsRenderer = React.ComponentType<ElementsRendererProps>;
 
 export interface GetStoreRenderArgsOptions {
   store: Store;
