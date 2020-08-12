@@ -20,7 +20,7 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "serialize-javascript": "^3.0.0",
+    "serialize-javascript": "^3.1.0",
     "webpack": "^4.42.1",
     "webpack-dev-middleware": "^3.7.2"
   }
