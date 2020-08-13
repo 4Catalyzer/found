@@ -66,7 +66,7 @@ const BrowserRouter = createBrowserRouter({
       <Route path="widgets">
         <Route Component={WidgetsPage} getData={fetchWidgets} />
         <Route
-          path="widgets/:widgetId"
+          path=":widgetId"
           getComponent={() =>
             System.import('./WidgetPage').then((module) => module.default)
           }
