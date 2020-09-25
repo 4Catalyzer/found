@@ -62,7 +62,7 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
     "@restart/context": "^2.1.4",
     "@types/react": "^16.9.31",
     "farce": "^0.4.3",

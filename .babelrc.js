@@ -4,9 +4,9 @@ module.exports = (api) => ({
       '@4c',
       {
         runtime: true,
-        corejs: 3,
-        targets: {},
         modules: api.env() === 'esm' ? false : 'commonjs',
+        includePolyfills: 'usage-pure',
+        debug: true,
       },
     ],
   ],
