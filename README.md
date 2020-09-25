@@ -169,6 +169,14 @@ $ npm i -S react
 $ npm i -S found
 ```
 
+`found` depends on the relatively new async iterators proposal, which requires a **polyfill** of
+`Symbol.asyncIterator` for older browsers. Core-js provides one if needed, import **before**
+importing found
+
+```js
+import 'core-js/es/symbol/async-iterator';
+```
+
 ### Basic usage
 
 Define a route configuration as an array of objects, or as JSX with `<Route>` elements using `makeRouteConfig`.
