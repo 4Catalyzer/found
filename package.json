@@ -91,7 +91,7 @@
     "codecov": "^3.8.1",
     "cpy-cli": "^3.1.1",
     "delay": "^4.4.0",
-    "doctoc": "^1.4.0",
+    "doctoc": "^2.0.0",
     "dtslint": "^4.0.6",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
