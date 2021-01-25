@@ -6,7 +6,6 @@ module.exports = (api) => ({
         runtime: true,
         modules: api.env() === 'esm' ? false : 'commonjs',
         includePolyfills: 'usage-pure',
-        debug: true,
       },
     ],
   ],
