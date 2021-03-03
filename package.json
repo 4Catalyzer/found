@@ -65,16 +65,13 @@
     "@babel/runtime": "^7.12.5",
     "@restart/context": "^2.1.4",
     "@types/react": ">=16.9.31",
+    "dequal": "^2.0.2",
     "farce": "^0.4.5",
-    "invariant": "^2.2.4",
     "is-promise": "^4.0.0",
-    "lodash": "^4.17.20",
-    "path-to-regexp": "^1.7.0",
     "prop-types": "^15.7.2",
     "react-redux": "^7.2.2",
-    "react-static-container": "^1.0.2",
     "redux": "^4.0.4",
-    "warning": "^4.0.3"
+    "tiny-warning": "^1.0.3"
   },
   "devDependencies": {
     "@4c/babel-preset": "^8.0.3",

@@ -1,5 +1,5 @@
 import isPromise from 'is-promise';
-import warning from 'warning';
+import warning from 'tiny-warning';
 
 const UNRESOLVED = {};
 

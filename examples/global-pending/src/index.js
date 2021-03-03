@@ -1,10 +1,10 @@
 import ElementsRenderer from 'found/ElementsRenderer';
 import Link from 'found/Link';
+import StaticContainer from 'found/StaticContainer';
 import createBrowserRouter from 'found/createBrowserRouter';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import StaticContainer from 'react-static-container';
 
 function LinkItem(props) {
   return (
