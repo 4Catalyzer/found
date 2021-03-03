@@ -1,5 +1,6 @@
 /* eslint-disable */
 // Vendored ancient version of path-to-regexp
+// https://github.com/pillarjs/path-to-regexp/blob/1.x/index.js
 module.exports = pathToRegexp;
 module.exports.parse = parse;
 module.exports.compile = compile;
