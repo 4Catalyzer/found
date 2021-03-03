@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import warning from 'warning';
+import warning from 'tiny-warning';
 
 import { routerShape } from './PropTypes';
 

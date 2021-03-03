@@ -1,12 +1,12 @@
 import mapContextToProps from '@restart/context/mapContextToProps';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ReactReduxContext } from 'react-redux';
-import StaticContainer from 'react-static-container';
-import warning from 'warning';
+import warning from 'tiny-warning';
 
 import RouterContext from './RouterContext';
+import StaticContainer from './StaticContainer';
 import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
@@ -100,7 +100,7 @@ export default function createBaseRouter({
       if (
         match !== state.match ||
         resolver !== state.resolver ||
-        !isEqual(matchContext, state.matchContext)
+        !dequal(matchContext, state.matchContext)
       ) {
         return {
           match,

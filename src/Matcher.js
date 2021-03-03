@@ -1,18 +1,11 @@
-import isEqual from 'lodash/isEqual';
-import pathToRegexp from 'path-to-regexp';
-import warning from 'warning';
+import { dequal } from 'dequal';
+import warning from 'tiny-warning';
+
+import pathToRegexp from './pathToRegexp';
 
 export default class Matcher {
   constructor(routeConfig) {
     this.routeConfig = routeConfig;
-
-    // Overly-aggressive deduplication of packages can lead to the wrong
-    // version of path-to-regexp getting bundled. This is a common enough
-    // failure mode that it's worthwhile to add a dev-only warning here.
-    warning(
-      typeof pathToRegexp.compile === 'function',
-      'Incorrect version of path-to-regexp imported. If this is running from a client bundle, check your bundler settings.',
-    );
   }
 
   match({ pathname }) {
@@ -254,7 +247,7 @@ export default class Matcher {
 
     return Object.entries(query).every(([key, value]) =>
       Object.prototype.hasOwnProperty.call(matchQuery, key)
-        ? isEqual(matchQuery[key], value)
+        ? dequal(matchQuery[key], value)
         : value === undefined,
     );
   }

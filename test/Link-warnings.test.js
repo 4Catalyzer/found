@@ -1,7 +1,7 @@
-jest.mock('warning');
+jest.mock('tiny-warning');
 
 import React from 'react';
-import warning from 'warning';
+import warning from 'tiny-warning';
 
 import Link from '../src/Link';
 import { mountWithRouter } from './helpers';
