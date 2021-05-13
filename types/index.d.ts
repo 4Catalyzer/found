@@ -69,7 +69,7 @@ export interface MatchBase extends MatcherResult {
  * validator is purely for user convenience and should not be used
  * internally.
  */
-export interface Match extends MatchBase {
+export interface Match<TContext = any> extends MatchBase {
   /**
    * An array of all matched route objects
    */
@@ -78,10 +78,11 @@ export interface Match extends MatchBase {
    * An object with static router properties.
    */
   router: Router;
+
   /**
    * matchContext from the router
    */
-  context: any;
+  context: TContext;
 }
 
 export interface Resolver {
@@ -375,12 +376,26 @@ export class Link<
   props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
 }
 
-export interface RouterState {
-  match: Match;
+export interface RouterState<TContext = any> {
+  match: Match<TContext>;
   router: Router;
 }
 
-export function useRouter(): RouterState;
+export type RouterProps<TContext> = RouterState<TContext>;
+
+/**
+ * Returns the Router and current route match from context
+ */
+export function useRouter<TContext = any>(): RouterState<TContext>;
+
+/** Returns the current route Match */
+export function useMatch<TContext = any>(): Match<TContext>;
+
+/** Returns the current route params */
+export function useParams(): Params;
+
+/** Returns the current location object */
+export function useLocation(): Location;
 
 export function withRouter<TProps extends RouterState>(
   Component: React.ComponentType<TProps>,
