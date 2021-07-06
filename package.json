@@ -37,10 +37,8 @@
     "test:ts": "dtslint types",
     "testonly": "jest --runInBand --verbose"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "gitHooks": {
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*": "yarn 4c lint --fix --prettier-ignore .eslintignore",
@@ -104,7 +102,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "husky": "^4.3.8",
+    "hookem": "^1.0.8",
     "jest": "^26.6.3",
     "lint-staged": "^10.5.3",
     "p-defer": "^3.0.0",
