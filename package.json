@@ -73,7 +73,7 @@
   },
   "devDependencies": {
     "@4c/babel-preset": "^8.0.3",
-    "@4c/cli": "^2.1.13",
+    "@4c/cli": "^3.0.1",
     "@4c/prettier-config": "^1.1.0",
     "@4c/tsconfig": "^0.3.1",
     "@babel/core": "^7.12.10",
