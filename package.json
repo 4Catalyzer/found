@@ -102,7 +102,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "hookem": "^1.0.8",
+    "hookem": "^2.0.1",
     "jest": "^26.6.3",
     "lint-staged": "^11.1.0",
     "p-defer": "^3.0.0",
