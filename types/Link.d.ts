@@ -1,4 +1,4 @@
-// TypeScript Version: 3.0
+// TypeScript Version: 4.0
 
 export {
   Link as default,

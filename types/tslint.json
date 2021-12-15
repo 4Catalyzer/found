@@ -1,3 +1,7 @@
 {
-  "extends": "dtslint/dtslint.json"
+  "extends": "dtslint/dtslint.json",
+  "rules": {
+    "no-redundant-jsdoc": 0,
+    "no-unnecessary-generics": 0
+  }
 }

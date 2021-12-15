@@ -37,13 +37,8 @@ export default function createBaseRouter({
     constructor(props) {
       super(props);
 
-      const {
-        store,
-        match,
-        matchContext,
-        resolver,
-        initialRenderArgs,
-      } = props;
+      const { store, match, matchContext, resolver, initialRenderArgs } =
+        props;
 
       this.router = createStoreRouterObject(store);
 
@@ -85,7 +80,8 @@ export default function createBaseRouter({
             'Replacing existing hot reloading hook. Do not render more than one router instance when using hot reloading.',
           );
 
-          window.__FOUND_REPLACE_ROUTE_CONFIG__ = this.router.replaceRouteConfig;
+          window.__FOUND_REPLACE_ROUTE_CONFIG__ =
+            this.router.replaceRouteConfig;
         }
         /* eslint-enable no-underscore-dangle */
         /* eslint-env browser: false */

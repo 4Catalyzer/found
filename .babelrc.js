@@ -5,9 +5,12 @@ module.exports = (api) => ({
       {
         runtime: true,
         modules: api.env() === 'esm' ? false : 'commonjs',
-        includePolyfills: 'usage-pure',
+        includePolyfills: false,
       },
     ],
   ],
-  plugins: [api.env() !== 'esm' && 'add-module-exports'].filter(Boolean),
+  plugins: [
+    ['transform-react-remove-prop-types', { mode: 'wrap' }],
+    api.env() !== 'esm' && 'add-module-exports',
+  ].filter(Boolean),
 });

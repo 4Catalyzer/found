@@ -1,4 +1,4 @@
-// TypeScript Version: 3.0
+// TypeScript Version: 4.0
 
 import { FarceRouterOptions, RenderArgs, Resolver } from 'found';
 import * as React from 'react';
