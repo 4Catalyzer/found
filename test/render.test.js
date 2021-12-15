@@ -154,12 +154,15 @@ describe('render', () => {
           render: () => (children) => <div className="foo">{children}</div>,
           children: [
             {
-              render: () => ({ nav, main }) => (
-                <div className="bar">
-                  {nav}
-                  {main}
-                </div>
-              ),
+              render:
+                () =>
+                ({ nav, main }) =>
+                  (
+                    <div className="bar">
+                      {nav}
+                      {main}
+                    </div>
+                  ),
               children: {
                 nav: [
                   {

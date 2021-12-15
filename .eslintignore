@@ -4,3 +4,5 @@
 **/coverage/
 **/lib/
 **/node_modules/
+**/examples/
+**/types/*.d.ts

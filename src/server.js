@@ -1,7 +1,7 @@
 import FarceActions from 'farce/Actions';
 import ServerProtocol from 'farce/ServerProtocol';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { routerShape } from './PropTypes';
 import RouterContext from './RouterContext';
@@ -20,10 +20,13 @@ const propTypes = {
 function RouterProvider({ renderArgs, children }) {
   return (
     <RouterContext.Provider
-      value={{
-        router: renderArgs.router,
-        match: renderArgs,
-      }}
+      value={useMemo(
+        () => ({
+          router: renderArgs.router,
+          match: renderArgs,
+        }),
+        [renderArgs],
+      )}
     >
       {children}
     </RouterContext.Provider>

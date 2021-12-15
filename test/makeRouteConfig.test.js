@@ -69,9 +69,7 @@ describe('makeRouteConfig', () => {
           <Route Component={MainPage} />
           <>
             <Route path="foo" Component={FooPage} />
-            <>
-              <Route path="bar" Component={BarPage} />
-            </>
+            <Route path="bar" Component={BarPage} />
           </>
           <Route path="baz" Component={BazPage} />
         </Route>,

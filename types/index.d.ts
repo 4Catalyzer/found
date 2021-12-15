@@ -1,4 +1,4 @@
-// TypeScript Version: 3.0
+// TypeScript Version: 4.0
 
 import {
   FarceStoreExtension,
@@ -320,7 +320,7 @@ type ReplaceLinkProps<TInner extends React.ElementType, TProps> = Omit<
 export type LinkPropsSimple = ReplaceLinkProps<'a', LinkPropsNodeChild>;
 
 export type LinkPropsWithAs<
-  TInner extends React.ElementType<LinkInjectedProps>
+  TInner extends React.ElementType<LinkInjectedProps>,
 > = ReplaceLinkProps<
   TInner,
   LinkPropsNodeChild & {
@@ -333,15 +333,15 @@ export type LinkPropsWithActivePropName<
   TInner extends React.ComponentType<
     LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
   >,
-  TActivePropName extends string
+  TActivePropName extends string,
 > = ReplaceLinkProps<
   TInner,
   LinkPropsNodeChild & {
     as: TInner;
     activePropName: TActivePropName;
   } & {
-      [activePropName in TActivePropName]?: null;
-    }
+    [activePropName in TActivePropName]?: null;
+  }
 >;
 
 export interface LinkPropsWithFunctionChild extends LinkPropsCommon {
@@ -357,7 +357,7 @@ export type LinkProps<
   TInnerWithActivePropName extends React.ComponentType<
     LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
   > = never,
-  TActivePropName extends string = never
+  TActivePropName extends string = never,
 > =
   | LinkPropsSimple
   | LinkPropsWithAs<TInner>
@@ -369,7 +369,7 @@ export class Link<
   TInnerWithActivePropName extends React.ComponentType<
     LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
   > = never,
-  TActivePropName extends string = never
+  TActivePropName extends string = never,
 > extends React.Component<
   LinkProps<TInner, TInnerWithActivePropName, TActivePropName>
 > {

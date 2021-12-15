@@ -1,4 +1,5 @@
 import isPromise from 'is-promise';
+import { setImmediate } from 'tiny-set-immediate';
 import warning from 'tiny-warning';
 
 const UNRESOLVED = {};
