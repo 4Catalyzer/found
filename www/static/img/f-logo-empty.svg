@@ -1,0 +1,48 @@
+<svg id="Component_1_3" data-name="Component 1 – 3" xmlns="http://www.w3.org/2000/svg" width="45" height="35" viewBox="0 0 45 35">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #9354ca;
+      }
+
+      .cls-2 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Ellipse_1" data-name="Ellipse 1" class="cls-1" transform="translate(0 26)">
+    <circle class="cls-2" cx="4.5" cy="4.5" r="4.5"/>
+    <circle class="cls-3" cx="4.5" cy="4.5" r="4"/>
+  </g>
+  <g id="Ellipse_2" data-name="Ellipse 2" class="cls-1" transform="translate(18 26)">
+    <circle class="cls-2" cx="4.5" cy="4.5" r="4.5"/>
+    <circle class="cls-3" cx="4.5" cy="4.5" r="4"/>
+  </g>
+  <g id="Ellipse_3" data-name="Ellipse 3" class="cls-1" transform="translate(36 26)">
+    <circle class="cls-2" cx="4.5" cy="4.5" r="4.5"/>
+    <circle class="cls-3" cx="4.5" cy="4.5" r="4"/>
+  </g>
+  <g id="Ellipse_4" data-name="Ellipse 4" class="cls-1" transform="translate(9 13)">
+    <circle class="cls-2" cx="4.5" cy="4.5" r="4.5"/>
+    <circle class="cls-3" cx="4.5" cy="4.5" r="4"/>
+  </g>
+  <g id="Ellipse_5" data-name="Ellipse 5" class="cls-1" transform="translate(27 13)">
+    <circle class="cls-2" cx="4.5" cy="4.5" r="4.5"/>
+    <circle class="cls-3" cx="4.5" cy="4.5" r="4"/>
+  </g>
+  <g id="Ellipse_6" data-name="Ellipse 6" class="cls-1" transform="translate(18)">
+    <circle class="cls-2" cx="4.5" cy="4.5" r="4.5"/>
+    <circle class="cls-3" cx="4.5" cy="4.5" r="4"/>
+  </g>
+  <line id="Line_2" data-name="Line 2" class="cls-1" x2="4.5" y2="7" transform="translate(33.75 20.5)"/>
+  <line id="Line_3" data-name="Line 3" class="cls-1" x1="4.5" y2="7" transform="translate(15.75 7.5)"/>
+  <line id="Line_4" data-name="Line 4" class="cls-1" x1="4.5" y2="7" transform="translate(6.75 20.5)"/>
+  <line id="Line_5" data-name="Line 5" class="cls-1" x1="4.5" y2="7" transform="translate(24.75 20.5)"/>
+  <line id="Line_6" data-name="Line 6" class="cls-1" x1="4.5" y2="7" transform="translate(15.75 7.5)"/>
+  <line id="Line_7" data-name="Line 7" class="cls-1" x2="4.5" y2="7" transform="translate(24.75 7.5)"/>
+  <line id="Line_8" data-name="Line 8" class="cls-1" x2="4.5" y2="7" transform="translate(15.75 20.5)"/>
+</svg>

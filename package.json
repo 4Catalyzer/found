@@ -35,7 +35,8 @@
     "tdd": "jest --watch",
     "test": "npm run lint && npm run test:ts && npm run testonly -- --coverage",
     "test:ts": "dtslint --expectOnly types",
-    "testonly": "jest --runInBand --verbose"
+    "testonly": "jest --runInBand --verbose",
+    "docs": "yarn --cwd www start"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

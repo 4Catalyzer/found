@@ -1,0 +1,76 @@
+---
+sidebar_position: 1
+sidebar_label: Introduction
+slug: /
+---
+
+# Found
+
+*Extensible route-based routing for React applications.*
+
+## Introduction
+
+Found is a router for [React](https://reactjs.org/) applications with a focus on power and extensibility. Found uses static route configurations. This enables efficient code splitting and data fetching with nested routes. Found also offers extensive control over indicating those loading states, even for routes with code bundles that have not yet been downloaded.
+
+Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
+
+Found uses [Redux](https://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
+
+## Basic usage
+
+The following route configuration
+
+```tsx
+const BrowserRouter = createBrowserRouter({
+  routeConfig: makeRouteConfig(
+    <Route path="/" Component={AppPage}>
+      <Route Component={MainPage} />
+      <Route path="widgets">
+        <Route Component={WidgetsPage} getData={fetchWidgets} />
+        <Route
+          path=":widgetId"
+          getComponent={() =>
+            System.import('./WidgetPage').then((module) => module.default)
+          }
+          getData={({ params: { widgetId } }: RouteMatch) =>
+            fetchWidget(widgetId).catch(() => {
+              throw new HttpError(404);
+            })
+          }
+          render={({ Component, props }: RenderArgs) =>
+            Component && props ? (
+              <Component {...props} />
+            ) : (
+              <div>
+                <small>Loading</small>
+              </div>
+            )
+          }
+        />
+      </Route>
+      <Redirect from="widget/:widgetId" to="/widgets/:widgetId" />
+    </Route>,
+  ),
+
+  renderError: ({ error }: RenderErrorArgs) => (
+    <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
+  ),
+});
+
+ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+```
+
+will set up the following routes:
+
+- `/`
+  - This renders `<AppPage><MainPage /></AppPage>`
+- `/widget`
+  - This renders `<AppPage><WidgetsPage /><AppPage>`
+  - This will load the data for `<WidgetsPage>` when the user navigates to this route
+  - This will continue to render the previous routes while the data for `<WidgetsPage>` are loading
+- `/widgets/${widgetId}` (e.g. `/widgets/foo`)
+  - This renders `<AppPage><WidgetPage /></AppPage>`
+  - This will load the code and data for `<WidgetPage>` when the user navigates to this route
+  - This will render the text "Loading" in place of `<WidgetPage>` while the code and data for `<WidgetPage>` are loading
+- `/widget/${widgetId}` (e.g. `/widget/foo`)
+  - This redirects to `/widgets/${widgetId}`, then renders as above
