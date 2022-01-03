@@ -63,6 +63,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.5",
     "@restart/context": "^2.1.4",
+    "@restart/hooks": "^0.4.5",
     "@types/react": ">=17.0.37",
     "dequal": "^2.0.2",
     "farce": "^0.4.5",

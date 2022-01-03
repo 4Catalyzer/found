@@ -1,5 +1,4 @@
 export ActionTypes from './ActionTypes';
-export BaseLink from './BaseLink';
 export createBaseRouter from './createBaseRouter';
 export createBrowserRouter from './createBrowserRouter';
 export createConnectedRouter from './createConnectedRouter';
