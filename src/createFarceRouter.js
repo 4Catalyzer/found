@@ -1,46 +1,64 @@
+import useIsomorphicEffect from '@restart/hooks/useIsomorphicEffect';
 import FarceActions from 'farce/Actions';
-import React from 'react';
-import { Provider } from 'react-redux';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 
-import createConnectedRouter from './createConnectedRouter';
+import createBaseRouter from './createBaseRouter';
 import createFarceStore from './createFarceStore';
 
 export default function createFarceRouter({
-  store,
+  store: userStore,
   historyProtocol,
   historyMiddlewares,
   historyOptions,
   routeConfig,
+  getFound = ({ found }) => found,
   ...options
 }) {
-  const ConnectedRouter = createConnectedRouter(options);
+  const Router = createBaseRouter(options);
 
-  class FarceRouter extends React.Component {
-    constructor(props) {
-      super(props);
+  const store =
+    userStore ||
+    createFarceStore({
+      historyProtocol,
+      historyMiddlewares,
+      historyOptions,
+      routeConfig,
+    });
 
-      this.store =
-        store ||
-        createFarceStore({
-          historyProtocol,
-          historyMiddlewares,
-          historyOptions,
-          routeConfig,
+  const FarceRouter = forwardRef((props, ref) => {
+    const [state, setState] = useState(() => {
+      const { match, resolvedMatch } = getFound(store.getState());
+      return { match, resolvedMatch };
+    });
+
+    useIsomorphicEffect(() => {
+      return store.subscribe(() => {
+        setState((prev) => {
+          const { match, resolvedMatch } = getFound(store.getState());
+          if (prev?.match === match && prev.resolvedMatch === resolvedMatch) {
+            return prev;
+          }
+          return { match, resolvedMatch };
         });
-    }
+      });
+    }, []);
 
-    componentWillUnmount() {
-      this.store.dispatch(FarceActions.dispose());
-    }
+    useEffect(() => {
+      return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        store.dispatch(FarceActions.dispose());
+      };
+    }, []);
 
-    render() {
-      return (
-        <Provider store={this.store}>
-          <ConnectedRouter {...this.props} />
-        </Provider>
-      );
-    }
-  }
+    useImperativeHandle(ref, () => store, []);
 
+    return <Router {...props} {...state} store={store} />;
+  });
+  FarceRouter.displayName = 'FarceRouter';
   return FarceRouter;
 }

@@ -1,10 +1,8 @@
-import mapContextToProps from '@restart/context/mapContextToProps';
 import { dequal } from 'dequal';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { ReactReduxContext } from 'react-redux';
 import warning from 'tiny-warning';
 
+import ActionTypes from './ActionTypes';
 import RouterContext from './RouterContext';
 import StaticContainer from './StaticContainer';
 import createRender from './createRender';
@@ -21,18 +19,6 @@ export default function createBaseRouter({
     renderError,
   }),
 }) {
-  const propTypes = {
-    store: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    resolvedMatch: PropTypes.object.isRequired,
-    matchContext: PropTypes.any,
-    resolver: PropTypes.shape({
-      resolveElements: PropTypes.func.isRequired,
-    }).isRequired,
-    onResolveMatch: PropTypes.func.isRequired,
-    initialRenderArgs: PropTypes.object,
-  };
-
   class BaseRouter extends React.Component {
     constructor(props) {
       super(props);
@@ -59,6 +45,13 @@ export default function createBaseRouter({
 
       this.lastIteration = 0;
       this.pendingResolvedMatch = false;
+
+      this.dispatchMatch = (pendingMatch) => {
+        store.dispatch({
+          type: ActionTypes.RESOLVE_MATCH,
+          payload: pendingMatch,
+        });
+      };
     }
 
     // We use componentDidMount and componentDidUpdate to resolve the match if
@@ -164,7 +157,7 @@ export default function createBaseRouter({
             //  the same time as all of the links and other components
             //  connected to the router state.
             this.pendingResolvedMatch = false;
-            this.props.onResolveMatch(pendingMatch);
+            this.dispatchMatch(pendingMatch);
           }
         }
       } catch (e) {
@@ -200,15 +193,5 @@ export default function createBaseRouter({
     }
   }
 
-  BaseRouter.propTypes = propTypes;
-
-  // FIXME: For some reason, using contextType doesn't work here.
-  return mapContextToProps(
-    {
-      consumers: ReactReduxContext,
-      mapToProps: ({ store }) => ({ store }),
-      displayName: 'withStore(BaseRouter)',
-    },
-    BaseRouter,
-  );
+  return BaseRouter;
 }

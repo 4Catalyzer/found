@@ -100,9 +100,11 @@ describe('Router', () => {
         },
       ],
     });
-
+    const storeRef = React.createRef();
     const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+    const testRenderer = TestRenderer.create(
+      <Router ref={storeRef} resolver={resolver} />,
+    );
 
     await resolver.done;
 
@@ -113,7 +115,7 @@ describe('Router', () => {
     `);
 
     await act(async () => {
-      testRenderer.getInstance().store.found.replaceRouteConfig([
+      storeRef.current.found.replaceRouteConfig([
         {
           path: '/foo',
           getData: async () => {
@@ -227,10 +229,14 @@ describe('Router', () => {
       });
 
       const resolver = new InstrumentedResolver();
-      const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+      const storeRef = React.createRef();
+
+      const testRenderer = TestRenderer.create(
+        <Router ref={storeRef} resolver={resolver} />,
+      );
 
       await act(async () => {
-        testRenderer.getInstance().store.dispatch(FarceActions.push('/bar'));
+        storeRef.current.dispatch(FarceActions.push('/bar'));
         await delay(10);
 
         await resolver.done;
