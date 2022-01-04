@@ -17,6 +17,8 @@ Found is designed to be extremely customizable. Most pieces of Found such as the
 
 Found uses [Redux](https://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
 
+Logo created by [Szymon Wiszczuk](https://www.github.com/golota60)
+
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg
 [build]: https://travis-ci.org/4Catalyzer/found
 [npm-badge]: https://img.shields.io/npm/v/found.svg
