@@ -1,5 +1,6 @@
 <div align="center">
-<img src="https://golota60.github.io/found/img/f-logo-empty.svg" width="200">
+<img src="https://4Catalyzer.github.io/found/img/f-logo-empty.svg" width="200">
+/* Logo created by [Szymon Wiszczuk](https://www.github.com/golota60) */
 
 <h1>Found</h1>
 <p>
@@ -16,8 +17,6 @@ Found is a router for [React](https://reactjs.org/) applications with a focus on
 Found is designed to be extremely customizable. Most pieces of Found such as the path matching algorithm and the route element resolution can be fully replaced. This allows [extensions](#extensions) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to provide first-class support for different use cases.
 
 Found uses [Redux](https://redux.js.org/) for state management and [Farce](https://github.com/4Catalyzer/farce) for controlling browser navigation. It can integrate with your existing store and connected components.
-
-Logo created by [Szymon Wiszczuk](https://www.github.com/golota60)
 
 [build-badge]: https://img.shields.io/travis/4Catalyzer/found/master.svg
 [build]: https://travis-ci.org/4Catalyzer/found
