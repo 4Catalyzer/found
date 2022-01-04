@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import BaseLink from '../src/BaseLink';
+import BaseLink from '../src/Link';
 
 const CustomComponent = () => <div />;
 

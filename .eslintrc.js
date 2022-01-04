@@ -5,6 +5,7 @@ module.exports = {
     requireConfigFile: false,
   },
   rules: {
+    'react/prop-types': 'off',
     'prettier/prettier': 'error',
   },
 };
