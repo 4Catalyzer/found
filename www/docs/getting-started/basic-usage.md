@@ -59,11 +59,11 @@ In components rendered by the router, use `<Link>` to render links that navigate
   Foo
 </Link>
 ```
-:::tip 
+
+:::tip
 
 You can use [spa-routing](https://github.com/4Catalyzer/spa-routing) to manage your links in an organized and well-typed way
 
 :::
-
 
 That's basically it! Right now you should have a fully functional routing setup.

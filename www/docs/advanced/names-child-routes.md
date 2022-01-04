@@ -2,7 +2,6 @@
 sidebar_position: 4
 ---
 
-
 # Named child routes
 
 Specify an object for the `children` property on a route to set up named child routes. A route with named child routes will match only if every route group matches. The elements corresponding to the child routes will be available on their parent as props with the same name as the route groups.

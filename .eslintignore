@@ -1,6 +1,8 @@
 !.babelrc.js
 !.eslintrc.js
 
+**/.docusaurus/
+**/build/
 **/coverage/
 **/lib/
 **/node_modules/
