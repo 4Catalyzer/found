@@ -28,6 +28,7 @@
     "build": "rimraf lib && 4c build --types false src && npm run build:pick && npm run build:types",
     "build:pick": "cherry-pick --cjs-dir cjs --esm-dir esm --cwd lib ../src",
     "build:types": "cpy types/*.d.ts lib",
+    "build:docs": "yarn --cwd www build",
     "format": "4c format --prettier-ignore .eslintignore .",
     "lint": "4c lint --prettier-ignore .eslintignore .",
     "prepublishOnly": "npm run build",
