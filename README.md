@@ -1,7 +1,8 @@
 <div align="center">
 <img src="https://4Catalyzer.github.io/found/img/f-logo-empty.svg" width="200">
-/* Logo created by [Szymon Wiszczuk](https://www.github.com/golota60) */
-
+<!---
+Logo created by [Szymon Wiszczuk](https://www.github.com/golota60) 
+-->
 <h1>Found</h1>
 <p>
   Extensible route-based routing for React applications.
