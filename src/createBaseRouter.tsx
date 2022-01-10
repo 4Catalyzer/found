@@ -9,7 +9,7 @@ import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
 
-export default function createBaseRouter({
+function createBaseRouter({
   renderPending,
   renderReady,
   renderError,
@@ -19,7 +19,12 @@ export default function createBaseRouter({
     renderError,
   }),
 }) {
-  class BaseRouter extends React.Component {
+  class BaseRouter extends React.Component<any, any> {
+    router: any;
+    mounted: boolean;
+    lastIteration: number;
+    pendingResolvedMatch: boolean;
+    dispatchMatch: (pendingMatch: any) => void;
     constructor(props) {
       super(props);
 
@@ -114,6 +119,7 @@ export default function createBaseRouter({
 
       if (__DEV__ && typeof window !== 'undefined') {
         /* eslint-env browser */
+        console.log(window.__FOUND_HOT_RELOAD__);
         /* eslint-disable no-underscore-dangle */
         if (window.__FOUND_HOT_RELOAD__) {
           delete window.__FOUND_REPLACE_ROUTE_CONFIG__;
@@ -130,7 +136,7 @@ export default function createBaseRouter({
       try {
         for await (const renderArgs of resolveRenderArgs(
           this.router,
-          this.props,
+          this.props as any,
         )) {
           // Don't do anything if we're resolving an outdated match.
           if (!this.mounted || this.lastIteration !== pendingIteration) {
@@ -165,8 +171,8 @@ export default function createBaseRouter({
           return;
         }
 
-        if (e.isFoundRedirectException) {
-          this.router.replace(e.location);
+        if ((e as any).isFoundRedirectException) {
+          this.router.replace((e as any).location);
           return;
         }
 
@@ -193,5 +199,7 @@ export default function createBaseRouter({
     }
   }
 
-  return BaseRouter;
+  return BaseRouter as any;
 }
+
+export default createBaseRouter;

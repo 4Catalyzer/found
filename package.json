@@ -25,7 +25,8 @@
     "url": "https://github.com/4Catalyzer/found.git"
   },
   "scripts": {
-    "build": "rimraf lib && 4c build --types false src && npm run build:pick && npm run build:types",
+    "build": "rimraf lib && 4c build src && npm run build:pick",
+    "lol": "rimraf lib && 4c build src",
     "build:pick": "cherry-pick --cjs-dir cjs --esm-dir esm --cwd lib ../src",
     "build:types": "cpy types/*.d.ts lib",
     "build:docs": "yarn --cwd www build",
@@ -36,6 +37,7 @@
     "tdd": "jest --watch",
     "test": "npm run lint && npm run test:ts && npm run testonly -- --coverage",
     "test:ts": "dtslint --expectOnly types",
+    "lol:test": "",
     "testonly": "jest --runInBand --verbose",
     "docs": "yarn --cwd www start"
   },
@@ -82,6 +84,7 @@
     "@4c/prettier-config": "^1.1.0",
     "@4c/tsconfig": "^0.4.0",
     "@babel/core": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
