@@ -16,6 +16,19 @@ interface BaseRouterProps {
   render: any;
 }
 
+interface BaseRouterState {
+  isInitialRender: boolean;
+  match: any;
+  matchContext: any;
+  resolver: any;
+  iteration: number;
+  routerContext: {
+    router: any;
+    match: any | null;
+  };
+  element?: () => {};
+}
+
 function createBaseRouter({
   renderPending,
   renderReady,
@@ -25,8 +38,8 @@ function createBaseRouter({
     renderReady,
     renderError,
   }),
-}: BaseRouterProps): any {
-  class BaseRouter extends React.Component<any, any> {
+}: BaseRouterProps): React.ComponentType<BaseRouterProps> {
+  class BaseRouter extends React.Component<any, BaseRouterState> {
     router: any;
     mounted: boolean;
     lastIteration: number;
@@ -206,7 +219,7 @@ function createBaseRouter({
     }
   }
 
-  return BaseRouter;
+  return BaseRouter as any;
 }
 
 export default createBaseRouter;
