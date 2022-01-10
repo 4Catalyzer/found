@@ -1,8 +1,9 @@
 {
   "extends": "@4c/tsconfig/base.json",
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "lib",
+    // "declaration": false,
+    // "emitDeclarationOnly": false,
+    // "declarationDir": "lib",
     "allowJs": true,
     "checkJs": false,
     "jsx": "react",
