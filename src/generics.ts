@@ -390,12 +390,6 @@ export type RouterProps<TContext> = RouterState<TContext>;
 // /** Returns the current route Match */
 // export function useMatch<TContext = any>(): Match<TContext>;
 
-// /** Returns the current route params */
-// export function useParams(): Params;
-
-// /** Returns the current location object */
-// export function useLocation(): Location;
-
 // export function withRouter<TProps extends RouterState>(
 //   Component: React.ComponentType<TProps>,
 // ): React.ComponentType<Omit<TProps, keyof RouterState>>;
