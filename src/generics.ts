@@ -382,14 +382,6 @@ export interface RouterState<TContext = any> {
 
 export type RouterProps<TContext> = RouterState<TContext>;
 
-/**
- * Returns the Router and current route match from context
- */
-// export function useRouter<TContext = any>(): RouterState<TContext>;
-
-// /** Returns the current route Match */
-// export function useMatch<TContext = any>(): Match<TContext>;
-
 // export function withRouter<TProps extends RouterState>(
 //   Component: React.ComponentType<TProps>,
 // ): React.ComponentType<Omit<TProps, keyof RouterState>>;
