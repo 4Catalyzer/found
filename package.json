@@ -1,6 +1,6 @@
 {
   "name": "found",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Extensible route-based routing for React applications",
   "keywords": [
     "react",
