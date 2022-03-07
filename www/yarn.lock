@@ -1299,12 +1299,12 @@
     url-loader "^4.1.1"
     webpack "^5.61.0"
 
-"@docusaurus/module-type-aliases@^2.0.0-beta.16":
-  version "2.0.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@docusaurus/module-type-aliases/-/module-type-aliases-2.0.0-beta.16.tgz#ec2eae9fac774234a925f39f8e38bd6bb0a2a7cb"
-  integrity sha512-x6/JlbrSfhGuDc6dWybt/E1T6xh/jjEJemlizAGArHpKB0mTuxRm5FRCmksX7z7IM8HZs43tpftGS8gXNL5gug==
+"@docusaurus/module-type-aliases@^2.0.0-beta.17":
+  version "2.0.0-beta.17"
+  resolved "https://registry.yarnpkg.com/@docusaurus/module-type-aliases/-/module-type-aliases-2.0.0-beta.17.tgz#73f6d34be202ac093e78769ff72613d353087cd7"
+  integrity sha512-Tu+8geC/wyygBudbSwvWIHEvt5RwyA7dEoE1JmPbgQtmqUxOZ9bgnfemwXpJW5mKuDiJASbN4of1DhbLqf4sPg==
   dependencies:
-    "@docusaurus/types" "2.0.0-beta.16"
+    "@docusaurus/types" "2.0.0-beta.17"
     "@types/react" "*"
     "@types/react-router-config" "*"
     "@types/react-router-dom" "*"
@@ -1521,10 +1521,10 @@
     fs-extra "^10.0.0"
     tslib "^2.3.1"
 
-"@docusaurus/types@2.0.0-beta.16":
-  version "2.0.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@docusaurus/types/-/types-2.0.0-beta.16.tgz#bb33e8fcb435238898a7153fda6a14e8f9177742"
-  integrity sha512-ttej9CFthe9+mDMGKMI1wRegXJHLXUZUhxsiYaGczW7PZXdbCQZvKVAoMtrEp/Oa/KOMtqwva60iEEot//KGnQ==
+"@docusaurus/types@2.0.0-beta.17":
+  version "2.0.0-beta.17"
+  resolved "https://registry.yarnpkg.com/@docusaurus/types/-/types-2.0.0-beta.17.tgz#582e3d961ce4409ed17454669b3f6a7a9f696cdd"
+  integrity sha512-4o7TXu5sKlQpybfFFtsGUElBXwSpiXKsQyyWaRKj7DRBkvMtkDX6ITZNnZO9+EHfLbP/cfrokB8C/oO7mCQ5BQ==
   dependencies:
     commander "^5.1.0"
     joi "^17.6.0"
@@ -7324,10 +7324,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.5.5:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
-  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+typescript@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.2.tgz#fe12d2727b708f4eef40f51598b3398baa9611d4"
+  integrity sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==
 
 ua-parser-js@^0.7.30:
   version "0.7.31"

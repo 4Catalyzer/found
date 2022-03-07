@@ -36,8 +36,8 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.0.0-beta.16",
+    "@docusaurus/module-type-aliases": "^2.0.0-beta.17",
     "@tsconfig/docusaurus": "^1.0.4",
-    "typescript": "^4.5.5"
+    "typescript": "^4.6.2"
   }
 }
