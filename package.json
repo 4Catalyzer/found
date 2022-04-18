@@ -111,7 +111,7 @@
     "hookem": "^2.0.1",
     "jest": "^27.5.1",
     "lint-staged": "^12.3.8",
-    "p-defer": "^3.0.0",
+    "p-defer": "^4.0.0",
     "prettier": "^2.6.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
