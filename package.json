@@ -71,7 +71,7 @@
     "farce": "^0.4.5",
     "is-promise": "^4.0.0",
     "prop-types": "^15.7.2",
-    "react-redux": "^7.2.6",
+    "react-redux": "^8.0.2",
     "redux": "^4.1.2",
     "tiny-set-immediate": "^1.0.2",
     "tiny-warning": "^1.0.3"
