@@ -19,6 +19,7 @@ class AsyncRoute extends Route {
     ) : (
       <LoadingIndicator />
     );
+  }
 }
 
 const myRoute = new AsyncRoute(properties);
