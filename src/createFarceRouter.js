@@ -1,11 +1,5 @@
 import useIsomorphicEffect from '@restart/hooks/useIsomorphicEffect';
-import FarceActions from 'farce/Actions';
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 
 import createBaseRouter from './createBaseRouter';
 import createFarceStore from './createFarceStore';
@@ -48,17 +42,12 @@ export default function createFarceRouter({
       });
     }, []);
 
-    useEffect(() => {
-      return () => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        store.dispatch(FarceActions.dispose());
-      };
-    }, []);
-
     useImperativeHandle(ref, () => store, []);
 
     return <Router {...props} {...state} store={store} />;
   });
+
   FarceRouter.displayName = 'FarceRouter';
+
   return FarceRouter;
 }

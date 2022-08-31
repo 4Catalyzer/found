@@ -41,8 +41,6 @@ export default function createBaseRouter({
         element: initialRenderArgs ? render(initialRenderArgs) : null,
       };
 
-      this.mounted = true;
-
       this.lastIteration = 0;
       this.pendingResolvedMatch = false;
 
@@ -60,6 +58,7 @@ export default function createBaseRouter({
     //  about having to pass around nextProps.
 
     componentDidMount() {
+      this.mounted = true;
       if (!this.props.initialRenderArgs) {
         this.resolveMatch();
       }
