@@ -2,19 +2,21 @@ import FarceActions from 'farce/Actions';
 import BrowserProtocol from 'farce/BrowserProtocol';
 import createHistoryEnhancer from 'farce/createHistoryEnhancer';
 import queryMiddleware from 'farce/queryMiddleware';
-import Link from 'found/Link';
-import Matcher from 'found/Matcher';
-import Redirect from 'found/Redirect';
-import createConnectedRouter from 'found/createConnectedRouter';
-import createMatchEnhancer from 'found/createMatchEnhancer';
-import createRender from 'found/createRender';
-import foundReducer from 'found/foundReducer';
-import resolver from 'found/resolver';
-import PropTypes from 'prop-types';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import {
+  Redirect,
+  Matcher,
+  Link,
+  createConnectedRouter,
+  createMatchEnhancer,
+  createRender,
+  foundReducer,
+  resolver,
+} from 'found';
+
+import React, { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { combineReducers, compose, createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 
 function LinkItem(props) {
   return (
@@ -23,10 +25,6 @@ function LinkItem(props) {
     </li>
   );
 }
-
-const propTypes = {
-  children: PropTypes.node,
-};
 
 function App({ children }) {
   return (
@@ -45,8 +43,6 @@ function App({ children }) {
     </div>
   );
 }
-
-App.propTypes = propTypes;
 
 const routeConfig = [
   {
@@ -70,9 +66,7 @@ const routeConfig = [
           new Promise((resolve) => {
             setTimeout(resolve, 1000, 'Bar');
           }),
-        render: (
-          { Component, props }, // eslint-disable-line react/prop-types
-        ) =>
+        render: ({ Component, props }) =>
           Component && props ? (
             <Component {...props} />
           ) : (
@@ -89,18 +83,18 @@ const routeConfig = [
   },
 ];
 
-const store = createStore(
-  combineReducers({
+const store = configureStore({
+  reducer: {
     found: foundReducer,
-  }),
-  compose(
+  },
+  enhancers: [
     createHistoryEnhancer({
       protocol: new BrowserProtocol(),
       middlewares: [queryMiddleware],
     }),
     createMatchEnhancer(new Matcher(routeConfig)),
-  ),
-);
+  ],
+});
 
 store.dispatch(FarceActions.init());
 
@@ -113,10 +107,12 @@ const ConnectedRouter = createConnectedRouter({
     /* eslint-enable react/prop-types */
   }),
 });
+const root = createRoot(document.getElementById('root'));
 
-ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter resolver={resolver} />
-  </Provider>,
-  document.getElementById('root'),
+root.render(
+  <StrictMode>
+    <Provider store={store}>
+      <ConnectedRouter resolver={resolver} />
+    </Provider>
+  </StrictMode>,
 );

@@ -1,7 +1,5 @@
 import Link from 'found/Link';
-import { routerShape } from 'found/PropTypes';
 import createBrowserRouter from 'found/createBrowserRouter';
-import PropTypes from 'prop-types';
 import React, {
   useCallback,
   useEffect,
@@ -9,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 function LinkItem(props) {
   return (
@@ -18,10 +16,6 @@ function LinkItem(props) {
     </li>
   );
 }
-
-const appPropTypes = {
-  children: PropTypes.node,
-};
 
 function App({ children }) {
   return (
@@ -37,12 +31,6 @@ function App({ children }) {
     </div>
   );
 }
-
-App.propTypes = appPropTypes;
-
-const mainPropTypes = {
-  router: routerShape.isRequired,
-};
 
 function Main({ router }) {
   const [listenerType, setListenerType] = useState('confirm');
@@ -156,8 +144,6 @@ function Main({ router }) {
   );
 }
 
-Main.propTypes = mainPropTypes;
-
 const BrowserRouter = createBrowserRouter({
   routeConfig: [
     {
@@ -176,4 +162,5 @@ const BrowserRouter = createBrowserRouter({
   ],
 });
 
-ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<BrowserRouter />);

@@ -32,6 +32,7 @@
     "format": "4c format --prettier-ignore .eslintignore .",
     "lint": "4c lint --prettier-ignore .eslintignore .",
     "prepublishOnly": "npm run build",
+    "publishLocal": "yarn prepublishOnly && yarn file-butler prepare-publish-dir lib && yalc push lib",
     "release": "4c release",
     "tdd": "jest --watch",
     "test": "npm run lint && npm run test:ts && npm run testonly -- --coverage",
@@ -71,14 +72,15 @@
     "farce": "^0.4.5",
     "is-promise": "^4.0.0",
     "prop-types": "^15.7.2",
-    "react-redux": "^7.2.6",
-    "redux": "^4.1.2",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
     "tiny-set-immediate": "^1.0.2",
     "tiny-warning": "^1.0.3"
   },
   "devDependencies": {
     "@4c/babel-preset": "^9.1.0",
     "@4c/cli": "^3.0.1",
+    "@4c/file-butler": "^6.0.0",
     "@4c/prettier-config": "^1.1.0",
     "@4c/tsconfig": "^0.4.0",
     "@babel/core": "^7.17.9",
@@ -119,7 +121,8 @@
     "react-stand-in": "^4.0.0-beta.21",
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

@@ -2,9 +2,8 @@ import ElementsRenderer from 'found/ElementsRenderer';
 import Link from 'found/Link';
 import StaticContainer from 'found/StaticContainer';
 import createBrowserRouter from 'found/createBrowserRouter';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 function LinkItem(props) {
   return (
@@ -13,10 +12,6 @@ function LinkItem(props) {
     </li>
   );
 }
-
-const propTypes = {
-  children: PropTypes.node,
-};
 
 function App({ children }) {
   return (
@@ -33,8 +28,6 @@ function App({ children }) {
     </div>
   );
 }
-
-App.propTypes = propTypes;
 
 const BrowserRouter = createBrowserRouter({
   routeConfig: [
@@ -54,7 +47,7 @@ const BrowserRouter = createBrowserRouter({
         },
         {
           path: 'bar',
-          Component: ({ data }) => <div>{data}</div>, // eslint-disable-line react/prop-types
+          Component: ({ data }) => <div>{data}</div>,
           getData: () =>
             new Promise((resolve) => {
               setTimeout(resolve, 1000, 'Bar');
@@ -75,22 +68,19 @@ const BrowserRouter = createBrowserRouter({
           right: 0,
           bottom: 0,
           left: 0,
-          background: 'white',
+          background: 'black',
           opacity: 0.5,
         }}
       />
     </div>
   ),
 
-  renderReady: (
-    { elements }, // eslint-disable-line react/prop-types
-  ) => (
+  renderReady: ({ elements }) => (
     <div>
-      <StaticContainer shouldUpdate>
-        <ElementsRenderer elements={elements} />
-      </StaticContainer>
+      <ElementsRenderer elements={elements} />
     </div>
   ),
 });
 
-ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<BrowserRouter />);

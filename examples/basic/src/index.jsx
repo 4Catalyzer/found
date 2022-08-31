@@ -1,9 +1,7 @@
-import Link from 'found/Link';
-import Redirect from 'found/Redirect';
-import createBrowserRouter from 'found/createBrowserRouter';
+import { createBrowserRouter, Link, Redirect } from 'found';
 import PropTypes from 'prop-types';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 function LinkItem(props) {
   return (
@@ -57,9 +55,7 @@ const BrowserRouter = createBrowserRouter({
             new Promise((resolve) => {
               setTimeout(resolve, 1000, 'Bar');
             }),
-          render: (
-            { Component, props }, // eslint-disable-line react/prop-types
-          ) =>
+          render: ({ Component, props }) =>
             Component && props ? (
               <Component {...props} />
             ) : (
@@ -83,4 +79,10 @@ const BrowserRouter = createBrowserRouter({
   /* eslint-enable react/prop-types */
 });
 
-ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+
+root.render(
+  <StrictMode>
+    <BrowserRouter />,
+  </StrictMode>,
+);

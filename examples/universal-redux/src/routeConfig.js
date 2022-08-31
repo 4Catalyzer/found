@@ -25,9 +25,7 @@ export default [
           new Promise((resolve) => {
             setTimeout(resolve, 1000, 'Bar');
           }),
-        render: (
-          { Component, props }, // eslint-disable-line react/prop-types
-        ) =>
+        render: ({ Component, props }) =>
           Component && props ? (
             <Component {...props} />
           ) : (

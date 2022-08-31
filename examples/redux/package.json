@@ -3,22 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "farce": "^0.4.1",
-    "found": "^0.5.1",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-redux": "^7.2.0",
-    "react-scripts": "3.4.1",
-    "redux": "^4.0.5"
+    "@reduxjs/toolkit": "^1.8.5",
+    "@vitejs/plugin-react": "^2.0.1",
+    "farce": "^0.4.5",
+    "found": "file:.yalc/found",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
+    "vite": "^3.0.7"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "vite"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "devDependencies": {
+    "yalc": "^1.0.0-pre.53"
+  }
 }
