@@ -1,0 +1,187 @@
+## An example
+
+Consider the following wireframe, of a simple shell with a side navigation
+and a detail area. The user can navigate to sections (such as "products") and
+see a list of products. Clicking further on a product navigates to a nested
+detail view with tab navigation for that specific product.
+
+![Product wireframe](../assets/wireframe-l.png#gh-light-mode-only)
+![Product wireframe](../assets/wireframe-d.png#gh-dark-mode-only)
+
+With Found we can represent this UI with the following route tree and config:
+
+```tsx
+<Route path="/" Component={AppPage}>
+  <Route path="customers">
+    <Route Component={CustomersIndexPage} />
+    <Route path=":customerId" Component={CustomerPage} />
+  </Route>
+
+  <Route path="products">
+    <Route Component={ProductsIndexPage} getDate={fetchProducts} />
+    <Route path="create" Component={ProductCreatePage} />
+
+    <Route
+      path=":productId"
+      Component={ProductPage}
+      getData={fetchProduct}
+    >
+      <Route
+        path="edit"
+        Component={ProductEditPage}
+        getData={fetchProduct}
+      />
+      <Route
+        path="history"
+        Component={ProductHistoryPage}
+        getData={fetchProductHistory}
+      />
+    </Route>
+  </Route>
+
+  <Route path="settings" Component={SettingsPage} />
+</Route>
+```
+
+![route-tree](../assets/route-graph-l.png#gh-light-mode-only)
+![route-tree](../assets/route-graph-d.png#gh-dark-mode-only)
+
+Lets consider a single URL and break down how found matches and resolves
+the data and UI for that URL. If we want to navigate to a Product's history page we would use the
+following URL: `/products/1/history`. Clicking on a `<Link>`, calling
+`router.push('/products/1/history')`, or updating the browser URL bar triggers a new "match" resolution.
+
+## Matching
+
+A "match" is the output of running the configured `Matcher` on a URL.
+The `Matcher` breaks the new location into path segments and walks the route tree, looking
+for a path throguh it that "matches" the URL.
+
+![route-match](../assets/route-match-l.png#gh-light-mode-only)
+![route-match](../assets/route-match-d.png#gh-dark-mode-only)
+
+If the matcher is able to map the entire URL to a set of Routes, it produces a
+`match` which contains the `location` as well as an array of `Route` objects that represent
+a path through the `routeConfig`.
+
+:::info
+The Matcher, can only complete at "leaf" nodes in the route tree. This means that
+routes that could be leaf or branch nodes (such as `/products`) need to include an
+"index" route in order to match sucessfully. An index route is a route with a `Component`
+and no `path`, as seen above in the route config.
+:::
+
+## Resolution
+
+The router, `Resolver` is responsible for mapping the matched routes to a set of React `element`s. To accomplish this it may need to fetch
+async components or server data as specified by each route.
+
+![resolver](../assets/resolver-l.png#gh-light-mode-only)
+![resolver](../assets/resolver-d.png#gh-dark-mode-only)
+
+### Data fetching and code splitting
+
+Each route in the matched set may specify a `getData` property to fetch data necessary to
+render its `Component`. The Resolver calls each and collects the returned `Promise`s which are
+all allowed to resolve in parallel. unless a route is `defer`ed in which case the promises are split into batches
+based on the route hierarchy.
+
+```tsx
+const routeData = await Promise.all(
+  matchedRoutes.map((route: Route) => {
+    return route.getData ? route.getData(match) : undefined;
+  });
+)
+```
+
+Similarly Route components can be asynchronously loaded by specifing `getComponent` instead
+of `Component`. Components are also loaded in parallel and awaited before resolving to a set of elements.
+
+```tsx
+const routeComponents = await Promise.all(
+  matchedRoutes.map((route: Route) => {
+    return route.getComponent ? route.getComponent(match) : route.Component;
+  });
+)
+```
+
+### Element construction
+
+After data, and components are resolved, each route is constructed into an element that will be rendered
+by the Router:
+
+```tsx
+const routeComponents = [
+  AppPage,
+  null,
+  ProductPage,
+  ProductHistoryPage,
+];
+const routeData = [null, null, {}, {}];
+
+routes.map((route, index) => {
+  const Component = routeComponents[index];
+  const data = routeData[index];
+
+  return Component ? <Component data={data} /> : null;
+});
+```
+
+Finally this array is folded together by the Router into:
+
+```tsx
+<AppPage>
+  <ProductPage>
+    <ProductHistoryPage />
+  </ProductPage>
+</AppPage>
+```
+
+## Loading states
+
+One point that was glossed over above, is how routes can control their own loading UI
+while data is being fetched. To handle these states the `Resolver` actually produces multiple
+arrays of elements. While waiting for components and data to be fetched it calls `route.render`,
+with the itermediary state, and once the async values are resolved each `route.render` is called again
+with the final values.
+
+Practically this gives the route complete control over how it handles it's loading fallbacks. A Route
+can explicitly render nothing (`null`), a loading spinner, a skeleton UI, or whatever else it wants while
+it waits for data.
+
+```tsx
+routes = [
+  ...{
+    path: ":productId",
+    getComponent: () =>
+      import("./components/ProductPage").then((m) => m.default),
+    getData: fetchProductById,
+    render({ props, Component }) {
+      // if Component is not present it is still being fetched
+      if (!Component) {
+        return <Spinner />;
+      }
+
+      // props is the return value of `getData` if
+      // it's not present data is still loading
+      if (!props) {
+        <Component showSkeleton />;
+      }
+
+      // Otherwise render the component with it's props
+      return <Component {...props} />;
+    },
+  },
+];
+```
+
+:::tip
+
+`null` and `undefined` mean different things as a return value of `router.render`!
+If you return `null` the router will render _nothing_ for that element, whereas `undefined`
+it treated as a special value that means "I can't render yet", which tells the router to continue
+to show the existing UI until the route is ready.
+
+:::
+
+This flexibility allows for easy implementation of many different loading UI patterns!

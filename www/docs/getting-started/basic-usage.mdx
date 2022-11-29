@@ -1,0 +1,179 @@
+---
+sidebar_position: 2
+---
+
+import SandpackEditor from "@site/src/components/SandpackEditor";
+
+# Basic usage
+
+Found provides rich client-side route, for your Single Page Application. It allows you to define
+your web application in terms of the URL just like traditional multi-page browser navigation, while
+also efficiently updating the your page as the URL changes, only loading and changing the parts of your application
+that need to. This enables unmatched data fetching efficiency and code code splitting, while providing users with a
+fast, ultra-responsive browsering experience.
+
+To get started, define the "routes", or urls your application supports and the UI they require.
+
+<SandpackEditor>
+
+```tsx
+import { createBrowserRouter, Link } from "found";
+
+const routeConfig = [
+  {
+    path: "/",
+    Component: () => (
+      <div>
+        <h1>Hello World</h1>
+        <Link to="/about">About Us</Link>
+      </div>
+    ),
+  },
+  {
+    path: "/about",
+    Component: () => (
+      <div>
+        <h1>About</h1>
+        <p>Welcome to found</p>
+      </div>
+    ),
+  },
+];
+
+const BrowserRouter = createBrowserRouter({ routeConfig });
+
+export default function App() {
+  return <BrowserRouter />;
+}
+```
+
+</SandpackEditor>
+
+## JSX Configuration
+
+Routes, can also be specified as JSX if you prefer, using `makeRouteConfig`:
+
+```tsx
+import React from "react";
+import { createRoot } from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Link,
+} from "found";
+
+const BrowserRouter = createBrowserRouter({
+  routeConfig: makeRouteConfig(
+    <>
+      <Route path="/" Component={HomePage} />
+      <Route path="/about" Component={AboutPage} />
+    </>
+  ),
+});
+```
+
+## Nested Routes
+
+Best described by found's original inspiration `react-router` (who also borrowed the idea from Ember):
+
+> Nested Routing is the general idea of coupling segments of the URL to component hierarchy and data.
+
+Nested routing is similar to "layouts" in server-side templating languages, allowings reuse of components, as well as
+connecting components with their data requirements.
+
+<SandpackEditor startRoute='/dashboard'>
+
+```tsx
+import {
+  createBrowserRouter,
+  makeRouteConfig,
+  Route,
+  Link,
+} from "found";
+
+function AppPage({ children }) {
+  return (
+    <div>
+      <nav>
+        <Link to="/dashboard">Dashboard</Link>{" "}
+        <Link to="/about">About</Link>
+      </nav>
+      <main>{children}</main>
+    </div>
+  );
+}
+
+const Router = createBrowserRouter({
+  routeConfig: makeRouteConfig(
+    <Route path="/" Component={AppPage}>
+      <Route
+        path="dashboard"
+        Component={() => <h1>Dashboard page</h1>}
+      />
+      <Route path="about" Component={() => <h1>About page</h1>} />
+    </Route>
+  ),
+});
+
+export default function App() {
+  return <Router />;
+}
+```
+
+</SandpackEditor>
+
+Here the route passes `children` to `AppPage` which will be the resolved nested routes component
+for the current location. In otherwords, when on `/about` the "About page" header will render and on
+`/dashboard` "Dashboard page". Because both routes start with `/` they are children of `AppPage`.
+
+:::tip
+
+You can use [spa-routing](https://github.com/4Catalyzer/spa-routing) to manage your links in an organized and well-typed way
+
+:::
+
+## Route parameters
+
+Routes, can also be parameterized, allowing you to represent state through URLs. Route components
+are passed `match` as a prop which contains `params` (amoung other things). Any component can access
+the current route props using `useParams` as well.
+
+```tsx
+import useParams from 'found/useParams'
+
+function AppPage({ children, match }) {
+  const { projectId } = match.params;
+
+  return <div>
+    <nav>
+      <Link to='/dashboard'>Dashboard</Link>
+      <Link to='/about'>About</Link>
+    </nav>
+    <main>{children}</children>
+  </div>
+}
+
+function SettingsPage() {
+  const { projectId } = useParams()
+
+  return <div>{projectId}</div>
+}
+
+const routes = (
+  <Route path="/:projectId" Component={AppPage}>
+    <Route path="settings" Component={SettingsPage} />
+    {...}
+  </Route>
+);
+```
+
+:::tip
+
+All params are accessible to every component and routes not just the `Route` that
+declares it.
+
+:::
+
+Route params are flexible and allow "splats" as well as regular expressions, see [path](/configuration/route-config#path)
+for all the details.

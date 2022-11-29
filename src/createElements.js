@@ -3,6 +3,18 @@ import warning from 'tiny-warning';
 
 import { isResolved } from './ResolverUtils';
 
+/**
+ * maps an array of `Route`s to React elements. The returned array
+ * may contain elements, `null`, or `undefined`. The nullish values produce different results!
+ * `undefined` means "still resolving", whereas `null` means "nothing to render". This
+ * is important because the resolver calling this, will not update the existing UI
+ * if there is an `undefined` value, whereas it will update `null`s rendering nothing.
+ *
+ * @param {*} routeMatches An array of matched routes
+ * @param {*} Components An array of possibly resolved route Components
+ * @param {*} matchData An array of possibly resolved route data
+ * @returns [null | ReactElement | undefined]
+ */
 export default function createElements(routeMatches, Components, matchData) {
   return routeMatches.map((match, i) => {
     const { router, route } = match;
