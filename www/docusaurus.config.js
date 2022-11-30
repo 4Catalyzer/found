@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
@@ -8,7 +9,7 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const config = {
   title: 'found',
   tagline: 'Extensible route-based routing for React applications.',
-  url: 'https://4Catalyzer.github.io/found/',
+  url: 'https://4Catalyzer.github.io/',
   baseUrl: '/found/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -16,16 +17,22 @@ const config = {
   organizationName: '4Catalyzer', // Usually your GitHub org/user name.
   projectName: 'found', // Usually your repo name.
 
+  markdown: {
+    mermaid: true,
+  },
+
+  themes: ['@docusaurus/theme-mermaid', 'docusaurus-theme-jarle-codeblock'],
   presets: [
     [
       'classic',
-      /** @type {import('@4c/docusaurus-preset').Options} */
+      /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/4Catalyzer/found/edit/master/www',
-          routeBasePath: '/',
+          // routeBasePath: '/',
+          remarkPlugins: [require('docusaurus-theme-jarle-codeblock/remark')],
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -44,6 +51,12 @@ const config = {
           src: 'img/f-logo-empty.svg',
         },
         items: [
+          {
+            href: '/docs/getting-started',
+            label: 'Docs',
+            position: 'left',
+          },
+
           {
             href: 'https://github.com/4Catalyzer/found',
             label: 'GitHub',

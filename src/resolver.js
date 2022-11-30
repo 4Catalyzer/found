@@ -19,6 +19,26 @@ function getRouteData(route) {
 }
 
 export default {
+  /**
+   * `resolveElements` is responsible for converting a `match` into an
+   * array of React `element`s. Rather than just returning an array,
+   * it models all element/state updates for a match as an async iterable.
+   *
+   * This iterable will usually produce 2 values. The first being the "pending"
+   * or loading states of the match. and the second being the final resolved set with data
+   * and components being loaded fully. This second value is the "done" state for a match.
+   *
+   * If a match doesn't produce an element for every route, it yields `undefined` which
+   * is interpreted by the `Router` as "continue to render the last UI while waiting
+   * for the resolver to produce the final value", via a `StaticContainer`. This
+   * is the default "loading" behavior and can be overriden by having `route.render`
+   * produce any value but `undefined`.
+   *
+   * Generally though, routes will implement `render` which can implement a number of loading
+   * strategies, either showing a spinner or skeleton UI while it waits for data to load.
+   *
+   * The iterable will produce only 1 value, if there is no async work to be done for the match.
+   */
   async *resolveElements(match) {
     const routeMatches = getRouteMatches(match);
 

@@ -1,0 +1,132 @@
+---
+id: data-fetching
+sidebar_position: 2
+---
+
+import SandpackEditor from "@site/src/components/SandpackEditor";
+
+# Data fetching
+
+One of the most powerful aspects of found is it's built in support
+for efficient data fetching. Routes, can specify `getData` functions
+to fetch from API's or other sources.
+
+<SandpackEditor startRoute='/posts/1/'>
+
+```tsx
+import "./styles.css";
+
+import { createBrowserRouter, HttpError } from "found";
+import PostsPage from "./PostsPage";
+import PostPage from "./PostPage";
+
+const API = "https://dummyjson.com";
+
+const Router = createBrowserRouter({
+  routeConfig: [
+    {
+      path: "posts",
+      getData: async () => {
+        const resp = await fetch(`${API}/posts`);
+
+        if (!resp.ok) throw new HttpError(404);
+        return resp.json();
+      },
+      Component: PostsPage,
+      children: [
+        {
+          path: "/:postId",
+          getData: async ({ params }) => {
+            const resp = await fetch(
+              `${API}/posts/${params.postId}/`
+            );
+
+            if (!resp.ok) throw new HttpError(404);
+            return resp.json();
+          },
+          Component: PostPage,
+        },
+      ],
+    },
+  ],
+});
+
+export default function App() {
+  return <Router />;
+}
+```
+
+```tsx PostsPage.tsx
+import { Link, RouteComponentDataProps } from "found";
+import type { Post } from "./PostPage.tsx";
+
+export default function PostsPage({
+  data,
+  children,
+}: RouteComponentDataProps<{ posts: Post[] }>) {
+  return (
+    <div className="posts">
+      <nav className="posts--nav">
+        {data?.posts.map((post) => (
+          <Link key={post.id} to={`/posts/${post.id}`}>
+            {post.title}
+          </Link>
+        ))}
+      </nav>
+      <section>{children}</section>
+    </div>
+  );
+}
+```
+
+```tsx PostPage.tsx
+import type { RouteComponentDataProps } from "found";
+
+export interface Post {
+  id: string;
+  title: string;
+  body: string;
+}
+
+export default function PostPage({
+  data: post,
+  children,
+}: RouteComponentDataProps<Post>) {
+  return (
+    <div>
+      <h2>{post.title}</h2>
+      <p>{post.body}</p>
+
+      <section>{children}</section>
+    </div>
+  );
+}
+```
+
+```css styles.css
+.posts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-gap: 1rem;
+}
+
+.posts--nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.posts--nav > a {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+```
+
+</SandpackEditor>
+
+Above is a simple "List, detail" view of imaginary blog posts. Along the side is a list of
+of posts and clicking on any navigates to the "detail" view of the post.
+Even though these routes are nested, data is fetched in **parallel**. `/posts` and `/posts/1` are triggered
+together and the UI waits for both to complete before rendering.

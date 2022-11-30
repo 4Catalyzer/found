@@ -13,6 +13,25 @@ export default function createBaseRouter({
   renderPending,
   renderReady,
   renderError,
+  /**
+   * The Router level render, is responsible for turning an array of route elements
+   * into a single composed element that can be rendered by React.
+   *
+   * Turning:
+   *
+   * ```jsx
+   * [<AppPage>, null, <ProductPage>, <ProductHistoryPage />]
+   * ```
+   * Into:
+   *
+   * ```jsx
+   * <AppPage>
+   *  <ProductPage>
+   *    <ProductHistoryPage />
+   *  </ProductPage>
+   * </AppPage>
+   * ```
+   */
   render = createRender({
     renderPending,
     renderReady,

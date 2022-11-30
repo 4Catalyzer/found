@@ -1,5 +1,8 @@
 {
   "label": "Configuration",
   "position": 2,
-  "collapsible": false
+  "collapsible": false,
+  "link": {
+    "type": "generated-index"
+  }
 }

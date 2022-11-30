@@ -1,0 +1,32 @@
+.container {
+  padding: 6rem 2rem;
+  min-height: 100%;
+  display: flex;
+  gap: 6rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 776px) {
+  .container {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .container > div {
+    text-align: center;
+  }
+}
+
+.wrapper {
+  display: flex;
+}
+
+.container h1 {
+  font-size: 3rem;
+}
+
+.container p {
+  font-size: 1.4rem;
+}
