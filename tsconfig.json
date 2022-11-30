@@ -1,0 +1,7 @@
+{
+  "extends": "@4c/tsconfig/web.json",
+  "compilerOptions": {
+    "allowJs": true
+  },
+  "include": ["./src/**/*.ts"]
+}
