@@ -91,6 +91,9 @@ export default function SandpackEditor({
           showNavigator: true,
           editorHeight: 400, // default - 300
           editorWidthPercentage: 60, // default - 50
+          externalResources: [
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap-reboot.min.css',
+          ],
         }}
         customSetup={{
           dependencies: {

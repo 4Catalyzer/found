@@ -1,6 +1,11 @@
+---
+id: data-fetching
+sidebar_position: 2
+---
+
 import SandpackEditor from "@site/src/components/SandpackEditor";
 
-# Data Fetching
+# Data fetching
 
 One of the most powerful aspects of found is it's built in support
 for efficient data fetching. Routes, can specify `getData` functions
@@ -15,7 +20,7 @@ import { createBrowserRouter, HttpError } from "found";
 import PostsPage from "./PostsPage";
 import PostPage from "./PostPage";
 
-const API = "https://jsonplaceholder.typicode.com";
+const API = "https://dummyjson.com";
 
 const Router = createBrowserRouter({
   routeConfig: [
@@ -53,21 +58,16 @@ export default function App() {
 
 ```tsx PostsPage.tsx
 import { Link, RouteComponentDataProps } from "found";
-
-interface Post {
-  id: string;
-  title: string;
-  body: string;
-}
+import type { Post } from "./PostPage.tsx";
 
 export default function PostsPage({
   data,
   children,
-}: RouteComponentDataProps<Post[]>) {
+}: RouteComponentDataProps<{ posts: Post[] }>) {
   return (
     <div className="posts">
       <nav className="posts--nav">
-        {data.map((post) => (
+        {data?.posts.map((post) => (
           <Link key={post.id} to={`/posts/${post.id}`}>
             {post.title}
           </Link>
@@ -82,20 +82,20 @@ export default function PostsPage({
 ```tsx PostPage.tsx
 import type { RouteComponentDataProps } from "found";
 
-interface Post {
+export interface Post {
   id: string;
   title: string;
   body: string;
 }
 
 export default function PostPage({
-  data,
+  data: post,
   children,
 }: RouteComponentDataProps<Post>) {
   return (
     <div>
-      <h2>{data.title}</h2>
-      <p>{data.body}</p>
+      <h2>{post.title}</h2>
+      <p>{post.body}</p>
 
       <section>{children}</section>
     </div>

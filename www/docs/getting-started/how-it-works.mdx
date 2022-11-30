@@ -1,7 +1,17 @@
+---
+sidebar_position: 1
+---
+
+import SandpackEditor from "@site/src/components/SandpackEditor";
+
+# How it works
+
+A reasonably deep-dive into how found does what it does.
+
 ## An example
 
-Consider the following wireframe, of a simple shell with a side navigation
-and a detail area. The user can navigate to sections (such as "products") and
+Consider the following wireframe of a web app with side navigation
+and detail area. The user can navigate to sections (such as "products") and
 see a list of products. Clicking further on a product navigates to a nested
 detail view with tab navigation for that specific product.
 
@@ -18,7 +28,7 @@ With Found we can represent this UI with the following route tree and config:
   </Route>
 
   <Route path="products">
-    <Route Component={ProductsIndexPage} getDate={fetchProducts} />
+    <Route Component={ProductsIndexPage} getData={fetchProducts} />
     <Route path="create" Component={ProductCreatePage} />
 
     <Route
@@ -29,7 +39,7 @@ With Found we can represent this UI with the following route tree and config:
       <Route
         path="edit"
         Component={ProductEditPage}
-        getData={fetchProduct}
+        getData={fetchProductById}
       />
       <Route
         path="history"
@@ -43,29 +53,51 @@ With Found we can represent this UI with the following route tree and config:
 </Route>
 ```
 
+Which can also be illustrated via the following tree graph:
+
 ![route-tree](../assets/route-graph-l.png#gh-light-mode-only)
 ![route-tree](../assets/route-graph-d.png#gh-dark-mode-only)
 
-Lets consider a single URL and break down how found matches and resolves
-the data and UI for that URL. If we want to navigate to a Product's history page we would use the
+Let's consider a single URL and break down how found determines what UI to show and when.
+If we want to navigate to a Product's history page we would use the
 following URL: `/products/1/history`. Clicking on a `<Link>`, calling
 `router.push('/products/1/history')`, or updating the browser URL bar triggers a new "match" resolution.
 
 ## Matching
 
-A "match" is the output of running the configured `Matcher` on a URL.
-The `Matcher` breaks the new location into path segments and walks the route tree, looking
-for a path throguh it that "matches" the URL.
+The first step in routing is to produce a `match`. A match is created by a class called the `Matcher`,
+which is generally an implementation detail of Found. Simply put, the Matcher takes a URL and produces a
+set of route objects that coorespond to that URL.
+
+This is accomplished by decomposing the URL into path segments and "matching" them with nodes in our route tree.
+Illustrated here is a match to our Product history page.
 
 ![route-match](../assets/route-match-l.png#gh-light-mode-only)
 ![route-match](../assets/route-match-d.png#gh-dark-mode-only)
 
-If the matcher is able to map the entire URL to a set of Routes, it produces a
-`match` which contains the `location` as well as an array of `Route` objects that represent
-a path through the `routeConfig`.
+If the matcher is able to map the entire URL to a set of Routes, the matching succeeds and a
+match object is produced (simplified a bit here):
+
+```js
+Match {
+  location: {
+    pathname: '/products/1/history',
+    query: {},
+    state: null,
+  },
+  params: { projectId: '1' },
+  routes: [
+    { path: '/', Component: AppPage, },
+    { path: 'products' },
+    { path: ':projectId', Component: ProductPage, getData: fetchProductById },
+    { path: 'histrory', Component: ProductHistoryPage, getData: fetchProductHistory },
+  ]
+}
+
+```
 
 :::info
-The Matcher, can only complete at "leaf" nodes in the route tree. This means that
+matchiong can only complete at "leaf" nodes in the route tree. This means that
 routes that could be leaf or branch nodes (such as `/products`) need to include an
 "index" route in order to match sucessfully. An index route is a route with a `Component`
 and no `path`, as seen above in the route config.
@@ -73,7 +105,8 @@ and no `path`, as seen above in the route config.
 
 ## Resolution
 
-The router, `Resolver` is responsible for mapping the matched routes to a set of React `element`s. To accomplish this it may need to fetch
+The next part in the process is "resolving". The router `Resolver` is responsible for mapping the
+matched routes to a set of React `element`s in order to render the URLs UI. To accomplish this it may need to fetch
 async components or server data as specified by each route.
 
 ![resolver](../assets/resolver-l.png#gh-light-mode-only)
@@ -108,7 +141,18 @@ const routeComponents = await Promise.all(
 ### Element construction
 
 After data, and components are resolved, each route is constructed into an element that will be rendered
-by the Router:
+by the Router.
+
+Consider how our matched routes relate to the proposed UI
+
+![route-ui-map](../assets/route-ui-map-l.png#gh-light-mode-only)
+![route-ui-map](../assets/route-ui-map-d.png#gh-dark-mode-only)
+
+Each route is ordered by its depth in the route tree and is responsible for
+rendering itself as well as any nested routes it may contain. But before we
+can compose the UI ogether we first need to construct the individual pieces.
+
+This is done by combining our fetched components and data into elements:
 
 ```tsx
 const routeComponents = [
@@ -151,7 +195,8 @@ it waits for data.
 
 ```tsx
 routes = [
-  ...{
+  // ...
+  {
     path: ":productId",
     getComponent: () =>
       import("./components/ProductPage").then((m) => m.default),
@@ -185,3 +230,8 @@ to show the existing UI until the route is ready.
 :::
 
 This flexibility allows for easy implementation of many different loading UI patterns!
+
+## Customizing
+
+Nearly all of the behavior covered here is customizable and extensible. Making found ideal
+for all sorts of of React applications. Checkout our [examples and extensions](further-reading) for more ideas:

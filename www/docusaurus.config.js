@@ -31,7 +31,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/4Catalyzer/found/edit/master/www',
-          routeBasePath: '/',
+          // routeBasePath: '/',
           remarkPlugins: [require('docusaurus-theme-jarle-codeblock/remark')],
         },
         theme: {
@@ -51,6 +51,12 @@ const config = {
           src: 'img/f-logo-empty.svg',
         },
         items: [
+          {
+            href: '/docs/getting-started',
+            label: 'Docs',
+            position: 'left',
+          },
+
           {
             href: 'https://github.com/4Catalyzer/found',
             label: 'GitHub',
