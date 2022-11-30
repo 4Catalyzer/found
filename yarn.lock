@@ -176,9 +176,9 @@
     webpack-notifier "^1.13.0"
     webpackbar "^5.0.0-3"
 
-"@4c/tsconfig@^0.4.1":
+"@4c/tsconfig@^0.4.0":
   version "0.4.1"
-  resolved "https://npm.mountaininfra.net/@4c%2ftsconfig/-/tsconfig-0.4.1.tgz#90f7edc7780387788cb6b1d9885b5350ae50431a"
+  resolved "https://registry.yarnpkg.com/@4c/tsconfig/-/tsconfig-0.4.1.tgz#90f7edc7780387788cb6b1d9885b5350ae50431a"
   integrity sha512-uCS2WRXvDPj/8i6zOWfiLMj/n4AwVRNMy8FhhEdIie2/DT7PkIzomRXL5Hgq2TRcG0g80lgQRtBYiRYcx9xC1A==
   dependencies:
     typescript-workspace-plugin "^2.0.1"
