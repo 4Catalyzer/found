@@ -4,16 +4,6 @@
  * work well for content-centric websites.
  */
 
-@font-face {
-  font-family: 'Virgil';
-  src: url('https://excalidraw.com/Virgil.woff2');
-}
-
-@font-face {
-  font-family: 'Cascadia';
-  src: url('https://excalidraw.com/Cascadia.woff2');
-}
-
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #9354ca;
