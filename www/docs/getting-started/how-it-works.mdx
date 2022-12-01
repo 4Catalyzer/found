@@ -6,7 +6,7 @@ import SandpackEditor from "@site/src/components/SandpackEditor";
 
 # How it works
 
-A reasonably deep-dive into how found does what it does.
+A reasonably deep dive into how found does what it does.
 
 ## An example
 
@@ -67,7 +67,7 @@ following URL: `/products/1/history`. Clicking on a `<Link>`, calling
 
 The first step in routing is to produce a `match`. A match is created by a class called the `Matcher`,
 which is generally an implementation detail of Found. Simply put, the Matcher takes a URL and produces a
-set of route objects that coorespond to that URL.
+set of route objects that correspond to that URL.
 
 This is accomplished by decomposing the URL into path segments and "matching" them with nodes in our route tree.
 Illustrated here is a match to our Product history page.
@@ -90,14 +90,14 @@ Match {
     { path: '/', Component: AppPage, },
     { path: 'products' },
     { path: ':projectId', Component: ProductPage, getData: fetchProductById },
-    { path: 'histrory', Component: ProductHistoryPage, getData: fetchProductHistory },
+    { path: 'history', Component: ProductHistoryPage, getData: fetchProductHistory },
   ]
 }
 
 ```
 
 :::info
-matchiong can only complete at "leaf" nodes in the route tree. This means that
+matching can only complete at "leaf" nodes in the route tree. This means that
 routes that could be leaf or branch nodes (such as `/products`) need to include an
 "index" route in order to match sucessfully. An index route is a route with a `Component`
 and no `path`, as seen above in the route config.
@@ -116,7 +116,7 @@ async components or server data as specified by each route.
 
 Each route in the matched set may specify a `getData` property to fetch data necessary to
 render its `Component`. The Resolver calls each and collects the returned `Promise`s which are
-all allowed to resolve in parallel. unless a route is `defer`ed in which case the promises are split into batches
+all allowed to resolve in parallel--unless a route is `deferred`, in which case the promises are split into batches
 based on the route hierarchy.
 
 ```tsx
@@ -140,7 +140,7 @@ const routeComponents = await Promise.all(
 
 ### Element construction
 
-After data, and components are resolved, each route is constructed into an element that will be rendered
+After data and components are resolved, each route is constructed into an element that will be rendered
 by the Router.
 
 Consider how our matched routes relate to the proposed UI
@@ -150,7 +150,7 @@ Consider how our matched routes relate to the proposed UI
 
 Each route is ordered by its depth in the route tree and is responsible for
 rendering itself as well as any nested routes it may contain. But before we
-can compose the UI ogether we first need to construct the individual pieces.
+can compose the UI together, we first need to construct the individual pieces.
 
 This is done by combining our fetched components and data into elements:
 
@@ -183,13 +183,13 @@ Finally this array is folded together by the Router into:
 
 ## Loading states
 
-One point that was glossed over above, is how routes can control their own loading UI
-while data is being fetched. To handle these states the `Resolver` actually produces multiple
+One point that was glossed over above is how routes can control their own loading UI
+while data are being fetched. To handle these states the `Resolver` actually produces multiple
 arrays of elements. While waiting for components and data to be fetched it calls `route.render`,
-with the itermediary state, and once the async values are resolved each `route.render` is called again
+with the intermediate state. Once the async values are resolved, each `route.render` is called again
 with the final values.
 
-Practically this gives the route complete control over how it handles it's loading fallbacks. A Route
+Practically, this gives the route complete control over how it handles its loading fallbacks. A Route
 can explicitly render nothing (`null`), a loading spinner, a skeleton UI, or whatever else it wants while
 it waits for data.
 
@@ -202,18 +202,18 @@ routes = [
       import("./components/ProductPage").then((m) => m.default),
     getData: fetchProductById,
     render({ props, Component }) {
-      // if Component is not present it is still being fetched
+      // if Component is not present, it is still being fetched
       if (!Component) {
         return <Spinner />;
       }
 
-      // props is the return value of `getData` if
-      // it's not present data is still loading
+      // props is the return value of `getData`
+      // If it's not present, data are still loading
       if (!props) {
         <Component showSkeleton />;
       }
 
-      // Otherwise render the component with it's props
+      // Otherwise render the component with its props
       return <Component {...props} />;
     },
   },
@@ -233,5 +233,5 @@ This flexibility allows for easy implementation of many different loading UI pat
 
 ## Customizing
 
-Nearly all of the behavior covered here is customizable and extensible. Making found ideal
-for all sorts of of React applications. Checkout our [examples and extensions](/advanced/further-reading.md) for more ideas:
+Nearly all of the behavior covered here is customizable and extensible, making found ideal
+for all sorts of of React applications. Checkout our [examples and extensions](/advanced/further-reading.md) for more ideas.
