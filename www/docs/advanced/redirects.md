@@ -8,12 +8,12 @@ The `Redirect` route class sets up static redirect routes. You can also use it t
 
 ```js
 const redirect1 = new Redirect({
-  from: 'widget/:widgetId',
-  to: '/widgets/:widgetId',
+  from: "widget/:widgetId",
+  to: "/widgets/:widgetId",
 });
 
 const redirect2 = new Redirect({
-  from: 'widget/:widgetId',
+  from: "widget/:widgetId",
   to: ({ params }) => `/widgets/${params.widgetId}`,
   status: 301,
 });
@@ -45,7 +45,7 @@ const customRedirect = {
 
 const permanentRedirect = {
   render: () => {
-    throw new RedirectException('/widgets', 301);
+    throw new RedirectException("/widgets", 301);
   },
 };
 ```

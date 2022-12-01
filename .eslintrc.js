@@ -1,14 +1,11 @@
 module.exports = {
-  extends: ['4catalyzer-react', '4catalyzer-jest', 'prettier'],
+  extends: [
+    '4catalyzer-react',
+    '4catalyzer-jest',
+    '4catalyzer-typescript',
+    'prettier',
+  ],
   plugins: ['prettier', 'import'],
-  parser: '@typescript-eslint/parser',
-  settings: {
-    'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-      },
-    },
-  },
   rules: {
     'react/prop-types': 'off',
     'prettier/prettier': 'error',

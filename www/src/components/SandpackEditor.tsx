@@ -1,12 +1,14 @@
 import { Sandpack, type SandpackFile } from '@codesandbox/sandpack-react';
-import React from 'react';
+import { dracula, githubLight } from '@codesandbox/sandpack-themes';
 import { useColorMode, usePrismTheme } from '@docusaurus/theme-common';
-import { githubLight, dracula } from '@codesandbox/sandpack-themes';
+import React from 'react';
 
 const createFileMap = (
   children: JSX.Element,
 ): Record<string, SandpackFile> => {
-  let codeSnippets = React.Children.toArray(children) as React.ReactElement[];
+  const codeSnippets = React.Children.toArray(
+    children,
+  ) as React.ReactElement[];
 
   return codeSnippets.reduce(
     (
@@ -23,27 +25,23 @@ const createFileMap = (
 
       if (props.metastring) {
         const [name, ...params] = props.metastring.split(' ');
-        filePath = '/' + name;
+        filePath = `/${name}`;
         if (params.includes('hidden')) {
           fileHidden = true;
         }
         if (params.includes('active')) {
           fileActive = true;
         }
+      } else if (props.className === 'language-js') {
+        filePath = '/App.js';
+      } else if (props.className === 'language-ts') {
+        filePath = '/App.tsx';
+      } else if (props.className === 'language-tsx') {
+        filePath = '/App.tsx';
+      } else if (props.className === 'language-css') {
+        filePath = '/styles.css';
       } else {
-        if (props.className === 'language-js') {
-          filePath = '/App.js';
-        } else if (props.className === 'language-ts') {
-          filePath = '/App.tsx';
-        } else if (props.className === 'language-tsx') {
-          filePath = '/App.tsx';
-        } else if (props.className === 'language-css') {
-          filePath = '/styles.css';
-        } else {
-          throw new Error(
-            `Code block is missing a filename: ${props.children}`,
-          );
-        }
+        throw new Error(`Code block is missing a filename: ${props.children}`);
       }
       if (result[filePath]) {
         throw new Error(
@@ -78,6 +76,7 @@ export default function SandpackEditor({
   return (
     <div
       style={{
+        // @ts-ignore
         '--prism-background-color': prismTheme.plain.backgroundColor,
         'marginBottom': '2rem',
       }}
