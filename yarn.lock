@@ -3482,6 +3482,17 @@ conventional-changelog-atom@^2.0.8:
   dependencies:
     q "^1.5.1"
 
+conventional-changelog-cli@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-cli/-/conventional-changelog-cli-2.2.2.tgz#9a7746cede92c6a8f27dc46692efaadfbed60daa"
+  integrity sha512-8grMV5Jo8S0kP3yoMeJxV2P5R6VJOqK72IiSV9t/4H5r/HiRqEBQ83bYGuz4Yzfdj4bjaAEhZN/FFbsFXr5bOA==
+  dependencies:
+    add-stream "^1.0.0"
+    conventional-changelog "^3.1.24"
+    lodash "^4.17.15"
+    meow "^8.0.0"
+    tempfile "^3.0.0"
+
 conventional-changelog-codemirror@^2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/conventional-changelog-codemirror/-/conventional-changelog-codemirror-2.0.8.tgz#398e9530f08ce34ec4640af98eeaf3022eb1f7dc"
@@ -3578,6 +3589,23 @@ conventional-changelog@^3.1.24:
   version "3.1.24"
   resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-3.1.24.tgz#ebd180b0fd1b2e1f0095c4b04fd088698348a464"
   integrity sha512-ed6k8PO00UVvhExYohroVPXcOJ/K1N0/drJHx/faTH37OIZthlecuLIRX/T6uOp682CAoVoFpu+sSEaeuH6Asg==
+  dependencies:
+    conventional-changelog-angular "^5.0.12"
+    conventional-changelog-atom "^2.0.8"
+    conventional-changelog-codemirror "^2.0.8"
+    conventional-changelog-conventionalcommits "^4.5.0"
+    conventional-changelog-core "^4.2.1"
+    conventional-changelog-ember "^2.0.9"
+    conventional-changelog-eslint "^3.0.9"
+    conventional-changelog-express "^2.0.6"
+    conventional-changelog-jquery "^3.0.11"
+    conventional-changelog-jshint "^2.0.9"
+    conventional-changelog-preset-loader "^2.3.4"
+
+conventional-changelog@^3.1.25:
+  version "3.1.25"
+  resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-3.1.25.tgz#3e227a37d15684f5aa1fb52222a6e9e2536ccaff"
+  integrity sha512-ryhi3fd1mKf3fSjbLXOfK2D06YwKNic1nC9mWqybBHdObPd8KJ2vjaXZfYj1U23t+V8T8n0d7gwnc9XbIdFbyQ==
   dependencies:
     conventional-changelog-angular "^5.0.12"
     conventional-changelog-atom "^2.0.8"
@@ -10601,6 +10629,19 @@ teeny-request@7.1.1:
     node-fetch "^2.6.1"
     stream-events "^1.0.5"
     uuid "^8.0.0"
+
+temp-dir@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-2.0.0.tgz#bde92b05bdfeb1516e804c9c00ad45177f31321e"
+  integrity sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==
+
+tempfile@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/tempfile/-/tempfile-3.0.0.tgz#5376a3492de7c54150d0cc0612c3f00e2cdaf76c"
+  integrity sha512-uNFCg478XovRi85iD42egu+eSFUmmka750Jy7L5tfHI5hQKKtbPnxaSaXAbBqCDYrw3wx4tXjKwci4/QmsZJxw==
+  dependencies:
+    temp-dir "^2.0.0"
+    uuid "^3.3.2"
 
 terminal-link@^2.0.0:
   version "2.1.1"

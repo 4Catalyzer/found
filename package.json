@@ -15,6 +15,7 @@
   "license": "MIT",
   "author": "4Catalyzer",
   "files": [
+    "CHANGELOG.md",
     "lib"
   ],
   "main": "lib/cjs/index.js",
@@ -33,6 +34,7 @@
     "build:docs": "yarn --cwd www build",
     "format": "4c format --prettier-ignore .eslintignore .",
     "lint": "4c lint --prettier-ignore .eslintignore .",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "prepublishOnly": "yarn build",
     "publishLocal": "yarn prepublishOnly && yarn file-butler prepare-publish-dir lib && yalc push lib",
     "release": "4c release",
@@ -95,6 +97,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "cherry-pick": "^0.5.0",
     "codecov": "^3.8.3",
+    "conventional-changelog-cli": "^2.2.2",
     "cpy-cli": "^3.1.1",
     "delay": "^5.0.0",
     "doctoc": "^2.1.0",
