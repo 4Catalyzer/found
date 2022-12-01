@@ -52,8 +52,9 @@ const config = {
         },
         items: [
           {
-            href: '/docs/getting-started',
+            docId: '/category/getting-started',
             label: 'Docs',
+            type: 'doc',
             position: 'left',
           },
 

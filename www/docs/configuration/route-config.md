@@ -29,7 +29,7 @@ getData: (match: RouteMatch) => any;
 A route configuration consists of an array of route objects.
 
 :::tip
-You can generate such an array of route objects from JSX with `<Route>` elements using `makeRouteConfig`, as shown previously in [basic-usage section](/found/getting-started/basic-usage)
+You can generate such an array of route objects from JSX with `<Route>` elements using `makeRouteConfig`, as shown previously in [quick start](/getting-started/quick-start.mdx).
 :::
 
 By default, `<Route />` components receive the following additional props describing the current routing state:
