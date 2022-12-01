@@ -141,26 +141,14 @@ const routeComponents = await Promise.all(
 ### Element construction
 
 After data and components are resolved, each route is constructed into an element that will be rendered
-<<<<<<< HEAD
-by the Router.
-
-Consider how our matched routes relate to the proposed UI
-=======
 by the Router. Consider how our matched routes relate to the proposed UI:
->>>>>>> master
 
 ![route-ui-map](../assets/route-ui-map-l.png#gh-light-mode-only)
 ![route-ui-map](../assets/route-ui-map-d.png#gh-dark-mode-only)
 
 Each route is ordered by its depth in the route tree and is responsible for
-<<<<<<< HEAD
-rendering itself as well as any nested routes it may contain. But before we
-can compose the UI together, we first need to construct the individual pieces.
-
-=======
 rendering itself as well as any nested routes it may contain. Before we
 can compose the UI together we need to construct its individual pieces.
->>>>>>> master
 This is done by combining our fetched components and data into elements:
 
 ```tsx
