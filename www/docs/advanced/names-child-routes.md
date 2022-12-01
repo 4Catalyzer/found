@@ -17,36 +17,36 @@ function AppPage({ nav, main }) {
 }
 
 const route = {
-  path: '/',
+  path: "/",
   Component: AppPage,
   children: [
     {
-      path: 'foo',
+      path: "foo",
       children: {
         nav: [
           {
-            path: '(.*)?',
+            path: "(.*)?",
             Component: FooNav,
           },
         ],
         main: [
           {
-            path: 'a',
+            path: "a",
             Component: FooA,
           },
           {
-            path: 'b',
+            path: "b",
             Component: FooB,
           },
         ],
       },
     },
     {
-      path: 'bar',
+      path: "bar",
       children: {
         nav: [
           {
-            path: '(.*)?',
+            path: "(.*)?",
             Component: BarNav,
           },
         ],

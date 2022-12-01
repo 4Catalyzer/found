@@ -16,11 +16,13 @@ function MyButton() {
   const { match, router } = useRouter();
 
   const onClick = useCallback(() => {
-    router.replace('/widgets');
+    router.replace("/widgets");
   }, [router]);
 
   return (
-    <button onClick={onClick}>Current widget: {match.params.widgetId}</button>
+    <button onClick={onClick}>
+      Current widget: {match.params.widgetId}
+    </button>
   );
 }
 ```

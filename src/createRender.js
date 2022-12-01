@@ -3,8 +3,9 @@ import React from 'react';
 import ElementsRenderer from './ElementsRenderer';
 import StaticContainer from './StaticContainer';
 
-// These are intentionally not renderLoading, renderFetched, and renderFailure
-// from Relay, because these don't quite correspond to those conditions.
+/**
+ * A convenience method for handling the 3 main states a route match might produce.
+ */
 export default function createRender({
   renderPending,
   renderReady,

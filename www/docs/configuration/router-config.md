@@ -11,17 +11,17 @@ Found exposes a number of router component class factories at varying levels of 
 `createBrowserRouter` creates a basic router component class that uses the HTML5 History API for navigation. This factory uses reasonable defaults that should fit a variety use cases.
 
 ```js
-import { createBrowserRouter } from 'found';
+import { createBrowserRouter } from "found";
 
 const BrowserRouter = createBrowserRouter({
   routeConfig,
 
   renderError: ({ error }) => (
-    <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
+    <div>{error.status === 404 ? "Not found" : "Error"}</div>
   ),
 });
 
-ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+ReactDOM.render(<BrowserRouter />, document.getElementById("root"));
 ```
 
 `createBrowserRouter` takes an options object. The only mandatory property on this object is `routeConfig`, which should be a route configuration as above.
@@ -65,8 +65,8 @@ The created `<BrowserRouter>` accepts an optional `matchContext: any` prop as de
 `createFarceRouter` exposes additional configuration for customizing navigation management and route element resolution. To enable minimizing bundle size, it omits some defaults from `createBrowserRouter`.
 
 ```js
-import { BrowserProtocol, queryMiddleware } from 'farce';
-import { createFarceRouter, resolver } from 'found';
+import { BrowserProtocol, queryMiddleware } from "farce";
+import { createFarceRouter, resolver } from "found";
 
 const FarceRouter = createFarceRouter({
   historyProtocol: new BrowserProtocol(),
@@ -74,13 +74,13 @@ const FarceRouter = createFarceRouter({
   routeConfig,
 
   renderError: ({ error }) => (
-    <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
+    <div>{error.status === 404 ? "Not found" : "Error"}</div>
   ),
 });
 
 ReactDOM.render(
   <FarceRouter resolver={resolver} />,
-  document.getElementById('root'),
+  document.getElementById("root")
 );
 ```
 
@@ -98,7 +98,7 @@ import {
   BrowserProtocol,
   createHistoryEnhancer,
   queryMiddleware,
-} from 'farce';
+} from "farce";
 import {
   createConnectedRouter,
   createMatchEnhancer,
@@ -106,9 +106,9 @@ import {
   foundReducer,
   Matcher,
   resolver,
-} from 'found';
-import { Provider } from 'react-redux';
-import { combineReducers, compose, createStore } from 'redux';
+} from "found";
+import { Provider } from "react-redux";
+import { combineReducers, compose, createStore } from "redux";
 
 /* ... */
 
@@ -121,8 +121,8 @@ const store = createStore(
       protocol: new BrowserProtocol(),
       middlewares: [queryMiddleware],
     }),
-    createMatchEnhancer(new Matcher(routeConfig)),
-  ),
+    createMatchEnhancer(new Matcher(routeConfig))
+  )
 );
 
 store.dispatch(FarceActions.init());
@@ -130,7 +130,7 @@ store.dispatch(FarceActions.init());
 const ConnectedRouter = createConnectedRouter({
   render: createRender({
     renderError: ({ error }) => (
-      <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
+      <div>{error.status === 404 ? "Not found" : "Error"}</div>
     ),
   }),
 });
@@ -139,7 +139,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter resolver={resolver} />
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById("root")
 );
 ```
 

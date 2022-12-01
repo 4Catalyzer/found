@@ -383,6 +383,16 @@ export interface RouterState<TContext = any> {
 
 export type RouterProps<TContext> = RouterState<TContext>;
 
+export interface RouteComponentProps<TContext = never>
+  extends RouterProps<TContext> {
+  children?: React.ReactElement | null;
+}
+
+export interface RouteComponentDataProps<T, TContext = never>
+  extends RouteComponentProps<TContext> {
+  data: T;
+}
+
 /**
  * Returns the Router and current route match from context
  */

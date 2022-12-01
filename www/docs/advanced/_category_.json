@@ -1,5 +1,8 @@
 {
   "label": "Advanced",
   "position": 3,
-  "collapsible": false
+  "collapsible": false,
+  "link": {
+    "type": "generated-index"
+  }
 }

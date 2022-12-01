@@ -4,6 +4,12 @@ import warning from 'tiny-warning';
 
 const UNRESOLVED = {};
 
+/**
+ * Detects a resolved Promise by racing a sentinel value with the promise.
+ * If the sentinel returns first the promise is still pending.
+ *
+ * If the value is not a promise it's simply returned
+ */
 export function checkResolved(value) {
   if (!isPromise(value)) {
     return value;

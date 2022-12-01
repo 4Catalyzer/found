@@ -58,12 +58,12 @@ interface Router {
   isActive: (
     match: Match,
     location: LocationDescriptor,
-    { exact: boolean },
+    { exact: boolean }
   ) => boolean; // For `match` as above, returns whether `match` corresponds to `location` or a subpath of `location`; if `exact` is set, returns whether `match` corresponds exactly to `location`
   format: (pattern: string, params: ParamsDescriptor) => string;
   addNavigationListener(
     listener: (location: LocationDescriptor) => any,
-    { beforeUnload: boolean },
+    { beforeUnload: boolean }
   ); // Adds a [navigation listener](https://github.com/4Catalyzer/farce#navigation-listeners) that can [block navigation](#blocking-navigation)
 }
 ```
@@ -105,7 +105,7 @@ If you need additional context such as a store instance to fetch data, specify t
 
 ```js
 const route = {
-  path: 'widgets/:widgetId',
+  path: "widgets/:widgetId",
   Component: WidgetPage,
   getData: ({ params, context }) =>
     context.store.dispatch(Actions.getWidget(params.widgetId)),

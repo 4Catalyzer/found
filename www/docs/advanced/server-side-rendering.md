@@ -9,7 +9,7 @@ Found supports server-side rendering for universal applications. Functionality s
 To render your application on the server, use `getFarceResult`.
 
 ```js
-import { getFarceResult } from 'found/server';
+import { getFarceResult } from "found/server";
 
 /* ... */
 
@@ -60,7 +60,7 @@ This promise resolves when all asynchronous dependencies are available. If your 
 When using server-side rendering, you need to delay the initial render on the client, such that the initial client-rendered markup matches the server-rendered markup. To do so, use `createInitialBrowserRouter` or `createInitialFarceRouter` instead of `createBrowserRouter` or `createFarceRouter` respectively.
 
 ```js
-import { createInitialBrowserRouter } from 'found';
+import { createInitialBrowserRouter } from "found";
 
 /* ... */
 
@@ -70,7 +70,7 @@ import { createInitialBrowserRouter } from 'found';
     render,
   });
 
-  ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+  ReactDOM.render(<BrowserRouter />, document.getElementById("root"));
 })();
 ```
 
@@ -81,8 +81,8 @@ These behave similarly to their counterparts above, except that the options obje
 Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
 
 ```js
-import { getStoreRenderArgs } from 'found';
-import { RouterProvider } from 'found/server';
+import { getStoreRenderArgs } from "found";
+import { RouterProvider } from "found/server";
 
 /* ... */
 
@@ -113,8 +113,8 @@ app.use(async (req, res) => {
           {render(renderArgs)}
         </RouterProvider>
       </Provider>,
-      store.getState(),
-    ),
+      store.getState()
+    )
   );
 });
 ```
@@ -124,7 +124,7 @@ You must dispatch `FarceActions.init()` before calling `getStoreRenderArgs`. `ge
 On the client, pass the value resolved by by `getStoreRenderArgs` to your `<ConnectedRouter>` as the `initialRenderArgs` prop.
 
 ```js
-import { getStoreRenderArgs } from 'found';
+import { getStoreRenderArgs } from "found";
 
 /* ... */
 
@@ -143,7 +143,7 @@ import { getStoreRenderArgs } from 'found';
         initialRenderArgs={initialRenderArgs}
       />
     </Provider>,
-    document.getElementById('root'),
+    document.getElementById("root")
   );
 })();
 ```

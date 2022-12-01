@@ -26,3 +26,16 @@
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+.cm-editor {
+  background-color: var(--prism-background-color);
+}
+
+/* .sp-layout {
+  flex-direction: column;
+} */
+
+[data-theme='light'] img[src$='#gh-dark-mode-only'],
+[data-theme='dark'] img[src$='#gh-light-mode-only'] {
+  display: none;
+}

@@ -1,0 +1,327 @@
+---
+sidebar_position: 0
+---
+
+import SandpackEditor from "@site/src/components/SandpackEditor";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Quick start
+
+Found is a router for [React](https://reactjs.org/) applications with a focus on fetching performance and extensibility.
+Found enables "Render-as-You-Fetch" patterns for efficient code splitting and
+data fetching in your React applications with or without Suspense. Giving you unmatched control,
+and your user's the best experiences.
+
+Found is designed to be extremely customizable. Almost all behavior and piences can be changed or fully replaced.
+Including such as the path matching algorithm and the route element resolution.
+This allows [extensions](/advanced/further-reading) such as [Found Relay](https://github.com/4Catalyzer/found-relay) to
+provide first-class support for different use cases.
+
+## Installation and setup
+
+Include the packages in your product via your favorite package manager:
+
+```bash
+npm i found
+
+# or yarn
+yarn add found
+```
+
+`found` depends on the relatively new async iterators proposal, which may require a **polyfill** of
+`Symbol.asyncIterator` for older browsers. Core-js provides one if needed, import **before**
+importing found. Check against your supported browser matrix to see if this is necessary.
+
+```js
+import "core-js/es/symbol/async-iterator";
+```
+
+## Basic usage
+
+Found provides rich client-side route, for your Single Page Application. It allows you to define
+your web application in terms of the URL just like traditional multi-page browser navigation, while
+also efficiently updating the your page as the URL changes, only loading and changing the parts of your application
+that need to. This enables unmatched data fetching efficiency and code code splitting, while providing users with a
+fast, ultra-responsive browsering experience.
+
+To get started, define the "routes", or urls your application supports and the UI they require.
+
+<SandpackEditor>
+
+```tsx
+import { createBrowserRouter, Link } from "found";
+
+const routeConfig = [
+  {
+    path: "/",
+    Component: () => (
+      <div>
+        <h1>Hello World</h1>
+        <Link to="/about">About Us</Link>
+      </div>
+    ),
+  },
+  {
+    path: "/about",
+    Component: () => (
+      <div>
+        <h1>About</h1>
+        <p>Welcome to found</p>
+      </div>
+    ),
+  },
+];
+
+const BrowserRouter = createBrowserRouter({ routeConfig });
+
+export default function App() {
+  return <BrowserRouter />;
+}
+```
+
+</SandpackEditor>
+
+Routes, can also be specified as JSX if you prefer, using `Route`, and `makeRouteConfig`:
+
+```tsx
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, Route } from "found";
+
+const BrowserRouter = createBrowserRouter({
+  routeConfig: makeRouteConfig(
+    <>
+      <Route path="/" Component={HomePage} />
+      <Route path="/about" Component={AboutPage} />
+    </>
+  ),
+});
+```
+
+## Nested routes
+
+Best described by found's original inspiration `react-router` (who also borrowed the idea from Ember):
+
+> Nested Routing is the general idea of coupling segments of the URL to component hierarchy and data.
+
+Nested routing is similar to "layouts" in server-side templating languages, allowings reuse of components, as well as
+connecting components with their data requirements.
+
+<SandpackEditor startRoute='/dashboard'>
+
+```tsx
+import {
+  createBrowserRouter,
+  makeRouteConfig,
+  Route,
+  Link,
+} from "found";
+
+function AppPage({ children }) {
+  return (
+    <div>
+      <nav>
+        <Link to="/dashboard">Dashboard</Link>{" "}
+        <Link to="/about">About</Link>
+      </nav>
+      <main>{children}</main>
+    </div>
+  );
+}
+
+const Router = createBrowserRouter({
+  routeConfig: makeRouteConfig(
+    <Route path="/" Component={AppPage}>
+      <Route
+        path="dashboard"
+        Component={() => <h1>Dashboard page</h1>}
+      />
+      <Route path="about" Component={() => <h1>About page</h1>} />
+    </Route>
+  ),
+});
+
+export default function App() {
+  return <Router />;
+}
+```
+
+</SandpackEditor>
+
+Here the route passes `children` to `AppPage` which will be the resolved nested routes component
+for the current location. In otherwords, when on `/about` the "About page" header will render and on
+`/dashboard` "Dashboard page". Because both routes start with `/` they are children of `AppPage`.
+
+:::tip
+
+You can use [spa-routing](https://github.com/4Catalyzer/spa-routing) to manage your links in an organized and well-typed way
+
+:::
+
+## Dynamic route parameters
+
+Routes, can also be parameterized, allowing you to represent state through URLs. Route components
+are passed `match` as a prop which contains `params` (amoung other things). Any component can access
+the current route props using `useParams` as well.
+
+<SandpackEditor startRoute='customers/1/orders/1'>
+
+```tsx
+import {
+  createBrowserRouter,
+  makeRouteConfig,
+  Route,
+  Link,
+} from "found";
+import useParams from "found/useParams";
+
+function CustomerPage({ children, match }) {
+  const { customerId } = match.params;
+
+  return (
+    <div>
+      <h1>Customer #{customerId}</h1>
+
+      <h2>Orders</h2>
+      <nav>
+        <Link to={`/customers/${customerId}/orders/1`}>Order 1</Link>{" "}
+        <Link to={`/customers/${customerId}/orders/2`}>Order 2</Link>
+      </nav>
+      <main>{children}</main>
+    </div>
+  );
+}
+
+function OrderPage() {
+  const { orderId } = useParams();
+
+  return <div>Order #{orderId}</div>;
+}
+
+const Router = createBrowserRouter({
+  routeConfig: makeRouteConfig(
+    <Route path="customers/:customerId" Component={CustomerPage}>
+      <Route path="orders/:orderId" Component={OrderPage} />
+    </Route>
+  ),
+});
+
+export default function App() {
+  return <Router />;
+}
+```
+
+</SandpackEditor>
+
+:::tip
+
+All params are accessible to every component and routes not just the `Route` that
+declares it.
+
+:::
+
+Route params are flexible and allow "splats" as well as regular expressions, see [path](/docs/configuration/route-config#path)
+for all the details.
+
+## Loading data
+
+Found has out-of-the-box support for efficient data fetching. Add a `getData` function to any route and it's return value
+will be passed to the Route as a `data` prop. see [Data fetching](data-fetching) for more details about how found
+avoids waterfalls and overfetching.
+
+<SandpackEditor>
+
+```tsx
+import "./styles.css";
+
+import { createBrowserRouter, HttpError } from "found";
+import PostsPage from "./PostsPage";
+import PostPage from "./PostPage";
+
+async function fetchFromApi(path: string) {
+  const resp = await fetch(`https://dummyjson.com${path}`);
+
+  if (!resp.ok) throw new HttpError(404);
+  return resp.json();
+}
+
+const Router = createBrowserRouter({
+  routeConfig: [
+    {
+      path: "/",
+      getData: () => fetchFromApi("/posts"),
+      Component: PostsPage,
+    },
+    {
+      path: "posts/:postId",
+      getData: async ({ params }) =>
+        fetchFromApi(`/posts/${params.postId}/`),
+      Component: PostPage,
+    },
+  ],
+});
+
+export default function App() {
+  return <Router />;
+}
+```
+
+```tsx PostsPage.tsx
+import { Link, RouteComponentDataProps } from "found";
+import type { Post } from "./PostPage.tsx";
+
+export default function PostsPage({
+  data,
+  children,
+}: RouteComponentDataProps<{ posts: Post[] }>) {
+  return (
+    <div className="posts">
+      <h1>Posts</h1>
+      {data?.posts.map((post) => (
+        <Link key={post.id} to={`/posts/${post.id}`}>
+          {post.title}
+        </Link>
+      ))}
+    </div>
+  );
+}
+```
+
+```tsx PostPage.tsx
+import type { RouteComponentDataProps } from "found";
+
+export interface Post {
+  id: string;
+  title: string;
+  body: string;
+}
+
+export default function PostPage({
+  data: post,
+  children,
+}: RouteComponentDataProps<Post>) {
+  return (
+    <main>
+      <h2>{post.title}</h2>
+      <p>{post.body}</p>
+    </main>
+  );
+}
+```
+
+```css styles.css
+.posts {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.posts > a {
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+}
+```
+
+</SandpackEditor>
