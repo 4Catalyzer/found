@@ -6,7 +6,7 @@ import SandpackEditor from "@site/src/components/SandpackEditor";
 
 # How it works
 
-A reasonably deep-dive into how found does what it does.
+A reasonably deep dive into how found does what it does.
 
 ## An example
 
@@ -67,7 +67,7 @@ following URL: `/products/1/history`. Clicking on a `<Link>`, calling
 
 The first step in routing is to produce a `match`. A match is created by a class called the `Matcher`,
 which is generally an implementation detail of Found. Simply put, the Matcher takes a URL and produces a
-set of route objects that coorespond to that URL.
+set of route objects that correspond to that URL.
 
 This is accomplished by decomposing the URL into path segments and "matching" them with nodes in our route tree.
 Illustrated here is a match to our Product history page.
@@ -90,7 +90,7 @@ Match {
     { path: '/', Component: AppPage, },
     { path: 'products' },
     { path: ':projectId', Component: ProductPage, getData: fetchProductById },
-    { path: 'histrory', Component: ProductHistoryPage, getData: fetchProductHistory },
+    { path: 'history', Component: ProductHistoryPage, getData: fetchProductHistory },
   ]
 }
 
@@ -116,7 +116,7 @@ To accomplish this it may need to fetch components or server data asynchronously
 
 Each route in the matched set may specify a `getData` property to fetch data necessary to
 render its `Component`. The Resolver calls each and collects the returned `Promise`s which are
-all allowed to resolve in parallel. unless a route is `defer`ed in which case the promises are split into batches
+all allowed to resolve in parallel--unless a route is `deferred`, in which case the promises are split into batches
 based on the route hierarchy.
 
 ```tsx
@@ -199,18 +199,18 @@ routes = [
       import("./components/ProductPage").then((m) => m.default),
     getData: fetchProductById,
     render({ props, Component }) {
-      // if Component is not present it is still being fetched
+      // if Component is not present, it is still being fetched
       if (!Component) {
         return <Spinner />;
       }
 
-      // props is the return value of `getData` if
-      // it's not present data is still loading
+      // props is the return value of `getData`
+      // If it's not present, data are still loading
       if (!props) {
         <Component showSkeleton />;
       }
 
-      // Otherwise render the component with it's props
+      // Otherwise render the component with its props
       return <Component {...props} />;
     },
   },
@@ -230,5 +230,5 @@ This flexibility allows for easy implementation of many different loading UI pat
 
 ## Customizing
 
-Nearly all of the behavior covered here is customizable and extensible. Making found ideal
-for all sorts of of React applications. Checkout our [examples and extensions](/advanced/further-reading.md) for more ideas:
+Nearly all of the behavior covered here is customizable and extensible, making found ideal
+for all sorts of of React applications. Checkout our [examples and extensions](/advanced/further-reading.md) for more ideas.
