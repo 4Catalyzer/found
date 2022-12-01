@@ -11,8 +11,8 @@ If you are using your own Redux store, use `createConnectedRouter` as described 
 To access the current routing state, connect to the `resolvedMatch` property of the `foundReducer` state. To navigate, dispatch the appropriate actions from Farce.
 
 ```js
-import { Actions as FarceActions } from 'farce';
-import { connect } from 'react-redux';
+import { Actions as FarceActions } from "farce";
+import { connect } from "react-redux";
 
 const MyConnectedComponent = connect(
   ({ found: { resolvedMatch } }) => ({
@@ -21,6 +21,6 @@ const MyConnectedComponent = connect(
   }),
   {
     push: FarceActions.push,
-  },
+  }
 )(MyComponent);
 ```

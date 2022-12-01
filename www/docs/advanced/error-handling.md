@@ -14,7 +14,7 @@ The router will throw a `new HttpError(404)` in the case when no routes match th
 
 ```js
 const route = {
-  path: 'widgets/:widgetId',
+  path: "widgets/:widgetId",
   Component: WidgetPage,
   getData: ({ params: { widgetId } }) =>
     fetchWidget(widgetId).catch(() => {

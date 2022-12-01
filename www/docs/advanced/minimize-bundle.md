@@ -7,10 +7,10 @@ sidebar_position: 7
 The top-level `found` package exports everything available in this library. It is unlikely that any single application will use all the features available. As such, for real applications, you should import the modules you need directly, to pull in only the code that you use.
 
 ```js
-import createBrowserRouter from 'found/createBrowserRouter';
-import makeRouteConfig from 'found/makeRouteConfig';
-import { routerShape } from 'found/PropTypes';
-import Route from 'found/Route';
+import createBrowserRouter from "found/createBrowserRouter";
+import makeRouteConfig from "found/makeRouteConfig";
+import { routerShape } from "found/PropTypes";
+import Route from "found/Route";
 
 // Instead of:
 // import {

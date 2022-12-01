@@ -21,7 +21,7 @@ const link2 = (
   <Link
     as={CustomAnchor}
     to={{
-      pathname: '/widgets/bar',
+      pathname: "/widgets/bar",
       query: { the: query },
     }}
     activePropName="active"
@@ -33,7 +33,7 @@ const link2 = (
 const link3 = (
   <Link
     to={{
-      pathname: '/widgets/bar',
+      pathname: "/widgets/bar",
       query: { the: query },
     }}
   >
@@ -75,7 +75,7 @@ const propTypes = {
 
 class MyButton extends React.Component {
   onClick = () => {
-    this.props.router.replace('/widgets');
+    this.props.router.replace("/widgets");
   };
 
   render() {
@@ -99,11 +99,13 @@ function MyButton() {
   const { match, router } = useRouter();
 
   const onClick = useCallback(() => {
-    router.replace('/widgets');
+    router.replace("/widgets");
   }, [router]);
 
   return (
-    <button onClick={onClick}>Current widget: {match.params.widgetId}</button>
+    <button onClick={onClick}>
+      Current widget: {match.params.widgetId}
+    </button>
   );
 }
 ```
@@ -122,10 +124,10 @@ function MyForm(props) {
       dirty
         ? router.addNavigationListener(
             () =>
-              'You have unsaved input. Are you sure you want to leave this page?',
+              "You have unsaved input. Are you sure you want to leave this page?"
           )
         : undefined,
-    [dirty],
+    [dirty]
   );
 
   /* ... */
@@ -145,7 +147,7 @@ router.addNavigationListener(
 
     return asyncConfirm(location);
   },
-  { beforeUnload: true },
+  { beforeUnload: true }
 );
 ```
 
