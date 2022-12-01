@@ -3,4 +3,4 @@ import Enzyme from 'enzyme';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-global.__DEV__ = true; // eslint-disable-line no-underscore-dangle
+(global as any).__DEV__ = true; // eslint-disable-line no-underscore-dangle
