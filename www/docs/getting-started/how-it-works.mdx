@@ -106,8 +106,8 @@ and no `path`, as seen above in the route config.
 ## Resolution
 
 The next part in the process is "resolving". The router `Resolver` is responsible for mapping the
-matched routes to a set of React `element`s in order to render the URLs UI. To accomplish this it may need to fetch
-async components or server data as specified by each route.
+matched routes to a set of React `element`s in order to render the UI for the URL.
+To accomplish this it may need to fetch components or server data asynchronously, as specified by the route.
 
 ![resolver](../assets/resolver-l.png#gh-light-mode-only)
 ![resolver](../assets/resolver-d.png#gh-dark-mode-only)
@@ -141,17 +141,26 @@ const routeComponents = await Promise.all(
 ### Element construction
 
 After data and components are resolved, each route is constructed into an element that will be rendered
+<<<<<<< HEAD
 by the Router.
 
 Consider how our matched routes relate to the proposed UI
+=======
+by the Router. Consider how our matched routes relate to the proposed UI:
+>>>>>>> master
 
 ![route-ui-map](../assets/route-ui-map-l.png#gh-light-mode-only)
 ![route-ui-map](../assets/route-ui-map-d.png#gh-dark-mode-only)
 
 Each route is ordered by its depth in the route tree and is responsible for
+<<<<<<< HEAD
 rendering itself as well as any nested routes it may contain. But before we
 can compose the UI together, we first need to construct the individual pieces.
 
+=======
+rendering itself as well as any nested routes it may contain. Before we
+can compose the UI together we need to construct its individual pieces.
+>>>>>>> master
 This is done by combining our fetched components and data into elements:
 
 ```tsx
@@ -183,13 +192,13 @@ Finally this array is folded together by the Router into:
 
 ## Loading states
 
-One point that was glossed over above is how routes can control their own loading UI
-while data are being fetched. To handle these states the `Resolver` actually produces multiple
-arrays of elements. While waiting for components and data to be fetched it calls `route.render`,
-with the intermediate state. Once the async values are resolved, each `route.render` is called again
+One point that was glossed over is how routes can control their own loading UI
+while data and components are being fetched. To handle these states the `Resolver` actually produces multiple
+arrays of elements. While waiting for components and data to be fetched it calls each `route.render`,
+with the intermediary state. Once the async values are resolved each `route.render` is called again
 with the final values.
 
-Practically, this gives the route complete control over how it handles its loading fallbacks. A Route
+This gives the route total control over how it handles loading fallbacks for itself and child routes. A Route
 can explicitly render nothing (`null`), a loading spinner, a skeleton UI, or whatever else it wants while
 it waits for data.
 
