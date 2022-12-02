@@ -97,7 +97,8 @@ export default function SandpackEditor({
         customSetup={{
           dependencies: {
             ...dependencies,
-            found: '*',
+            'found': '*',
+            'memoize-one': '^6.0.0',
           },
         }}
       />
