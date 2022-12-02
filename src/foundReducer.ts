@@ -1,6 +1,13 @@
-import ActionTypes from './ActionTypes';
+import { Reducer } from 'redux';
 
-export default function foundReducer(state = null, action) {
+import ActionTypes from './ActionTypes';
+import { FoundState } from './typeUtils';
+
+// TODO: Re-check types here.
+const foundReducer = (
+  state: any = null,
+  action: { type: any; payload: any },
+) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -14,13 +21,15 @@ export default function foundReducer(state = null, action) {
     case ActionTypes.RESOLVE_MATCH:
       // It doesn't make sense to resolve a match if there wasn't already an
       // unresolved match.
-      return (
-        state && {
-          match: state.match,
-          resolvedMatch: payload,
-        }
-      );
+      return state
+        ? {
+            match: state.match,
+            resolvedMatch: payload,
+          }
+        : null;
     default:
       return state;
   }
-}
+};
+
+export default foundReducer as Reducer<FoundState>;

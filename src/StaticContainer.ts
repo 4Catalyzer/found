@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-class StaticContainer extends React.Component {
-  shouldComponentUpdate({ shouldUpdate }) {
+interface Props {
+  shouldUpdate: boolean;
+}
+
+class StaticContainer extends React.Component<Props> {
+  shouldComponentUpdate({ shouldUpdate }: Props) {
     return !!shouldUpdate;
   }
 
