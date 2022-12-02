@@ -1,3 +1,4 @@
 import React from 'react';
 
-export default React.createContext(null);
+// TODO: types
+export default React.createContext<any>(null);
