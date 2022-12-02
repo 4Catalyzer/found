@@ -8,6 +8,7 @@ module.exports = (api) => ({
         includePolyfills: false,
       },
     ],
+    '@babel/preset-typescript',
   ],
   plugins: [
     ['transform-react-remove-prop-types', { mode: 'wrap' }],

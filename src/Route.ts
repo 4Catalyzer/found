@@ -3,7 +3,7 @@
  * use a POJSO instead of this class.
  */
 export default class Route {
-  constructor(props) {
+  constructor(props: any) {
     Object.assign(this, props);
   }
 }
@@ -11,5 +11,5 @@ export default class Route {
 if (__DEV__) {
   // Workaround to make React Proxy give me the original class, to allow
   // makeRouteConfig to get the actual class, when using JSX for routes.
-  Route.prototype.isReactComponent = {};
+  (Route.prototype as any).isReactComponent = {};
 }
