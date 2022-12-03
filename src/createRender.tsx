@@ -13,16 +13,18 @@ export default function createRender({
   renderError,
 }: CreateRenderOptions): (renderArgs: RenderArgs) => React.ReactElement {
   return function render(renderArgs: RenderArgs): React.ReactElement {
+    // TODO: error and elements MIGHT exist, depending on type of renderArgs
+    const { error, elements } = renderArgs as any;
     let element;
 
-    if ('error' in renderArgs) {
-      element = renderError ? renderError(renderArgs) : null;
-    } else if (!('elements' in renderArgs)) {
+    if (error) {
+      element = renderError ? renderError(renderArgs as any) : null;
+    } else if (!elements) {
       element = renderPending ? renderPending(renderArgs) : undefined;
     } else if (renderReady) {
-      element = renderReady(renderArgs);
+      element = renderReady(renderArgs as any);
     } else {
-      element = <ElementsRenderer elements={renderArgs.elements} />;
+      element = <ElementsRenderer elements={elements} />;
     }
 
     const hasElement = element !== undefined;

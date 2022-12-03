@@ -19,9 +19,11 @@ class Redirect extends React.Component<RedirectProps> {
 
   path?: string;
 
-  // TODO: Why is super not called here?
+  // TODO: Why is super not called here? why do i get a reference error if i don't call it?
   // @ts-ignore
-  constructor({ from, to, status }: RedirectOptions) {
+  constructor(config: RedirectOptions) {
+    super(config);
+    const { from, to, status } = config;
     // @ts-ignore
     this.path = from;
     // @ts-ignore
