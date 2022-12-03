@@ -4,10 +4,10 @@ export default function hotRouteConfig(routeConfig: RouteConfig): RouteConfig {
   if (__DEV__ && typeof window !== 'undefined') {
     /* eslint-env browser */
     /* eslint-disable no-underscore-dangle */
-    (window as any).__FOUND_HOT_RELOAD__ = true;
+    window.__FOUND_HOT_RELOAD__ = true;
 
-    if ((window as any).__FOUND_REPLACE_ROUTE_CONFIG__) {
-      (window as any).__FOUND_REPLACE_ROUTE_CONFIG__(routeConfig);
+    if (window.__FOUND_REPLACE_ROUTE_CONFIG__) {
+      window.__FOUND_REPLACE_ROUTE_CONFIG__(routeConfig);
     }
     /* eslint-enable no-underscore-dangle */
     /* eslint-env browser: false */
