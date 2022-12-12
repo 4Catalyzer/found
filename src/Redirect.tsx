@@ -1,29 +1,8 @@
-/* eslint-disable react/require-render-return */
-/* eslint-disable react/no-unused-class-component-methods */
-import React from 'react';
-
 import RedirectException from './RedirectException';
-import {
-  LocationDescriptor,
-  Match,
-  RedirectOptions,
-  RedirectProps,
-} from './typeUtils';
+import { Match, RedirectOptions } from './typeUtils';
 
-class Redirect extends React.Component<RedirectProps> {
-  from?: string;
-
-  to: string | ((match: Match) => LocationDescriptor);
-
-  status?: number;
-
-  path?: string;
-
-  // TODO: Why is super not called here? why do i get a reference error if i don't call it?
-  // @ts-ignore
-  constructor(config: RedirectOptions) {
-    super(config);
-    const { from, to, status } = config;
+class Redirect {
+  constructor({ from, to, status }: RedirectOptions) {
     // @ts-ignore
     this.path = from;
     // @ts-ignore
@@ -32,10 +11,8 @@ class Redirect extends React.Component<RedirectProps> {
     this.status = status;
   }
 
-  // TODO: render function gets data? how?
-  // @ts-ignore
   render({ match }: { match: Match }) {
-    const { to, status } = this;
+    const { to, status } = this as any;
     let toLocation;
 
     if (typeof to === 'function') {
