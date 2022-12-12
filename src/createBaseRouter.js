@@ -9,10 +9,7 @@ import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
 
-/**
- * // Return annotation needed for TS to compile
- * @returns {any}
- */
+
 export default function createBaseRouter({
   renderPending,
   renderReady,
