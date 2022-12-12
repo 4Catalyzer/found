@@ -9,7 +9,6 @@ import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
 
-
 export default function createBaseRouter({
   renderPending,
   renderReady,
