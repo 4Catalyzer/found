@@ -1,5 +1,7 @@
 import FarceActions from 'farce/Actions';
-import { bindActionCreators } from 'redux';
+import { Store, bindActionCreators } from 'redux';
+
+import { Router } from './typeUtils';
 
 const NAVIGATION_ACTION_CREATORS = {
   push: FarceActions.push,
@@ -7,8 +9,9 @@ const NAVIGATION_ACTION_CREATORS = {
   go: FarceActions.go,
 };
 
-export default function createStoreRouterObject(store) {
-  const { farce, found } = store;
+export default function createStoreRouterObject(store: Store): Router {
+  // TODO: create an enhanced store type with found and farce maybe?
+  const { farce, found } = store as any;
   const { matcher } = found;
 
   return {

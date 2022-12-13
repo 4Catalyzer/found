@@ -1,14 +1,18 @@
 import RedirectException from './RedirectException';
+import { Match, RedirectOptions } from './typeUtils';
 
-export default class Redirect {
-  constructor({ from, to, status }) {
+class Redirect {
+  constructor({ from, to, status }: RedirectOptions) {
+    // @ts-ignore
     this.path = from;
+    // @ts-ignore
     this.to = to;
+    // @ts-ignore
     this.status = status;
   }
 
-  render({ match }) {
-    const { to, status } = this;
+  render({ match }: { match: Match }) {
+    const { to, status } = this as any;
     let toLocation;
 
     if (typeof to === 'function') {
@@ -25,5 +29,7 @@ export default class Redirect {
 if (__DEV__) {
   // Workaround to make React Proxy give me the original class, to allow
   // makeRouteConfig to get the actual class, when using JSX for routes.
-  Redirect.prototype.isReactComponent = {};
+  (Redirect.prototype as any).isReactComponent = {};
 }
+
+export default Redirect;

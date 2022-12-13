@@ -27,7 +27,7 @@
   "scripts": {
     "tsc": "tsc",
     "build:ts": "yarn tsc --outDir lib/cjs --module commonjs && yarn tsc --outDir lib/esm --module es2020 && mv lib/esm/*.d.ts lib && mv lib/cjs/*.d.ts lib",
-    "build": "rimraf lib && 4c build --types false src && yarn build:pick && yarn build:types && yarn build:ts",
+    "build": "rimraf lib && 4c build --types false src && yarn build:pick && yarn build:types",
     "build:pick": "cherry-pick --cjs-dir cjs --esm-dir esm --cwd lib ../src",
     "build:types": "cpy types/*.d.ts lib",
     "build:docs": "yarn --cwd www build",

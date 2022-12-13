@@ -1,14 +1,16 @@
 import createStoreRouterObject from './createStoreRouterObject';
 import getRenderArgs from './getRenderArgs';
+import { GetStoreRenderArgsOptions, RenderArgs } from './typeUtils';
 
 // This function returns a promise. It doesn't need to be an async function
 // because it doesn't use the promise's value.
 export default function getStoreRenderArgs({
   store,
-  getFound = ({ found }) => found,
+  // TODO: check types of this
+  getFound = ({ found }: any) => found,
   matchContext,
   resolver,
-}) {
+}: GetStoreRenderArgsOptions): Promise<RenderArgs> {
   const router = createStoreRouterObject(store);
   const match = getFound(store.getState()).resolvedMatch;
 
