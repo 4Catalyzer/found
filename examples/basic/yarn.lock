@@ -412,9 +412,9 @@ debug@^4.1.0:
     ms "^2.1.1"
 
 decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha512-hjf+xovcEn31w/EUYdTXQh/8smFL/dzYjohQGEIgjyNavaJfBY2p5F527Bo1VPATxv0VYTUC2bOcXvqFwk78Og==
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 dequal@^2.0.2:
   version "2.0.3"
@@ -574,8 +574,10 @@ farce@^0.4.5:
     redux "^4.0.4"
     warning "^4.0.3"
 
-"found@file:../..":
-  version "1.1.1"
+found@*:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/found/-/found-1.1.2.tgz#74d3ad22b03d9975c77cf25e1be7ae0325cfb9c3"
+  integrity sha512-GFbe5T+HL28cLizmWY74F11nvU/bEcBBYj0jKCa7JVnodguEIOu7++nwqNIL28WD3lQ8KXV+ClwVbIj60a8vPw==
   dependencies:
     "@babel/runtime" "^7.16.5"
     "@restart/context" "^2.1.4"
