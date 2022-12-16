@@ -1,5 +1,5 @@
 import { createBrowserRouter, Link, Redirect } from 'found';
-import PropTypes from 'prop-types';
+
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -10,10 +10,6 @@ function LinkItem(props) {
     </li>
   );
 }
-
-const propTypes = {
-  children: PropTypes.node,
-};
 
 function App({ children }) {
   return (
@@ -32,8 +28,6 @@ function App({ children }) {
     </div>
   );
 }
-
-App.propTypes = propTypes;
 
 const BrowserRouter = createBrowserRouter({
   routeConfig: [

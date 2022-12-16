@@ -22,6 +22,7 @@ data: any;
 getData: (match: RouteMatch) => any;
 ```
 
+- `allowAsIndex: boolean`: Indicates a Route with children also functions as it's own index route.
 - `defer: boolean`: whether to wait for all parent `data` or `getData` promises to resolve before getting data for this route and its descendants
 - `render: (args: RouteRenderArgs): ResolvedElement | undefined`: a method that returns the element for the route
 - `children`: an array of child route objects, or an object of those arrays; if using JSX configuration components, this comes from the JSX children
@@ -117,6 +118,26 @@ const route = {
 :::caution
 It does not make sense to specify `data` or `getData` if the route does not have a component as above or a `render` method.
 :::
+
+#### `allowAsIndex`
+
+Convenience prop for indicating a Route with children also functions
+as it's own index route.
+
+```tsx
+<Route allowAsIndex path="customers" Component={Page}>
+  <Route path=":customerId" Component={ChildPage} />
+</Route>
+```
+
+This is equivalent to when matching `'/customers'`:
+
+```tsx
+<Route path="customers" Component={Page}>
+  <Route Component={() => null} />
+  <Route path=":customerId" Component={ChildPage} />
+</Route>
+```
 
 #### `defer`
 
