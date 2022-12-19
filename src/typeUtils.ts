@@ -49,7 +49,7 @@ export type ParamsDescriptor = Record<
 
 // These need to be interfaces to avoid circular reference issues.
 /* eslint-disable @typescript-eslint/no-empty-interface */
-interface GroupRouteIndices extends Record<string, RouteIndices> {}
+export interface GroupRouteIndices extends Record<string, RouteIndices> {}
 export interface RouteIndices extends Array<number | GroupRouteIndices> {}
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
@@ -248,6 +248,26 @@ export interface RouteObjectBase {
    * @throws {RedirectException}
    */
   render?: RouteRenderMethod;
+
+  /**
+   * Convenience prop for indicating a Route with children also functions
+   * as it's own index route.
+   *
+   * ```tsx
+   * <Route allowAsIndex path='parent' Component={Page}>
+   *    <Route path='child' Component={ChildPage}/>
+   * </Route>
+   * ```
+   *
+   * This is equivalent to when matching `'/parent'`:
+   * ```tsx
+   * <Route path='parent' Component={Page}>
+   *    <Route Component={() => null}/>
+   *    <Route path='child' Component={ChildPage}/>
+   * </Route>
+   * ```
+   */
+  allowAsIndex?: boolean;
 
   // Provide indexer allowing for other properties.
   [key: string]: any;

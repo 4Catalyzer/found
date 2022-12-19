@@ -10,6 +10,7 @@ export default function createFarceRouter({
   historyMiddlewares,
   historyOptions,
   routeConfig,
+  matcherOptions,
   getFound = ({ found }) => found,
   ...options
 }) {
@@ -22,6 +23,7 @@ export default function createFarceRouter({
       historyMiddlewares,
       historyOptions,
       routeConfig,
+      matcherOptions,
     });
 
   const FarceRouter = forwardRef((props, ref) => {

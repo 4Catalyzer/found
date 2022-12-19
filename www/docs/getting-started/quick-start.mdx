@@ -159,6 +159,41 @@ You can use [spa-routing](https://github.com/4Catalyzer/spa-routing) to manage y
 
 :::
 
+### Index routes
+
+A URL will 404 if there is no exact match for it in the route config.
+
+```tsx
+<Route path="/">
+  <Route path="customers" Component={CustomersPage}>
+    <Route path=":customerId" Component={CustomerPage} />
+  </Route>
+</Route>
+```
+
+For the above config only `/customers/1/` will render, while `'/customers'` will `404`. However if want
+to render a customers list page, we can add an "index route", which is a route with no `path`.
+
+```tsx
+<Route path="/">
+  <Route path="customers">
+    <Route Component={CustomersPage} />
+    <Route path=":customerId" Component={CustomerPage} />
+  </Route>
+</Route>
+```
+
+If you need a parent route to function as a parent while also rendering
+as the index route when there is no customer mark the parent route with `allowAsIndex`.
+
+```tsx
+<Route path="/">
+  <Route path="customers" allowAsIndex Component={CustomersPage}>
+    <Route path=":customerId" Component={CustomerPage} />
+  </Route>
+</Route>
+```
+
 ## Dynamic route parameters
 
 Routes, can also be parameterized, allowing you to represent state through URLs. Route components
