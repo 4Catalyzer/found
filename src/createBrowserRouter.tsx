@@ -16,8 +16,7 @@ export default function createBrowserRouter(
   const Router = createFarceRouter({
     ...options,
     historyProtocol: new BrowserProtocol(),
-    // TODO: should be able to remove "as" once createFarceRouter is converted to TS
-  } as any) as FarceRouter;
+  });
 
   function BrowserRouterInstance(props: FarceRouterProps) {
     // @ts-ignore TODO: resolver will be always overwritten
