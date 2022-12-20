@@ -3,6 +3,7 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react';
 
 import createBaseRouter from './createBaseRouter';
 import createFarceStore from './createFarceStore';
+import { FarceRouter, FarceRouterOptions, FoundState } from './typeUtils';
 
 export default function createFarceRouter({
   store: userStore,
@@ -10,10 +11,12 @@ export default function createFarceRouter({
   historyMiddlewares,
   historyOptions,
   routeConfig,
+  // @ts-ignore TODO: matcher options should not accessible to end user
   matcherOptions,
-  getFound = ({ found }) => found,
+  getFound = ({ found }: any) => found as FoundState,
   ...options
-}) {
+}: FarceRouterOptions): FarceRouter {
+  // @ts-ignore TODO: take care of it once createBaseRouter is in TS
   const Router = createBaseRouter(options);
 
   const store =
@@ -26,7 +29,7 @@ export default function createFarceRouter({
       matcherOptions,
     });
 
-  const FarceRouter = forwardRef((props, ref) => {
+  const FarceRouterInstance: FarceRouter = forwardRef((props, ref) => {
     const [state, setState] = useState(() => {
       const { match, resolvedMatch } = getFound(store.getState());
       return { match, resolvedMatch };
@@ -49,7 +52,7 @@ export default function createFarceRouter({
     return <Router {...props} {...state} store={store} />;
   });
 
-  FarceRouter.displayName = 'FarceRouter';
+  FarceRouterInstance.displayName = 'FarceRouter';
 
-  return FarceRouter;
+  return FarceRouterInstance;
 }
