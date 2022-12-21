@@ -1,19 +1,31 @@
+import { Protocol } from 'farce';
 import FarceActions from 'farce/Actions';
-import createHistoryEnhancer from 'farce/createHistoryEnhancer';
+import createHistoryEnhancer, {
+  HistoryEnhancerOptions,
+} from 'farce/createHistoryEnhancer';
 import queryMiddleware from 'farce/queryMiddleware';
-import { combineReducers, compose, createStore } from 'redux';
+import { Middleware, combineReducers, compose, createStore } from 'redux';
 
 import Matcher from './Matcher';
 import createMatchEnhancer from './createMatchEnhancer';
 import foundReducer from './foundReducer';
+import { RouteConfig } from './typeUtils';
 
-export default function createFarceStore({
+interface Props {
+  matcherOptions?: any;
+  routeConfig: RouteConfig;
+  historyOptions?: Omit<HistoryEnhancerOptions, 'protocol' | 'middlewares'>;
+  historyMiddlewares?: Middleware[];
+  historyProtocol: Protocol;
+}
+
+function createFarceStore({
   historyProtocol,
   historyMiddlewares,
   historyOptions,
   routeConfig,
   matcherOptions,
-}) {
+}: Props) {
   const store = createStore(
     combineReducers({
       found: foundReducer,
@@ -23,7 +35,7 @@ export default function createFarceStore({
         ...historyOptions,
         protocol: historyProtocol,
         middlewares: historyMiddlewares || [queryMiddleware],
-      }),
+      }) as any,
       createMatchEnhancer(new Matcher(routeConfig, matcherOptions)),
     ),
   );
@@ -32,3 +44,5 @@ export default function createFarceStore({
 
   return store;
 }
+
+export default createFarceStore;
