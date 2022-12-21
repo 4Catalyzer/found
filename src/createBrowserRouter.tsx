@@ -6,7 +6,6 @@ import resolver from './resolver';
 import {
   BrowserRouter,
   BrowserRouterOptions,
-  FarceRouter,
   FarceRouterProps,
 } from './typeUtils';
 
