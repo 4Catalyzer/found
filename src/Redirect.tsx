@@ -1,13 +1,19 @@
-import RedirectException from './RedirectException';
-import { Match, RedirectOptions } from './typeUtils';
+/* eslint-disable max-classes-per-file */
+import React from 'react';
 
-class Redirect {
+import RedirectException from './RedirectException';
+import { LocationDescriptor, Match, RedirectOptions } from './typeUtils';
+
+class Redirect implements RedirectOptions {
+  path?: string;
+
+  to: string | ((match: Match) => LocationDescriptor);
+
+  status?: number;
+
   constructor({ from, to, status }: RedirectOptions) {
-    // @ts-ignore
     this.path = from;
-    // @ts-ignore
     this.to = to;
-    // @ts-ignore
     this.status = status;
   }
 
@@ -32,4 +38,10 @@ if (__DEV__) {
   (Redirect.prototype as any).isReactComponent = {};
 }
 
-export default Redirect;
+// This actually doesn't extend a React.Component, but we need consumer to think that it does
+class RedirectType extends React.Component<RedirectOptions> {
+  // @ts-ignore
+  constructor(config: RedirectOptions);
+}
+
+export default Redirect as unknown as RedirectType;
