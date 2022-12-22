@@ -16,7 +16,6 @@ export default function createFarceRouter({
   getFound = ({ found }: any) => found as FoundState,
   ...options
 }: FarceRouterOptions): FarceRouter {
-  // @ts-ignore TODO: take care of it once createBaseRouter is in TS
   const Router = createBaseRouter(options);
 
   const store =
