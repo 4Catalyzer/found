@@ -70,7 +70,7 @@ export default function createBaseRouter({
     renderReady,
     renderError,
   }),
-}: CreateProps): React.ComponentClass {
+}: CreateProps): React.ComponentClass<BaseRouterProps, BaseRouterState> {
   class BaseRouter extends React.Component<BaseRouterProps, BaseRouterState> {
     router: Router;
 
