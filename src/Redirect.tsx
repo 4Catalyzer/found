@@ -39,7 +39,7 @@ if (__DEV__) {
 }
 
 // This actually doesn't extend a React.Component, but we need consumer to think that it does
-class RedirectType extends React.Component<RedirectOptions> {
+declare class RedirectType extends React.Component<RedirectOptions> {
   // @ts-ignore
   constructor(config: RedirectOptions);
 }
