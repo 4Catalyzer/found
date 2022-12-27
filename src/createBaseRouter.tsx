@@ -1,5 +1,6 @@
 import { dequal } from 'dequal';
 import React from 'react';
+import { Store } from 'redux';
 import warning from 'tiny-warning';
 
 import ActionTypes from './ActionTypes';
@@ -8,6 +9,38 @@ import StaticContainer from './StaticContainer';
 import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
+import {
+  ConnectedRouterProps,
+  CreateRenderOptions,
+  Match,
+  MatchBase,
+  RenderArgs,
+  Resolver,
+  Router,
+} from './typeUtils';
+
+interface CreateProps extends CreateRenderOptions {
+  render?: (args: RenderArgs) => React.ReactElement;
+}
+
+interface BaseRouterProps extends ConnectedRouterProps {
+  store: Store;
+  match: MatchBase;
+  resolvedMatch: MatchBase;
+}
+
+interface BaseRouterState {
+  isInitialRender: boolean;
+  match: MatchBase;
+  matchContext: any;
+  resolver: Resolver;
+  iteration: number;
+  routerContext: {
+    match: Match | null;
+    router: Router;
+  };
+  element: React.ReactElement | null;
+}
 
 export default function createBaseRouter({
   renderPending,
@@ -37,9 +70,19 @@ export default function createBaseRouter({
     renderReady,
     renderError,
   }),
-}) {
-  class BaseRouter extends React.Component {
-    constructor(props) {
+}: CreateProps): React.ComponentClass<BaseRouterProps, BaseRouterState> {
+  class BaseRouter extends React.Component<BaseRouterProps, BaseRouterState> {
+    router: Router;
+
+    lastIteration: number;
+
+    pendingResolvedMatch: boolean;
+
+    dispatchMatch: (pendingMatch: any) => void;
+
+    mounted?: boolean;
+
+    constructor(props: BaseRouterProps) {
       super(props);
 
       const { store, match, matchContext, resolver, initialRenderArgs } =
@@ -99,7 +142,10 @@ export default function createBaseRouter({
       }
     }
 
-    static getDerivedStateFromProps({ match, resolver, matchContext }, state) {
+    static getDerivedStateFromProps(
+      { match, resolver, matchContext }: BaseRouterProps,
+      state: BaseRouterState,
+    ) {
       if (state.isInitialRender) {
         return { isInitialRender: false };
       }
@@ -148,7 +194,8 @@ export default function createBaseRouter({
       try {
         for await (const renderArgs of resolveRenderArgs(
           this.router,
-          this.props,
+          // TODO: this should be removed once resolveRenderArgs is in TS
+          this.props as any,
         )) {
           // Don't do anything if we're resolving an outdated match.
           if (!this.mounted || this.lastIteration !== pendingIteration) {
@@ -178,7 +225,7 @@ export default function createBaseRouter({
             this.dispatchMatch(pendingMatch);
           }
         }
-      } catch (e) {
+      } catch (e: any) {
         if (!this.mounted || this.lastIteration !== pendingIteration) {
           return;
         }
