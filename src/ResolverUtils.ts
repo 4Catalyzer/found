@@ -61,9 +61,6 @@ function accumulateRouteValuesImpl(
   return accumulated;
 }
 
-// routeData: null,
-// ancestorRouteData: [],
-// prevParentPromise: null,
 export function accumulateRouteValues(
   routeValues: RouteMatch[],
   routeIndices: RouteIndices,
