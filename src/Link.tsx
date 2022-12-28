@@ -2,12 +2,21 @@ import useEventCallback from '@restart/hooks/useEventCallback';
 import React from 'react';
 import warning from 'tiny-warning';
 
+import { LinkInjectedProps, LinkProps } from './typeUtils';
 import useRouter from './useRouter';
 
+// TODO: move this to utils
+// Workaround for TS bug where function is not callable https://github.com/microsoft/TypeScript/issues/37663
+type Fn = (...args: unknown[]) => unknown;
+function isFunction<T extends Fn>(value: unknown): value is T {
+  return typeof value === 'function';
+}
+
+// TODO: Try to simplify those types in next breaking change.
 function Link({
   as: Component = 'a',
   to,
-  activeClassName,
+  activeClassName = '',
   activeStyle,
   activePropName,
   match: propsMatch,
@@ -15,8 +24,9 @@ function Link({
   exact = false,
   onClick,
   target,
+  children,
   ...props
-}) {
+}: any) {
   const { router, match } = useRouter() || {
     match: propsMatch,
     router: propsRouter,
@@ -51,42 +61,44 @@ function Link({
     router.push(to);
   });
 
-  if (__DEV__ && typeof Component !== 'function') {
-    for (const wrongPropName of ['component', 'Component']) {
-      const wrongPropValue = props[wrongPropName];
+  if (__DEV__ && !isFunction(Component)) {
+    for (const wrongPropName of ['component', 'Component'] as const) {
+      const wrongPropValue = (props as any)[wrongPropName];
       if (!wrongPropValue) {
         continue;
       }
 
       warning(
         false,
-        'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
-        JSON.stringify(to),
-        wrongPropName,
-        wrongPropValue.displayName || wrongPropValue.name || 'UNKNOWN',
+        `Link to ${JSON.stringify(to)} with \`${wrongPropName}\` prop \`${
+          wrongPropValue.displayName || wrongPropValue.name || 'UNKNOWN'
+        }\` has an element type that is not a component. The expected prop for the link component is \`as\`.`,
       );
     }
   }
 
   const href = router.createHref(to);
-  const childrenIsFunction = typeof props.children === 'function';
+  const childrenIsFunction = isFunction(children);
 
   if (childrenIsFunction || activeClassName || activeStyle || activePropName) {
     const toLocation = router.createLocation(to);
     const active = router.isActive(match, toLocation, { exact });
 
     if (childrenIsFunction) {
-      return props.children({ href, active, onClick: handleClick });
+      const add = { href, active, onClick: handleClick };
+      return children(add);
     }
 
     if (active) {
       if (activeClassName) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         props.className = props.className
-          ? `${props.className} ${activeClassName}`
+          ? `${props} ${activeClassName}`
           : activeClassName;
       }
 
       if (activeStyle) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         props.style = { ...props.style, ...activeStyle };
       }
     }
@@ -105,4 +117,18 @@ function Link({
   );
 }
 
-export default Link;
+// eslint-disable-next-line react/prefer-stateless-function
+declare class LinkType<
+  TInner extends React.ElementType = never,
+  TInnerWithActivePropName extends React.ComponentType<
+    LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
+  > = never,
+  TActivePropName extends string = never,
+> extends React.Component<
+  LinkProps<TInner, TInnerWithActivePropName, TActivePropName>
+> {
+  // eslint-disable-next-line react/static-property-placement, react/no-unused-class-component-methods
+  props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
+}
+
+export default Link as unknown as LinkType;

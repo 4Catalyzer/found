@@ -17,10 +17,7 @@ describe('<Link> warnings', () => {
 
     expect(warning).toHaveBeenCalledWith(
       false,
-      'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
-      '"/"',
-      'component',
-      'CustomComponent',
+      'Link to "/" with `component` prop `CustomComponent` has an element type that is not a component. The expected prop for the link component is `as`.',
     );
   });
 
@@ -32,10 +29,7 @@ describe('<Link> warnings', () => {
 
     expect(warning).toHaveBeenCalledWith(
       false,
-      'Link to %s with `%s` prop `%s` has an element type that is not a component. The expected prop for the link component is `as`.',
-      '"/"',
-      'Component',
-      'CustomComponent',
+      'Link to "/" with `Component` prop `CustomComponent` has an element type that is not a component. The expected prop for the link component is `as`.',
     );
   });
 
