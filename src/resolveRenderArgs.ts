@@ -1,18 +1,27 @@
 import HttpError from './HttpError';
+import {
+  Match,
+  RenderArgsElements,
+  ResolvedElement,
+  Resolver,
+  RouteIndices,
+  Router,
+} from './typeUtils';
 
-function foldElements(elementsRaw, routeIndices) {
+function foldElements(
+  elementsRaw: Array<ResolvedElement>,
+  routeIndices: RouteIndices,
+): RenderArgsElements {
   const elements = [];
 
   for (const routeIndex of routeIndices) {
     if (typeof routeIndex === 'object') {
       // Reshape the next elements in the elements array to match the nested
       // tree structure corresponding to the route groups.
-      const groupElements = {};
+      const groupElements: any = {};
       Object.entries(routeIndex).forEach(([groupName, groupRouteIndices]) => {
-        groupElements[groupName] = foldElements(
-          elementsRaw,
-          groupRouteIndices,
-        );
+        const folded = foldElements(elementsRaw, groupRouteIndices);
+        groupElements[groupName] = folded;
       });
 
       elements.push(groupElements);
@@ -27,10 +36,14 @@ function foldElements(elementsRaw, routeIndices) {
 }
 
 export default async function* resolveRenderArgs(
-  router,
-  { match, matchContext, resolver },
+  router: Router,
+  {
+    match,
+    matchContext,
+    resolver,
+  }: { match: Match; matchContext: any; resolver: Resolver },
 ) {
-  const routes = router.matcher.getRoutes(match);
+  const routes = router.matcher.getRoutes(match)!;
 
   const augmentedMatch = {
     ...match,
