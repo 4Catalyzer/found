@@ -2,6 +2,8 @@ import isPromise from 'is-promise';
 import { setImmediate } from 'tiny-set-immediate';
 import warning from 'tiny-warning';
 
+import { Match, RouteIndices, RouteMatch, RouteObjectBase } from './typeUtils';
+
 const UNRESOLVED = {};
 
 /**
@@ -10,28 +12,29 @@ const UNRESOLVED = {};
  *
  * If the value is not a promise it's simply returned
  */
-export function checkResolved(value) {
+export function checkResolved<T extends Promise<T>>(value: T): Promise<T> | T {
   if (!isPromise(value)) {
     return value;
   }
-
-  return Promise.race([
+  const ret = Promise.race<T>([
     value,
     new Promise((resolve) => {
       setImmediate(resolve, UNRESOLVED);
     }),
   ]);
+
+  return ret;
 }
 
-export function isResolved(value) {
+export function isResolved<T>(value: T | Record<string, unknown>): value is T {
   return value !== UNRESOLVED;
 }
 
 function accumulateRouteValuesImpl(
-  routeValues,
-  routeIndices,
-  callback,
-  initialValue,
+  routeValues: RouteMatch[],
+  routeIndices: RouteIndices,
+  callback: (...args: any[]) => Record<string, unknown>,
+  initialValue: Record<string, unknown>,
 ) {
   const accumulated = [];
   let value = initialValue;
@@ -58,11 +61,15 @@ function accumulateRouteValuesImpl(
   return accumulated;
 }
 
+// routeData: null,
+// ancestorRouteData: [],
+// prevParentPromise: null,
 export function accumulateRouteValues(
-  routeValues,
-  routeIndices,
-  callback,
-  initialValue,
+  routeValues: RouteMatch[],
+  routeIndices: RouteIndices,
+  // TODO: type this better
+  callback: (...args: any[]) => Record<string, unknown>,
+  initialValue: Record<string, unknown>,
 ) {
   return accumulateRouteValuesImpl(
     [...routeValues],
@@ -72,7 +79,7 @@ export function accumulateRouteValues(
   );
 }
 
-export function getRouteMatches(match) {
+export function getRouteMatches(match: Match) {
   return match.routes.map((route, i) => ({
     ...match,
     route,
@@ -80,29 +87,38 @@ export function getRouteMatches(match) {
   }));
 }
 
-export function getRouteValue(match, getGetter, getValue) {
+export function getRouteValue(
+  match: RouteMatch,
+  getGetter: (route: RouteObjectBase) => RouteObjectBase['getData'],
+  getValue: (route: RouteObjectBase) => RouteObjectBase['data'],
+) {
   const { route } = match;
   const getter = getGetter(route);
   return getter ? getter.call(route, match) : getValue(route);
 }
 
 // This is a little more versatile than if we only passed in keys.
-export function getRouteValues(routeMatches, getGetter, getValue) {
+export function getRouteValues(
+  routeMatches: RouteMatch[],
+  getGetter: (route: RouteObjectBase) => RouteObjectBase['getData'],
+  getValue: (route: RouteObjectBase) => RouteObjectBase['data'],
+) {
   return routeMatches.map((match) =>
     getRouteValue(match, getGetter, getValue),
   );
 }
 
-function getRouteGetComponent(route) {
+function getRouteGetComponent(route: RouteObjectBase) {
   return route.getComponent;
 }
 
-function getRouteComponent(route) {
+function getRouteComponent(route: RouteObjectBase) {
   if (__DEV__ && route.component) {
     warning(
       route.Component,
-      'Route with `component` property `%s` has no `Component` property. The expected property for the route component is `Component`.',
-      route.component.displayName || route.component.name,
+      `Route with \`component\` property \`${
+        route.component.displayName || route.component.name
+      }\` has no \`Component\` property. The expected property for the route component is \`Component\`.`,
     );
   }
 
@@ -110,6 +126,6 @@ function getRouteComponent(route) {
 }
 
 // This should be common to most resolvers, so make it available here.
-export function getComponents(routeMatches) {
+export function getComponents(routeMatches: RouteMatch[]) {
   return getRouteValues(routeMatches, getRouteGetComponent, getRouteComponent);
 }

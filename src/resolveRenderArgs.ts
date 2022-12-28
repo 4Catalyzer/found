@@ -5,6 +5,7 @@ import {
   ResolvedElement,
   Resolver,
   RouteIndices,
+  RouteObject,
   Router,
 } from './typeUtils';
 
@@ -35,6 +36,17 @@ function foldElements(
   return elements;
 }
 
+interface AugmentedMatchType extends Match {
+  routes: RouteObject[];
+  router: Router;
+  context: any;
+}
+
+export interface ResolveRender extends AugmentedMatchType {
+  error?: any;
+  elements?: RenderArgsElements;
+}
+
 export default async function* resolveRenderArgs(
   router: Router,
   {
@@ -42,10 +54,10 @@ export default async function* resolveRenderArgs(
     matchContext,
     resolver,
   }: { match: Match; matchContext: any; resolver: Resolver },
-) {
+): AsyncGenerator<ResolveRender, undefined> {
   const routes = router.matcher.getRoutes(match)!;
 
-  const augmentedMatch = {
+  const augmentedMatch: AugmentedMatchType = {
     ...match,
     routes,
     router, // Convenience access for route components.
@@ -65,7 +77,7 @@ export default async function* resolveRenderArgs(
         elements: elements && foldElements([...elements], match.routeIndices),
       };
     }
-  } catch (e) {
+  } catch (e: any) {
     if (e.isFoundHttpError) {
       yield { ...augmentedMatch, error: e };
       return;
