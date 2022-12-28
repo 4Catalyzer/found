@@ -16,7 +16,7 @@ function isFunction<T extends Fn>(value: unknown): value is T {
 function Link({
   as: Component = 'a',
   to,
-  activeClassName = '',
+  activeClassName,
   activeStyle,
   activePropName,
   match: propsMatch,
