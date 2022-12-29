@@ -5,14 +5,7 @@ import warning from 'tiny-warning';
 import { LinkInjectedProps, LinkProps } from './typeUtils';
 import useRouter from './useRouter';
 
-// TODO: move this to utils
-// Workaround for TS bug where function is not callable https://github.com/microsoft/TypeScript/issues/37663
-type Fn = (...args: unknown[]) => unknown;
-function isFunction<T extends Fn>(value: unknown): value is T {
-  return typeof value === 'function';
-}
-
-// TODO: Try to simplify those types in next breaking change.
+// TODO: Try to type this & simplify those types in next breaking change.
 function Link({
   as: Component = 'a',
   to,
@@ -61,7 +54,7 @@ function Link({
     router.push(to);
   });
 
-  if (__DEV__ && !isFunction(Component)) {
+  if (__DEV__ && typeof Component !== 'function') {
     for (const wrongPropName of ['component', 'Component'] as const) {
       const wrongPropValue = (props as any)[wrongPropName];
       if (!wrongPropValue) {
@@ -78,7 +71,7 @@ function Link({
   }
 
   const href = router.createHref(to);
-  const childrenIsFunction = isFunction(children);
+  const childrenIsFunction = typeof children === 'function';
 
   if (childrenIsFunction || activeClassName || activeStyle || activePropName) {
     const toLocation = router.createLocation(to);
