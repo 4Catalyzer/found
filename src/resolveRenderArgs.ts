@@ -1,18 +1,28 @@
 import HttpError from './HttpError';
+import {
+  Match,
+  RenderArgsElements,
+  ResolvedElement,
+  Resolver,
+  RouteIndices,
+  RouteObject,
+  Router,
+} from './typeUtils';
 
-function foldElements(elementsRaw, routeIndices) {
+function foldElements(
+  elementsRaw: Array<ResolvedElement>,
+  routeIndices: RouteIndices,
+): RenderArgsElements {
   const elements = [];
 
   for (const routeIndex of routeIndices) {
     if (typeof routeIndex === 'object') {
       // Reshape the next elements in the elements array to match the nested
       // tree structure corresponding to the route groups.
-      const groupElements = {};
+      const groupElements: any = {};
       Object.entries(routeIndex).forEach(([groupName, groupRouteIndices]) => {
-        groupElements[groupName] = foldElements(
-          elementsRaw,
-          groupRouteIndices,
-        );
+        const folded = foldElements(elementsRaw, groupRouteIndices);
+        groupElements[groupName] = folded;
       });
 
       elements.push(groupElements);
@@ -26,13 +36,28 @@ function foldElements(elementsRaw, routeIndices) {
   return elements;
 }
 
-export default async function* resolveRenderArgs(
-  router,
-  { match, matchContext, resolver },
-) {
-  const routes = router.matcher.getRoutes(match);
+interface AugmentedMatchType extends Match {
+  routes: RouteObject[];
+  router: Router;
+  context: any;
+}
 
-  const augmentedMatch = {
+export interface ResolveRender extends AugmentedMatchType {
+  error?: any;
+  elements?: RenderArgsElements;
+}
+
+export default async function* resolveRenderArgs(
+  router: Router,
+  {
+    match,
+    matchContext,
+    resolver,
+  }: { match: Match; matchContext: any; resolver: Resolver },
+): AsyncGenerator<ResolveRender, undefined> {
+  const routes = router.matcher.getRoutes(match)!;
+
+  const augmentedMatch: AugmentedMatchType = {
     ...match,
     routes,
     router, // Convenience access for route components.
@@ -52,7 +77,7 @@ export default async function* resolveRenderArgs(
         elements: elements && foldElements([...elements], match.routeIndices),
       };
     }
-  } catch (e) {
+  } catch (e: any) {
     if (e.isFoundHttpError) {
       yield { ...augmentedMatch, error: e };
       return;

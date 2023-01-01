@@ -1,10 +1,15 @@
 import FarceActionTypes from 'farce/ActionTypes';
-import { applyMiddleware } from 'redux';
+import { Middleware, Store, StoreEnhancer, applyMiddleware } from 'redux';
 
 import ActionTypes from './ActionTypes';
+import Matcher from './Matcher';
+import { FoundState, FoundStoreExtension, RouteConfig } from './typeUtils';
 
-function createMatchMiddleware(matcher, getFound) {
-  return function matchMiddleware(store) {
+function createMatchMiddleware(
+  matcher: Matcher,
+  getFound: ({ found }: any) => FoundState,
+): Middleware {
+  return function matchMiddleware(store: Store) {
     return (next) => (action) => {
       const { type, payload } = action;
       if (type !== FarceActionTypes.UPDATE_LOCATION) {
@@ -35,9 +40,9 @@ function createMatchMiddleware(matcher, getFound) {
 }
 
 export default function createMatchEnhancer(
-  matcher,
-  getFound = ({ found }) => found,
-) {
+  matcher: Matcher,
+  getFound = ({ found }: any) => found,
+): StoreEnhancer<{ found: FoundStoreExtension }> {
   return function matchEnhancer(createStore) {
     return (...args) => {
       const middlewareEnhancer = applyMiddleware(
@@ -46,10 +51,10 @@ export default function createMatchEnhancer(
 
       const store = middlewareEnhancer(createStore)(...args);
 
-      function replaceRouteConfig(routeConfig) {
+      function replaceRouteConfig(routeConfig: RouteConfig) {
         matcher.replaceRouteConfig(routeConfig);
 
-        store.dispatch({
+        store.dispatch<any>({
           type: FarceActionTypes.UPDATE_LOCATION,
           payload: getFound(store.getState()).match.location,
         });
