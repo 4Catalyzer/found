@@ -1,11 +1,10 @@
 import { useContext } from 'react';
 
-import RouterContext from './RouterContext';
-import { RouterState } from './typeUtils';
+import RouterContext, { IRouterContext } from './RouterContext';
 
 /**
  * Returns the Router and current route match from context
  */
-export default function useRouter<TContext = any>(): RouterState<TContext> {
-  return useContext<RouterState<TContext>>(RouterContext);
+export default function useRouter<TContext = any>(): IRouterContext<TContext> {
+  return useContext<IRouterContext<TContext>>(RouterContext);
 }

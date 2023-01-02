@@ -11,5 +11,21 @@ declare global {
   }
 }
 
+declare module '@restart/context/mapContextToProps' {
+  export default function mapContextToProps<
+    TComponent,
+    TContext,
+    TContextProps,
+    TOwnProps,
+  >(
+    data: {
+      consumers: TContext;
+      mapToProps: (context: TContext) => TContext;
+      displayName: string;
+    },
+    Component: TComponent,
+  ): ContextInjectedComponent<TComponent, TContextProps, TOwnProps>;
+}
+
 // Force this to be a module
 export {};

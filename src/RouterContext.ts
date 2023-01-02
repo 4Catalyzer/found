@@ -1,4 +1,10 @@
 import React from 'react';
 
-// TODO: types
-export default React.createContext<any>(null);
+import { Match, Router } from './typeUtils';
+
+export interface IRouterContext<TContext = any> {
+  match: Match<TContext> | null;
+  router: Router;
+}
+
+export default React.createContext<IRouterContext>(null as any);
