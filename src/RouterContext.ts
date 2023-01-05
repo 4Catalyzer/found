@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Match, Router } from './typeUtils';
 
-export interface IRouterContext<TContext = any> {
+export interface RouterContextState<TContext = any> {
   match: Match<TContext> | null;
   router: Router;
 }
 
-export default React.createContext<IRouterContext>(null as any);
+export default React.createContext<RouterContextState>(null as any);

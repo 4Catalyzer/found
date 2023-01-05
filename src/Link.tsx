@@ -75,7 +75,7 @@ function Link({
 
   if (childrenIsFunction || activeClassName || activeStyle || activePropName) {
     const toLocation = router.createLocation(to);
-    const active = router.isActive(match!, toLocation, { exact });
+    const active = router.isActive(match, toLocation, { exact });
 
     if (childrenIsFunction) {
       const add = { href, active, onClick: handleClick };
