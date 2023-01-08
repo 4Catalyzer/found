@@ -9,15 +9,21 @@ import createFarceStore from './createFarceStore';
 import createRender from './createRender';
 import getStoreRenderArgs from './getStoreRenderArgs';
 import defaultResolver from './resolver';
+import { RenderArgs } from './typeUtils';
 
 const propTypes = {
   renderArgs: PropTypes.shape({
-    router: routerShape.isRequired,
-  }).isRequired,
+    router: routerShape,
+  }),
   children: PropTypes.node,
 };
 
-function RouterProvider({ renderArgs, children }) {
+interface RouterProviderProps {
+  renderArgs: RenderArgs;
+  children: React.ReactNode;
+}
+
+function RouterProvider({ renderArgs, children }: RouterProviderProps) {
   return (
     <RouterContext.Provider
       value={useMemo(
@@ -37,6 +43,12 @@ RouterProvider.propTypes = propTypes;
 
 export { RouterProvider };
 
+interface FarceResult {
+  status: number;
+  element?: any;
+  redirect?: any;
+}
+
 export async function getFarceResult({
   url,
   historyMiddlewares,
@@ -52,7 +64,7 @@ export async function getFarceResult({
     renderReady,
     renderError,
   }),
-}) {
+}): Promise<FarceResult> {
   const store = createFarceStore({
     historyProtocol: new ServerProtocol(url),
     historyMiddlewares,
@@ -60,7 +72,7 @@ export async function getFarceResult({
     routeConfig,
   });
 
-  let renderArgs;
+  let renderArgs: RenderArgs;
 
   try {
     renderArgs = await getStoreRenderArgs({
@@ -88,7 +100,10 @@ export async function getFarceResult({
   }
 
   return {
-    status: renderArgs.error ? renderArgs.error.status : 200,
+    status:
+      'error' in renderArgs && renderArgs.error
+        ? renderArgs.error.status
+        : 200,
     element: (
       <RouterProvider renderArgs={renderArgs}>
         {render(renderArgs)}

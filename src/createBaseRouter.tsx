@@ -4,7 +4,7 @@ import { Store } from 'redux';
 import warning from 'tiny-warning';
 
 import ActionTypes from './ActionTypes';
-import RouterContext from './RouterContext';
+import RouterContext, { RouterContextState } from './RouterContext';
 import StaticContainer from './StaticContainer';
 import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
@@ -12,7 +12,6 @@ import resolveRenderArgs from './resolveRenderArgs';
 import {
   ConnectedRouterProps,
   CreateRenderOptions,
-  Match,
   MatchBase,
   RenderArgs,
   Resolver,
@@ -35,10 +34,7 @@ interface BaseRouterState {
   matchContext: any;
   resolver: Resolver;
   iteration: number;
-  routerContext: {
-    match: Match | null;
-    router: Router;
-  };
+  routerContext: RouterContextState;
   element: React.ReactElement | null;
 }
 
