@@ -38,6 +38,7 @@ export default {
    * strategies, either showing a spinner or skeleton UI while it waits for data to load.
    *
    * The iterable will produce only 1 value, if there is no async work to be done for the match.
+   * @returns {any}
    */
   async *resolveElements(match) {
     const routeMatches = getRouteMatches(match);

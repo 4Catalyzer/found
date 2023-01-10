@@ -153,6 +153,7 @@ export interface Router extends FarceStoreExtension, FoundStoreExtension {
   /**
    * Moves delta steps in the history stack
    * @see farce
+   *
    */
   go: (delta: number) => void;
 
@@ -164,9 +165,9 @@ export interface Router extends FarceStoreExtension, FoundStoreExtension {
  */
 export interface RouteMatch extends Omit<Match, 'routeParams'> {
   /**
-   * The route object corresponding to this component
+   * The route object or array corresponding to this component
    */
-  route: RouteObject[];
+  route: RouteObject[] | RouteObject;
   /**
    * The path parameters for route
    */
@@ -185,17 +186,17 @@ export interface RenderProps extends RouteMatch {
  * @see https://github.com/4Catalyzer/found/blob/master/README.md#render
  */
 export interface RouteRenderArgs {
-  match: Match;
+  match: Match | RouteMatch;
   /**
    * The component for the route, if any; null if the component has not yet
    * been loaded
    */
-  Component?: React.ComponentType<any>;
+  Component?: React.ComponentType<any> | null;
   /**
    * The default props for the route component, specifically match with data
    * as an additional property; null if data have not yet been loaded
    */
-  props?: RenderProps;
+  props?: RenderProps | null;
   /**
    * The data for the route, as above; null if the data have not yet been
    * loaded
