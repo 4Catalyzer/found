@@ -1,5 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactElement } from 'react';
+
+import {
+  ElementsRendererProps,
+  RenderArgsElements,
+  ResolvedElement,
+  ResolvedElementValue,
+} from './typeUtils';
 
 const propTypes = {
   elements: PropTypes.arrayOf(
@@ -13,9 +20,12 @@ const propTypes = {
   ).isRequired,
 };
 
-function accumulateElement(children, element) {
+function accumulateElement(
+  children: ResolvedElement,
+  element: ResolvedElement,
+) {
   if (!children) {
-    return typeof element === 'function' ? element(null) : element;
+    return typeof element === 'function' ? element(null as any) : element;
   }
 
   if (!element) {
@@ -24,7 +34,7 @@ function accumulateElement(children, element) {
 
   if (!React.isValidElement(children)) {
     // Children come from named child routes.
-    const groups = {};
+    const groups = {} as any;
     Object.entries(children).forEach(([groupName, groupElements]) => {
       groups[groupName] = groupElements.reduceRight(accumulateElement, null);
     });
@@ -35,12 +45,12 @@ function accumulateElement(children, element) {
   }
 
   return typeof element === 'function'
-    ? element(children)
+    ? element(children as any)
     : React.cloneElement(element, { children });
 }
 
-function ElementsRenderer({ elements }) {
-  return elements.reduceRight(accumulateElement, null);
+function ElementsRenderer({ elements }: ElementsRendererProps) {
+  return elements.reduceRight(accumulateElement, null) as ResolvedElement;
 }
 
 ElementsRenderer.propTypes = propTypes;
