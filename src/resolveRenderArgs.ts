@@ -71,7 +71,7 @@ export default async function* resolveRenderArgs(
   }
 
   try {
-    for await (const elements of resolver.resolveElements(augmentedMatch)) {
+    for await (const elements of resolver.resolveElements(augmentedMatch)!) {
       yield {
         ...augmentedMatch,
         elements: elements && foldElements([...elements], match.routeIndices),

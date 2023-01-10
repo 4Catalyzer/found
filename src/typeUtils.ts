@@ -92,7 +92,7 @@ export interface Match<TContext = any> extends MatchBase {
 }
 
 export interface Resolver {
-  resolveElements(match: Match): AsyncIterable<ResolvedElement[]>;
+  resolveElements(match: Match): AsyncIterable<ResolvedElement[]> | undefined;
 }
 
 // export const resolver: Resolver;
