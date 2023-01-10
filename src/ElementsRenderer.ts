@@ -1,12 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { ReactElement } from 'react';
+import React from 'react';
 
-import {
-  ElementsRendererProps,
-  RenderArgsElements,
-  ResolvedElement,
-  ResolvedElementValue,
-} from './typeUtils';
+import { ElementsRendererProps, ResolvedElement } from './typeUtils';
 
 const propTypes = {
   elements: PropTypes.arrayOf(
@@ -50,7 +45,10 @@ function accumulateElement(
 }
 
 function ElementsRenderer({ elements }: ElementsRendererProps) {
-  return elements.reduceRight(accumulateElement, null) as ResolvedElement;
+  return elements.reduceRight(
+    accumulateElement,
+    null,
+  ) as React.ReactElement<ElementsRendererProps> | null;
 }
 
 ElementsRenderer.propTypes = propTypes;
