@@ -68,10 +68,6 @@ Otherwise, `<Link>` forwards additional props to the child element.
 The `withRouter` HOC wraps an existing component class or function and injects `match` and `router` props, as on route components above. You can use this HOC to create components that navigate programmatically in event handlers.
 
 ```js
-const propTypes = {
-  match: matchShape.isRequired,
-  router: routerShape.isRequired,
-};
 
 class MyButton extends React.Component {
   onClick = () => {
@@ -86,8 +82,6 @@ class MyButton extends React.Component {
     );
   }
 }
-
-MyButton.propTypes = propTypes;
 
 export default withRouter(MyButton);
 ```

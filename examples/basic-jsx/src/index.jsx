@@ -3,7 +3,6 @@ import Redirect from 'found/Redirect';
 import Route from 'found/Route';
 import createBrowserRouter from 'found/createBrowserRouter';
 import makeRouteConfig from 'found/makeRouteConfig';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -14,10 +13,6 @@ function LinkItem(props) {
     </li>
   );
 }
-
-const propTypes = {
-  children: PropTypes.node,
-};
 
 function App({ children }) {
   return (
@@ -36,8 +31,6 @@ function App({ children }) {
     </div>
   );
 }
-
-App.propTypes = propTypes;
 
 const BrowserRouter = createBrowserRouter({
   routeConfig: makeRouteConfig(
@@ -66,11 +59,9 @@ const BrowserRouter = createBrowserRouter({
     </Route>,
   ),
 
-  /* eslint-disable react/prop-types */
   renderError: ({ error }) => (
     <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
   ),
-  /* eslint-enable react/prop-types */
 });
 
 ReactDOM.render(<BrowserRouter />, document.getElementById('root'));

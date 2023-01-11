@@ -1,5 +1,4 @@
 import Link from 'found/Link';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 function LinkItem(props) {
@@ -9,10 +8,6 @@ function LinkItem(props) {
     </li>
   );
 }
-
-const propTypes = {
-  children: PropTypes.node,
-};
 
 function App({ children }) {
   return (
@@ -31,7 +26,5 @@ function App({ children }) {
     </div>
   );
 }
-
-App.propTypes = propTypes;
 
 export default App;

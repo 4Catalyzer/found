@@ -10,8 +10,5 @@ module.exports = (api) => ({
     ],
     '@babel/preset-typescript',
   ],
-  plugins: [
-    ['transform-react-remove-prop-types', { mode: 'wrap' }],
-    api.env() !== 'esm' && 'add-module-exports',
-  ].filter(Boolean),
+  plugins: [api.env() !== 'esm' && 'add-module-exports'].filter(Boolean),
 });
