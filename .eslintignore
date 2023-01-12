@@ -8,3 +8,5 @@
 **/node_modules/
 **/examples/
 **/types/*.d.ts
+
+**/CHANGELOG.md
