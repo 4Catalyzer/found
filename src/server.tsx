@@ -1,22 +1,13 @@
 import FarceActions from 'farce/Actions';
 import ServerProtocol from 'farce/ServerProtocol';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-import { routerShape } from './PropTypes';
 import RouterContext from './RouterContext';
 import createFarceStore from './createFarceStore';
 import createRender from './createRender';
 import getStoreRenderArgs from './getStoreRenderArgs';
 import defaultResolver from './resolver';
 import { RenderArgs } from './typeUtils';
-
-const propTypes = {
-  renderArgs: PropTypes.shape({
-    router: routerShape,
-  }),
-  children: PropTypes.node,
-};
 
 interface RouterProviderProps {
   renderArgs: RenderArgs;
@@ -38,8 +29,6 @@ function RouterProvider({ renderArgs, children }: RouterProviderProps) {
     </RouterContext.Provider>
   );
 }
-
-RouterProvider.propTypes = propTypes;
 
 export { RouterProvider };
 

@@ -2,7 +2,6 @@ import Link from 'found/Link';
 import Redirect from 'found/Redirect';
 import Route from 'found/Route';
 import makeRouteConfig from 'found/makeRouteConfig';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 function LinkItem(props) {
@@ -12,10 +11,6 @@ function LinkItem(props) {
     </li>
   );
 }
-
-const propTypes = {
-  children: PropTypes.node,
-};
 
 function App({ children }) {
   return (
@@ -34,8 +29,6 @@ function App({ children }) {
     </div>
   );
 }
-
-App.propTypes = propTypes;
 
 export default makeRouteConfig(
   <Route path="/" Component={App}>

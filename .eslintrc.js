@@ -7,7 +7,6 @@ module.exports = {
   ],
   plugins: ['prettier', 'import'],
   rules: {
-    'react/prop-types': 'off',
     'prettier/prettier': 'error',
     'no-use-before-define': 'off',
   },
