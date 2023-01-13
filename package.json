@@ -35,7 +35,7 @@
     "lint": "4c lint --prettier-ignore .eslintignore .",
     "prepublishOnly": "yarn build",
     "publishLocal": "yarn prepublishOnly && yarn file-butler prepare-publish-dir lib && yalc push lib",
-    "release": "4c release",
+    "release": "4c release --conventional-commits",
     "tdd": "jest --watch",
     "test": "yarn lint && yarn test:ts && yarn testonly -- --coverage",
     "test:ts": "dtslint --expectOnly types && yarn tsc --noEmit",
