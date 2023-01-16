@@ -47,7 +47,7 @@ export default {
    */
   async *resolveElements(
     match: Match,
-  ): AsyncGenerator<ResolvedElement[]> | undefined {
+  ): AsyncGenerator<Array<ResolvedElement> | undefined> {
     const routeMatches = getRouteMatches(match);
 
     const Components = getComponents(routeMatches);
@@ -70,8 +70,8 @@ export default {
         earlyData,
       );
 
-      yield pendingElements?.every((element) => element !== undefined)
-        ? pendingElements
+      yield pendingElements.every((element) => element !== undefined)
+        ? (pendingElements as ResolvedElement[])
         : undefined;
 
       fetchedComponents = await Promise.all(Components);
@@ -81,7 +81,11 @@ export default {
       fetchedData = earlyData;
     }
 
-    yield createElements(routeMatches, fetchedComponents, fetchedData);
+    yield createElements(
+      routeMatches,
+      fetchedComponents,
+      fetchedData,
+    ) as ResolvedElement[];
   },
 
   /**

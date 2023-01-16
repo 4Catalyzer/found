@@ -92,7 +92,9 @@ export interface Match<TContext = any> extends MatchBase {
 }
 
 export interface Resolver {
-  resolveElements(match: Match): AsyncIterable<ResolvedElement[]> | undefined;
+  resolveElements(
+    match: Match,
+  ): AsyncGenerator<Array<ResolvedElement> | undefined>;
 }
 
 // export const resolver: Resolver;
@@ -161,6 +163,7 @@ export interface Router extends FarceStoreExtension, FoundStoreExtension {
 }
 
 /**
+ * A near superset of Match.
  * The match for a specific route, including that route and its own params.
  */
 export interface RouteMatch extends Omit<Match, 'routeParams'> {
@@ -186,7 +189,7 @@ export interface RenderProps extends RouteMatch {
  * @see https://github.com/4Catalyzer/found/blob/master/README.md#render
  */
 export interface RouteRenderArgs {
-  match: Match | RouteMatch;
+  match: Match;
   /**
    * The component for the route, if any; null if the component has not yet
    * been loaded

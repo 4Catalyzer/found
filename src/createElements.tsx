@@ -2,7 +2,7 @@ import React from 'react';
 import warning from 'tiny-warning';
 
 import { isResolved } from './ResolverUtils';
-import { ResolvedElement, RouteMatch } from './typeUtils';
+import { Match, ResolvedElement, RouteMatch } from './typeUtils';
 
 /**
  * maps an array of `Route`s to React elements. The returned array
@@ -20,7 +20,7 @@ export default function createElements(
   routeMatches: Array<RouteMatch>,
   Components: React.ComponentType<any>[],
   matchData: any,
-): Array<ResolvedElement | undefined> | null | undefined {
+): Array<ResolvedElement | undefined> {
   return routeMatches.map((match, i) => {
     const { router, route } = match;
 
@@ -36,7 +36,7 @@ export default function createElements(
       // Relay uses null in RelayReadyStateRenderer, so let's follow that
       // convention.
       return route.render({
-        match,
+        match: match as unknown as Match,
         Component: isComponentResolved ? Component : null,
         // TODO: Can `match` be removed?
         props: areDataResolved ? ({ match, router, data } as any) : null,
