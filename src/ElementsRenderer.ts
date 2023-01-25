@@ -1,8 +1,13 @@
 import React from 'react';
 
-function accumulateElement(children, element) {
+import { ElementsRendererProps, ResolvedElement } from './typeUtils';
+
+function accumulateElement(
+  children: ResolvedElement,
+  element: ResolvedElement,
+) {
   if (!children) {
-    return typeof element === 'function' ? element(null) : element;
+    return typeof element === 'function' ? element(null as any) : element;
   }
 
   if (!element) {
@@ -11,7 +16,7 @@ function accumulateElement(children, element) {
 
   if (!React.isValidElement(children)) {
     // Children come from named child routes.
-    const groups = {};
+    const groups = {} as any;
     Object.entries(children).forEach(([groupName, groupElements]) => {
       groups[groupName] = groupElements.reduceRight(accumulateElement, null);
     });
@@ -22,12 +27,15 @@ function accumulateElement(children, element) {
   }
 
   return typeof element === 'function'
-    ? element(children)
+    ? element(children as any)
     : React.cloneElement(element, { children });
 }
 
-function ElementsRenderer({ elements }) {
-  return elements.reduceRight(accumulateElement, null);
+function ElementsRenderer({ elements }: ElementsRendererProps) {
+  return elements.reduceRight(
+    accumulateElement,
+    null,
+  ) as React.ReactElement<ElementsRendererProps> | null;
 }
 
 export default ElementsRenderer;

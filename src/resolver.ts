@@ -9,12 +9,18 @@ import {
   isResolved,
 } from './ResolverUtils';
 import createElements from './createElements';
+import {
+  Match,
+  ResolvedElement,
+  RouteMatch,
+  RouteObjectBase,
+} from './typeUtils';
 
-function getRouteGetData(route) {
+function getRouteGetData(route: RouteObjectBase) {
   return route.getData;
 }
 
-function getRouteData(route) {
+function getRouteData(route: RouteObjectBase) {
   return route.data;
 }
 
@@ -39,7 +45,9 @@ export default {
    *
    * The iterable will produce only 1 value, if there is no async work to be done for the match.
    */
-  async *resolveElements(match) {
+  async *resolveElements(
+    match: Match,
+  ): AsyncGenerator<Array<ResolvedElement> | undefined> {
     const routeMatches = getRouteMatches(match);
 
     const Components = getComponents(routeMatches);
@@ -63,7 +71,7 @@ export default {
       );
 
       yield pendingElements.every((element) => element !== undefined)
-        ? pendingElements
+        ? (pendingElements as ResolvedElement[])
         : undefined;
 
       fetchedComponents = await Promise.all(Components);
@@ -73,14 +81,20 @@ export default {
       fetchedData = earlyData;
     }
 
-    yield createElements(routeMatches, fetchedComponents, fetchedData);
+    yield createElements(
+      routeMatches,
+      fetchedComponents,
+      fetchedData,
+    ) as ResolvedElement[];
   },
 
   /**
    * Generate route data according to their getters, respecting the order of
    * promises per the `defer` flag on routes.
+   *
    */
-  getData(match, routeMatches) {
+  // TODO: should this even be exported?
+  getData(match: Match, routeMatches: Array<RouteMatch>) {
     return accumulateRouteValues(
       routeMatches,
       match.routeIndices,

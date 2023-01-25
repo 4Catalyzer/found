@@ -2,6 +2,7 @@ import React from 'react';
 import warning from 'tiny-warning';
 
 import { isResolved } from './ResolverUtils';
+import { Match, ResolvedElement, RouteMatch } from './typeUtils';
 
 /**
  * maps an array of `Route`s to React elements. The returned array
@@ -15,24 +16,30 @@ import { isResolved } from './ResolverUtils';
  * @param {*} matchData An array of possibly resolved route data
  * @returns [null | ReactElement | undefined]
  */
-export default function createElements(routeMatches, Components, matchData) {
+export default function createElements(
+  routeMatches: Array<RouteMatch>,
+  Components: React.ComponentType<any>[],
+  matchData: any,
+): Array<ResolvedElement | undefined> {
   return routeMatches.map((match, i) => {
     const { router, route } = match;
 
-    const Component = Components[i];
-    const data = matchData[i];
+    const Component: React.ComponentType<any> = Components[i];
+    const data: any = matchData[i];
 
     const isComponentResolved = isResolved(Component);
     const areDataResolved = isResolved(data);
 
-    if (route.render) {
+    // TODO: seems like `route` can either be RouteObject or an array of RouteObjects. Were previous types wrong?
+    if (!Array.isArray(route) && route.render) {
       // Perhaps undefined here would be more correct for "not ready", but
       // Relay uses null in RelayReadyStateRenderer, so let's follow that
       // convention.
       return route.render({
-        match,
+        match: match as unknown as Match,
         Component: isComponentResolved ? Component : null,
-        props: areDataResolved ? { match, router, data } : null,
+        // TODO: Can `match` be removed?
+        props: areDataResolved ? ({ match, router, data } as any) : null,
         data: areDataResolved ? data : null,
       });
     }
@@ -46,8 +53,7 @@ export default function createElements(routeMatches, Components, matchData) {
       // Note this check would be wrong on potentially unresolved data.
       warning(
         data === undefined,
-        'Route %s with data has no render method or component.',
-        i,
+        `Route ${i} with data has no render method or component.`,
       );
 
       // Nothing to render.

@@ -91,7 +91,9 @@ export interface Match<TContext = any> extends MatchBase {
 }
 
 export interface Resolver {
-  resolveElements(match: Match): AsyncIterable<ResolvedElement[]>;
+  resolveElements(
+    match: Match,
+  ): AsyncGenerator<Array<ResolvedElement> | undefined>;
 }
 
 // export const resolver: Resolver;
@@ -152,6 +154,7 @@ export interface Router extends FarceStoreExtension, FoundStoreExtension {
   /**
    * Moves delta steps in the history stack
    * @see farce
+   *
    */
   go: (delta: number) => void;
 
@@ -159,13 +162,14 @@ export interface Router extends FarceStoreExtension, FoundStoreExtension {
 }
 
 /**
+ * A near superset of Match.
  * The match for a specific route, including that route and its own params.
  */
 export interface RouteMatch extends Omit<Match, 'routeParams'> {
   /**
-   * The route object corresponding to this component
+   * The route object or array corresponding to this component
    */
-  route: RouteObject[];
+  route: RouteObject[] | RouteObject;
   /**
    * The path parameters for route
    */
@@ -189,12 +193,12 @@ export interface RouteRenderArgs {
    * The component for the route, if any; null if the component has not yet
    * been loaded
    */
-  Component?: React.ComponentType<any>;
+  Component?: React.ComponentType<any> | null;
   /**
    * The default props for the route component, specifically match with data
    * as an additional property; null if data have not yet been loaded
    */
-  props?: RenderProps;
+  props?: RenderProps | null;
   /**
    * The data for the route, as above; null if the data have not yet been
    * loaded
@@ -555,7 +559,8 @@ export interface ElementsRendererProps {
   elements: RenderArgsElements;
 }
 
-export type ElementsRenderer = React.ComponentType<ElementsRendererProps>;
+export type ElementsRenderer =
+  React.ComponentType<ElementsRendererProps> | null;
 
 export interface GetStoreRenderArgsOptions {
   store: Store;
