@@ -1,19 +1,6 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import { ElementsRendererProps, ResolvedElement } from './typeUtils';
-
-const propTypes = {
-  elements: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      // This should be an object of this same type, but recursive checks would
-      // probably be too messy.
-      PropTypes.object,
-      PropTypes.element,
-      PropTypes.func,
-    ]),
-  ).isRequired,
-};
 
 function accumulateElement(
   children: ResolvedElement,
@@ -50,7 +37,5 @@ function ElementsRenderer({ elements }: ElementsRendererProps) {
     null,
   ) as React.ReactElement<ElementsRendererProps> | null;
 }
-
-ElementsRenderer.propTypes = propTypes;
 
 export default ElementsRenderer;

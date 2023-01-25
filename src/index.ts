@@ -19,7 +19,6 @@ export { default as HttpError } from './HttpError';
 export { default as Link } from './Link';
 export { default as makeRouteConfig } from './makeRouteConfig';
 export { default as Matcher } from './Matcher';
-export { matcherShape, matchShape, routerShape } from './PropTypes';
 export { default as Redirect } from './Redirect';
 export { default as RedirectException } from './RedirectException';
 export { default as resolver } from './resolver';

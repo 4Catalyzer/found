@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable max-classes-per-file */
 // TypeScript Version: 4.0
 

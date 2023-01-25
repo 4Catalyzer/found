@@ -3,7 +3,7 @@ import withRouter from 'found/withRouter';
 import * as React from 'react';
 
 interface Props {
-  foo?: boolean; // eslint-disable-line react/no-unused-prop-types
+  foo?: boolean;
   match: Match;
   router: Router;
 }
