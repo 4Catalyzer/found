@@ -43,4 +43,4 @@ declare class RedirectType extends React.Component<RedirectOptions> {
   constructor(config: RedirectOptions);
 }
 
-export default Redirect as unknown as RedirectType;
+export default Redirect as unknown as typeof RedirectType;

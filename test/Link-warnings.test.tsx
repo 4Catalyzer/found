@@ -7,13 +7,15 @@ import Link from '../src/Link';
 import { mountWithRouter } from './helpers';
 
 const CustomComponent = () => <div />;
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
 
 describe('<Link> warnings', () => {
   it('should warn on component prop', async () => {
     // The below will log a warning for an invalid prop.
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(noop);
 
-    await mountWithRouter(<Link component={CustomComponent} to="/" />);
+    await mountWithRouter(<Link component={CustomComponent as any} to="/" />);
 
     expect(warning).toHaveBeenCalledWith(
       false,
@@ -23,9 +25,9 @@ describe('<Link> warnings', () => {
 
   it('should warn on Component prop', async () => {
     // The below will log a warning for an invalid prop.
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(noop);
 
-    await mountWithRouter(<Link Component={CustomComponent} to="/" />);
+    await mountWithRouter(<Link Component={CustomComponent as any} to="/" />);
 
     expect(warning).toHaveBeenCalledWith(
       false,
@@ -34,15 +36,7 @@ describe('<Link> warnings', () => {
   });
 
   it('should not warn when as prop is specified', async () => {
-    await mountWithRouter(
-      <Link
-        as={CustomComponent}
-        to="/"
-        component={CustomComponent}
-        // eslint-disable-next-line react/jsx-no-duplicate-props
-        Component={CustomComponent}
-      />,
-    );
+    await mountWithRouter(<Link as={CustomComponent} to="/" />);
 
     expect(warning).not.toHaveBeenCalledWith(
       false,

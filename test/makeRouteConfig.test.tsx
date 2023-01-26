@@ -6,18 +6,20 @@ import Route from '../src/Route';
 import makeRouteConfig from '../src/makeRouteConfig';
 
 describe('makeRouteConfig', () => {
-  const AppPage = () => {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const noop = () => <div />;
+  const AppPage = noop;
 
-  const MainPage = () => {};
-  const FooPage = () => {};
-  const BarPage = () => {};
-  const BazPage = () => {};
+  const MainPage = noop;
+  const FooPage = noop;
+  const BarPage = noop;
+  const BazPage = noop;
 
-  const FooNav = () => {};
-  const FooA = () => {};
-  const FooB = () => {};
-  const BarNav = () => {};
-  const BarMain = () => {};
+  const FooNav = noop;
+  const FooA = noop;
+  const FooB = noop;
+  const BarNav = noop;
+  const BarMain = noop;
 
   it('should work with a route', () => {
     expect(makeRouteConfig(<Route path="/" Component={AppPage} />)).toEqual([
@@ -224,7 +226,7 @@ describe('makeRouteConfig', () => {
 
   ['react-proxy', 'react-stand-in'].forEach((packageName) => {
     it(`should work with proxies from ${packageName}`, () => {
-      // eslint-disable-next-line global-require, import/no-dynamic-require
+      // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
       const createProxy = require(packageName).default;
 
       const ProxiedRedirect = createProxy(Redirect).get();
@@ -241,14 +243,14 @@ describe('makeRouteConfig', () => {
       let redirectException;
 
       try {
-        redirect.render({
+        redirect.render?.({
           match: {
             router: {
               matcher: {
                 format: (to) => to,
               },
             },
-          },
+          } as any,
         });
       } catch (e) {
         redirectException = e;

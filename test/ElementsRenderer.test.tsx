@@ -3,6 +3,11 @@ import React from 'react';
 
 import ElementsRenderer from '../src/ElementsRenderer';
 
+const Parent = ({ children }: { children?: React.ReactNode }) => (
+  <div className="parent">{children}</div>
+);
+const Child = () => <div className="child" />;
+
 describe('<ElementsRenderer>', () => {
   it('should render null when there are no elements', () => {
     const wrapper = mount(<ElementsRenderer elements={[]} />);
@@ -14,16 +19,14 @@ describe('<ElementsRenderer>', () => {
     expect(wrapper.find('div')).toHaveLength(1);
   });
 
-  it('should render nested elements', () => {
-    const Parent = ({ children }) => <div className="parent">{children}</div>;
-    const Child = () => <div className="child" />;
-
+  it('should render sibling elements', () => {
     const wrapper = mount(
-      <ElementsRenderer elements={[<Parent />, <Child />]} />,
+      <ElementsRenderer elements={[<Parent />, <Parent />, <Child />]} />,
     );
 
+    console.log(wrapper.html());
     const parent = wrapper.find(Parent);
-    expect(parent).toHaveLength(1);
+    expect(parent).toHaveLength(2);
 
     const child = parent.find(Child);
     expect(child).toHaveLength(1);

@@ -30,7 +30,7 @@ describe('<BaseLink>', () => {
     it('should call a custom click handler', () => {
       const handleClick = jest.fn();
       const link = mount(
-        <BaseLink to="/" match={{}} router={router} onClick={handleClick} />,
+        <BaseLink to="/" router={router} onClick={handleClick} />,
       );
 
       link.find('a').simulate('click');
@@ -39,7 +39,7 @@ describe('<BaseLink>', () => {
 
     it('should navigate to the destination location', () => {
       const link = mount(
-        <BaseLink to="/path-to-another-page" match={{}} router={router} />,
+        <BaseLink to="/path-to-another-page" router={router} />,
       );
 
       link.find('a').simulate('click', { button: 0 });
@@ -50,7 +50,6 @@ describe('<BaseLink>', () => {
       const link = mount(
         <BaseLink
           to="/"
-          match={{}}
           router={router}
           onClick={(event) => {
             event.preventDefault();
@@ -63,7 +62,7 @@ describe('<BaseLink>', () => {
     });
 
     it('should not navigate on modified clicks', () => {
-      const link = mount(<BaseLink to="/" match={{}} router={router} />);
+      const link = mount(<BaseLink to="/" router={router} />);
 
       const a = link.find('a');
 
@@ -81,25 +80,21 @@ describe('<BaseLink>', () => {
     });
 
     it('should not navigate on non-left clicks', () => {
-      const link = mount(<BaseLink to="/" match={{}} router={router} />);
+      const link = mount(<BaseLink to="/" router={router} />);
 
       link.find('a').simulate('click', { button: 2 });
       expect(router.push).not.toBeCalled();
     });
 
     it('should not navigate if target is defined and not _self', () => {
-      const link = mount(
-        <BaseLink to="/" match={{}} router={router} target="_blank" />,
-      );
+      const link = mount(<BaseLink to="/" router={router} target="_blank" />);
 
       link.find('a').simulate('click', { button: 0 });
       expect(router.push).not.toBeCalled();
     });
 
     it('should navigate if target is _self', () => {
-      const link = mount(
-        <BaseLink to="/" match={{}} router={router} target="_self" />,
-      );
+      const link = mount(<BaseLink to="/" router={router} target="_self" />);
 
       link.find('a').simulate('click', { button: 0 });
       expect(router.push).toBeCalled();
@@ -108,7 +103,7 @@ describe('<BaseLink>', () => {
 
   describe('active state', () => {
     it('should not call isActive when not showing active state', () => {
-      mount(<BaseLink to="/" match={{}} router={router} />);
+      mount(<BaseLink to="/" router={router} />);
 
       expect(router.isActive).not.toBeCalled();
     });
@@ -116,12 +111,7 @@ describe('<BaseLink>', () => {
     it('should set activeClassName when active', () => {
       router.isActive.mockReturnValueOnce(true);
       const link = mount(
-        <BaseLink
-          to="/"
-          match={{}}
-          router={router}
-          activeClassName="active"
-        />,
+        <BaseLink to="/" router={router} activeClassName="active" />,
       );
 
       expect(link.find('a').prop('className')).toMatch(/active/);
@@ -130,15 +120,10 @@ describe('<BaseLink>', () => {
     it('should set activeStyle when active', () => {
       router.isActive.mockReturnValueOnce(true);
       const link = mount(
-        <BaseLink
-          to="/"
-          match={{}}
-          router={router}
-          activeStyle={{ color: '#fff' }}
-        />,
+        <BaseLink to="/" router={router} activeStyle={{ color: '#fff' }} />,
       );
 
-      expect(link.find('a').prop('style').color).toBe('#fff');
+      expect(link.find('a').prop('style')?.color).toBe('#fff');
     });
 
     it('should set activePropName when active', () => {
@@ -148,7 +133,6 @@ describe('<BaseLink>', () => {
           as={CustomComponent}
           to="/"
           activePropName="active"
-          match={{}}
           router={router}
         />,
       );
@@ -163,7 +147,6 @@ describe('<BaseLink>', () => {
           as={CustomComponent}
           to="/"
           activePropName="active"
-          match={{}}
           router={router}
         />,
       );

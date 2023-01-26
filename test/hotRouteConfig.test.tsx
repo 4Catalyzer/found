@@ -12,7 +12,7 @@ describe('hotRouteConfig', () => {
   afterEach(() => {
     /* eslint-env browser */
     // eslint-disable-next-line no-underscore-dangle
-    delete window.__FOUND_HOT_RELOAD__;
+    delete (window as any).__FOUND_HOT_RELOAD__;
     /* eslint-env browser: false */
   });
 

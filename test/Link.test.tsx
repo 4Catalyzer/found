@@ -3,7 +3,7 @@ import React from 'react';
 import Link from '../src/Link';
 import { mountWithRouter } from './helpers';
 
-const CustomComponent = () => <div />;
+const CustomComponent = (props: any) => <div {...props} />;
 
 describe('<Link>', () => {
   it('should render <a> by default', async () => {
@@ -34,7 +34,7 @@ describe('<Link>', () => {
 
   it('should support functional children', async () => {
     const link = await mountWithRouter(
-      <Link to="/" otherProp="foo">
+      <Link to="/">
         {({ href, active, onClick }) => (
           <CustomComponent href={href} active={active} onClick={onClick} />
         )}
