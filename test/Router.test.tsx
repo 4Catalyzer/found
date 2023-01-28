@@ -8,6 +8,7 @@ import TestRenderer, { act } from 'react-test-renderer';
 
 import HttpError from '../src/HttpError';
 import RedirectException from '../src/RedirectException';
+import { RouterContextState } from '../src/RouterContext';
 import createFarceRouter from '../src/createFarceRouter';
 import useRouter from '../src/useRouter';
 import withRouter from '../src/withRouter';
@@ -99,8 +100,8 @@ describe('Router', () => {
           render: () => <div className="foo" />,
         },
       ],
-    });
-    const storeRef = React.createRef();
+    }) as React.ForwardRefRenderFunction<any, any>;
+    const storeRef = React.createRef<any>();
     const resolver = new InstrumentedResolver();
     const testRenderer = TestRenderer.create(
       <Router ref={storeRef} resolver={resolver} />,
@@ -172,7 +173,7 @@ describe('Router', () => {
         const { match, router } = useRouter();
 
         useEffect(() => {
-          router.push(`${match.location.pathname}/bar`);
+          router.push(`${match!.location.pathname}/bar`);
         });
 
         return null;
@@ -189,9 +190,9 @@ describe('Router', () => {
     it('should provide router context for withRouter', async () => {
       class MyComponent extends React.Component {
         componentDidMount() {
-          const { match, router } = this.props;
+          const { match, router } = this.props as RouterContextState;
 
-          router.push(`${match.location.pathname}/bar`);
+          router.push(`${match!.location.pathname}/bar`);
         }
 
         render() {
@@ -226,10 +227,10 @@ describe('Router', () => {
             render: () => <div className="bar" />,
           },
         ],
-      });
+      }) as React.ForwardRefRenderFunction<any, any>;
 
       const resolver = new InstrumentedResolver();
-      const storeRef = React.createRef();
+      const storeRef = React.createRef<any>();
 
       const testRenderer = TestRenderer.create(
         <Router ref={storeRef} resolver={resolver} />,
@@ -264,7 +265,7 @@ describe('Router', () => {
         routeConfig: [
           {
             path: '/foo',
-            getData: () => deferreds.shift().promise,
+            getData: () => deferreds.shift()!.promise,
             render: () => <div className="foo" />,
           },
           {

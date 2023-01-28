@@ -5,6 +5,7 @@ import React from 'react';
 import TestRenderer from 'react-test-renderer';
 
 import createFarceRouter from '../src/createFarceRouter';
+import { RouteRenderMethod } from '../src/typeUtils';
 import { InstrumentedResolver } from './helpers';
 
 describe('render', () => {
@@ -154,15 +155,20 @@ describe('render', () => {
           render: () => (children) => <div className="foo">{children}</div>,
           children: [
             {
-              render:
-                () =>
-                ({ nav, main }) =>
+              render: ((_args: any) =>
+                ({
+                  nav,
+                  main,
+                }: {
+                  nav: React.ReactElement;
+                  main: React.ReactElement;
+                }) =>
                   (
                     <div className="bar">
                       {nav}
                       {main}
                     </div>
-                  ),
+                  )) as RouteRenderMethod,
               children: {
                 nav: [
                   {

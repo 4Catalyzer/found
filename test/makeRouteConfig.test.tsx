@@ -7,19 +7,19 @@ import makeRouteConfig from '../src/makeRouteConfig';
 
 describe('makeRouteConfig', () => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const noop = () => <div />;
-  const AppPage = noop;
+  const Elem = () => <div />;
+  const AppPage = Elem;
 
-  const MainPage = noop;
-  const FooPage = noop;
-  const BarPage = noop;
-  const BazPage = noop;
+  const MainPage = Elem;
+  const FooPage = Elem;
+  const BarPage = Elem;
+  const BazPage = Elem;
 
-  const FooNav = noop;
-  const FooA = noop;
-  const FooB = noop;
-  const BarNav = noop;
-  const BarMain = noop;
+  const FooNav = Elem;
+  const FooA = Elem;
+  const FooB = Elem;
+  const BarNav = Elem;
+  const BarMain = Elem;
 
   it('should work with a route', () => {
     expect(makeRouteConfig(<Route path="/" Component={AppPage} />)).toEqual([

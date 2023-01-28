@@ -3,6 +3,7 @@ import pDefer from 'p-defer';
 
 import { getRouteMatches } from '../src/ResolverUtils';
 import resolver from '../src/resolver';
+import { Match } from '../src/typeUtils';
 
 describe('resolver', () => {
   describe('getData', () => {
@@ -37,7 +38,7 @@ describe('resolver', () => {
         ],
         routeParams: [{}, {}, {}, {}],
         routeIndices: [0, 0, 0, 0],
-      };
+      } as unknown as Match;
 
       const routeMatches = getRouteMatches(match);
       const dataPromises = resolver.getData(match, routeMatches);

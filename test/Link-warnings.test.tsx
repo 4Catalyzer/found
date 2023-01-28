@@ -4,11 +4,9 @@ import React from 'react';
 import warning from 'tiny-warning';
 
 import Link from '../src/Link';
-import { mountWithRouter } from './helpers';
+import { mountWithRouter, noop } from './helpers';
 
 const CustomComponent = () => <div />;
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {};
 
 describe('<Link> warnings', () => {
   it('should warn on component prop', async () => {

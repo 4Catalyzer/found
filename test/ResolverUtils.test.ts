@@ -9,6 +9,10 @@ import {
   getRouteValues,
   isResolved,
 } from '../src/ResolverUtils';
+import { noop } from './helpers';
+
+const createPromise = <T>(returnVal: T): Promise<T> =>
+  new Promise((resolve) => resolve(returnVal));
 
 describe('ResolverUtils', () => {
   let match;
@@ -46,7 +50,9 @@ describe('ResolverUtils', () => {
     });
 
     it('should return true for resolved promises', async () => {
-      expect(isResolved(await checkResolved(Promise.resolve({})))).toBe(true);
+      expect(isResolved(await checkResolved(await createPromise({})))).toBe(
+        true,
+      );
 
       expect(
         isResolved(
@@ -66,9 +72,7 @@ describe('ResolverUtils', () => {
         ),
       ).toBe(false);
 
-      expect(isResolved(await checkResolved(new Promise(() => {})))).toBe(
-        false,
-      );
+      expect(isResolved(await checkResolved(new Promise(noop)))).toBe(false);
     });
   });
 

@@ -1,4 +1,10 @@
 import Matcher from '../src/Matcher';
+import { Match } from '../src/typeUtils';
+
+const createLocationMatch = (locationMatch) =>
+  ({
+    location: locationMatch,
+  } as unknown as Match);
 
 describe('Matcher', () => {
   describe('route hierarchies', () => {
@@ -27,11 +33,13 @@ describe('Matcher', () => {
       },
     ]);
 
-    [
-      ['pathless children', '/foo', [0, 0, 0]],
-      ['nested matching', '/foo/bar', [0, 1]],
-      ['route fallthrough', '/foo/baz', [2]],
-    ].forEach(([scenario, pathname, expectedRouteIndices]) => {
+    (
+      [
+        ['pathless children', '/foo', [0, 0, 0]],
+        ['nested matching', '/foo/bar', [0, 1]],
+        ['route fallthrough', '/foo/baz', [2]],
+      ] as const
+    ).forEach(([scenario, pathname, expectedRouteIndices]) => {
       describe(scenario, () => {
         it('should be supported', () => {
           expect(
@@ -256,12 +264,14 @@ describe('Matcher', () => {
       },
     ]);
 
-    [
-      ['parent without trailing slash', '/foo', [0, 0]],
-      ['parent with trailing slash', '/foo/', [0, 0]],
-      ['child without trailing slash', '/foo/bar', [0, 1]],
-      ['child with trailing slash', '/foo/bar/', [0, 1]],
-    ].forEach(([scenario, pathname, expectedRouteIndices]) => {
+    (
+      [
+        ['parent without trailing slash', '/foo', [0, 0]],
+        ['parent with trailing slash', '/foo/', [0, 0]],
+        ['child without trailing slash', '/foo/bar', [0, 1]],
+        ['child with trailing slash', '/foo/bar/', [0, 1]],
+      ] as const
+    ).forEach(([scenario, pathname, expectedRouteIndices]) => {
       it(`should match ${scenario}`, () => {
         expect(
           matcher.match({
@@ -273,11 +283,13 @@ describe('Matcher', () => {
       });
     });
 
-    [
-      ['parent with extraneous trailing slashes', '/foo//'],
-      ['child with extraneous trailing slashes', '/foo/bar//'],
-      ['extraneous slashes between parent and child ', '/foo//bar/'],
-    ].forEach(([scenario, pathname]) => {
+    (
+      [
+        ['parent with extraneous trailing slashes', '/foo//'],
+        ['child with extraneous trailing slashes', '/foo/bar//'],
+        ['extraneous slashes between parent and child ', '/foo//bar/'],
+      ] as const
+    ).forEach(([scenario, pathname]) => {
       it(`should not match ${scenario}`, () => {
         expect(
           matcher.match({
@@ -350,7 +362,7 @@ describe('Matcher', () => {
   });
 
   describe('#joinPaths', () => {
-    const matcher = new Matcher();
+    const matcher = new Matcher([]);
 
     [
       ['no extra slashes', '/foo', 'bar'],
@@ -359,6 +371,7 @@ describe('Matcher', () => {
       ['slashes everywhere', '/foo/', '/bar'],
     ].forEach(([scenario, basePath, path]) => {
       it(`should support ${scenario}`, () => {
+        // @ts-ignore
         expect(matcher.joinPaths(basePath, path)).toBe('/foo/bar');
       });
     });
@@ -368,54 +381,64 @@ describe('Matcher', () => {
     const matcher = new Matcher([]);
 
     describe('active locations', () => {
-      [
-        ['path match', { pathname: '/foo/bar' }, { pathname: '/foo/bar' }],
-        ['parent path match', { pathname: '/foo/bar' }, { pathname: '/foo' }],
+      (
         [
-          'exact path match',
-          { pathname: '/foo/bar' },
-          { pathname: '/foo/bar' },
-          { exact: true },
-        ],
-        [
-          'null query match',
-          { pathname: '/foo', query: { foo: 'bar' } },
-          { pathname: '/foo' },
-        ],
-        [
-          'empty query match',
-          { pathname: '/foo', query: { foo: 'bar' } },
-          { pathname: '/foo', query: {} },
-        ],
-        [
-          'empty query match with explicit undefined',
-          { pathname: '/foo', query: { foo: undefined } },
-          { pathname: '/foo', query: {} },
-        ],
-        [
-          'query match',
-          { pathname: '/foo', query: { foo: 'bar' } },
-          { pathname: '/foo', query: { foo: 'bar' } },
-        ],
-        [
-          'query match with extraneous query item',
-          { pathname: '/foo', query: { foo: 'bar', bar: 'foo' } },
-          { pathname: '/foo', query: { foo: 'bar' } },
-        ],
-        [
-          'absent query match with implicit undefined',
-          { pathname: '/foo', query: {} },
-          { pathname: '/foo', query: { foo: undefined } },
-        ],
-        [
-          'absent query match with explicit undefined',
-          { pathname: '/foo', query: { foo: undefined } },
-          { pathname: '/foo', query: { foo: undefined } },
-        ],
-      ].forEach(([scenario, matchLocation, location, options]) => {
+          ['path match', { pathname: '/foo/bar' }, { pathname: '/foo/bar' }],
+          [
+            'parent path match',
+            { pathname: '/foo/bar' },
+            { pathname: '/foo' },
+          ],
+          [
+            'exact path match',
+            { pathname: '/foo/bar' },
+            { pathname: '/foo/bar' },
+            { exact: true },
+          ],
+          [
+            'null query match',
+            { pathname: '/foo', query: { foo: 'bar' } },
+            { pathname: '/foo' },
+          ],
+          [
+            'empty query match',
+            { pathname: '/foo', query: { foo: 'bar' } },
+            { pathname: '/foo', query: {} },
+          ],
+          [
+            'empty query match with explicit undefined',
+            { pathname: '/foo', query: { foo: undefined } },
+            { pathname: '/foo', query: {} },
+          ],
+          [
+            'query match',
+            { pathname: '/foo', query: { foo: 'bar' } },
+            { pathname: '/foo', query: { foo: 'bar' } },
+          ],
+          [
+            'query match with extraneous query item',
+            { pathname: '/foo', query: { foo: 'bar', bar: 'foo' } },
+            { pathname: '/foo', query: { foo: 'bar' } },
+          ],
+          [
+            'absent query match with implicit undefined',
+            { pathname: '/foo', query: {} },
+            { pathname: '/foo', query: { foo: undefined } },
+          ],
+          [
+            'absent query match with explicit undefined',
+            { pathname: '/foo', query: { foo: undefined } },
+            { pathname: '/foo', query: { foo: undefined } },
+          ],
+        ] as const
+      ).forEach(([scenario, matchLocation, location, options]) => {
         it(`should be active on ${scenario}`, () => {
           expect(
-            matcher.isActive({ location: matchLocation }, location, options),
+            matcher.isActive(
+              createLocationMatch(matchLocation),
+              location,
+              options,
+            ),
           ).toBe(true);
         });
       });
@@ -456,10 +479,14 @@ describe('Matcher', () => {
           { pathname: '/foo', query: { foo: 'bar' } },
           { pathname: '/foo', query: { foo: undefined } },
         ],
-      ].forEach(([scenario, matchLocation, location, options]) => {
+      ].forEach(([scenario, matchLocation, location, options]: any) => {
         it(`should not be active on ${scenario}`, () => {
           expect(
-            matcher.isActive({ location: matchLocation }, location, options),
+            matcher.isActive(
+              createLocationMatch(matchLocation),
+              location,
+              options,
+            ),
           ).toBe(false);
         });
       });
