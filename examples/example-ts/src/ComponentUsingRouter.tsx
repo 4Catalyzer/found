@@ -8,11 +8,8 @@ interface Props {
 function ComponentUsingRouter(_props: Props) {
   const { match, router } = useRouter();
 
-  return (
-    <div>
-      {match.location.pathname}, {router}
-    </div>
-  );
+  console.log(router);
+  return <div>Pathname: {match.location.pathname}</div>;
 }
 
 export { ComponentUsingRouter };

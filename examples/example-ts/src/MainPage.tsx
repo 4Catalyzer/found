@@ -6,6 +6,7 @@ import { ComponentWithRouter } from './ComponentWithRouter';
 export function MainPage() {
   return (
     <div>
+      MainPage!
       <ComponentWithRouter />
       <ComponentUsingRouter />
     </div>

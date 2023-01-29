@@ -9,11 +9,8 @@ interface Props {
 }
 
 function ComponentWithRouter({ match, router }: Props) {
-  return (
-    <div>
-      {match.location.pathname}, {router}
-    </div>
-  );
+  console.log(router);
+  return <div>Pathname: {match.location.pathname}</div>;
 }
 
 const ComponentWithRouterContainer = withRouter(ComponentWithRouter);

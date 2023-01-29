@@ -6,12 +6,12 @@ import {
   createBrowserRouter,
   makeRouteConfig,
 } from 'found';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 import { AppPage } from './AppPage';
 import { MainPage } from './MainPage';
 import { WidgetsPage } from './WidgetsPage';
+import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 
 const fetchWidget = (_widgetId: any) =>
   new Promise((_resolve) => {
@@ -69,3 +69,6 @@ const BrowserRouter = createBrowserRouter({
 });
 
 ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
+// createRoot(document.getElementById('root') as HTMLElement).render(
+//   <BrowserRouter />,
+// );
