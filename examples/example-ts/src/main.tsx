@@ -68,7 +68,6 @@ const BrowserRouter = createBrowserRouter({
   ),
 });
 
-ReactDOM.render(<BrowserRouter />, document.getElementById('root'));
-// createRoot(document.getElementById('root') as HTMLElement).render(
-//   <BrowserRouter />,
-// );
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <BrowserRouter />,
+);
