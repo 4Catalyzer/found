@@ -26,10 +26,8 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "build:ts": "yarn tsc --outDir lib/cjs --module commonjs && yarn tsc --outDir lib/esm --module es2020 && mv lib/esm/*.d.ts lib && mv lib/cjs/*.d.ts lib",
-    "build": "rimraf lib && 4c build --types false src && yarn build:pick && yarn build:types",
+    "build": "yarn tsc --outDir lib/cjs --module commonjs && yarn tsc --outDir lib/esm --module es2020 && mv lib/esm/*.d.ts lib && mv lib/cjs/*.d.ts lib && yarn build:pick",
     "build:pick": "cherry-pick --cjs-dir cjs --esm-dir esm --cwd lib ../src",
-    "build:types": "cpy types/*.d.ts lib",
     "build:docs": "yarn --cwd www build",
     "format": "4c format --prettier-ignore .eslintignore .",
     "lint": "4c lint --prettier-ignore .eslintignore .",
@@ -38,7 +36,7 @@
     "release": "4c release --conventional-commits",
     "tdd": "jest --watch",
     "test": "yarn lint && yarn test:ts && yarn testonly -- --coverage",
-    "test:ts": "dtslint --expectOnly types && yarn tsc --noEmit",
+    "test:ts": "yarn tsc --noEmit",
     "testonly": "jest --runInBand --verbose",
     "docs": "yarn --cwd www start"
   },
@@ -46,8 +44,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*": "yarn 4c lint --fix --prettier-ignore .eslintignore",
-    "./README.md": "doctoc"
+    "*": "yarn 4c lint --fix --prettier-ignore .eslintignore"
   },
   "prettier": "@4c/prettier-config",
   "dependencies": {
@@ -84,8 +81,6 @@
     "codecov": "^3.8.3",
     "cpy-cli": "^3.1.1",
     "delay": "^5.0.0",
-    "doctoc": "^2.1.0",
-    "dtslint": "^4.2.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^8.13.0",
