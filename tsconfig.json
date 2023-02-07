@@ -2,8 +2,7 @@
   "extends": "@4c/tsconfig/web.json",
   "compilerOptions": {
     "allowJs": true,
-    "sourceMap": false,
-    "removeComments": true
+    "sourceMap": false
   },
   "include": ["./src/**/*.ts"]
 }
