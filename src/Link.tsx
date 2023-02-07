@@ -124,4 +124,4 @@ declare class LinkType<
   props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
 }
 
-export default Link as unknown as LinkType;
+export default Link as unknown as typeof LinkType;

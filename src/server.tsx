@@ -2,16 +2,24 @@ import FarceActions from 'farce/Actions';
 import ServerProtocol from 'farce/ServerProtocol';
 import React, { useMemo } from 'react';
 
+import RedirectException from './RedirectException';
 import RouterContext from './RouterContext';
 import createFarceStore from './createFarceStore';
 import createRender from './createRender';
 import getStoreRenderArgs from './getStoreRenderArgs';
 import defaultResolver from './resolver';
-import { RenderArgs } from './typeUtils';
+import { FarceRouterOptions, RenderArgs, Resolver } from './typeUtils';
 
 interface RouterProviderProps {
   renderArgs: RenderArgs;
   children: React.ReactNode;
+}
+
+export interface GetFarceResultOptions
+  extends Omit<FarceRouterOptions, 'store' | 'historyProtocol'> {
+  url: string;
+  resolver?: Resolver;
+  matchContext?: any;
 }
 
 function RouterProvider({ renderArgs, children }: RouterProviderProps) {
@@ -53,7 +61,7 @@ export async function getFarceResult({
     renderReady,
     renderError,
   }),
-}): Promise<FarceResult> {
+}: GetFarceResultOptions): Promise<FarceResult> {
   const store = createFarceStore({
     historyProtocol: new ServerProtocol(url),
     historyMiddlewares,
@@ -69,8 +77,8 @@ export async function getFarceResult({
       matchContext,
       resolver,
     });
-  } catch (e) {
-    if (e.isFoundRedirectException) {
+  } catch (e: any) {
+    if ((e as RedirectException).isFoundRedirectException) {
       // The store is not exposed to the user, so we need to build the redirect
       // URL here.
       return {

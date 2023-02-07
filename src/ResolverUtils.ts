@@ -12,7 +12,7 @@ const UNRESOLVED = {};
  *
  * If the value is not a promise it's simply returned
  */
-export function checkResolved<T extends Promise<T>>(value: T): Promise<T> | T {
+export function checkResolved<T>(value: T): Promise<Awaited<T>> | T {
   if (!isPromise(value)) {
     return value;
   }
@@ -30,11 +30,11 @@ export function isResolved<T>(value: T | Record<string, unknown>): value is T {
   return value !== UNRESOLVED;
 }
 
-function accumulateRouteValuesImpl(
+function accumulateRouteValuesImpl<T>(
   routeValues: RouteMatch[],
   routeIndices: RouteIndices,
-  callback: (...args: any[]) => Record<string, unknown>,
-  initialValue: Record<string, unknown>,
+  callback: (...args: any[]) => T,
+  initialValue: T,
 ) {
   const accumulated = [];
   let value = initialValue;
@@ -61,12 +61,12 @@ function accumulateRouteValuesImpl(
   return accumulated;
 }
 
-export function accumulateRouteValues(
+export function accumulateRouteValues<T>(
   routeValues: RouteMatch[],
   routeIndices: RouteIndices,
   // TODO: type this better
-  callback: (...args: any[]) => Record<string, unknown>,
-  initialValue: Record<string, unknown>,
+  callback: (...args: any[]) => T,
+  initialValue: T,
 ) {
   return accumulateRouteValuesImpl(
     [...routeValues],
