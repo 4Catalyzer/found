@@ -18,6 +18,7 @@ export { default as hotRouteConfig } from './hotRouteConfig';
 export { default as HttpError } from './HttpError';
 export { default as Link } from './Link';
 export { default as makeRouteConfig } from './makeRouteConfig';
+export { getFarceResult, RouterProvider } from './server';
 export { default as Matcher } from './Matcher';
 export { default as Redirect } from './Redirect';
 export { default as RedirectException } from './RedirectException';
