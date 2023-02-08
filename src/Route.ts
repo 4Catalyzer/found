@@ -1,7 +1,15 @@
 // eslint-disable-next-line max-classes-per-file
 import React from 'react';
 
-import type { RouteObject, RouteProps } from './utilityTypes';
+import type { RouteObject, RouteObjectBase } from './utilityTypes';
+
+export interface RouteProps extends RouteObjectBase {
+  children?: React.ReactNode | Record<string, React.ReactNode>;
+}
+
+export interface RouteProps extends RouteObjectBase {
+  children?: React.ReactNode | Record<string, React.ReactNode>;
+}
 
 /**
  * Convenience class for creating normal routes with JSX. When not using JSX,

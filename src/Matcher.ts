@@ -31,6 +31,12 @@ export interface MatcherOptions {
   warnOnPartiallyMatchedNamedRoutes?: boolean;
 }
 
+/**
+ * An object implementing the matching algorithm.
+ *
+ * User code generally shouldn't need this, but it doesn't hurt to here,
+ * since we use it for routerShape below.
+ */
 export default class Matcher {
   private routeConfig: RouteConfig;
 
@@ -76,6 +82,11 @@ export default class Matcher {
     return `${basePath}${this.getCanonicalPattern(path)}`;
   }
 
+  /**
+   * for match as above, returns whether match corresponds to location or a
+   * subpath of location; if exact is set, returns whether match corresponds
+   * exactly to location
+   */
   isActive(
     { location: matchLocation }: Match,
     location: LocationDescriptorObject,
@@ -90,6 +101,10 @@ export default class Matcher {
     );
   }
 
+  /**
+   * Returns the path string for a pattern of the same format as a route path
+   * and a object of the corresponding path parameters
+   */
   format(pattern: string, params: ParamsDescriptor): string {
     return compile(pattern)(params);
   }

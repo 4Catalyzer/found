@@ -93,49 +93,14 @@ export interface Resolver {
   ): AsyncGenerator<Array<ResolvedElement> | undefined>;
 }
 
-// export const resolver: Resolver;
-
 export interface FoundState {
   match: MatchBase;
   resolvedMatch: MatchBase;
 }
 
-// export const foundReducer: Reducer<FoundState>;
-
 export interface IsActiveOptions {
   exact?: boolean;
 }
-
-/**
- * An object implementing the matching algorithm.
- *
- * User code generally shouldn't need this, but it doesn't hurt to here,
- * since we use it for routerShape below.
- */
-// export class Matcher {
-//   constructor(routeConfig: RouteConfig);
-
-//   match(location: Location): MatcherResult | null;
-
-//   getRoutes: (match: MatchBase) => RouteObject[];
-
-//   /**
-//    * for match as above, returns whether match corresponds to location or a
-//    * subpath of location; if exact is set, returns whether match corresponds
-//    * exactly to location
-//    */
-//   isActive: (
-//     match: Match,
-//     location: LocationDescriptorObject,
-//     options?: IsActiveOptions,
-//   ) => boolean;
-
-//   /**
-//    * Returns the path string for a pattern of the same format as a route path
-//    * and a object of the corresponding path parameters
-//    */
-//   format: (pattern: string, params: ParamsDescriptor) => string;
-// }
 
 export interface Router extends FarceStoreExtension, FoundStoreExtension {
   /**
@@ -282,43 +247,6 @@ export interface RouteObject extends RouteObjectBase {
 
 export type RouteConfig = RouteObject[];
 
-export interface RouteProps extends RouteObjectBase {
-  children?: React.ReactNode | Record<string, React.ReactNode>;
-}
-
-/**
- * JSX Route
- */
-// export class Route extends React.Component<RouteProps> {
-//   constructor(options: RouteObject | RouteProps);
-// }
-
-// export function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
-
-// export class HttpError {
-//   status: number;
-
-//   data: any;
-
-//   constructor(status: number, data?: any);
-// }
-
-// export class Redirect extends React.Component<RedirectProps> {
-//   constructor(config: RedirectOptions);
-// }
-
-// export class Link<
-//   TInner extends React.ElementType = never,
-//   TInnerWithActivePropName extends React.ComponentType<
-//     LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
-//   > = never,
-//   TActivePropName extends string = never,
-// > extends React.Component<
-//   LinkProps<TInner, TInnerWithActivePropName, TActivePropName>
-// > {
-//   props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
-// }
-
 export interface RouterState<TContext = any> {
   match: Match<TContext>;
   router: Router;
@@ -336,68 +264,7 @@ export interface RouteComponentDataProps<T, TContext = never>
   data: T;
 }
 
-/**
- * Returns the Router and current route match from context
- */
-// export function useRouter<TContext = any>(): RouterState<TContext>;
-
-/** Returns the current route Match */
-// export function useMatch<TContext = any>(): Match<TContext>;
-
-/** Returns the current route params */
-// export function useParams(): Params;
-
-/** Returns the current location object */
-// export function useLocation(): Location;
-
-// export function withRouter<TProps extends RouterState>(
-//   Component: React.ComponentType<TProps>,
-// ): React.ComponentType<Omit<TProps, keyof RouterState>>;
-
-// export class RedirectException {
-//   constructor(location: LocationDescriptor, status?: number);
-
-//   location: LocationDescriptor;
-
-//   status: number;
-// }
-
-/**
- * Create a route configuration from JSX configuration elements.
- */
-// export function makeRouteConfig(node: React.ReactNode): RouteConfig;
-
 export interface FoundStoreExtension {
   matcher: Matcher;
   replaceRouteConfig: (routeConfig: RouteConfig) => void;
 }
-
-// export function createMatchEnhancer(
-//   matcher: Matcher,
-// ): StoreEnhancer<{ found: FoundStoreExtension }>;
-
-// export function createRender(
-//   options: CreateRenderOptions,
-// ): (renderArgs: RenderArgs) => React.ReactElement;
-
-// export function createConnectedRouter(
-//   options: ConnectedRouterOptions,
-// ): ConnectedRouter;
-
-// export function createFarceRouter(options: FarceRouterOptions): FarceRouter;
-
-// export function createBrowserRouter(
-//   options: BrowserRouterOptions,
-// ): BrowserRouter;
-
-// export function createInitialFarceRouter(
-//   options: InitialFarceRouterOptions,
-// ): Promise<FarceRouter>;
-
-// export function createInitialBrowserRouter(
-//   options: InitialBrowserRouterOptions,
-// ): Promise<BrowserRouter>;
-
-// export function getStoreRenderArgs(
-//   options: GetStoreRenderArgsOptions,
-// ): Promise<RenderArgs>;
