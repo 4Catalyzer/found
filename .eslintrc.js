@@ -9,5 +9,6 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'no-use-before-define': 'off',
+    'react/no-unused-prop-types': 'off',
   },
 };

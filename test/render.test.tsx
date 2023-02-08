@@ -5,7 +5,7 @@ import React from 'react';
 import TestRenderer from 'react-test-renderer';
 
 import createFarceRouter from '../src/createFarceRouter';
-import { RouteRenderMethod } from '../src/typeUtils';
+import { RouteRenderMethod } from '../src/utilityTypes';
 import { InstrumentedResolver } from './helpers';
 
 describe('render', () => {

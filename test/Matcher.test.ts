@@ -1,5 +1,5 @@
 import Matcher from '../src/Matcher';
-import { Match } from '../src/typeUtils';
+import { Match } from '../src/utilityTypes';
 
 const createLocationMatch = (locationMatch) =>
   ({

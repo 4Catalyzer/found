@@ -2,7 +2,13 @@
 import React from 'react';
 
 import RedirectException from './RedirectException';
-import { LocationDescriptor, Match, RedirectOptions } from './typeUtils';
+import { LocationDescriptor, Match } from './utilityTypes';
+
+export interface RedirectOptions {
+  from?: string;
+  to: string | ((match: Match) => LocationDescriptor);
+  status?: number;
+}
 
 class Redirect implements RedirectOptions {
   path?: string;
@@ -38,8 +44,11 @@ if (__DEV__) {
   (Redirect.prototype as any).isReactComponent = {};
 }
 
+// It's more "natural" to call this "props" when used in the context of a
+//  React component.
+export type RedirectProps = RedirectOptions;
 // This actually doesn't extend a React.Component, but we need consumer to think that it does
-declare class RedirectType extends React.Component<RedirectOptions> {
+declare class RedirectType extends React.Component<RedirectProps> {
   constructor(config: RedirectOptions);
 }
 

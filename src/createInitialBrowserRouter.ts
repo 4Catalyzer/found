@@ -1,8 +1,15 @@
 import BrowserProtocol from 'farce/BrowserProtocol';
 
-import createInitialFarceRouter from './createInitialFarceRouter';
+import { BrowserRouter } from './createBrowserRouter';
+import createInitialFarceRouter, {
+  InitialFarceRouterOptions,
+} from './createInitialFarceRouter';
 import resolver from './resolver';
-import { BrowserRouter, InitialBrowserRouterOptions } from './typeUtils';
+
+export type InitialBrowserRouterOptions = Omit<
+  InitialFarceRouterOptions,
+  'resolver' | 'historyProtocol'
+>;
 
 export default function createInitialBrowserRouter(
   options: InitialBrowserRouterOptions,

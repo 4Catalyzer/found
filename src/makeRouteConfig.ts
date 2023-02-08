@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RouteConfig } from './typeUtils';
+import { RouteConfig } from './utilityTypes';
 
 // TODO: what is even happening in this file? Try to fix as any's(+ maybe simplify)
 function buildRouteConfig(

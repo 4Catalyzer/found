@@ -15,7 +15,7 @@ import {
 import Matcher from './Matcher';
 import createMatchEnhancer from './createMatchEnhancer';
 import foundReducer from './foundReducer';
-import { RouteConfig } from './typeUtils';
+import { RouteConfig } from './utilityTypes';
 
 interface Props {
   matcherOptions?: any;
