@@ -30,14 +30,6 @@ npm i found
 yarn add found
 ```
 
-`found` depends on the relatively new async iterators proposal, which may require a **polyfill** of
-`Symbol.asyncIterator` for older browsers. Core-js provides one if needed, import **before**
-importing found. Check against your supported browser matrix to see if this is necessary.
-
-```js
-import "core-js/es/symbol/async-iterator";
-```
-
 ## Basic usage
 
 Found provides rich client-side route, for your Single Page Application. It allows you to define
@@ -361,3 +353,13 @@ export default function PostPage({
 ```
 
 </SandpackEditor>
+
+### IE 11
+
+`found` depends on async iterators, which requires a **polyfill** of
+`Symbol.asyncIterator` for IE11. Core-js provides one if needed, import **before**
+importing found.
+
+```js
+import "core-js/es/symbol/async-iterator";
+```
