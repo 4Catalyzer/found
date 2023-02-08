@@ -10,7 +10,7 @@ import StaticContainer from './StaticContainer';
 import createRender, { CreateRenderOptions } from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
-import { MatchBase, Resolver } from './typeUtils';
+import { MatchBase, Resolver, Router } from './utilityTypes';
 
 export interface ConnectedRouterProps {
   matchContext?: any;

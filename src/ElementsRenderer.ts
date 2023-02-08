@@ -2,7 +2,7 @@ import React from 'react';
 
 import HttpError from './HttpError';
 import { RenderArgsElements } from './resolveRenderArgs';
-import { Match, ResolvedElement } from './typeUtils';
+import { Match, ResolvedElement } from './utilityTypes';
 
 export type RenderPendingArgs = Match;
 

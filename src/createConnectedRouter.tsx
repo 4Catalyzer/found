@@ -5,7 +5,7 @@ import { Store } from 'redux';
 import { RenderArgs } from './ElementsRenderer';
 import createBaseRouter, { ConnectedRouterProps } from './createBaseRouter';
 import { CreateRenderOptions } from './createRender';
-import { FoundState } from './typeUtils';
+import { FoundState } from './utilityTypes';
 
 export type ConnectedRouter = React.ComponentType<ConnectedRouterProps>;
 export interface ConnectedRouterOptions extends CreateRenderOptions {

@@ -3,7 +3,7 @@ import { Store } from 'redux';
 import { RenderArgs } from './ElementsRenderer';
 import createStoreRouterObject from './createStoreRouterObject';
 import getRenderArgs from './getRenderArgs';
-import { FoundState, Resolver } from './typeUtils';
+import { FoundState, Resolver } from './utilityTypes';
 
 export interface GetStoreRenderArgsOptions {
   store: Store;

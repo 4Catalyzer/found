@@ -6,7 +6,7 @@ import {
   RouteIndices,
   RouteObject,
   Router,
-} from './typeUtils';
+} from './utilityTypes';
 
 // This is the folded resolver output from resolveRenderArgs.
 export type RenderArgsElements = Array<

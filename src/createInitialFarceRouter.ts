@@ -4,7 +4,7 @@ import createFarceRouter, {
 } from './createFarceRouter';
 import createFarceStore from './createFarceStore';
 import getStoreRenderArgs from './getStoreRenderArgs';
-import { Resolver } from './typeUtils';
+import { Resolver } from './utilityTypes';
 
 export interface InitialFarceRouterOptions
   extends Omit<FarceRouterOptions, 'store'> {

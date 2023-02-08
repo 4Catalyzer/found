@@ -3,7 +3,7 @@ import { Middleware, Store, StoreEnhancer, applyMiddleware } from 'redux';
 
 import ActionTypes from './ActionTypes';
 import Matcher from './Matcher';
-import { FoundState, FoundStoreExtension, RouteConfig } from './typeUtils';
+import { FoundState, FoundStoreExtension, RouteConfig } from './utilityTypes';
 
 function createMatchMiddleware(
   matcher: Matcher,

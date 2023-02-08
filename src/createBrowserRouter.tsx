@@ -7,7 +7,7 @@ import createFarceRouter, {
   FarceRouterProps,
 } from './createFarceRouter';
 import resolver from './resolver';
-import { Resolver } from './typeUtils';
+import { Resolver } from './utilityTypes';
 
 export interface BrowserRouterProps
   extends Omit<FarceRouterProps, 'resolver'> {

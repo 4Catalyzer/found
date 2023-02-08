@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import React from 'react';
 
-import type { RouteObject, RouteProps } from './typeUtils';
+import type { RouteObject, RouteProps } from './utilityTypes';
 
 /**
  * Convenience class for creating normal routes with JSX. When not using JSX,

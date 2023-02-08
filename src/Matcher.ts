@@ -15,7 +15,7 @@ import type {
   RouteConfig,
   RouteIndices,
   RouteObject,
-} from './typeUtils';
+} from './utilityTypes';
 
 export type RouteConfigGroups = Record<string, RouteConfig>;
 

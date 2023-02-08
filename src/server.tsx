@@ -10,7 +10,7 @@ import createFarceStore from './createFarceStore';
 import createRender from './createRender';
 import getStoreRenderArgs from './getStoreRenderArgs';
 import defaultResolver from './resolver';
-import { Resolver } from './typeUtils';
+import { Resolver } from './utilityTypes';
 
 interface RouterProviderProps {
   renderArgs: RenderArgs;

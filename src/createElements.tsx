@@ -2,7 +2,7 @@ import React from 'react';
 import warning from 'tiny-warning';
 
 import { isResolved } from './ResolverUtils';
-import { Match, ResolvedElement, RouteMatch } from './typeUtils';
+import { Match, ResolvedElement, RouteMatch } from './utilityTypes';
 
 /**
  * maps an array of `Route`s to React elements. The returned array

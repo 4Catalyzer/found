@@ -14,7 +14,7 @@ import {
   ResolvedElement,
   RouteMatch,
   RouteObjectBase,
-} from './typeUtils';
+} from './utilityTypes';
 
 function getRouteGetData(route: RouteObjectBase) {
   return route.getData;

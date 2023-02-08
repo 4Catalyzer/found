@@ -3,7 +3,7 @@ import pDefer from 'p-defer';
 
 import { getRouteMatches } from '../src/ResolverUtils';
 import resolver from '../src/resolver';
-import { Match } from '../src/typeUtils';
+import { Match } from '../src/utilityTypes';
 
 describe('resolver', () => {
   describe('getData', () => {

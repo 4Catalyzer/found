@@ -1,4 +1,4 @@
-import { RouteConfig } from './typeUtils';
+import { RouteConfig } from './utilityTypes';
 
 export default function hotRouteConfig(routeConfig: RouteConfig): RouteConfig {
   if (__DEV__ && typeof window !== 'undefined') {

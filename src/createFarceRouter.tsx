@@ -6,7 +6,7 @@ import { Middleware, Store } from 'redux';
 import createBaseRouter, { ConnectedRouterProps } from './createBaseRouter';
 import { ConnectedRouterOptions } from './createConnectedRouter';
 import createFarceStore from './createFarceStore';
-import { FoundState, RouteConfig } from './typeUtils';
+import { FoundState, RouteConfig } from './utilityTypes';
 
 export interface FarceRouterOptions extends ConnectedRouterOptions {
   store?: Store;

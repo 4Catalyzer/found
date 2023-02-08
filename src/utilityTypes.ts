@@ -303,92 +303,9 @@ export interface RouteProps extends RouteObjectBase {
 //   constructor(status: number, data?: any);
 // }
 
-export interface RedirectOptions {
-  from?: string;
-  to: string | ((match: Match) => LocationDescriptor);
-  status?: number;
-}
-
-// It's more "natural" to call this "props" when used in the context of a
-//  React component.
-export type RedirectProps = RedirectOptions;
-
 // export class Redirect extends React.Component<RedirectProps> {
 //   constructor(config: RedirectOptions);
 // }
-
-export interface LinkPropsCommon {
-  to: LocationDescriptor;
-  // match: Match,  provided by withRouter
-  // router: Router, provided by withRouter
-  exact?: boolean;
-  target?: string;
-  onClick?: (event: React.SyntheticEvent<any>) => void;
-}
-
-export interface LinkInjectedProps {
-  href: string;
-  onClick: (event: React.SyntheticEvent<any>) => void;
-}
-
-export interface LinkPropsNodeChild extends LinkPropsCommon {
-  activeClassName?: string;
-  activeStyle?: Record<string, unknown>;
-  children?: React.ReactNode;
-}
-
-type ReplaceLinkProps<TInner extends React.ElementType, TProps> = Omit<
-  React.ComponentProps<TInner>,
-  keyof TProps | keyof LinkInjectedProps
-> &
-  TProps;
-
-export type LinkPropsSimple = ReplaceLinkProps<'a', LinkPropsNodeChild>;
-
-export type LinkPropsWithAs<
-  TInner extends React.ElementType<LinkInjectedProps>,
-> = ReplaceLinkProps<
-  TInner,
-  LinkPropsNodeChild & {
-    as: TInner;
-    activePropName?: null;
-  }
->;
-
-export type LinkPropsWithActivePropName<
-  TInner extends React.ComponentType<
-    LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
-  >,
-  TActivePropName extends string,
-> = ReplaceLinkProps<
-  TInner,
-  LinkPropsNodeChild & {
-    as: TInner;
-    activePropName: TActivePropName;
-  } & {
-    [activePropName in TActivePropName]?: null;
-  }
->;
-
-export interface LinkPropsWithFunctionChild extends LinkPropsCommon {
-  children: (linkRenderArgs: {
-    href: string;
-    active: boolean;
-    onClick: (event: React.SyntheticEvent<any>) => void;
-  }) => React.ReactNode;
-}
-
-export type LinkProps<
-  TInner extends React.ElementType = never,
-  TInnerWithActivePropName extends React.ComponentType<
-    LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
-  > = never,
-  TActivePropName extends string = never,
-> =
-  | LinkPropsSimple
-  | LinkPropsWithAs<TInner>
-  | LinkPropsWithActivePropName<TInnerWithActivePropName, TActivePropName>
-  | LinkPropsWithFunctionChild;
 
 // export class Link<
 //   TInner extends React.ElementType = never,
