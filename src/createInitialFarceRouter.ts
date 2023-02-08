@@ -1,7 +1,16 @@
-import createFarceRouter from './createFarceRouter';
+import createFarceRouter, {
+  FarceRouter,
+  FarceRouterOptions,
+} from './createFarceRouter';
 import createFarceStore from './createFarceStore';
 import getStoreRenderArgs from './getStoreRenderArgs';
-import { FarceRouter, InitialFarceRouterOptions } from './typeUtils';
+import { Resolver } from './typeUtils';
+
+export interface InitialFarceRouterOptions
+  extends Omit<FarceRouterOptions, 'store'> {
+  matchContext?: any;
+  resolver: Resolver;
+}
 
 export default async function createInitialFarceRouter({
   historyProtocol,

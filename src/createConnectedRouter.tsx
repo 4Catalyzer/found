@@ -2,18 +2,21 @@ import React from 'react';
 import { shallowEqual, useSelector, useStore } from 'react-redux';
 import { Store } from 'redux';
 
-import createBaseRouter from './createBaseRouter';
-import {
-  ConnectedRouterOptions,
-  ConnectedRouterProps,
-  ConnectedRouter as ConnectedRouterType,
-  FoundState,
-} from './typeUtils';
+import { RenderArgs } from './ElementsRenderer';
+import createBaseRouter, { ConnectedRouterProps } from './createBaseRouter';
+import { CreateRenderOptions } from './createRender';
+import { FoundState } from './typeUtils';
+
+export type ConnectedRouter = React.ComponentType<ConnectedRouterProps>;
+export interface ConnectedRouterOptions extends CreateRenderOptions {
+  render?: (args: RenderArgs) => React.ReactElement;
+  getFound?: (store: Store) => FoundState;
+}
 
 export default function createConnectedRouter({
   getFound = ({ found }: any) => found as FoundState,
   ...options
-}: ConnectedRouterOptions): ConnectedRouterType {
+}: ConnectedRouterOptions): ConnectedRouter {
   const Router = createBaseRouter(options);
 
   const getFoundState = (state: Store) => {

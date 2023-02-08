@@ -1,6 +1,16 @@
+import { Store } from 'redux';
+
+import { RenderArgs } from './ElementsRenderer';
 import createStoreRouterObject from './createStoreRouterObject';
 import getRenderArgs from './getRenderArgs';
-import { GetStoreRenderArgsOptions, RenderArgs } from './typeUtils';
+import { FoundState, Resolver } from './typeUtils';
+
+export interface GetStoreRenderArgsOptions {
+  store: Store;
+  getFound?: (store: Store) => FoundState;
+  matchContext: any;
+  resolver: Resolver;
+}
 
 // This function returns a promise. It doesn't need to be an async function
 // because it doesn't use the promise's value.

@@ -1,8 +1,18 @@
 import React from 'react';
 
-import ElementsRenderer from './ElementsRenderer';
+import ElementsRenderer, {
+  RenderArgs,
+  RenderErrorArgs,
+  RenderPendingArgs,
+  RenderReadyArgs,
+} from './ElementsRenderer';
 import StaticContainer from './StaticContainer';
-import { CreateRenderOptions, RenderArgs } from './typeUtils';
+
+export interface CreateRenderOptions {
+  renderPending?: (args: RenderPendingArgs) => React.ReactElement;
+  renderReady?: (args: RenderReadyArgs) => React.ReactElement;
+  renderError?: (args: RenderErrorArgs) => React.ReactNode;
+}
 
 /**
  * A convenience method for handling the 3 main states a route match might produce.

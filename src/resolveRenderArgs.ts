@@ -1,13 +1,17 @@
 import HttpError from './HttpError';
 import {
   Match,
-  RenderArgsElements,
   ResolvedElement,
   Resolver,
   RouteIndices,
   RouteObject,
   Router,
 } from './typeUtils';
+
+// This is the folded resolver output from resolveRenderArgs.
+export type RenderArgsElements = Array<
+  ResolvedElement | Record<string, ResolvedElement[]>
+>;
 
 function foldElements(
   elementsRaw: Array<ResolvedElement>,

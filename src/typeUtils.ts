@@ -3,14 +3,12 @@
 
 import {
   FarceStoreExtension,
-  HistoryEnhancerOptions,
   Location,
   LocationDescriptor,
   LocationDescriptorObject,
   NavigationListener,
   NavigationListenerOptions,
   NavigationListenerResult,
-  Protocol,
   Query,
   QueryDescriptor,
 } from 'farce';
@@ -18,7 +16,6 @@ import * as React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Middleware, Reducer, Store, StoreEnhancer } from 'redux';
 
-import HttpError from './HttpError';
 import Matcher from './Matcher';
 
 export {
@@ -462,112 +459,27 @@ export interface FoundStoreExtension {
 //   matcher: Matcher,
 // ): StoreEnhancer<{ found: FoundStoreExtension }>;
 
-export type RenderPendingArgs = Match;
-
-// This is the folded resolver output from resolveRenderArgs.
-export type RenderArgsElements = Array<
-  ResolvedElement | Record<string, ResolvedElement[]>
->;
-
-export interface RenderReadyArgs extends Match {
-  elements: RenderArgsElements;
-}
-
-export interface RenderErrorArgs extends Match {
-  error: HttpError;
-}
-
-export type RenderArgs = RenderPendingArgs | RenderReadyArgs | RenderErrorArgs;
-
-export interface CreateRenderOptions {
-  renderPending?: (args: RenderPendingArgs) => React.ReactElement;
-  renderReady?: (args: RenderReadyArgs) => React.ReactElement;
-  renderError?: (args: RenderErrorArgs) => React.ReactNode;
-}
-
 // export function createRender(
 //   options: CreateRenderOptions,
 // ): (renderArgs: RenderArgs) => React.ReactElement;
-
-export interface ConnectedRouterOptions extends CreateRenderOptions {
-  render?: (args: RenderArgs) => React.ReactElement;
-  getFound?: (store: Store) => FoundState;
-}
-
-export interface ConnectedRouterProps {
-  matchContext?: any;
-  resolver: Resolver;
-  initialRenderArgs?: RenderArgs;
-}
-
-export type ConnectedRouter = React.ComponentType<ConnectedRouterProps>;
 
 // export function createConnectedRouter(
 //   options: ConnectedRouterOptions,
 // ): ConnectedRouter;
 
-export interface FarceRouterOptions extends ConnectedRouterOptions {
-  store?: Store;
-  historyProtocol: Protocol;
-  historyMiddlewares?: Middleware[];
-  historyOptions?: Omit<HistoryEnhancerOptions, 'protocol' | 'middlewares'>;
-  routeConfig: RouteConfig;
-}
-
-export type FarceRouterProps = ConnectedRouterProps;
-
-export type FarceRouter = React.ComponentType<FarceRouterProps>;
-
 // export function createFarceRouter(options: FarceRouterOptions): FarceRouter;
-
-export interface BrowserRouterOptions
-  extends Omit<FarceRouterOptions, 'historyProtocol'> {
-  render?: (args: RenderArgs) => React.ReactElement;
-}
-
-export interface BrowserRouterProps
-  extends Omit<FarceRouterProps, 'resolver'> {
-  resolver?: Resolver;
-}
-
-export type BrowserRouter = React.ComponentType<BrowserRouterProps>;
 
 // export function createBrowserRouter(
 //   options: BrowserRouterOptions,
 // ): BrowserRouter;
 
-export interface InitialFarceRouterOptions
-  extends Omit<FarceRouterOptions, 'store'> {
-  matchContext?: any;
-  resolver: Resolver;
-}
-
 // export function createInitialFarceRouter(
 //   options: InitialFarceRouterOptions,
 // ): Promise<FarceRouter>;
 
-export type InitialBrowserRouterOptions = Omit<
-  InitialFarceRouterOptions,
-  'resolver' | 'historyProtocol'
->;
-
 // export function createInitialBrowserRouter(
 //   options: InitialBrowserRouterOptions,
 // ): Promise<BrowserRouter>;
-
-export interface ElementsRendererProps {
-  elements: RenderArgsElements;
-}
-
-export type ElementsRenderer =
-  React.ComponentType<ElementsRendererProps> | null;
-
-export interface GetStoreRenderArgsOptions {
-  store: Store;
-  getFound?: (store: Store) => FoundState;
-  matchContext: any;
-  resolver: Resolver;
-}
 
 // export function getStoreRenderArgs(
 //   options: GetStoreRenderArgsOptions,

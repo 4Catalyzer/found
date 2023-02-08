@@ -1,10 +1,23 @@
 import useIsomorphicEffect from '@restart/hooks/useIsomorphicEffect';
+import { HistoryEnhancerOptions, Protocol } from 'farce';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { Middleware, Store } from 'redux';
 
-import createBaseRouter from './createBaseRouter';
+import createBaseRouter, { ConnectedRouterProps } from './createBaseRouter';
+import { ConnectedRouterOptions } from './createConnectedRouter';
 import createFarceStore from './createFarceStore';
-import { FarceRouter, FarceRouterOptions, FoundState } from './typeUtils';
+import { FoundState, RouteConfig } from './typeUtils';
 
+export interface FarceRouterOptions extends ConnectedRouterOptions {
+  store?: Store;
+  historyProtocol: Protocol;
+  historyMiddlewares?: Middleware[];
+  historyOptions?: Omit<HistoryEnhancerOptions, 'protocol' | 'middlewares'>;
+  routeConfig: RouteConfig;
+}
+
+export type FarceRouter = React.ComponentType<FarceRouterProps>;
+export type FarceRouterProps = ConnectedRouterProps;
 export default function createFarceRouter({
   store: userStore,
   historyProtocol,

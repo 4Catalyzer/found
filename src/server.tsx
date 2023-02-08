@@ -2,13 +2,15 @@ import FarceActions from 'farce/Actions';
 import ServerProtocol from 'farce/ServerProtocol';
 import React, { useMemo } from 'react';
 
+import { RenderArgs } from './ElementsRenderer';
 import RedirectException from './RedirectException';
 import RouterContext from './RouterContext';
+import { FarceRouterOptions } from './createFarceRouter';
 import createFarceStore from './createFarceStore';
 import createRender from './createRender';
 import getStoreRenderArgs from './getStoreRenderArgs';
 import defaultResolver from './resolver';
-import { FarceRouterOptions, RenderArgs, Resolver } from './typeUtils';
+import { Resolver } from './typeUtils';
 
 interface RouterProviderProps {
   renderArgs: RenderArgs;

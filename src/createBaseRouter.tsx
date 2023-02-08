@@ -4,19 +4,19 @@ import { Store } from 'redux';
 import warning from 'tiny-warning';
 
 import ActionTypes from './ActionTypes';
+import { RenderArgs } from './ElementsRenderer';
 import RouterContext, { RouterContextState } from './RouterContext';
 import StaticContainer from './StaticContainer';
-import createRender from './createRender';
+import createRender, { CreateRenderOptions } from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
-import {
-  ConnectedRouterProps,
-  CreateRenderOptions,
-  MatchBase,
-  RenderArgs,
-  Resolver,
-  Router,
-} from './typeUtils';
+import { MatchBase, Resolver } from './typeUtils';
+
+export interface ConnectedRouterProps {
+  matchContext?: any;
+  resolver: Resolver;
+  initialRenderArgs?: RenderArgs;
+}
 
 interface CreateProps extends CreateRenderOptions {
   render?: (args: RenderArgs) => React.ReactElement;

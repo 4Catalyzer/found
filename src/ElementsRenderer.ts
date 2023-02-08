@@ -1,6 +1,24 @@
 import React from 'react';
 
-import { ElementsRendererProps, ResolvedElement } from './typeUtils';
+import HttpError from './HttpError';
+import { RenderArgsElements } from './resolveRenderArgs';
+import { Match, ResolvedElement } from './typeUtils';
+
+export type RenderPendingArgs = Match;
+
+export interface RenderReadyArgs extends Match {
+  elements: RenderArgsElements;
+}
+
+export interface RenderErrorArgs extends Match {
+  error: HttpError;
+}
+
+export type RenderArgs = RenderPendingArgs | RenderReadyArgs | RenderErrorArgs;
+
+export interface ElementsRendererProps {
+  elements: RenderArgsElements;
+}
 
 function accumulateElement(
   children: ResolvedElement,
