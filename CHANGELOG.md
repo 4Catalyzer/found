@@ -1,3 +1,14 @@
+## [1.2.1](https://github.com/4Catalyzer/found/compare/v1.2.0...v1.2.1) (2023-02-09)
+
+
+### Bug Fixes
+
+* link ([#1042](https://github.com/4Catalyzer/found/issues/1042)) ([d4c98fa](https://github.com/4Catalyzer/found/commit/d4c98fad07f3ae742ee68a6e2a98f626ac5886cb))
+
+
+
+
+
 # [1.2.0](https://github.com/4Catalyzer/found/compare/v1.1.2...v1.2.0) (2023-02-09)
 
 
