@@ -106,7 +106,9 @@ function Link({
       {...props}
       href={href}
       onClick={handleClick} // This overrides props.onClick.
-    />
+    >
+      {children}
+    </Component>
   );
 }
 
