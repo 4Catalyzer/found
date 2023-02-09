@@ -1,3 +1,27 @@
+# [1.2.0](https://github.com/4Catalyzer/found/compare/v1.1.2...v1.2.0) (2023-02-09)
+
+
+### Bug Fixes
+
+* export hooks ([1c38c27](https://github.com/4Catalyzer/found/commit/1c38c272d668d02a3df9b1b5b82e4d8555045996))
+* return to 0.4.0 w/ latest hardlock ([#999](https://github.com/4Catalyzer/found/issues/999)) ([501c8aa](https://github.com/4Catalyzer/found/commit/501c8aa3f42f34587cf813baa5becbcc35396e6c))
+
+
+### Features
+
+* allowAsIndex on Route and a few  add dev warnings for likely misconfiguration ([#1017](https://github.com/4Catalyzer/found/issues/1017)) ([4a5eaad](https://github.com/4Catalyzer/found/commit/4a5eaad0656592c20703a63e37628315516ce110))
+* convert withRouter, server to TS ([#1027](https://github.com/4Catalyzer/found/issues/1027)) ([a77dfc4](https://github.com/4Catalyzer/found/commit/a77dfc4359c804ff3832db560739f01fa4095dfa))
+* createBaseRouter in TS ([#1022](https://github.com/4Catalyzer/found/issues/1022)) ([92425ca](https://github.com/4Catalyzer/found/commit/92425ca8eccf2b82108a378b8fa769f35a1341be))
+* createBrowserRouter, createFarceRouter to TS ([#1021](https://github.com/4Catalyzer/found/issues/1021)) ([4af4646](https://github.com/4Catalyzer/found/commit/4af4646f411bc1f02e4f3ae23b547fb834a9a99a))
+* Link + helper files to Typescript ([#1023](https://github.com/4Catalyzer/found/issues/1023)) ([556b3e5](https://github.com/4Catalyzer/found/commit/556b3e56eabfde25c21bc75106d4a67e95c821b2))
+* more types ([#1014](https://github.com/4Catalyzer/found/issues/1014)) ([63a44a6](https://github.com/4Catalyzer/found/commit/63a44a633159d6e16161e407fa4d6869fdb70623))
+* more Typescript ([#1033](https://github.com/4Catalyzer/found/issues/1033)) ([25d9a44](https://github.com/4Catalyzer/found/commit/25d9a44564cee24be32367db6f76c15218f9df9b))
+* ts test setup ([#1001](https://github.com/4Catalyzer/found/issues/1001)) ([f12f1d8](https://github.com/4Catalyzer/found/commit/f12f1d8f913ea8d8f072d14aaf7374cffa45e5d9))
+
+
+
+
+
 ## <small>1.1.2 (2022-08-31)</small>
 
 * Publish v1.1.2 ([220b41a](https://github.com/4Catalyzer/found/commit/220b41a))
