@@ -1,5 +1,6 @@
 {
   "extends": "@4c/tsconfig/web.json",
+  "exclude": ["./src/pathToRegexp.js"],
   "compilerOptions": {
     "allowJs": true
   },
