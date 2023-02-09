@@ -82,7 +82,7 @@
     "babel-plugin-add-module-exports": "^1.0.4",
     "cherry-pick": "^0.5.0",
     "codecov": "^3.8.3",
-    "cpy-cli": "^3.1.1",
+    "cpy-cli": "^4.2.0",
     "delay": "^5.0.0",
     "doctoc": "^2.1.0",
     "dtslint": "^4.2.1",
