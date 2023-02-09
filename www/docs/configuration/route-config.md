@@ -11,8 +11,9 @@ A route object under the default matching algorithm and route element resolver c
 - `Component` or `getComponent` - the component for the route, or a method that returns the component for the route
 
 ```ts
-  Component: React.ComponentType<any>;
-  getComponent: (match: RouteMatch) => React.ComponentType<any> | Promise<React.ComponentType<any>>;
+Component: React.ComponentType<any>;
+getComponent: (match: RouteMatch) =>
+  React.ComponentType<any> | Promise<React.ComponentType<any>>;
 ```
 
 - `data` or `getData`: additional data for the route, or a method that returns additional data for the route

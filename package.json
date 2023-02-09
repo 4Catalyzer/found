@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@4c/babel-preset": "^9.1.0",
-    "@4c/cli": "^3.0.1",
+    "@4c/cli": "^4.0.4",
     "@4c/file-butler": "^6.0.0",
     "@4c/prettier-config": "^1.1.0",
     "@4c/tsconfig": "^0.4.0",
