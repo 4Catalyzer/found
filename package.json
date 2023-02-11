@@ -55,7 +55,7 @@
     "@restart/context": "^2.1.4",
     "@restart/hooks": "^0.4.5",
     "@types/enzyme": "^3.10.12",
-    "@types/react": ">=17.0.37",
+    "@types/react": ">=18.0.28",
     "dequal": "^2.0.2",
     "farce": "^0.4.5",
     "is-promise": "^4.0.0",
