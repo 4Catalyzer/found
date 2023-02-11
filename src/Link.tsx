@@ -86,7 +86,7 @@ function Link({
       if (activeClassName) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         props.className = props.className
-          ? `${props} ${activeClassName}`
+          ? `${props.className} ${activeClassName}`
           : activeClassName;
       }
 

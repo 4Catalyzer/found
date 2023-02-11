@@ -21,12 +21,12 @@ const foundReducer = (
     case ActionTypes.RESOLVE_MATCH:
       // It doesn't make sense to resolve a match if there wasn't already an
       // unresolved match.
-      return state
-        ? {
-            match: state.match,
-            resolvedMatch: payload,
-          }
-        : null;
+      return (
+        state && {
+          match: state.match,
+          resolvedMatch: payload,
+        }
+      );
     default:
       return state;
   }
