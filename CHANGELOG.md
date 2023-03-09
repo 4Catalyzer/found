@@ -1,3 +1,14 @@
+## [1.2.2](https://github.com/4Catalyzer/found/compare/v1.2.1...v1.2.2) (2023-03-09)
+
+
+### Bug Fixes
+
+* pass className in Link ([#1045](https://github.com/4Catalyzer/found/issues/1045)) ([bf690f9](https://github.com/4Catalyzer/found/commit/bf690f9164feb395269531acf1c33c183fbe8fbf))
+
+
+
+
+
 ## [1.2.1](https://github.com/4Catalyzer/found/compare/v1.2.0...v1.2.1) (2023-02-09)
 
 
