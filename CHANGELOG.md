@@ -1,3 +1,14 @@
+# [1.3.0](https://github.com/4Catalyzer/found/compare/v1.2.2...v1.3.0) (2023-03-22)
+
+
+### Features
+
+* Link now accepts a forwarded ref ([47cda70](https://github.com/4Catalyzer/found/commit/47cda70a9062dbb23d9a7e09a117cfbeddd92f41))
+
+
+
+
+
 ## [1.2.2](https://github.com/4Catalyzer/found/compare/v1.2.1...v1.2.2) (2023-03-09)
 
 
