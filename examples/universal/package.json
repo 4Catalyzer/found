@@ -12,7 +12,7 @@
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
     "core-js": "^3.6.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "found": "^0.5.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
