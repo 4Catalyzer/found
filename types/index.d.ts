@@ -531,6 +531,7 @@ export interface ElementsRendererProps {
 }
 
 export type ElementsRenderer = React.ComponentType<ElementsRendererProps>;
+export const ElementsRenderer: ElementsRenderer;
 
 export interface GetStoreRenderArgsOptions {
   store: Store;
