@@ -220,11 +220,15 @@ describe('Matcher', () => {
         },
       ]);
 
-      expect(
-        matcher.match({
-          pathname: '/a',
-        }),
-      ).toEqual({
+      const missingMatch = matcher.match({ pathname: '/a' });
+
+      if (missingMatch != null && 0 in missingMatch.params) {
+        // FIXME: This type is wrong. It should be string | undefined.
+        const param: string = missingMatch.params[0];
+        expect(param).toBeUndefined();
+      }
+
+      expect(missingMatch).toEqual({
         routeIndices: [0, 0],
         routeParams: [{ foo: 'a' }, { 0: undefined }],
         params: {
