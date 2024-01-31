@@ -38,7 +38,7 @@
     "release": "4c release --conventional-commits",
     "tdd": "jest --watch",
     "test": "yarn lint && yarn test:ts && yarn testonly -- --coverage",
-    "test:ts": "dtslint --expectOnly types && yarn tsc --noEmit",
+    "test:ts": "dtslint --expectOnly types && yarn tsc --noEmit && yarn tsc --noEmit -p test",
     "testonly": "jest --runInBand --verbose",
     "docs": "yarn --cwd www start"
   },
