@@ -1,4 +1,9 @@
 import Matcher from '../src/Matcher';
+import {
+  type IsActiveOptions,
+  type LocationDescriptorObject,
+  Match,
+} from '../src/typeUtils';
 
 describe('Matcher', () => {
   describe('route hierarchies', () => {
@@ -32,11 +37,11 @@ describe('Matcher', () => {
       ['nested matching', '/foo/bar', [0, 1]],
       ['route fallthrough', '/foo/baz', [2]],
     ].forEach(([scenario, pathname, expectedRouteIndices]) => {
-      describe(scenario, () => {
+      describe(scenario as string, () => {
         it('should be supported', () => {
           expect(
             matcher.match({
-              pathname,
+              pathname: pathname as string,
             }),
           ).toMatchObject({
             routeIndices: expectedRouteIndices,
@@ -215,11 +220,14 @@ describe('Matcher', () => {
         },
       ]);
 
-      expect(
-        matcher.match({
-          pathname: '/a',
-        }),
-      ).toEqual({
+      const missingMatch = matcher.match({ pathname: '/a' });
+
+      if (missingMatch != null && 0 in missingMatch.params) {
+        const param: string | undefined = missingMatch.params[0];
+        expect(param).toBeUndefined();
+      }
+
+      expect(missingMatch).toEqual({
         routeIndices: [0, 0],
         routeParams: [{ foo: 'a' }, { 0: undefined }],
         params: {
@@ -265,7 +273,7 @@ describe('Matcher', () => {
       it(`should match ${scenario}`, () => {
         expect(
           matcher.match({
-            pathname,
+            pathname: pathname as string,
           }),
         ).toMatchObject({
           routeIndices: expectedRouteIndices,
@@ -350,7 +358,7 @@ describe('Matcher', () => {
   });
 
   describe('#joinPaths', () => {
-    const matcher = new Matcher();
+    const matcher = new Matcher([]);
 
     [
       ['no extra slashes', '/foo', 'bar'],
@@ -359,6 +367,7 @@ describe('Matcher', () => {
       ['slashes everywhere', '/foo/', '/bar'],
     ].forEach(([scenario, basePath, path]) => {
       it(`should support ${scenario}`, () => {
+        // @ts-ignore
         expect(matcher.joinPaths(basePath, path)).toBe('/foo/bar');
       });
     });
@@ -415,7 +424,11 @@ describe('Matcher', () => {
       ].forEach(([scenario, matchLocation, location, options]) => {
         it(`should be active on ${scenario}`, () => {
           expect(
-            matcher.isActive({ location: matchLocation }, location, options),
+            matcher.isActive(
+              { location: matchLocation } as any as Match,
+              location as LocationDescriptorObject,
+              options as IsActiveOptions,
+            ),
           ).toBe(true);
         });
       });
@@ -459,7 +472,11 @@ describe('Matcher', () => {
       ].forEach(([scenario, matchLocation, location, options]) => {
         it(`should not be active on ${scenario}`, () => {
           expect(
-            matcher.isActive({ location: matchLocation }, location, options),
+            matcher.isActive(
+              { location: matchLocation } as any as Match,
+              location as LocationDescriptorObject,
+              options as IsActiveOptions,
+            ),
           ).toBe(false);
         });
       });
