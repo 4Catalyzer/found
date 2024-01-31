@@ -223,8 +223,7 @@ describe('Matcher', () => {
       const missingMatch = matcher.match({ pathname: '/a' });
 
       if (missingMatch != null && 0 in missingMatch.params) {
-        // FIXME: This type is wrong. It should be string | undefined.
-        const param: string = missingMatch.params[0];
+        const param: string | undefined = missingMatch.params[0];
         expect(param).toBeUndefined();
       }
 

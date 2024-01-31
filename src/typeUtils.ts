@@ -39,11 +39,11 @@ type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 //   RESOLVE_MATCH: '@@found/RESOLVE_MATCH';
 // };
 
-export type Params = Record<string, string>;
+export type Params = Record<string, string | undefined>;
 
 export type ParamsDescriptor = Record<
   string,
-  string | number | boolean | Record<string, unknown>
+  string | number | boolean | Record<string, unknown> | undefined
 >;
 
 // These need to be interfaces to avoid circular reference issues.
