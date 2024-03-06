@@ -213,7 +213,7 @@ export type ResolvedElement =
   | ((groups: Record<string, React.ReactElement>) => ResolvedElementValue);
 
 export interface RouteRenderMethod {
-  (args: RouteRenderArgs): React.ReactNode | ResolvedElement | undefined;
+  (args: RouteRenderArgs): ResolvedElement | undefined;
 }
 
 /**

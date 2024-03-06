@@ -20,7 +20,7 @@ export default function createElements(
   routeMatches: Array<RouteMatch>,
   Components: React.ComponentType<any>[],
   matchData: any,
-): Array<React.ReactNode | ResolvedElement | undefined> {
+): Array<ResolvedElement | undefined> {
   return routeMatches.map((match, i) => {
     const { router, route } = match;
 
