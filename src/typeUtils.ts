@@ -16,7 +16,7 @@ import {
 } from 'farce';
 import * as React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Middleware, Reducer, Store, StoreEnhancer } from 'redux';
+import { Middleware, Store } from 'redux';
 
 import HttpError from './HttpError';
 import Matcher from './Matcher';
