@@ -21,7 +21,7 @@
     "@docusaurus/theme-common": "^2.2.0",
     "@docusaurus/theme-live-codeblock": "^2.2.0",
     "@docusaurus/theme-mermaid": "^2.2.0",
-    "clsx": "^1.2.1",
+    "clsx": "^2.1.1",
     "docusaurus-theme-jarle-codeblock": "^1.7.3",
     "found": "^1.1.2",
     "prism-react-renderer": "^1.3.5",
