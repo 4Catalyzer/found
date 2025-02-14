@@ -14,7 +14,7 @@
     "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
-    "@codesandbox/sandpack-react": "^1.17.0",
+    "@codesandbox/sandpack-react": "^2.20.0",
     "@codesandbox/sandpack-themes": "^1.17.0",
     "@docusaurus/core": "2.2.0",
     "@docusaurus/preset-classic": "^2.2.0",
