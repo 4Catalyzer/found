@@ -2,6 +2,7 @@ import delay from 'delay';
 import ServerProtocol from 'farce/ServerProtocol';
 import React from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import createFarceRouter from '../src/createFarceRouter';
 import createRender from '../src/createRender';

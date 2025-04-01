@@ -5,6 +5,7 @@ import ServerProtocol from 'farce/ServerProtocol';
 import pDefer from 'p-defer';
 import React, { useEffect } from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
+import { describe, expect, it, vi } from 'vitest';
 
 import HttpError from '../src/HttpError';
 import RedirectException from '../src/RedirectException';
@@ -210,7 +211,7 @@ describe('Router', () => {
 
   describe('stale match resolution', () => {
     it('should not render stale location', async () => {
-      const Component = jest.fn(() => null);
+      const Component = vi.fn(() => null);
       const deferred = pDefer();
 
       const Router = createFarceRouter({
@@ -254,7 +255,7 @@ describe('Router', () => {
     });
 
     it('should not run stale redirect', async () => {
-      const Component = jest.fn(() => null);
+      const Component = vi.fn(() => null);
       const deferred1 = pDefer();
       const deferred2 = pDefer();
       const deferreds = [deferred1, deferred2];

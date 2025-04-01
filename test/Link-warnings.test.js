@@ -1,17 +1,18 @@
-jest.mock('tiny-warning');
-
 import React from 'react';
 import warning from 'tiny-warning';
+import { vi } from 'vitest';
 
 import Link from '../src/Link';
 import { mountWithRouter } from './helpers';
+
+vi.mock('tiny-warning');
 
 const CustomComponent = () => <div />;
 
 describe('<Link> warnings', () => {
   it('should warn on component prop', async () => {
     // The below will log a warning for an invalid prop.
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
 
     await mountWithRouter(<Link component={CustomComponent} to="/" />);
 
@@ -23,7 +24,7 @@ describe('<Link> warnings', () => {
 
   it('should warn on Component prop', async () => {
     // The below will log a warning for an invalid prop.
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
 
     await mountWithRouter(<Link Component={CustomComponent} to="/" />);
 

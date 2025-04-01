@@ -1,5 +1,6 @@
 import delay from 'delay';
 import pDefer from 'p-defer';
+import { describe, expect, it, vi } from 'vitest';
 
 import { getRouteMatches } from '../src/ResolverUtils';
 import resolver from '../src/resolver';
@@ -11,9 +12,9 @@ describe('resolver', () => {
       const deferred2 = pDefer();
       const deferred3 = pDefer();
 
-      const getData1 = jest.fn(() => deferred1.promise);
-      const getData3 = jest.fn(() => deferred3.promise);
-      const getData4 = jest.fn(() => 4);
+      const getData1 = vi.fn(() => deferred1.promise);
+      const getData3 = vi.fn(() => deferred3.promise);
+      const getData4 = vi.fn(() => 4);
 
       const match = {
         routes: [

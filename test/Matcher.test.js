@@ -1,5 +1,5 @@
 import Matcher from '../src/Matcher';
-
+import { describe, expect, it } from 'vitest';
 describe('Matcher', () => {
   describe('route hierarchies', () => {
     const matcher = new Matcher([

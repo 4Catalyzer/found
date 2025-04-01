@@ -3,6 +3,7 @@ import ServerProtocol from 'farce/ServerProtocol';
 import pDefer from 'p-defer';
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
+import { describe, expect, it } from 'vitest';
 
 import createFarceRouter from '../src/createFarceRouter';
 import { InstrumentedResolver } from './helpers';

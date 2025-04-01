@@ -2,6 +2,7 @@ import delay from 'delay';
 import MemoryProtocol from 'farce/MemoryProtocol';
 import React from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
+import { describe, expect, it } from 'vitest';
 
 import Redirect from '../src/Redirect';
 import RedirectException from '../src/RedirectException';

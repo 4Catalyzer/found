@@ -1,4 +1,5 @@
 import React from 'react';
+import { describe, expect, it } from 'vitest';
 
 import Link from '../src/Link';
 import { mountWithRouter } from './helpers';

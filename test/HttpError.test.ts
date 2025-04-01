@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import HttpError from '../src/HttpError';
 
 describe('HttpError', () => {

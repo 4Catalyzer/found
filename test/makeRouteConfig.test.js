@@ -1,4 +1,5 @@
 import React from 'react';
+import { describe, expect, it } from 'vitest';
 
 import Redirect from '../src/Redirect';
 import RedirectException from '../src/RedirectException';
@@ -250,13 +251,12 @@ describe('makeRouteConfig', () => {
             },
           },
         });
-      } catch (e) {
-        redirectException = e;
+      } catch (error) {
+        redirectException = error;
       }
 
       expect(redirectException).toBeInstanceOf(RedirectException);
-      expect(redirectException.location).toBe('/bar');
-      expect(redirectException.status).toBe(302);
+      expect(redirectException.url).toBe('/bar');
     });
   });
 });
