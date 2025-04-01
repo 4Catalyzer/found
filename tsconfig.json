@@ -7,7 +7,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "lib": ["dom", "es2019"],
     "isolatedModules": true,
     "module": "esnext",
@@ -22,5 +22,5 @@
     "strictFunctionTypes": false,
     "target": "esnext"
   },
-  "include": ["./src/**/*.ts"]
+  "include": ["./src/**/*.ts", "src/withRouter.tsx"]
 }

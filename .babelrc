@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    ["@babel/preset-react", { "runtime": "automatic" }]
+  ],
+  "env": {
+    "cjs": {
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+    }
+  }
+}
