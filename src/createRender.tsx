@@ -2,7 +2,7 @@ import React from 'react';
 
 import ElementsRenderer from './ElementsRenderer';
 import StaticContainer from './StaticContainer';
-import { CreateRenderOptions, RenderArgs } from './typeUtils';
+import { type CreateRenderOptions, type RenderArgs } from './typeUtils';
 
 /**
  * A convenience method for handling the 3 main states a route match might produce.

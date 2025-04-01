@@ -1,9 +1,13 @@
 import useIsomorphicEffect from '@restart/hooks/useIsomorphicEffect';
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import createBaseRouter from './createBaseRouter';
 import createFarceStore from './createFarceStore';
-import { FarceRouter, FarceRouterOptions, FoundState } from './typeUtils';
+import {
+  type FarceRouter,
+  type FarceRouterOptions,
+  type FoundState,
+} from './typeUtils';
 
 export default function createFarceRouter({
   store: userStore,

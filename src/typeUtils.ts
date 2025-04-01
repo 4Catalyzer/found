@@ -1,18 +1,15 @@
-/* eslint-disable max-classes-per-file */
-// TypeScript Version: 4.0
-
 import {
-  FarceStoreExtension,
-  HistoryEnhancerOptions,
-  Location,
-  LocationDescriptor,
-  LocationDescriptorObject,
-  NavigationListener,
-  NavigationListenerOptions,
-  NavigationListenerResult,
-  Protocol,
-  Query,
-  QueryDescriptor,
+  type FarceStoreExtension,
+  type HistoryEnhancerOptions,
+  type Location,
+  type LocationDescriptor,
+  type LocationDescriptorObject,
+  type NavigationListener,
+  type NavigationListenerOptions,
+  type NavigationListenerResult,
+  type Protocol,
+  type Query,
+  type QueryDescriptor,
 } from 'farce';
 import * as React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,13 +28,6 @@ export {
   type NavigationListenerResult,
   type NavigationListener,
 };
-
-type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
-
-// export const ActionTypes: {
-//   UPDATE_MATCH: '@@found/UPDATE_MATCH';
-//   RESOLVE_MATCH: '@@found/RESOLVE_MATCH';
-// };
 
 export type Params = Record<string, string>;
 
@@ -292,19 +282,6 @@ export interface RouteProps extends RouteObjectBase {
 /**
  * JSX Route
  */
-// export class Route extends React.Component<RouteProps> {
-//   constructor(options: RouteObject | RouteProps);
-// }
-
-// export function hotRouteConfig(routeConfig: RouteConfig): RouteConfig;
-
-// export class HttpError {
-//   status: number;
-
-//   data: any;
-
-//   constructor(status: number, data?: any);
-// }
 
 export interface RedirectOptions {
   from?: string;
@@ -315,10 +292,6 @@ export interface RedirectOptions {
 // It's more "natural" to call this "props" when used in the context of a
 //  React component.
 export type RedirectProps = RedirectOptions;
-
-// export class Redirect extends React.Component<RedirectProps> {
-//   constructor(config: RedirectOptions);
-// }
 
 export interface LinkPropsCommon {
   to: LocationDescriptor;
@@ -393,18 +366,6 @@ export type LinkProps<
   | LinkPropsWithActivePropName<TInnerWithActivePropName, TActivePropName>
   | LinkPropsWithFunctionChild;
 
-// export class Link<
-//   TInner extends React.ElementType = never,
-//   TInnerWithActivePropName extends React.ComponentType<
-//     LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
-//   > = never,
-//   TActivePropName extends string = never,
-// > extends React.Component<
-//   LinkProps<TInner, TInnerWithActivePropName, TActivePropName>
-// > {
-//   props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
-// }
-
 export interface RouterState<TContext = any> {
   match: Match<TContext>;
   router: Router;
@@ -421,37 +382,6 @@ export interface RouteComponentDataProps<T, TContext = never>
   extends RouteComponentProps<TContext> {
   data: T;
 }
-
-/**
- * Returns the Router and current route match from context
- */
-// export function useRouter<TContext = any>(): RouterState<TContext>;
-
-/** Returns the current route Match */
-// export function useMatch<TContext = any>(): Match<TContext>;
-
-/** Returns the current route params */
-// export function useParams(): Params;
-
-/** Returns the current location object */
-// export function useLocation(): Location;
-
-// export function withRouter<TProps extends RouterState>(
-//   Component: React.ComponentType<TProps>,
-// ): React.ComponentType<Omit<TProps, keyof RouterState>>;
-
-// export class RedirectException {
-//   constructor(location: LocationDescriptor, status?: number);
-
-//   location: LocationDescriptor;
-
-//   status: number;
-// }
-
-/**
- * Create a route configuration from JSX configuration elements.
- */
-// export function makeRouteConfig(node: React.ReactNode): RouteConfig;
 
 export interface FoundStoreExtension {
   matcher: Matcher;
@@ -484,10 +414,6 @@ export interface CreateRenderOptions {
   renderReady?: (args: RenderReadyArgs) => React.ReactElement;
   renderError?: (args: RenderErrorArgs) => React.ReactNode;
 }
-
-// export function createRender(
-//   options: CreateRenderOptions,
-// ): (renderArgs: RenderArgs) => React.ReactElement;
 
 export interface ConnectedRouterOptions extends CreateRenderOptions {
   render?: (args: RenderArgs) => React.ReactElement;

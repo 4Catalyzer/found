@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ElementsRendererProps, ResolvedElement } from './typeUtils';
+import { type ElementsRendererProps, type ResolvedElement } from './typeUtils';
 
 function accumulateElement(
   children: ResolvedElement,

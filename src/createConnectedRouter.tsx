@@ -1,13 +1,12 @@
-import React from 'react';
 import { shallowEqual, useSelector, useStore } from 'react-redux';
 import { Store } from 'redux';
 
 import createBaseRouter from './createBaseRouter';
 import {
-  ConnectedRouterOptions,
-  ConnectedRouterProps,
-  ConnectedRouter as ConnectedRouterType,
-  FoundState,
+  type ConnectedRouterOptions,
+  type ConnectedRouterProps,
+  type ConnectedRouter as ConnectedRouterType,
+  type FoundState,
 } from './typeUtils';
 
 export default function createConnectedRouter({

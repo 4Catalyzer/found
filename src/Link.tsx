@@ -2,7 +2,7 @@ import useEventCallback from '@restart/hooks/useEventCallback';
 import React, { forwardRef } from 'react';
 import warning from 'tiny-warning';
 
-import { LinkInjectedProps, LinkProps } from './typeUtils';
+import { type LinkInjectedProps, type LinkProps } from './typeUtils';
 import useRouter from './useRouter';
 
 // TODO: Try to type this & simplify those types in next breaking change.

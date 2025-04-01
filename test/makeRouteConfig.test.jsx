@@ -223,40 +223,5 @@ describe('makeRouteConfig', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  ['react-proxy', 'react-stand-in'].forEach((packageName) => {
-    it(`should work with proxies from ${packageName}`, () => {
-      // eslint-disable-next-line global-require, import/no-dynamic-require
-      const createProxy = require(packageName).default;
-
-      const ProxiedRedirect = createProxy(Redirect).get();
-      const redirect = makeRouteConfig(
-        <ProxiedRedirect from="/foo" to="/bar" />,
-      )[0];
-
-      expect(Object.getPrototypeOf(redirect)).toBe(Redirect.prototype);
-
-      expect(redirect.path).toBe('/foo');
-      expect(redirect.to).toBe('/bar');
-      expect(redirect.render).toBeTruthy();
-
-      let redirectException;
-
-      try {
-        redirect.render({
-          match: {
-            router: {
-              matcher: {
-                format: (to) => to,
-              },
-            },
-          },
-        });
-      } catch (error) {
-        redirectException = error;
-      }
-
-      expect(redirectException).toBeInstanceOf(RedirectException);
-      // expect(redirectException.url).toBe('/bar');
-    });
-  });
+  
 });

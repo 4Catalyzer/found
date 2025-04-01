@@ -1,21 +1,21 @@
 import { dequal } from 'dequal';
 import React from 'react';
-import { Store } from 'redux';
+import { type Store } from 'redux';
 import warning from 'tiny-warning';
 
 import ActionTypes from './ActionTypes';
-import RouterContext, { RouterContextState } from './RouterContext';
+import RouterContext, { type RouterContextState } from './RouterContext';
 import StaticContainer from './StaticContainer';
 import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
 import {
-  ConnectedRouterProps,
-  CreateRenderOptions,
-  MatchBase,
-  RenderArgs,
-  Resolver,
-  Router,
+  type ConnectedRouterProps,
+  type CreateRenderOptions,
+  type MatchBase,
+  type RenderArgs,
+  type Resolver,
+  type Router,
 } from './typeUtils';
 
 interface CreateProps extends CreateRenderOptions {

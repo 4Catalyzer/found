@@ -10,10 +10,10 @@ import {
 } from './ResolverUtils';
 import createElements from './createElements';
 import {
-  Match,
-  ResolvedElement,
-  RouteMatch,
-  RouteObjectBase,
+  type Match,
+  type ResolvedElement,
+  type RouteMatch,
+  type RouteObjectBase,
 } from './typeUtils';
 
 function getRouteGetData(route: RouteObjectBase) {

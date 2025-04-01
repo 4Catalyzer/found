@@ -1,5 +1,5 @@
-import resolveRenderArgs, { ResolveRender } from './resolveRenderArgs';
-import { Router } from './typeUtils';
+import resolveRenderArgs, { type ResolveRender } from './resolveRenderArgs';
+import { type Router } from './typeUtils';
 
 export default async function getRenderArgs(
   router: Router,

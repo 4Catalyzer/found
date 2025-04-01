@@ -2,7 +2,11 @@
 import React from 'react';
 
 import RedirectException from './RedirectException';
-import { LocationDescriptor, Match, RedirectOptions } from './typeUtils';
+import {
+  type LocationDescriptor,
+  type Match,
+  type RedirectOptions,
+} from './typeUtils';
 
 class Redirect implements RedirectOptions {
   path?: string;

@@ -4600,6 +4600,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dequal@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "dequal@npm:2.0.3"
+  checksum: 10c0/f98860cdf58b64991ae10205137c0e97d384c3a4edc7f807603887b7c4b850af1224a33d88012009f150861cbee4fa2d322c4cc04b9313bee312e47f6ecaa888
+  languageName: node
+  linkType: hard
+
 "detect-indent@npm:^6.0.0":
   version: 6.1.0
   resolution: "detect-indent@npm:6.1.0"
@@ -5929,7 +5936,7 @@ __metadata:
     codecov: "npm:^3.8.3"
     cpy-cli: "npm:^3.1.1"
     delay: "npm:^5.0.0"
-    dequal: "npm:^2.0.2"
+    dequal: "npm:^2.0.3"
     doctoc: "npm:^2.1.0"
     dtslint: "npm:^4.2.1"
     eslint: "npm:^8.13.0"

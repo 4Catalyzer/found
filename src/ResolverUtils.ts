@@ -2,7 +2,12 @@ import isPromise from 'is-promise';
 import { setImmediate } from 'tiny-set-immediate';
 import warning from 'tiny-warning';
 
-import { Match, RouteIndices, RouteMatch, RouteObjectBase } from './typeUtils';
+import {
+  type Match,
+  type RouteIndices,
+  type RouteMatch,
+  type RouteObjectBase,
+} from './typeUtils';
 
 const UNRESOLVED = {};
 

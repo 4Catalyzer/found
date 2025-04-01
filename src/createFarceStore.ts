@@ -1,12 +1,12 @@
-import { FarceStoreExtension, Protocol } from 'farce';
+import { type FarceStoreExtension, type Protocol } from 'farce';
 import FarceActions from 'farce/Actions';
 import createHistoryEnhancer, {
-  HistoryEnhancerOptions,
+  type HistoryEnhancerOptions,
 } from 'farce/createHistoryEnhancer';
 import queryMiddleware from 'farce/queryMiddleware';
 import {
-  Middleware,
-  StoreEnhancer,
+  type Middleware,
+  type StoreEnhancer,
   combineReducers,
   compose,
   createStore,
@@ -15,7 +15,7 @@ import {
 import Matcher from './Matcher';
 import createMatchEnhancer from './createMatchEnhancer';
 import foundReducer from './foundReducer';
-import { RouteConfig } from './typeUtils';
+import { type RouteConfig } from './typeUtils';
 
 interface Props {
   matcherOptions?: any;

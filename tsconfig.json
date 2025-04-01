@@ -11,7 +11,7 @@
     "lib": ["dom", "es2019"],
     "isolatedModules": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -22,5 +22,5 @@
     "strictFunctionTypes": false,
     "target": "esnext"
   },
-  "include": ["./src/**/*.ts", "src/withRouter.tsx"]
+  "include": ["src"]
 }

@@ -46,12 +46,35 @@
     "./README.md": "doctoc"
   },
   "prettier": "@4c/prettier-config",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "default": "./cjs/index.js"
+      },
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      }
+    },
+    "./*": {
+      "require": {
+        "types": "./cjs/*.d.ts",
+        "default": "./cjs/*.js"
+      },
+      "import": {
+        "types": "./lib/*.d.ts",
+        "default": "./lib/*.js"
+      }
+    }
+  },
   "dependencies": {
     "@restart/context": "^2.1.4",
     "@restart/hooks": "^0.4.5",
     "@types/enzyme": "^3.10.12",
     "@types/react": ">=17.0.37",
-    "dequal": "^2.0.2",
+    "dequal": "^2.0.3",
     "farce": "^0.4.5",
     "is-promise": "^4.0.0",
     "react-redux": "^8.0.2",

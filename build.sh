@@ -11,6 +11,3 @@ echo "{ \"type\": \"commonjs\" }" > ./cjs/package.json
 echo "Generate types"
 yarn tsc -p . --emitDeclarationOnly --declaration --outDir lib
 yarn tsc -p . --emitDeclarationOnly --declaration --outDir cjs
-
-yarn cpy types/*.d.ts lib
-yarn cpy types/*.d.ts cjs

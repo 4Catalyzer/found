@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import RouterContext, { RouterContextState } from './RouterContext';
+import RouterContext, { type RouterContextState } from './RouterContext';
 
 /**
  * Returns the Router and current route match from context

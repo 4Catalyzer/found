@@ -1,7 +1,7 @@
-import { Reducer } from 'redux';
+import { type Reducer } from 'redux';
 
 import ActionTypes from './ActionTypes';
-import { FoundState } from './typeUtils';
+import { type FoundState } from './typeUtils';
 
 // TODO: Re-check types here.
 const foundReducer = (

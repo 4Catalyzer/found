@@ -1,7 +1,7 @@
 import FarceActions from 'farce/Actions';
-import { Store, bindActionCreators } from 'redux';
+import { type Store, bindActionCreators } from 'redux';
 
-import { Router } from './typeUtils';
+import { type Router } from './typeUtils';
 
 const NAVIGATION_ACTION_CREATORS = {
   push: FarceActions.push,

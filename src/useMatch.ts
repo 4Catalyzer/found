@@ -1,4 +1,4 @@
-import { Match } from './typeUtils';
+import { type Match } from './typeUtils';
 import useRouter from './useRouter';
 
 /** Returns the current route Match */

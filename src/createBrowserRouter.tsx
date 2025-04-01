@@ -1,12 +1,11 @@
 import BrowserProtocol from 'farce/BrowserProtocol';
-import React from 'react';
 
 import createFarceRouter from './createFarceRouter';
 import resolver from './resolver';
 import {
-  BrowserRouter,
-  BrowserRouterOptions,
-  FarceRouterProps,
+  type BrowserRouter,
+  type BrowserRouterOptions,
+  type FarceRouterProps,
 } from './typeUtils';
 
 export default function createBrowserRouter(

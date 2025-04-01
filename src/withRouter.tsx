@@ -1,6 +1,6 @@
-import { ComponentPropsWithRef, forwardRef, useContext } from 'react';
+import { type ComponentPropsWithRef, forwardRef, useContext } from 'react';
 
-import RouterContext, { RouterContextState } from './RouterContext';
+import RouterContext, { type RouterContextState } from './RouterContext';
 
 export default function withRouter<
   TComponent extends React.ComponentType<any>,

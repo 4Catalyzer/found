@@ -1,4 +1,4 @@
-import { Location } from 'farce';
+import { type Location } from 'farce';
 
 import useMatch from './useMatch';
 
