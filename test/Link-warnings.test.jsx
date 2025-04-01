@@ -3,7 +3,7 @@ import warning from 'tiny-warning';
 import { vi } from 'vitest';
 
 import Link from '../src/Link';
-import { mountWithRouter } from './helpers';
+import { renderWithRouter } from './helpers';
 
 vi.mock('tiny-warning');
 
@@ -14,7 +14,7 @@ describe('<Link> warnings', () => {
     // The below will log a warning for an invalid prop.
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    await mountWithRouter(<Link component={CustomComponent} to="/" />);
+    await renderWithRouter(<Link component={CustomComponent} to="/" />);
 
     expect(warning).toHaveBeenCalledWith(
       false,
@@ -26,7 +26,7 @@ describe('<Link> warnings', () => {
     // The below will log a warning for an invalid prop.
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    await mountWithRouter(<Link Component={CustomComponent} to="/" />);
+    await renderWithRouter(<Link Component={CustomComponent} to="/" />);
 
     expect(warning).toHaveBeenCalledWith(
       false,
@@ -35,7 +35,7 @@ describe('<Link> warnings', () => {
   });
 
   it('should not warn when as prop is specified', async () => {
-    await mountWithRouter(
+    await renderWithRouter(
       <Link
         as={CustomComponent}
         to="/"

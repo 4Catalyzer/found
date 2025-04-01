@@ -1,53 +1,56 @@
-import { mount } from 'enzyme';
 import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 
 import BaseLink from '../src/Link';
 
-const CustomComponent = () => <div />;
+const CustomComponent = ({ active, ...props }) => (
+  <div data-active={active} {...props} />
+);
 
 describe('<BaseLink>', () => {
   let router;
 
   beforeEach(() => {
     router = {
-      push: jest.fn(),
-      replace: jest.fn(),
-      go: jest.fn(),
-      createHref: jest.fn(),
-      createLocation: jest.fn(),
-      isActive: jest.fn(),
+      push: vi.fn(),
+      replace: vi.fn(),
+      go: vi.fn(),
+      createHref: vi.fn(() => '/'),
+      createLocation: vi.fn(),
+      isActive: vi.fn(),
       matcher: {
-        match: jest.fn(),
-        getRoutes: jest.fn(),
-        isActive: jest.fn(),
-        format: jest.fn(),
+        match: vi.fn(),
+        getRoutes: vi.fn(),
+        isActive: vi.fn(),
+        format: vi.fn(),
       },
-      addNavigationListener: jest.fn(),
+      addNavigationListener: vi.fn(),
     };
   });
 
   describe('when clicked', () => {
     it('should call a custom click handler', () => {
-      const handleClick = jest.fn();
-      const link = mount(
+      const handleClick = vi.fn();
+      const { getByRole } = render(
         <BaseLink to="/" match={{}} router={router} onClick={handleClick} />,
       );
 
-      link.find('a').simulate('click');
+      fireEvent.click(getByRole('link'));
       expect(handleClick).toBeCalled();
     });
 
     it('should navigate to the destination location', () => {
-      const link = mount(
+      const { getByRole } = render(
         <BaseLink to="/path-to-another-page" match={{}} router={router} />,
       );
 
-      link.find('a').simulate('click', { button: 0 });
+      fireEvent.click(getByRole('link'));
       expect(router.push).toBeCalledWith('/path-to-another-page');
     });
 
     it('should not navigate if the click handler calls preventDefault', () => {
-      const link = mount(
+      const { getByRole } = render(
         <BaseLink
           to="/"
           match={{}}
@@ -58,64 +61,67 @@ describe('<BaseLink>', () => {
         />,
       );
 
-      link.find('a').simulate('click', { button: 0 });
+      fireEvent.click(getByRole('link'));
       expect(router.push).not.toBeCalled();
     });
 
     it('should not navigate on modified clicks', () => {
-      const link = mount(<BaseLink to="/" match={{}} router={router} />);
+      const { getByRole } = render(
+        <BaseLink to="/" match={{}} router={router} />,
+      );
 
-      const a = link.find('a');
+      const link = getByRole('link');
 
-      a.simulate('click', { button: 0, metaKey: true });
+      fireEvent.click(link, { metaKey: true });
       expect(router.push).not.toBeCalled();
 
-      a.simulate('click', { button: 0, altKey: true });
+      fireEvent.click(link, { altKey: true });
       expect(router.push).not.toBeCalled();
 
-      a.simulate('click', { button: 0, ctrlKey: true });
+      fireEvent.click(link, { ctrlKey: true });
       expect(router.push).not.toBeCalled();
 
-      a.simulate('click', { button: 0, shiftKey: true });
+      fireEvent.click(link, { shiftKey: true });
       expect(router.push).not.toBeCalled();
     });
 
     it('should not navigate on non-left clicks', () => {
-      const link = mount(<BaseLink to="/" match={{}} router={router} />);
+      const { getByRole } = render(
+        <BaseLink to="/" match={{}} router={router} />,
+      );
 
-      link.find('a').simulate('click', { button: 2 });
+      fireEvent.click(getByRole('link'), { button: 2 });
       expect(router.push).not.toBeCalled();
     });
 
     it('should not navigate if target is defined and not _self', () => {
-      const link = mount(
+      const { getByRole } = render(
         <BaseLink to="/" match={{}} router={router} target="_blank" />,
       );
 
-      link.find('a').simulate('click', { button: 0 });
+      fireEvent.click(getByRole('link'));
       expect(router.push).not.toBeCalled();
     });
 
     it('should navigate if target is _self', () => {
-      const link = mount(
+      const { getByRole } = render(
         <BaseLink to="/" match={{}} router={router} target="_self" />,
       );
 
-      link.find('a').simulate('click', { button: 0 });
+      fireEvent.click(getByRole('link'));
       expect(router.push).toBeCalled();
     });
   });
 
   describe('active state', () => {
     it('should not call isActive when not showing active state', () => {
-      mount(<BaseLink to="/" match={{}} router={router} />);
-
+      render(<BaseLink to="/" match={{}} router={router} />);
       expect(router.isActive).not.toBeCalled();
     });
 
     it('should set activeClassName when active', () => {
       router.isActive.mockReturnValueOnce(true);
-      const link = mount(
+      const { getByRole } = render(
         <BaseLink
           to="/"
           match={{}}
@@ -124,12 +130,12 @@ describe('<BaseLink>', () => {
         />,
       );
 
-      expect(link.find('a').prop('className')).toMatch(/active/);
+      expect(getByRole('link')).toHaveClass('active');
     });
 
     it('should set activeStyle when active', () => {
       router.isActive.mockReturnValueOnce(true);
-      const link = mount(
+      const { getByRole, debug } = render(
         <BaseLink
           to="/"
           match={{}}
@@ -138,12 +144,13 @@ describe('<BaseLink>', () => {
         />,
       );
 
-      expect(link.find('a').prop('style').color).toBe('#fff');
+      console.log(debug());
+      expect(getByRole('link')).toHaveStyle({ color: '#fff' });
     });
 
     it('should set activePropName when active', () => {
       router.isActive.mockReturnValueOnce(true);
-      const link = mount(
+      const { container } = render(
         <BaseLink
           as={CustomComponent}
           to="/"
@@ -153,12 +160,12 @@ describe('<BaseLink>', () => {
         />,
       );
 
-      expect(link.find(CustomComponent).prop('active')).toBe(true);
+      expect(container.firstChild).toHaveAttribute('data-active', 'true');
     });
 
     it('should not set activePropName when not active', () => {
       router.isActive.mockReturnValueOnce(false);
-      const link = mount(
+      const { container } = render(
         <BaseLink
           as={CustomComponent}
           to="/"
@@ -168,7 +175,7 @@ describe('<BaseLink>', () => {
         />,
       );
 
-      expect(link.find(CustomComponent).prop('active')).toBe(false);
+      expect(container.firstChild).toHaveAttribute('data-active', 'false');
     });
   });
 });

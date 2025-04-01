@@ -32,9 +32,9 @@ describe('getFarceResult', () => {
         },
       ]),
     ).toMatchInlineSnapshot(`
-      Array [
+      [
         200,
-        "<div class=\\"foo\\"><div class=\\"baz\\">a</div></div>",
+        "<div class="foo"><div class="baz">a</div></div>",
       ]
     `);
   });
@@ -78,9 +78,9 @@ describe('getFarceResult', () => {
         },
       ]),
     ).toMatchInlineSnapshot(`
-      Array [
+      [
         200,
-        "<div class=\\"foo\\"><div class=\\"bar-nav\\"></div><div class=\\"qux\\">a</div></div>",
+        "<div class="foo"><div class="bar-nav"></div><div class="qux">a</div></div>",
       ]
     `);
   });
@@ -97,8 +97,8 @@ describe('getFarceResult', () => {
         ],
       }),
     ).toMatchInlineSnapshot(`
-      Object {
-        "redirect": Object {
+      {
+        "redirect": {
           "url": "/bar",
         },
         "status": 302,
@@ -120,8 +120,8 @@ describe('getFarceResult', () => {
         ],
       }),
     ).toMatchInlineSnapshot(`
-      Object {
-        "redirect": Object {
+      {
+        "redirect": {
           "url": "/bar",
         },
         "status": 302,
@@ -142,8 +142,8 @@ describe('getFarceResult', () => {
         ],
       }),
     ).toMatchInlineSnapshot(`
-      Object {
-        "redirect": Object {
+      {
+        "redirect": {
           "url": "/bar",
         },
         "status": 301,
