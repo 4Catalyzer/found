@@ -3,6 +3,7 @@
     "@babel/preset-typescript",
     ["@babel/preset-react", { "runtime": "automatic" }]
   ],
+  "plugins": ["@babel/plugin-transform-export-namespace-from"],
   "env": {
     "cjs": {
       "plugins": ["@babel/plugin-transform-modules-commonjs"]
