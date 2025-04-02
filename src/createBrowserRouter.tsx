@@ -17,7 +17,7 @@ export default function createBrowserRouter(
   });
 
   function BrowserRouterInstance(props: FarceRouterProps) {
-    // @ts-ignore TODO: resolver will be always overwritten
+    // @ts-expect-error TODO: resolver will be always overwritten
     return <Router resolver={resolver} {...props} />;
   }
 

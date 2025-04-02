@@ -60,12 +60,12 @@ interface Router {
   isActive: (
     match: Match,
     location: LocationDescriptor,
-    { exact: boolean }
+    { exact: boolean },
   ) => boolean; // For `match` as above, returns whether `match` corresponds to `location` or a subpath of `location`; if `exact` is set, returns whether `match` corresponds exactly to `location`
   format: (pattern: string, params: ParamsDescriptor) => string;
   addNavigationListener(
     listener: (location: LocationDescriptor) => any,
-    { beforeUnload: boolean }
+    { beforeUnload: boolean },
   ); // Adds a [navigation listener](https://github.com/4Catalyzer/farce#navigation-listeners) that can [block navigation](#blocking-navigation)
 }
 ```
@@ -113,7 +113,8 @@ const route = {
     context.store.dispatch(Actions.getWidget(params.widgetId)),
 };
 
-// <Router matchContext={{ store }} />
+// ...
+<Router matchContext={{ store }} />;
 ```
 
 :::caution
@@ -126,18 +127,39 @@ Convenience prop for indicating a Route with children also functions
 as it's own index route.
 
 ```tsx
-<Route allowAsIndex path="customers" Component={Page}>
-  <Route path=":customerId" Component={ChildPage} />
-</Route>
+const routeConfig = [
+  {
+    path: "customers",
+    Component: Page,
+    allowAsIndex: true,
+    children: [
+      {
+        path: ":customerId",
+        Component: ChildPage,
+      },
+    ],
+  },
+];
 ```
 
 This is equivalent to when matching `'/customers'`:
 
 ```tsx
-<Route path="customers" Component={Page}>
-  <Route Component={() => null} />
-  <Route path=":customerId" Component={ChildPage} />
-</Route>
+const routeConfig = [
+  {
+    path: "customers",
+    Component: Page,
+    children: [
+      {
+        Component: () => null,
+      },
+      {
+        path: ":customerId",
+        Component: ChildPage,
+      },
+    ],
+  },
+];
 ```
 
 #### `defer`
@@ -145,9 +167,19 @@ This is equivalent to when matching `'/customers'`:
 By default, Found will issue all data fetching operations in parallel. However, if you wish to defer data fetching for a given route until its parent data promises has been resolved, you may do so by setting `defer` on the route.
 
 ```tsx
-<Route Component={Parent} getData={getParentData}>
-  <Route Component={Child} getData={getChildData} defer />
-</Route>
+const routeConfig = [
+  {
+    Component: Parent,
+    getData: getParentData,
+    children: [
+      {
+        Component: Child,
+        getData: getChildData,
+        defer: true,
+      },
+    ],
+  },
+];
 ```
 
 Setting `defer` on a route will make the resolver defer calling its `getData` method and the `getData` methods on all of its descendants until all of its parent data promises have resolved.
@@ -186,7 +218,7 @@ render: (e: RenderProps) => React.ComponentType<any> | (children) => React.Compo
 :::tip
 You can use this method to render per-route loading state.
 
-```tsx
+```js
 function loadingRender({ Component, props }) {
   if (!Component || !props) {
     return <LoadingIndicator />;
@@ -195,7 +227,13 @@ function loadingRender({ Component, props }) {
   return <Component {...props} />;
 }
 
-<Route render={loadingRender} {...rest} />;
+const routeConfig = [
+  {
+    path: "/",
+    render: loadingRender,
+    // ... other route properties
+  },
+];
 ```
 
 :::

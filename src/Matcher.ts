@@ -69,7 +69,6 @@ export default class Matcher {
     }
 
     if (basePath.charAt(basePath.length - 1) === '/') {
-      // eslint-disable-next-line no-param-reassign
       basePath = basePath.slice(0, -1);
     }
 
@@ -103,7 +102,7 @@ export default class Matcher {
 
       const match = this.matchRoute(route, pathname);
       if (!match) {
-        continue; // eslint-disable-line no-continue
+        continue;
       }
 
       const { params, remaining } = match;

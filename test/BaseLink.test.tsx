@@ -1,17 +1,15 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 
 import BaseLink from '../src/Link';
-
-const CustomComponent = ({ active, ...props }) => (
-  <div data-active={active} {...props} />
-);
+import { type Router, type Match } from '../src/typeUtils';
 
 describe('<BaseLink>', () => {
-  let router;
+  let router: Router;
+  let match: Match;
 
   beforeEach(() => {
+    match = {} as any;
     router = {
       push: vi.fn(),
       replace: vi.fn(),
@@ -24,8 +22,9 @@ describe('<BaseLink>', () => {
         getRoutes: vi.fn(),
         isActive: vi.fn(),
         format: vi.fn(),
-      },
+      } as any,
       addNavigationListener: vi.fn(),
+      replaceRouteConfig: vi.fn(),
     };
   });
 
@@ -33,7 +32,12 @@ describe('<BaseLink>', () => {
     it('should call a custom click handler', () => {
       const handleClick = vi.fn();
       const { getByRole } = render(
-        <BaseLink to="/" match={{}} router={router} onClick={handleClick} />,
+        <BaseLink
+          to="/"
+          match={match}
+          router={router}
+          onClick={handleClick}
+        />,
       );
 
       fireEvent.click(getByRole('link'));
@@ -42,7 +46,7 @@ describe('<BaseLink>', () => {
 
     it('should navigate to the destination location', () => {
       const { getByRole } = render(
-        <BaseLink to="/path-to-another-page" match={{}} router={router} />,
+        <BaseLink to="/path-to-another-page" match={match} router={router} />,
       );
 
       fireEvent.click(getByRole('link'));
@@ -53,12 +57,15 @@ describe('<BaseLink>', () => {
       const { getByRole } = render(
         <BaseLink
           to="/"
-          match={{}}
+          match={match}
           router={router}
+          // @ts-expect-error FIX ME
           onClick={(event) => {
             event.preventDefault();
           }}
-        />,
+        >
+          hi
+        </BaseLink>,
       );
 
       fireEvent.click(getByRole('link'));
@@ -67,7 +74,7 @@ describe('<BaseLink>', () => {
 
     it('should not navigate on modified clicks', () => {
       const { getByRole } = render(
-        <BaseLink to="/" match={{}} router={router} />,
+        <BaseLink to="/" match={match} router={router} />,
       );
 
       const link = getByRole('link');
@@ -87,7 +94,7 @@ describe('<BaseLink>', () => {
 
     it('should not navigate on non-left clicks', () => {
       const { getByRole } = render(
-        <BaseLink to="/" match={{}} router={router} />,
+        <BaseLink to="/" match={match} router={router} />,
       );
 
       fireEvent.click(getByRole('link'), { button: 2 });
@@ -96,7 +103,7 @@ describe('<BaseLink>', () => {
 
     it('should not navigate if target is defined and not _self', () => {
       const { getByRole } = render(
-        <BaseLink to="/" match={{}} router={router} target="_blank" />,
+        <BaseLink to="/" match={match} router={router} target="_blank" />,
       );
 
       fireEvent.click(getByRole('link'));
@@ -105,7 +112,7 @@ describe('<BaseLink>', () => {
 
     it('should navigate if target is _self', () => {
       const { getByRole } = render(
-        <BaseLink to="/" match={{}} router={router} target="_self" />,
+        <BaseLink to="/" match={match} router={router} target="_self" />,
       );
 
       fireEvent.click(getByRole('link'));
@@ -115,16 +122,16 @@ describe('<BaseLink>', () => {
 
   describe('active state', () => {
     it('should not call isActive when not showing active state', () => {
-      render(<BaseLink to="/" match={{}} router={router} />);
+      render(<BaseLink to="/" match={match} router={router} />);
       expect(router.isActive).not.toBeCalled();
     });
 
     it('should set activeClassName when active', () => {
-      router.isActive.mockReturnValueOnce(true);
+      vi.mocked(router.isActive).mockReturnValueOnce(true);
       const { getByRole } = render(
         <BaseLink
           to="/"
-          match={{}}
+          match={match}
           router={router}
           activeClassName="active"
         />,
@@ -134,45 +141,44 @@ describe('<BaseLink>', () => {
     });
 
     it('should set activeStyle when active', () => {
-      router.isActive.mockReturnValueOnce(true);
-      const { getByRole, debug } = render(
+      vi.mocked(router.isActive).mockReturnValueOnce(true);
+      const { getByRole } = render(
         <BaseLink
           to="/"
-          match={{}}
+          match={match}
           router={router}
           activeStyle={{ color: '#fff' }}
         />,
       );
 
-      console.log(debug());
       expect(getByRole('link')).toHaveStyle({ color: '#fff' });
     });
 
     it('should set activePropName when active', () => {
-      router.isActive.mockReturnValueOnce(true);
+      vi.mocked(router.isActive).mockReturnValueOnce(true);
       const { container } = render(
-        <BaseLink
-          as={CustomComponent}
-          to="/"
-          activePropName="active"
-          match={{}}
-          router={router}
-        />,
+        <BaseLink to="/" match={match} router={router}>
+          {(_, { active }) => (
+            <div data-active={active}>
+              <span>Link</span>
+            </div>
+          )}
+        </BaseLink>,
       );
 
       expect(container.firstChild).toHaveAttribute('data-active', 'true');
     });
 
     it('should not set activePropName when not active', () => {
-      router.isActive.mockReturnValueOnce(false);
+      vi.mocked(router.isActive).mockReturnValueOnce(false);
       const { container } = render(
-        <BaseLink
-          as={CustomComponent}
-          to="/"
-          activePropName="active"
-          match={{}}
-          router={router}
-        />,
+        <BaseLink to="/" match={match} router={router}>
+          {(_, { active }) => (
+            <div data-active={active}>
+              <span>Link</span>
+            </div>
+          )}
+        </BaseLink>,
       );
 
       expect(container.firstChild).toHaveAttribute('data-active', 'false');

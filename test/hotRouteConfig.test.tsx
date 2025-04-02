@@ -1,7 +1,6 @@
 import delay from 'delay';
 import ServerProtocol from 'farce/ServerProtocol';
-import React from 'react';
-import TestRenderer, { act } from 'react-test-renderer';
+import { act, render } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import createFarceRouter from '../src/createFarceRouter';
@@ -12,7 +11,7 @@ import { InstrumentedResolver } from './helpers';
 describe('hotRouteConfig', () => {
   afterEach(() => {
     /* eslint-env browser */
-    // eslint-disable-next-line no-underscore-dangle
+    // @ts-expect-error - window.__FOUND_HOT_RELOAD__ is a dynamic property
     delete window.__FOUND_HOT_RELOAD__;
     /* eslint-env browser: false */
   });
@@ -28,38 +27,28 @@ describe('hotRouteConfig', () => {
     const Router = createFarceRouter({
       historyProtocol: new ServerProtocol('/foo'),
       routeConfig,
-
       render: createRender({}),
     });
 
     const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+    const { container } = render(<Router resolver={resolver} />);
 
-    await resolver.done;
+    await act(() => resolver.done);
 
-    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
-      <div
-        className="foo"
-      />
-    `);
+    expect(container.firstChild).toHaveClass('foo');
 
-    await act(async () => {
+    act(() => {
       hotRouteConfig([
         {
           path: '/foo',
           render: () => <div className="bar" />,
         },
       ]);
-
-      await delay(10);
     });
 
-    await resolver.done;
+    await delay(10);
+    await act(() => resolver.done);
 
-    expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
-      <div
-        className="bar"
-      />
-    `);
+    expect(container.firstChild).toHaveClass('bar');
   });
 });

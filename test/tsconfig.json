@@ -1,0 +1,8 @@
+{
+  "extends": "..",
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "rootDir": ".."
+  },
+  "include": ["../src", "."]
+}

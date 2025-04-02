@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import Redirect from '../../src/Redirect';
+import createRedirect from '../../src/createRedirect';
 import RedirectException from '../../src/RedirectException';
 import { getFarceResult } from '../../src/server';
 
@@ -90,7 +90,7 @@ describe('getFarceResult', () => {
       await getFarceResult({
         url: '/foo',
         routeConfig: [
-          new Redirect({
+          createRedirect({
             from: 'foo',
             to: '/bar',
           }),
@@ -134,7 +134,7 @@ describe('getFarceResult', () => {
       await getFarceResult({
         url: '/foo',
         routeConfig: [
-          new Redirect({
+          createRedirect({
             from: 'foo',
             to: '/bar',
             status: 301,

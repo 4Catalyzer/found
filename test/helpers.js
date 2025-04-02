@@ -12,7 +12,6 @@ export class InstrumentedResolver {
     this.done = new Promise(() => {});
   }
 
-  // eslint-disable-next-line require-await
   async *resolveElements(match) {
     const deferred = pDefer();
     this.done = deferred.promise;

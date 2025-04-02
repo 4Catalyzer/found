@@ -21,6 +21,8 @@ detail view with tab navigation for that specific product.
 With Found we can represent this UI with the following route tree and config:
 
 ```tsx
+import { Route } from "found/jsx";
+
 <Route path="/" Component={AppPage}>
   <Route path="customers">
     <Route Component={CustomersIndexPage} />
@@ -50,7 +52,7 @@ With Found we can represent this UI with the following route tree and config:
   </Route>
 
   <Route path="settings" Component={SettingsPage} />
-</Route>
+</Route>;
 ```
 
 Which can also be illustrated via the following tree graph:

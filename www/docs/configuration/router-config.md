@@ -80,75 +80,10 @@ const FarceRouter = createFarceRouter({
 
 ReactDOM.render(
   <FarceRouter resolver={resolver} />,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 ```
 
 The options object for `createFarceRouter` should have a `historyProtocol` property that has a history protocol object. For example, to use the HTML History API as with `createBrowserRouter`, you would provide `new BrowserProtocol()`.
 
 The created `<FarceRouter>` manages setting up and providing a Redux store with the appropriate configuration internally. It also requires a `resolver` prop with the route element resolver object. For routes configured as above, this should be the `resolver` object in this library.
-
-#### `createConnectedRouter`
-
-`createConnectedRouter` creates a router that works with an existing Redux store and provider.
-
-```js
-import {
-  Actions as FarceActions,
-  BrowserProtocol,
-  createHistoryEnhancer,
-  queryMiddleware,
-} from "farce";
-import {
-  createConnectedRouter,
-  createMatchEnhancer,
-  createRender,
-  foundReducer,
-  Matcher,
-  resolver,
-} from "found";
-import { Provider } from "react-redux";
-import { combineReducers, compose, createStore } from "redux";
-
-/* ... */
-
-const store = createStore(
-  combineReducers({
-    found: foundReducer,
-  }),
-  compose(
-    createHistoryEnhancer({
-      protocol: new BrowserProtocol(),
-      middlewares: [queryMiddleware],
-    }),
-    createMatchEnhancer(new Matcher(routeConfig))
-  )
-);
-
-store.dispatch(FarceActions.init());
-
-const ConnectedRouter = createConnectedRouter({
-  render: createRender({
-    renderError: ({ error }) => (
-      <div>{error.status === 404 ? "Not found" : "Error"}</div>
-    ),
-  }),
-});
-
-ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter resolver={resolver} />
-  </Provider>,
-  document.getElementById("root")
-);
-```
-
-:::note
-Found uses `redux` and `react-redux` as direct dependencies for the convenience of users not directly using Redux. If you are directly using Redux, either ensure that you have the same versions of `redux` and `react-redux` installed as used in Found, or use package manager or bundler resolutions to force Found to use the same versions of those packages that you are using directly. Found is compatible with any current release of `redux` or `react-redux`.
-:::
-
-When creating a store for use with the created `<ConnectedRouter>`, you should install the `foundReducer` reducer under the `found` key. You should also use a store enhancer created with `createHistoryEnhancer` from Farce and a store enhancer created with `createMatchEnhancer`, which must go after the history store enhancer. Dispatch `FarceActions.init()` after setting up your store to initialize the event listeners and the initial location for the history store enhancer.
-
-`createConnectedRouter` ignores the `historyProtocol`, `historyMiddlewares`, and `historyOptions` properties on its options object.
-
-`createConnectedRouter` also accepts an optional `getFound` property. If you installed `foundReducer` on a key other than `found`, specify the `getFound` function to retrieve the reducer state.

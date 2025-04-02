@@ -40,8 +40,8 @@ describe('resolver', () => {
         routeIndices: [0, 0, 0, 0],
       };
 
-      const routeMatches = getRouteMatches(match);
-      const dataPromises = resolver.getData(match, routeMatches);
+      const routeMatches = getRouteMatches(match as any);
+      const dataPromises = resolver.getData(match as any, routeMatches);
 
       expect(getData1).toHaveBeenCalled();
       expect(getData3).not.toHaveBeenCalled();

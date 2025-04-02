@@ -28,9 +28,9 @@ describe('Matcher', () => {
     ]);
 
     [
-      ['pathless children', '/foo', [0, 0, 0]],
-      ['nested matching', '/foo/bar', [0, 1]],
-      ['route fallthrough', '/foo/baz', [2]],
+      ['pathless children', '/foo', [0, 0, 0]] as const,
+      ['nested matching', '/foo/bar', [0, 1]] as const,
+      ['route fallthrough', '/foo/baz', [2]] as const,
     ].forEach(([scenario, pathname, expectedRouteIndices]) => {
       describe(scenario, () => {
         it('should be supported', () => {
@@ -257,10 +257,10 @@ describe('Matcher', () => {
     ]);
 
     [
-      ['parent without trailing slash', '/foo', [0, 0]],
-      ['parent with trailing slash', '/foo/', [0, 0]],
-      ['child without trailing slash', '/foo/bar', [0, 1]],
-      ['child with trailing slash', '/foo/bar/', [0, 1]],
+      ['parent without trailing slash', '/foo', [0, 0]] as const,
+      ['parent with trailing slash', '/foo/', [0, 0]] as const,
+      ['child without trailing slash', '/foo/bar', [0, 1]] as const,
+      ['child with trailing slash', '/foo/bar/', [0, 1]] as const,
     ].forEach(([scenario, pathname, expectedRouteIndices]) => {
       it(`should match ${scenario}`, () => {
         expect(
@@ -350,7 +350,7 @@ describe('Matcher', () => {
   });
 
   describe('#joinPaths', () => {
-    const matcher = new Matcher();
+    const matcher = new Matcher({} as any);
 
     [
       ['no extra slashes', '/foo', 'bar'],
@@ -359,6 +359,7 @@ describe('Matcher', () => {
       ['slashes everywhere', '/foo/', '/bar'],
     ].forEach(([scenario, basePath, path]) => {
       it(`should support ${scenario}`, () => {
+        // @ts-expect-error - joinPaths is protected
         expect(matcher.joinPaths(basePath, path)).toBe('/foo/bar');
       });
     });
@@ -412,10 +413,14 @@ describe('Matcher', () => {
           { pathname: '/foo', query: { foo: undefined } },
           { pathname: '/foo', query: { foo: undefined } },
         ],
-      ].forEach(([scenario, matchLocation, location, options]) => {
+      ].forEach(([scenario, matchLocation, location, options]: any) => {
         it(`should be active on ${scenario}`, () => {
           expect(
-            matcher.isActive({ location: matchLocation }, location, options),
+            matcher.isActive(
+              { location: matchLocation } as any,
+              location,
+              options,
+            ),
           ).toBe(true);
         });
       });
@@ -456,10 +461,14 @@ describe('Matcher', () => {
           { pathname: '/foo', query: { foo: 'bar' } },
           { pathname: '/foo', query: { foo: undefined } },
         ],
-      ].forEach(([scenario, matchLocation, location, options]) => {
+      ].forEach(([scenario, matchLocation, location, options]: any) => {
         it(`should not be active on ${scenario}`, () => {
           expect(
-            matcher.isActive({ location: matchLocation }, location, options),
+            matcher.isActive(
+              { location: matchLocation } as any,
+              location,
+              options,
+            ),
           ).toBe(false);
         });
       });

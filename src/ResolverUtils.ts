@@ -46,7 +46,6 @@ function accumulateRouteValuesImpl(
 
   for (const routeIndex of routeIndices) {
     if (typeof routeIndex === 'object') {
-      // eslint-disable-next-line no-loop-func
       Object.values(routeIndex).forEach((groupRouteIndices) => {
         accumulated.push(
           ...accumulateRouteValuesImpl(

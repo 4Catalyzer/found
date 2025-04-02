@@ -15,7 +15,7 @@ export default function createFarceRouter({
   historyMiddlewares,
   historyOptions,
   routeConfig,
-  // @ts-ignore TODO: matcher options should not accessible to end user
+  // @ts-expect-error TODO: matcher options should not accessible to end user
   matcherOptions,
   getFound = ({ found }: any) => found as FoundState,
   ...options

@@ -1,31 +1,26 @@
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 
-import Redirect from '../src/Redirect';
-import RedirectException from '../src/RedirectException';
-import Route from '../src/Route';
-import makeRouteConfig from '../src/makeRouteConfig';
+import { Route, Redirect, makeRouteConfig } from '../src/jsx';
+import createRedirect from '../src/createRedirect';
 
 describe('makeRouteConfig', () => {
-  const AppPage = () => {};
-
-  const MainPage = () => {};
-  const FooPage = () => {};
-  const BarPage = () => {};
-  const BazPage = () => {};
-
-  const FooNav = () => {};
-  const FooA = () => {};
-  const FooB = () => {};
-  const BarNav = () => {};
-  const BarMain = () => {};
+  const AppPage = () => null;
+  const MainPage = () => null;
+  const FooPage = () => null;
+  const BarPage = () => null;
+  const BazPage = () => null;
+  const FooNav = () => null;
+  const FooA = () => null;
+  const FooB = () => null;
+  const BarNav = () => null;
+  const BarMain = () => null;
 
   it('should work with a route', () => {
     expect(makeRouteConfig(<Route path="/" Component={AppPage} />)).toEqual([
-      new Route({
+      {
         path: '/',
         Component: AppPage,
-      }),
+      },
     ]);
   });
 
@@ -41,25 +36,25 @@ describe('makeRouteConfig', () => {
         </Route>,
       ),
     ).toEqual([
-      new Route({
+      {
         path: '/',
         Component: AppPage,
         children: [
-          new Route({
+          {
             Component: MainPage,
-          }),
-          new Route({
+          },
+          {
             path: 'foo',
             Component: FooPage,
             children: [
-              new Route({
+              {
                 path: 'bar',
                 Component: BarPage,
-              }),
+              },
             ],
-          }),
+          },
         ],
-      }),
+      },
     ]);
   });
 
@@ -76,27 +71,27 @@ describe('makeRouteConfig', () => {
         </Route>,
       ),
     ).toEqual([
-      new Route({
+      {
         path: '/',
         Component: AppPage,
         children: [
-          new Route({
+          {
             Component: MainPage,
-          }),
-          new Route({
+          },
+          {
             path: 'foo',
             Component: FooPage,
-          }),
-          new Route({
+          },
+          {
             path: 'bar',
             Component: BarPage,
-          }),
-          new Route({
+          },
+          {
             path: 'baz',
             Component: BazPage,
-          }),
+          },
         ],
-      }),
+      },
     ]);
   });
 
@@ -108,16 +103,18 @@ describe('makeRouteConfig', () => {
         </Route>,
       ),
     ).toEqual([
-      new Route({
+      {
         path: '/',
         Component: AppPage,
         children: [
-          new Redirect({
-            from: 'widget/:widgetId',
+          {
+            path: 'widget/:widgetId',
             to: '/widgets/:widgetId',
-          }),
+            status: undefined,
+            render: expect.any(Function),
+          },
         ],
-      }),
+      },
     ]);
   });
 
@@ -128,10 +125,12 @@ describe('makeRouteConfig', () => {
           <Route path="foo">
             {{
               nav: <Route path="(.*)?" Component={FooNav} />,
-              main: [
-                <Route path="a" Component={FooA} />,
-                <Route path="b" Component={FooB} />,
-              ],
+              main: (
+                <>
+                  <Route path="a" Component={FooA} />
+                  <Route path="b" Component={FooB} />
+                </>
+              ),
             }}
           </Route>
           <Route path="bar">
@@ -222,6 +221,4 @@ describe('makeRouteConfig', () => {
       );
     }).toThrowErrorMatchingSnapshot();
   });
-
-  
 });

@@ -30,12 +30,10 @@ function buildRouteConfig(
 
     if (children) {
       if (React.isValidElement(children) || Array.isArray(children)) {
-        // eslint-disable-next-line no-use-before-define
         route.children = buildRouteConfig(children, []);
       } else {
         const routeGroups: Record<string, RouteConfig> = {};
         Object.entries(children).forEach(([groupName, groupRoutes]: any[]) => {
-          // eslint-disable-next-line no-use-before-define
           routeGroups[groupName] = buildRouteConfig(groupRoutes, []);
         });
 

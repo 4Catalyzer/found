@@ -37,10 +37,11 @@ export type ParamsDescriptor = Record<
 >;
 
 // These need to be interfaces to avoid circular reference issues.
-/* eslint-disable @typescript-eslint/no-empty-interface */
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GroupRouteIndices extends Record<string, RouteIndices> {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface RouteIndices extends Array<number | GroupRouteIndices> {}
-/* eslint-enable @typescript-eslint/no-empty-interface */
 
 export interface MatcherResult {
   routeIndices: RouteIndices;
@@ -293,79 +294,6 @@ export interface RedirectOptions {
 //  React component.
 export type RedirectProps = RedirectOptions;
 
-export interface LinkPropsCommon {
-  to: LocationDescriptor;
-  // match: Match,  provided by withRouter
-  // router: Router, provided by withRouter
-  exact?: boolean;
-  target?: string;
-  onClick?: (event: React.SyntheticEvent<any>) => void;
-}
-
-export interface LinkInjectedProps {
-  href: string;
-  onClick: (event: React.SyntheticEvent<any>) => void;
-}
-
-export interface LinkPropsNodeChild extends LinkPropsCommon {
-  activeClassName?: string;
-  activeStyle?: Record<string, unknown>;
-  children?: React.ReactNode;
-}
-
-type ReplaceLinkProps<TInner extends React.ElementType, TProps> = Omit<
-  React.ComponentProps<TInner>,
-  keyof TProps | keyof LinkInjectedProps
-> &
-  TProps;
-
-export type LinkPropsSimple = ReplaceLinkProps<'a', LinkPropsNodeChild>;
-
-export type LinkPropsWithAs<
-  TInner extends React.ElementType<LinkInjectedProps>,
-> = ReplaceLinkProps<
-  TInner,
-  LinkPropsNodeChild & {
-    as: TInner;
-    activePropName?: null;
-  }
->;
-
-export type LinkPropsWithActivePropName<
-  TInner extends React.ComponentType<
-    LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
-  >,
-  TActivePropName extends string,
-> = ReplaceLinkProps<
-  TInner,
-  LinkPropsNodeChild & {
-    as: TInner;
-    activePropName: TActivePropName;
-  } & {
-    [activePropName in TActivePropName]?: null;
-  }
->;
-
-export interface LinkPropsWithFunctionChild extends LinkPropsCommon {
-  children: (linkRenderArgs: {
-    href: string;
-    active: boolean;
-    onClick: (event: React.SyntheticEvent<any>) => void;
-  }) => React.ReactNode;
-}
-
-export type LinkProps<
-  TInner extends React.ElementType = never,
-  TInnerWithActivePropName extends React.ComponentType<
-    LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
-  > = never,
-  TActivePropName extends string = never,
-> =
-  | LinkPropsSimple
-  | LinkPropsWithAs<TInner>
-  | LinkPropsWithActivePropName<TInnerWithActivePropName, TActivePropName>
-  | LinkPropsWithFunctionChild;
-
 export interface RouterState<TContext = any> {
   match: Match<TContext>;
   router: Router;
@@ -427,10 +355,6 @@ export interface ConnectedRouterProps {
 }
 
 export type ConnectedRouter = React.ComponentType<ConnectedRouterProps>;
-
-// export function createConnectedRouter(
-//   options: ConnectedRouterOptions,
-// ): ConnectedRouter;
 
 export interface FarceRouterOptions extends ConnectedRouterOptions {
   store?: Store;

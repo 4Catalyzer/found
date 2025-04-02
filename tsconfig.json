@@ -1,6 +1,6 @@
 {
-  "exclude": ["./src/pathToRegexp.js"],
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "lib",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -22,5 +22,6 @@
     "strictFunctionTypes": false,
     "target": "esnext"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["./src/pathToRegexp.js"]
 }

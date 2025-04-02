@@ -1,16 +1,18 @@
 import delay from 'delay';
 import MemoryProtocol from 'farce/MemoryProtocol';
-import React from 'react';
+
+// @ts-expect-error FIX ME
 import TestRenderer, { act } from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 
-import Redirect from '../src/Redirect';
 import RedirectException from '../src/RedirectException';
 import createFarceRouter from '../src/createFarceRouter';
 import { InstrumentedResolver } from './helpers';
+import createRedirect from '../src/createRedirect';
+import { RouteObject } from '../src/typeUtils';
 
 describe('redirect', () => {
-  async function assertRedirect(fooRoute) {
+  async function assertRedirect(fooRoute: RouteObject) {
     const Router = createFarceRouter({
       historyProtocol: new MemoryProtocol('/foo'),
       routeConfig: [
@@ -37,7 +39,7 @@ describe('redirect', () => {
 
   it('should support static redirects', async () => {
     const testRenderer = await assertRedirect(
-      new Redirect({
+      createRedirect({
         from: '/foo',
         to: '/bar',
       }),
@@ -52,7 +54,7 @@ describe('redirect', () => {
 
   it('should support function redirects', async () => {
     const testRenderer = await assertRedirect(
-      new Redirect({
+      createRedirect({
         from: '/foo',
         to: ({ location }) => location.pathname.replace('foo', 'bar'),
       }),

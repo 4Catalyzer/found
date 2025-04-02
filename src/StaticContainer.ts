@@ -2,6 +2,7 @@ import React from 'react';
 
 interface Props {
   shouldUpdate: boolean;
+  children: React.ReactNode;
 }
 
 class StaticContainer extends React.Component<Props> {
