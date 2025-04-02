@@ -31,7 +31,7 @@
     "lint": "eslint src test",
     "prepublishOnly": "yarn build",
     "publishLocal": "yarn prepublishOnly && yarn file-butler prepare-publish-dir lib && yalc push lib",
-    "release": "4c release --conventional-commits",
+    "release": "rollout --conventional-commits",
     "tdd": "vitest watch",
     "test": "yarn lint && yarn testonly",
     "testonly": "vitest run --coverage",
@@ -75,6 +75,7 @@
   },
   "devDependencies": {
     "@4c/prettier-config": "^1.1.0",
+    "@4c/rollout": "patch:@4c/rollout@npm%3A4.0.2#~/.yarn/patches/@4c-rollout-npm-4.0.2-ab2b6d0bab.patch",
     "@babel/cli": "^7.27.0",
     "@babel/core": "^7.26.10",
     "@babel/plugin-transform-export-namespace-from": "^7.25.9",
