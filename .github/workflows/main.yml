@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: corepack enable
-      - run: yarn install --frozen-lockfile
-      - run: yarn --cwd www install --frozen-lockfile
+      - run: yarn install --immutable
+      - run: yarn --cwd www install --immutable
       - run: yarn test --coverage
       - run: node_modules/.bin/codecov
       - if: ${{ github.ref == 'refs/heads/master' }}
