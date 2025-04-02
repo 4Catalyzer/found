@@ -18,7 +18,7 @@
     "lib"
   ],
   "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
+  "module": "lib/lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
@@ -26,37 +26,46 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "build:ts": "yarn tsc --outDir lib/cjs --module commonjs && yarn tsc --outDir lib/esm --module es2020 && mv lib/esm/*.d.ts lib && mv lib/cjs/*.d.ts lib",
-    "build": "rimraf lib && 4c build --types false src && yarn build:pick && yarn build:types",
-    "build:pick": "cherry-pick --cjs-dir cjs --esm-dir esm --cwd lib ../src",
-    "build:types": "cpy types/*.d.ts lib",
-    "build:docs": "yarn --cwd www build",
-    "format": "4c format --prettier-ignore .eslintignore .",
-    "lint": "4c lint --prettier-ignore .eslintignore .",
+    "build": "./build.sh",
+    "format": "prettier --write .",
+    "lint": "eslint src test",
     "prepublishOnly": "yarn build",
     "publishLocal": "yarn prepublishOnly && yarn file-butler prepare-publish-dir lib && yalc push lib",
     "release": "4c release --conventional-commits",
-    "tdd": "jest --watch",
-    "test": "yarn lint && yarn test:ts && yarn testonly -- --coverage",
-    "test:ts": "dtslint --expectOnly types && yarn tsc --noEmit",
-    "testonly": "jest --runInBand --verbose",
+    "tdd": "vitest watch",
+    "test": "yarn lint && yarn testonly",
+    "testonly": "vitest run --coverage",
     "docs": "yarn --cwd www start"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*": "yarn 4c lint --fix --prettier-ignore .eslintignore",
-    "./README.md": "doctoc"
-  },
   "prettier": "@4c/prettier-config",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "default": "./cjs/index.js"
+      },
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      }
+    },
+    "./*": {
+      "require": {
+        "types": "./cjs/*.d.ts",
+        "default": "./cjs/*.js"
+      },
+      "import": {
+        "types": "./lib/*.d.ts",
+        "default": "./lib/*.js"
+      }
+    }
+  },
   "dependencies": {
-    "@babel/runtime": "^7.16.5",
-    "@restart/context": "^2.1.4",
     "@restart/hooks": "^0.4.5",
     "@types/enzyme": "^3.10.12",
     "@types/react": ">=17.0.37",
-    "dequal": "^2.0.2",
+    "dequal": "^2.0.3",
     "farce": "^0.4.5",
     "is-promise": "^4.0.0",
     "react-redux": "^8.0.2",
@@ -65,52 +74,41 @@
     "tiny-warning": "^1.0.3"
   },
   "devDependencies": {
-    "@4c/babel-preset": "^9.1.0",
-    "@4c/cli": "^4.0.4",
-    "@4c/file-butler": "^6.0.0",
     "@4c/prettier-config": "^1.1.0",
-    "@4c/tsconfig": "^0.4.0",
-    "@babel/core": "^7.20.5",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.18.6",
-    "@types/jest": "^29.2.3",
+    "@babel/cli": "^7.27.0",
+    "@babel/core": "^7.26.10",
+    "@babel/plugin-transform-export-namespace-from": "^7.25.9",
+    "@babel/plugin-transform-modules-commonjs": "^7.26.3",
+    "@babel/preset-react": "^7.26.3",
+    "@babel/preset-typescript": "^7.27.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^14.3.1",
     "@types/react-dom": "^17.0.15",
-    "@typescript-eslint/eslint-plugin": "^5.19.0",
-    "@typescript-eslint/parser": "^5.19.0",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
-    "babel-jest": "^29.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
+    "@vitest/coverage-v8": "3.1.1",
     "babel-plugin-add-module-exports": "^1.0.4",
     "cherry-pick": "^0.5.0",
     "codecov": "^3.8.3",
-    "cpy-cli": "^3.1.1",
+    "cpy-cli": "^5.0.0",
     "delay": "^5.0.0",
-    "doctoc": "^2.1.0",
-    "dtslint": "^4.2.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "eslint": "^8.13.0",
-    "eslint-config-4catalyzer-jest": "^2.2.0",
-    "eslint-config-4catalyzer-react": "^1.2.2",
-    "eslint-config-4catalyzer-typescript": "^3.3.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^25.7.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.4.0",
-    "hookem": "^2.0.1",
-    "jest": "^27.5.1",
-    "lint-staged": "^12.3.8",
+    "doctoc": "^2.2.1",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.0.0",
+    "jsdom": "^26.0.0",
     "p-defer": "^3.0.0",
-    "prettier": "^2.6.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-proxy": "^3.0.0-alpha.1",
-    "react-stand-in": "^4.0.0-beta.21",
-    "react-test-renderer": "^17.0.2",
+    "prettier": "^3.5.3",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-test-renderer": "^18.3.0",
     "rimraf": "^3.0.2",
-    "typescript": "^4.6.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.29.0",
+    "vitest": "^3.1.1",
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
@@ -119,5 +117,6 @@
   },
   "publishConfig": {
     "directory": "lib"
-  }
+  },
+  "packageManager": "yarn@4.8.1+sha512.bc946f2a022d7a1a38adfc15b36a66a3807a67629789496c3714dd1703d2e6c6b1c69ff9ec3b43141ac7a1dd853b7685638eb0074300386a59c18df351ef8ff6"
 }

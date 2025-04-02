@@ -1,9 +1,18 @@
 import FarceActionTypes from 'farce/ActionTypes';
-import { Middleware, Store, StoreEnhancer, applyMiddleware } from 'redux';
+import {
+  type Middleware,
+  type Store,
+  type StoreEnhancer,
+  applyMiddleware,
+} from 'redux';
 
 import ActionTypes from './ActionTypes';
 import Matcher from './Matcher';
-import { FoundState, FoundStoreExtension, RouteConfig } from './typeUtils';
+import {
+  type FoundState,
+  type FoundStoreExtension,
+  type RouteConfig,
+} from './typeUtils';
 
 function createMatchMiddleware(
   matcher: Matcher,

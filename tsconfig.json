@@ -1,8 +1,27 @@
 {
-  "extends": "@4c/tsconfig/web.json",
-  "exclude": ["./src/pathToRegexp.js"],
   "compilerOptions": {
-    "allowJs": true
+    "rootDir": "src",
+    "outDir": "lib",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "lib": ["dom", "es2019"],
+    "isolatedModules": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictFunctionTypes": false,
+    "target": "esnext"
   },
-  "include": ["./src/**/*.ts"]
+  "include": ["src"],
+  "exclude": ["./src/pathToRegexp.js"]
 }

@@ -1,5 +1,4 @@
-import Redirect from 'found/Redirect';
-import React from 'react';
+import createRedirect from 'found/createRedirect';
 
 import App from './App';
 
@@ -34,7 +33,7 @@ export default [
             </div>
           ),
       },
-      new Redirect({
+      createRedirect({
         from: 'baz',
         to: '/foo',
       }),

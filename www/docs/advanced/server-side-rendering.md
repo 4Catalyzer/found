@@ -78,7 +78,7 @@ These behave similarly to their counterparts above, except that the options obje
 
 #### Server-side rendering with custom Redux store
 
-Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store, as with `createConnectedRouter` above. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
+Found exposes lower-level functionality for doing server-side rendering for use with your own Redux store. On the server, use `getStoreRenderArgs` to get a promise for the arguments to your `render` function, then wrap the rendered elements with a `<RouterProvider>`.
 
 ```js
 import { getStoreRenderArgs } from "found";
@@ -113,8 +113,8 @@ app.use(async (req, res) => {
           {render(renderArgs)}
         </RouterProvider>
       </Provider>,
-      store.getState()
-    )
+      store.getState(),
+    ),
   );
 });
 ```
@@ -143,7 +143,7 @@ import { getStoreRenderArgs } from "found";
         initialRenderArgs={initialRenderArgs}
       />
     </Provider>,
-    document.getElementById("root")
+    document.getElementById("root"),
   );
 })();
 ```

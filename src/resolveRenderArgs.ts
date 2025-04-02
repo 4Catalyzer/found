@@ -1,12 +1,12 @@
 import HttpError from './HttpError';
 import {
-  Match,
-  RenderArgsElements,
-  ResolvedElement,
-  Resolver,
-  RouteIndices,
-  RouteObject,
-  Router,
+  type Match,
+  type RenderArgsElements,
+  type ResolvedElement,
+  type Resolver,
+  type RouteIndices,
+  type RouteObject,
+  type Router,
 } from './typeUtils';
 
 function foldElements(

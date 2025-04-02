@@ -10,10 +10,10 @@ import {
 } from './ResolverUtils';
 import createElements from './createElements';
 import {
-  Match,
-  ResolvedElement,
-  RouteMatch,
-  RouteObjectBase,
+  type Match,
+  type ResolvedElement,
+  type RouteMatch,
+  type RouteObjectBase,
 } from './typeUtils';
 
 function getRouteGetData(route: RouteObjectBase) {
@@ -37,7 +37,7 @@ export default {
    * If a match doesn't produce an element for every route, it yields `undefined` which
    * is interpreted by the `Router` as "continue to render the last UI while waiting
    * for the resolver to produce the final value", via a `StaticContainer`. This
-   * is the default "loading" behavior and can be overriden by having `route.render`
+   * is the default "loading" behavior and can be overridden by having `route.render`
    * produce any value but `undefined`.
    *
    * Generally though, routes will implement `render` which can implement a number of loading

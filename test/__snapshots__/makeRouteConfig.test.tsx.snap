@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`makeRouteConfig > should error on non-element children 1`] = `[TypeError: \`,\` is not a valid React element]`;
+
+exports[`makeRouteConfig > should error on other falsy children 1`] = `[TypeError: \`0\` is not a valid React element]`;

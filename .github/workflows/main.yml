@@ -9,17 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn install --frozen-lockfile
-      - run: yarn --cwd www install --frozen-lockfile
-      - run: yarn test --coverage
-      - run: node_modules/.bin/codecov
+      - run: corepack enable
+      - run: yarn install --immutable
+      - run: yarn --cwd www install --immutable
+      - run: yarn test
       - if: ${{ github.ref == 'refs/heads/master' }}
         run: yarn --cwd www build
       - name: Deploy

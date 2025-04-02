@@ -8,8 +8,7 @@ The top-level `found` package exports everything available in this library. It i
 
 ```js
 import createBrowserRouter from "found/createBrowserRouter";
-import makeRouteConfig from "found/makeRouteConfig";
-import Route from "found/Route";
+import { makeRouteConfig, Route } from "found/jsx";
 
 // Instead of:
 // import {

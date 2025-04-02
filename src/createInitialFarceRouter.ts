@@ -1,7 +1,7 @@
 import createFarceRouter from './createFarceRouter';
 import createFarceStore from './createFarceStore';
 import getStoreRenderArgs from './getStoreRenderArgs';
-import { FarceRouter, InitialFarceRouterOptions } from './typeUtils';
+import { type FarceRouter, type InitialFarceRouterOptions } from './typeUtils';
 
 export default async function createInitialFarceRouter({
   historyProtocol,

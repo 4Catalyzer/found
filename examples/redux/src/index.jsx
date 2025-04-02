@@ -3,10 +3,10 @@ import BrowserProtocol from 'farce/BrowserProtocol';
 import createHistoryEnhancer from 'farce/createHistoryEnhancer';
 import queryMiddleware from 'farce/queryMiddleware';
 import {
-  Redirect,
+  createRedirect,
   Matcher,
   Link,
-  createConnectedRouter,
+  createBaseRouter,
   createMatchEnhancer,
   createRender,
   foundReducer,
@@ -17,6 +17,11 @@ import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { shallowEqual, useSelector, useStore } from 'react-redux';
+import { Store } from 'redux';
+
+import createBaseRouter from './createBaseRouter';
+
 
 function LinkItem(props) {
   return (
@@ -75,7 +80,7 @@ const routeConfig = [
             </div>
           ),
       },
-      new Redirect({
+      createRedirect({
         from: 'baz',
         to: '/foo',
       }),
@@ -98,13 +103,26 @@ const store = configureStore({
 
 store.dispatch(FarceActions.init());
 
-const ConnectedRouter = createConnectedRouter({
+
+const Router = createBaseRouter({
   render: createRender({
     renderError: ({ error }) => (
       <div>{error.status === 404 ? 'Not found' : 'Error'}</div>
     ),
   }),
 });
+
+const getFoundState = (state) => {
+  return state.found
+};
+
+function ConnectedRouter(props) {
+  const store = useStore();
+  const foundState = useSelector(getFoundState, shallowEqual);
+
+  return <Router {...props} {...foundState} store={store} />;
+}
+
 const root = createRoot(document.getElementById('root'));
 
 root.render(

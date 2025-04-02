@@ -1,4 +1,4 @@
-import { Params } from './typeUtils';
+import { type Params } from './typeUtils';
 import useMatch from './useMatch';
 
 /** Returns the current route params */

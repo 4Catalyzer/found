@@ -1,21 +1,21 @@
 import { dequal } from 'dequal';
 import React from 'react';
-import { Store } from 'redux';
+import { type Store } from 'redux';
 import warning from 'tiny-warning';
 
 import ActionTypes from './ActionTypes';
-import RouterContext, { RouterContextState } from './RouterContext';
+import RouterContext, { type RouterContextState } from './RouterContext';
 import StaticContainer from './StaticContainer';
 import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
 import {
-  ConnectedRouterProps,
-  CreateRenderOptions,
-  MatchBase,
-  RenderArgs,
-  Resolver,
-  Router,
+  type ConnectedRouterProps,
+  type CreateRenderOptions,
+  type MatchBase,
+  type RenderArgs,
+  type Resolver,
+  type Router,
 } from './typeUtils';
 
 interface CreateProps extends CreateRenderOptions {
@@ -123,7 +123,7 @@ export default function createBaseRouter({
 
       if (__DEV__ && typeof window !== 'undefined') {
         /* eslint-env browser */
-        /* eslint-disable no-underscore-dangle */
+
         if (window.__FOUND_HOT_RELOAD__) {
           warning(
             !window.__FOUND_REPLACE_ROUTE_CONFIG__,
@@ -133,7 +133,7 @@ export default function createBaseRouter({
           window.__FOUND_REPLACE_ROUTE_CONFIG__ =
             this.router.replaceRouteConfig;
         }
-        /* eslint-enable no-underscore-dangle */
+
         /* eslint-env browser: false */
       }
     }
@@ -174,11 +174,11 @@ export default function createBaseRouter({
 
       if (__DEV__ && typeof window !== 'undefined') {
         /* eslint-env browser */
-        /* eslint-disable no-underscore-dangle */
+
         if (window.__FOUND_HOT_RELOAD__) {
           delete window.__FOUND_REPLACE_ROUTE_CONFIG__;
         }
-        /* eslint-enable no-underscore-dangle */
+
         /* eslint-env browser: false */
       }
     }

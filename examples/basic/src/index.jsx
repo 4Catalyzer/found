@@ -1,4 +1,4 @@
-import { createBrowserRouter, Link, Redirect } from 'found';
+import { createBrowserRouter, Link, createRedirect } from 'found';
 
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -58,7 +58,7 @@ const BrowserRouter = createBrowserRouter({
               </div>
             ),
         },
-        new Redirect({
+        createRedirect({
           from: 'baz',
           to: '/foo',
         }),

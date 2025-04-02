@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { render as renderReact } from '@testing-library/react';
 import pDefer from 'p-defer';
 
 import createRender from '../src/createRender';
@@ -12,7 +12,6 @@ export class InstrumentedResolver {
     this.done = new Promise(() => {});
   }
 
-  // eslint-disable-next-line require-await
   async *resolveElements(match) {
     const deferred = pDefer();
     this.done = deferred.promise;
@@ -25,17 +24,17 @@ export class InstrumentedResolver {
   }
 }
 
-export async function mountFarceResult({
+export async function renderFarceResult({
   url = '/',
   render = createRender({}),
   ...options
 }) {
   const { element } = await getFarceResult({ ...options, url, render });
-  return mount(element);
+  return renderReact(element);
 }
 
-export function mountWithRouter(element, options = {}) {
-  return mountFarceResult({
+export function renderWithRouter(element, options = {}) {
+  return renderFarceResult({
     ...options,
 
     routeConfig: [

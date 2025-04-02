@@ -2,7 +2,12 @@ import isPromise from 'is-promise';
 import { setImmediate } from 'tiny-set-immediate';
 import warning from 'tiny-warning';
 
-import { Match, RouteIndices, RouteMatch, RouteObjectBase } from './typeUtils';
+import {
+  type Match,
+  type RouteIndices,
+  type RouteMatch,
+  type RouteObjectBase,
+} from './typeUtils';
 
 const UNRESOLVED = {};
 
@@ -41,7 +46,6 @@ function accumulateRouteValuesImpl(
 
   for (const routeIndex of routeIndices) {
     if (typeof routeIndex === 'object') {
-      // eslint-disable-next-line no-loop-func
       Object.values(routeIndex).forEach((groupRouteIndices) => {
         accumulated.push(
           ...accumulateRouteValuesImpl(

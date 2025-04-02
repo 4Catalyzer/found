@@ -1,27 +1,61 @@
 import useEventCallback from '@restart/hooks/useEventCallback';
-import React, { forwardRef } from 'react';
-import warning from 'tiny-warning';
+import { forwardRef, type MouseEvent, type SyntheticEvent } from 'react';
 
-import { LinkInjectedProps, LinkProps } from './typeUtils';
 import useRouter from './useRouter';
+import { LocationDescriptor } from 'farce';
+import { Match, Router } from './typeUtils';
 
-// TODO: Try to type this & simplify those types in next breaking change.
-const Link = forwardRef(
+export type LinkPropsCommon = {
+  to: LocationDescriptor;
+
+  exact?: boolean;
+  target?: React.HTMLAttributeAnchorTarget;
+
+  /* @internal */
+  match?: Match;
+  /* @internal */
+  router?: Router;
+};
+
+export type LinkPropsNodeChild = LinkPropsCommon &
+  React.ComponentPropsWithoutRef<'a'> & {
+    activeClassName?: string;
+    activeStyle?: Record<string, unknown>;
+    children?: React.ReactNode;
+  };
+
+export interface LinkInjectedProps {
+  href: string;
+  onClick: (event: SyntheticEvent) => void;
+  ref?: React.Ref<any> | null;
+}
+
+export type LinkPropsWithFunctionChild = LinkPropsCommon & {
+  activeClassName?: never;
+  activeStyle?: never;
+  onClick?: (event: MouseEvent) => void;
+  children: (
+    props: LinkInjectedProps,
+    data: { active: boolean },
+  ) => React.ReactNode;
+};
+
+export type LinkProps = LinkPropsNodeChild | LinkPropsWithFunctionChild;
+
+const Link = forwardRef<any, LinkProps>(
   (
     {
-      as: Component = 'a',
       to,
-      activeClassName,
-      activeStyle,
-      activePropName,
       match: propsMatch,
       router: propsRouter,
       exact = false,
       onClick,
       target,
       children,
+      activeClassName,
+      activeStyle,
       ...props
-    }: any,
+    }: LinkProps,
     ref,
   ) => {
     const { router, match } = useRouter() || {
@@ -30,9 +64,7 @@ const Link = forwardRef(
     };
 
     const handleClick = useEventCallback((event) => {
-      if (onClick) {
-        onClick(event);
-      }
+      onClick?.(event);
 
       // Don't do anything if the user's onClick handler prevented default.
       // Otherwise, let the browser handle the link with the computed href if the
@@ -58,83 +90,39 @@ const Link = forwardRef(
       router.push(to);
     });
 
-    if (__DEV__ && typeof Component !== 'function') {
-      for (const wrongPropName of ['component', 'Component'] as const) {
-        const wrongPropValue = (props as any)[wrongPropName];
-        if (!wrongPropValue) {
-          continue;
-        }
-
-        warning(
-          false,
-          `Link to ${JSON.stringify(to)} with \`${wrongPropName}\` prop \`${
-            wrongPropValue.displayName || wrongPropValue.name || 'UNKNOWN'
-          }\` has an element type that is not a component. The expected prop for the link component is \`as\`.`,
-        );
-      }
-    }
-
     const href = router.createHref(to);
     const childrenIsFunction = typeof children === 'function';
 
-    if (
-      childrenIsFunction ||
-      activeClassName ||
-      activeStyle ||
-      activePropName
-    ) {
+    if (childrenIsFunction || activeClassName || activeStyle) {
       const toLocation = router.createLocation(to);
       const active = router.isActive(match!, toLocation, { exact });
 
       if (childrenIsFunction) {
-        const add = { href, active, onClick: handleClick };
-        return children(add);
+        return children({ href, onClick: handleClick }, { active });
       }
 
+      const anchorProps = props as LinkPropsNodeChild;
       if (active) {
         if (activeClassName) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          props.className = props.className
-            ? `${props.className} ${activeClassName}`
+          anchorProps.className = anchorProps.className
+            ? `${anchorProps.className} ${activeClassName}`
             : activeClassName;
         }
 
         if (activeStyle) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          props.style = { ...props.style, ...activeStyle };
+          anchorProps.style = { ...anchorProps.style, ...activeStyle };
         }
-      }
-
-      if (activePropName) {
-        props[activePropName] = active;
       }
     }
 
     return (
-      <Component
-        {...props}
-        href={href}
-        ref={ref}
-        onClick={handleClick} // This overrides props.onClick.
-      >
+      <a {...props} href={href} ref={ref} onClick={handleClick}>
         {children}
-      </Component>
+      </a>
     );
   },
 );
 
-// eslint-disable-next-line react/prefer-stateless-function
-declare class LinkType<
-  TInner extends React.ElementType = never,
-  TInnerWithActivePropName extends React.ComponentType<
-    LinkInjectedProps & { [activePropName in TActivePropName]: boolean }
-  > = never,
-  TActivePropName extends string = never,
-> extends React.Component<
-  LinkProps<TInner, TInnerWithActivePropName, TActivePropName>
-> {
-  // eslint-disable-next-line react/static-property-placement, react/no-unused-class-component-methods
-  props: LinkProps<TInner, TInnerWithActivePropName, TActivePropName>;
-}
+Link.displayName = 'Link';
 
-export default Link as unknown as LinkType;
+export default Link;

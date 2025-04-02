@@ -2,19 +2,19 @@ import { dequal } from 'dequal';
 import warning from 'tiny-warning';
 
 import pathToRegexp, { compile } from './pathToRegexp';
-import type {
-  IsActiveOptions,
-  LocationDescriptorObject,
-  Match,
-  MatchBase,
-  MatcherResult,
-  Params,
-  ParamsDescriptor,
-  Query,
-  QueryDescriptor,
-  RouteConfig,
-  RouteIndices,
-  RouteObject,
+import {
+  type IsActiveOptions,
+  type LocationDescriptorObject,
+  type Match,
+  type MatchBase,
+  type MatcherResult,
+  type Params,
+  type ParamsDescriptor,
+  type Query,
+  type QueryDescriptor,
+  type RouteConfig,
+  type RouteIndices,
+  type RouteObject,
 } from './typeUtils';
 
 export type RouteConfigGroups = Record<string, RouteConfig>;
@@ -69,7 +69,6 @@ export default class Matcher {
     }
 
     if (basePath.charAt(basePath.length - 1) === '/') {
-      // eslint-disable-next-line no-param-reassign
       basePath = basePath.slice(0, -1);
     }
 
@@ -103,7 +102,7 @@ export default class Matcher {
 
       const match = this.matchRoute(route, pathname);
       if (!match) {
-        continue; // eslint-disable-line no-continue
+        continue;
       }
 
       const { params, remaining } = match;

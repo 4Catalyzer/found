@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Match, Router } from './typeUtils';
+import { type Match, type Router } from './typeUtils';
 
 export interface RouterContextState<TContext = any> {
   match: Match<TContext> | null;
