@@ -53,7 +53,7 @@ function buildRouteConfig(
     }
 
     const Type = child.type as React.JSXElementConstructor<any>;
-    const { children, ...props } = child.props;
+    const { children, ...props } = child.props as any;
 
     if (Type === Fragment) {
       buildRouteConfig(children, routeConfig);

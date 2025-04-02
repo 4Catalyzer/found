@@ -1,13 +1,12 @@
-import delay from 'delay';
+
 import ServerProtocol from 'farce/ServerProtocol';
 import pDefer from 'p-defer';
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import { act } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import createFarceRouter from '../src/createFarceRouter';
-import { InstrumentedResolver } from './helpers';
-
+import { getTestRenderer } from './helpers';
 describe('render', () => {
   it('should support nested routes', async () => {
     const deferred = pDefer();
@@ -39,20 +38,19 @@ describe('render', () => {
       renderPending: () => <div className="pending" />,
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
-
-    // Initial pending render is asynchronous.
-    await delay(10);
-
+    const { resolver, testRenderer } = await getTestRenderer(Router);
+    
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
         className="pending"
       />
     `);
 
-    deferred.resolve();
-    await resolver.done;
+    await act(async () => {
+      deferred.resolve();
+      await resolver.done;
+    })
+
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -65,6 +63,7 @@ describe('render', () => {
         </div>
       </div>
     `);
+   
   });
 
   it('should support named child routes', async () => {
@@ -115,11 +114,7 @@ describe('render', () => {
       renderPending: () => <div className="pending" />,
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
-
-    // Initial pending render is asynchronous.
-    await delay(10);
+    const { resolver, testRenderer } = await getTestRenderer(Router);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -127,8 +122,10 @@ describe('render', () => {
       />
     `);
 
-    deferred.resolve();
-    await resolver.done;
+    await act(async () => {
+      deferred.resolve();
+      await resolver.done;
+    })
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -187,10 +184,10 @@ describe('render', () => {
       ],
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
-    await resolver.done;
+    const { resolver, testRenderer } = await getTestRenderer(Router);
+
+    await act(() => resolver.done);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -220,10 +217,9 @@ describe('render', () => {
       renderReady: () => <div className="ready" />,
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+    const { resolver, testRenderer } = await getTestRenderer(Router);
 
-    await resolver.done;
+    await act(() => resolver.done);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -245,10 +241,10 @@ describe('render', () => {
       render: () => <div className="rendered" />,
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
-    await resolver.done;
+    const { resolver, testRenderer } = await getTestRenderer(Router);
+
+    await act(() => resolver.done);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -256,4 +252,5 @@ describe('render', () => {
       />
     `);
   });
+
 });

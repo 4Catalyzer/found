@@ -15,7 +15,7 @@ const createFileMap = (
       result: Record<string, SandpackFile>,
       codeSnippet: React.ReactElement,
     ) => {
-      if (codeSnippet.props.mdxType !== 'pre') {
+      if ((codeSnippet.type as any)?.name !== 'MDXPre') {
         return result;
       }
       const { props } = codeSnippet.props.children;

@@ -28,7 +28,7 @@ function accumulateElement(
 
   return typeof element === 'function'
     ? element(children as any)
-    : React.cloneElement(element, { children });
+    : React.cloneElement(element, { children } as any);
 }
 
 function ElementsRenderer({ elements }: ElementsRendererProps) {

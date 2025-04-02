@@ -12,7 +12,8 @@ import RedirectException from '../src/RedirectException';
 import createFarceRouter from '../src/createFarceRouter';
 import useRouter from '../src/useRouter';
 import withRouter from '../src/withRouter';
-import { InstrumentedResolver } from './helpers';
+import { InstrumentedResolver, getTestRenderer } from './helpers';
+import { waitFor } from '@testing-library/dom';
 
 describe('Router', () => {
   it('should render match', async () => {
@@ -26,18 +27,15 @@ describe('Router', () => {
       ],
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+    const { resolver, testRenderer } = await getTestRenderer(Router);
 
-    await resolver.done;
+    await act(() => resolver.done);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
         className="foo"
       />
     `);
-
-    testRenderer.unmount();
   });
 
   it('should render 404 when no routes match', async () => {
@@ -48,10 +46,7 @@ describe('Router', () => {
       renderError: ({ error }) => <div className={`error-${error.status}`} />,
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
-
-    await delay(10);
+    const { testRenderer } = await getTestRenderer(Router);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -75,11 +70,11 @@ describe('Router', () => {
       renderError: ({ error }) => <div className={`error-${error.status}`} />,
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
 
-    await resolver.done;
-    await delay(10);
+    const { resolver, testRenderer } = await getTestRenderer(Router);
+
+    await act(() => resolver.done);
+
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -102,12 +97,10 @@ describe('Router', () => {
       ],
     });
     const storeRef = React.createRef();
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(
-      <Router ref={storeRef} resolver={resolver} />,
-    );
+    const { resolver, testRenderer } = await getTestRenderer(Router, storeRef);
 
-    await resolver.done;
+
+    await act(() => resolver.done);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -129,7 +122,7 @@ describe('Router', () => {
       await delay(10);
     });
 
-    await resolver.done;
+    await act(() => resolver.done);
 
     expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
       <div
@@ -139,7 +132,7 @@ describe('Router', () => {
   });
 
   describe('context', () => {
-    async function getTestRenderer(Component) {
+    async function getTestRouter(Component) {
       const Router = createFarceRouter({
         historyProtocol: new MemoryProtocol('/foo'),
         routeConfig: [
@@ -154,16 +147,10 @@ describe('Router', () => {
         ],
       });
 
-      const resolver = new InstrumentedResolver();
-      const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+      const { resolver, testRenderer } = await getTestRenderer(Router);
 
-      await resolver.done;
 
-      await act(async () => {
-        await delay(10);
-      });
-
-      await resolver.done;
+      await act(() => resolver.done);
 
       return testRenderer;
     }
@@ -179,7 +166,7 @@ describe('Router', () => {
         return null;
       }
 
-      const testRenderer = await getTestRenderer(MyComponent);
+      const testRenderer = await getTestRouter(MyComponent);
       expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
         <div
           className="bar"
@@ -200,7 +187,7 @@ describe('Router', () => {
         }
       }
 
-      const testRenderer = await getTestRenderer(withRouter(MyComponent));
+      const testRenderer = await getTestRouter(withRouter(MyComponent));
       expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
         <div
           className="bar"
@@ -229,23 +216,26 @@ describe('Router', () => {
         ],
       });
 
-      const resolver = new InstrumentedResolver();
       const storeRef = React.createRef();
+      
+      const { resolver, testRenderer } = await getTestRenderer(Router, storeRef);
+    
 
-      const testRenderer = TestRenderer.create(
-        <Router ref={storeRef} resolver={resolver} />,
-      );
+      await waitFor(() => expect(storeRef.current).toBeDefined());
 
       await act(async () => {
         storeRef.current.dispatch(FarceActions.push('/bar'));
         await delay(10);
-
-        await resolver.done;
-
-        deferred.resolve();
-        await delay(10);
       });
 
+      await act(() => resolver.done);
+
+      await act(() => {
+        deferred.resolve();
+        return delay(10);
+      });
+
+     
       expect(Component).not.toHaveBeenCalled();
       expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
         <div
@@ -275,24 +265,20 @@ describe('Router', () => {
         ],
       });
 
-      const resolver1 = new InstrumentedResolver();
-      const testRenderer = TestRenderer.create(
-        <Router resolver={resolver1} />,
-      );
-
-      await delay(10);
+      const { resolver,testRenderer } = await getTestRenderer(Router);
+      const resolver2 = new InstrumentedResolver();
 
       await act(async () => {
-        const resolver2 = new InstrumentedResolver();
+        
         testRenderer.update(<Router resolver={resolver2} />);
         await delay(10);
-
-        deferred2.resolve();
-        await resolver2.done;
-
-        deferred1.reject(new RedirectException('/bar'));
-        await resolver1.done;
       });
+      
+      deferred2.resolve();
+      await act(() => resolver2.done);
+
+      deferred1.reject(new RedirectException('/bar'));
+      await act(() => resolver.done);
 
       expect(Component).not.toHaveBeenCalled();
       expect(testRenderer.toJSON()).toMatchInlineSnapshot(`

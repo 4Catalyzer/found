@@ -2,15 +2,14 @@ import delay from 'delay';
 import MemoryProtocol from 'farce/MemoryProtocol';
 
 // @ts-expect-error FIX ME
-import TestRenderer, { act } from 'react-test-renderer';
+import { act } from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 
 import RedirectException from '../src/RedirectException';
 import createFarceRouter from '../src/createFarceRouter';
-import { InstrumentedResolver } from './helpers';
 import createRedirect from '../src/createRedirect';
 import { RouteObject } from '../src/typeUtils';
-
+import { getTestRenderer } from './helpers';
 describe('redirect', () => {
   async function assertRedirect(fooRoute: RouteObject) {
     const Router = createFarceRouter({
@@ -24,8 +23,7 @@ describe('redirect', () => {
       ],
     });
 
-    const resolver = new InstrumentedResolver();
-    const testRenderer = TestRenderer.create(<Router resolver={resolver} />);
+    const { resolver, testRenderer } = await getTestRenderer(Router);
 
     await resolver.done;
 

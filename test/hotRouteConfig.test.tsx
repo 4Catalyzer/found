@@ -37,16 +37,16 @@ describe('hotRouteConfig', () => {
 
     expect(container.firstChild).toHaveClass('foo');
 
-    act(() => {
+    await act(() => {
       hotRouteConfig([
         {
           path: '/foo',
           render: () => <div className="bar" />,
         },
       ]);
+      return delay(10);
     });
 
-    await delay(10);
     await act(() => resolver.done);
 
     expect(container.firstChild).toHaveClass('bar');

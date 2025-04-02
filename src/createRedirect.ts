@@ -12,7 +12,7 @@ export default function createRedirect({
     path: from,
     to,
     status,
-    render({ match }: { match: Match }): JSX.Element {
+    render({ match }: { match: Match }): React.ReactElement {
       const { to, status } = this as any;
       let toLocation;
 
