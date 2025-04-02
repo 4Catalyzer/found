@@ -31,3 +31,5 @@ export { default as useParams } from './useParams';
 export { default as useLocation } from './useLocation';
 export { default as useMatch } from './useMatch';
 export { default as withRouter } from './withRouter';
+
+export * from './typeUtils';

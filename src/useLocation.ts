@@ -1,7 +1,5 @@
-import { type Location } from 'farce';
-
 import useMatch from './useMatch';
 
-export default function useLocation(): Location | undefined {
-  return useMatch()?.location;
+export default function useLocation() {
+  return useMatch().location;
 }

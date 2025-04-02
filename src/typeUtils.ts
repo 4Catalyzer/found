@@ -12,8 +12,7 @@ import {
   type QueryDescriptor,
 } from 'farce';
 import * as React from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Middleware, Reducer, Store, StoreEnhancer } from 'redux';
+import { Middleware, Store } from 'redux';
 
 import HttpError from './HttpError';
 import Matcher from './Matcher';
@@ -36,12 +35,9 @@ export type ParamsDescriptor = Record<
   string | number | boolean | Record<string, unknown>
 >;
 
-// These need to be interfaces to avoid circular reference issues.
+export type GroupRouteIndices = Record<string, RouteIndices>;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface GroupRouteIndices extends Record<string, RouteIndices> {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface RouteIndices extends Array<number | GroupRouteIndices> {}
+export type RouteIndices = Array<number | GroupRouteIndices>;
 
 export interface MatcherResult {
   routeIndices: RouteIndices;
@@ -94,42 +90,9 @@ export interface FoundState {
   resolvedMatch: MatchBase;
 }
 
-// export const foundReducer: Reducer<FoundState>;
-
 export interface IsActiveOptions {
   exact?: boolean;
 }
-
-/**
- * An object implementing the matching algorithm.
- *
- * User code generally shouldn't need this, but it doesn't hurt to here,
- * since we use it for routerShape below.
- */
-// export class Matcher {
-//   constructor(routeConfig: RouteConfig);
-
-//   match(location: Location): MatcherResult | null;
-
-//   getRoutes: (match: MatchBase) => RouteObject[];
-
-//   /**
-//    * for match as above, returns whether match corresponds to location or a
-//    * subpath of location; if exact is set, returns whether match corresponds
-//    * exactly to location
-//    */
-//   isActive: (
-//     match: Match,
-//     location: LocationDescriptorObject,
-//     options?: IsActiveOptions,
-//   ) => boolean;
-
-//   /**
-//    * Returns the path string for a pattern of the same format as a route path
-//    * and a object of the corresponding path parameters
-//    */
-//   format: (pattern: string, params: ParamsDescriptor) => string;
-// }
 
 export interface Router extends FarceStoreExtension, FoundStoreExtension {
   /**
@@ -316,10 +279,6 @@ export interface FoundStoreExtension {
   replaceRouteConfig: (routeConfig: RouteConfig) => void;
 }
 
-// export function createMatchEnhancer(
-//   matcher: Matcher,
-// ): StoreEnhancer<{ found: FoundStoreExtension }>;
-
 export type RenderPendingArgs = Match;
 
 // This is the folded resolver output from resolveRenderArgs.
@@ -382,28 +341,16 @@ export interface BrowserRouterProps
 
 export type BrowserRouter = React.ComponentType<BrowserRouterProps>;
 
-// export function createBrowserRouter(
-//   options: BrowserRouterOptions,
-// ): BrowserRouter;
-
 export interface InitialFarceRouterOptions
   extends Omit<FarceRouterOptions, 'store'> {
   matchContext?: any;
   resolver: Resolver;
 }
 
-// export function createInitialFarceRouter(
-//   options: InitialFarceRouterOptions,
-// ): Promise<FarceRouter>;
-
 export type InitialBrowserRouterOptions = Omit<
   InitialFarceRouterOptions,
   'resolver' | 'historyProtocol'
 >;
-
-// export function createInitialBrowserRouter(
-//   options: InitialBrowserRouterOptions,
-// ): Promise<BrowserRouter>;
 
 export interface ElementsRendererProps {
   elements: RenderArgsElements;
@@ -418,7 +365,3 @@ export interface GetStoreRenderArgsOptions {
   matchContext: any;
   resolver: Resolver;
 }
-
-// export function getStoreRenderArgs(
-//   options: GetStoreRenderArgsOptions,
-// ): Promise<RenderArgs>;
