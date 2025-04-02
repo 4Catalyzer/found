@@ -19,8 +19,7 @@ jobs:
       - run: corepack enable
       - run: yarn install --immutable
       - run: yarn --cwd www install --immutable
-      - run: yarn test --coverage
-      - run: node_modules/.bin/codecov
+      - run: yarn test
       - if: ${{ github.ref == 'refs/heads/master' }}
         run: yarn --cwd www build
       - name: Deploy

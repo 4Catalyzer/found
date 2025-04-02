@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import { Route, Redirect, makeRouteConfig } from '../src/jsx';
-import createRedirect from '../src/createRedirect';
 
 describe('makeRouteConfig', () => {
   const AppPage = () => null;
