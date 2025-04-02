@@ -2231,6 +2231,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-dev-expression@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "babel-plugin-dev-expression@npm:0.2.3"
+  peerDependencies:
+    "@babel/core": ^7.0.0
+  checksum: 10c0/b55fa2a5187c8242bcc9c035b5ef03539e92738644b2af2e5148db7e2a3f337a46e0f4b2a3f1d008fbb095d61356b725cc60330282a7ec30b055885af961aaf9
+  languageName: node
+  linkType: hard
+
 "bail@npm:^1.0.0":
   version: 1.0.5
   resolution: "bail@npm:1.0.5"
@@ -4668,6 +4677,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.29.0"
     "@vitest/coverage-v8": "npm:3.1.1"
     babel-plugin-add-module-exports: "npm:^1.0.4"
+    babel-plugin-dev-expression: "npm:^0.2.3"
     cherry-pick: "npm:^0.5.0"
     codecov: "npm:^3.8.3"
     cpy-cli: "npm:^5.0.0"
