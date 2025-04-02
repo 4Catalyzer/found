@@ -15,7 +15,8 @@
   "license": "MIT",
   "author": "4Catalyzer",
   "files": [
-    "lib"
+    "lib",
+    "cjs"
   ],
   "main": "lib/cjs/index.js",
   "module": "lib/lib/index.js",
