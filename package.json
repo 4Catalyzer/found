@@ -67,7 +67,7 @@
     "dequal": "^2.0.3",
     "farce": "^0.4.5",
     "is-promise": "^4.0.0",
-    "redux": "^4.2.0",
+    "redux": "^5.0.1",
     "tiny-set-immediate": "^1.0.2",
     "tiny-warning": "^1.0.3"
   },
