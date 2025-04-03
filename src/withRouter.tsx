@@ -1,6 +1,6 @@
 import { type ComponentPropsWithRef, forwardRef, useContext } from 'react';
 
-import RouterContext, { type RouterContextState } from './RouterContext';
+import RouterContext, { type RouterContextValue } from './RouterContext';
 
 export default function withRouter<
   TComponent extends React.ComponentType<any>,
@@ -16,6 +16,6 @@ export default function withRouter<
   })`;
 
   return WithRouter as React.ForwardRefExoticComponent<
-    Omit<ComponentPropsWithRef<TComponent>, keyof RouterContextState>
+    Omit<ComponentPropsWithRef<TComponent>, keyof RouterContextValue>
   >;
 }

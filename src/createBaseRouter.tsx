@@ -4,12 +4,13 @@ import { type Store } from 'redux';
 import warning from 'tiny-warning';
 
 import ActionTypes from './ActionTypes';
-import RouterContext, { type RouterContextState } from './RouterContext';
+import RouterContext, { type RouterContextValue } from './RouterContext';
 import StaticContainer from './StaticContainer';
 import createRender from './createRender';
 import createStoreRouterObject from './createStoreRouterObject';
 import resolveRenderArgs from './resolveRenderArgs';
 import {
+  Match,
   type ConnectedRouterProps,
   type CreateRenderOptions,
   type MatchBase,
@@ -34,7 +35,10 @@ interface BaseRouterState {
   matchContext: any;
   resolver: Resolver;
   iteration: number;
-  routerContext: RouterContextState;
+  routerContext: {
+    match: Match<any> | null;
+    router: Router;
+  };
   element: React.ReactElement | null;
 }
 
@@ -246,7 +250,8 @@ export default function createBaseRouter({
             this.lastIteration === iteration && !this.pendingResolvedMatch
           }
         >
-          <RouterContext.Provider value={routerContext}>
+          {/* The cast to RouterContextValue should be safe, because without a match we can't render anything */}
+          <RouterContext.Provider value={routerContext as RouterContextValue}>
             {element}
           </RouterContext.Provider>
         </StaticContainer>
