@@ -191,11 +191,11 @@ export interface RouteObjectBase {
   /**
    * additional data for the route
    */
-  data?: any;
+  data?: unknown;
   /**
    * a method that returns additional data for the route
    */
-  getData?: (match: RouteMatch) => any;
+  getData?: (match: RouteMatch) => unknown | Promise<unknown>;
   /**
    * whether to defer getting data until ancestor data promises are resolved
    */

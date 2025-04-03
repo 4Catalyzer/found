@@ -4,25 +4,20 @@ import {
   accumulateRouteValues,
   checkResolved,
   getComponents,
+  getDatum,
   getRouteMatches,
-  getRouteValue,
   isResolved,
+  Unresolved,
 } from './ResolverUtils';
 import createElements from './createElements';
 import {
   type Match,
   type ResolvedElement,
   type RouteMatch,
-  type RouteObjectBase,
 } from './typeUtils';
 
-function getRouteGetData(route: RouteObjectBase) {
-  return route.getData;
-}
-
-function getRouteData(route: RouteObjectBase) {
-  return route.data;
-}
+type RouteComponent = React.ComponentType<any> | undefined;
+type ResolvedComponent = RouteComponent | Unresolved;
 
 export default {
   /**
@@ -53,9 +48,10 @@ export default {
     const Components = getComponents(routeMatches);
     const data = this.getData(match, routeMatches);
 
-    const earlyComponents = Components.some(isPromise)
-      ? await Promise.all(Components.map(checkResolved))
-      : Components;
+    const earlyComponents: ResolvedComponent[] = Components.some(isPromise)
+      ? await Promise.all(Components.map((c) => checkResolved(c)))
+      : (Components as RouteComponent[]);
+
     const earlyData = data.some(isPromise)
       ? await Promise.all(data.map(checkResolved))
       : data;
@@ -95,7 +91,13 @@ export default {
    */
   // TODO: should this even be exported?
   getData(match: Match, routeMatches: Array<RouteMatch>) {
-    return accumulateRouteValues(
+    type RouteDataAccumulator = {
+      routeData: unknown | Promise<unknown>;
+      ancestorRouteData: unknown[];
+      prevParentPromise: unknown | null;
+    };
+
+    return accumulateRouteValues<RouteDataAccumulator>(
       routeMatches,
       match.routeIndices,
       ({ ancestorRouteData, prevParentPromise }, routeMatch) => {
@@ -107,10 +109,8 @@ export default {
 
         // If there is a parent promise, execute after it resolves.
         const routeData = parentPromise
-          ? parentPromise.then(() =>
-              getRouteValue(routeMatch, getRouteGetData, getRouteData),
-            )
-          : getRouteValue(routeMatch, getRouteGetData, getRouteData);
+          ? parentPromise.then(() => getDatum(routeMatch))
+          : getDatum(routeMatch);
 
         return {
           routeData,

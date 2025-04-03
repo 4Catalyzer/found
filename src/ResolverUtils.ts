@@ -9,7 +9,9 @@ import {
   type RouteObjectBase,
 } from './typeUtils';
 
-const UNRESOLVED = {};
+const UNRESOLVED: unique symbol = Symbol('UNRESOLVED');
+
+export type Unresolved = typeof UNRESOLVED;
 
 /**
  * Detects a resolved Promise by racing a sentinel value with the promise.
@@ -17,7 +19,15 @@ const UNRESOLVED = {};
  *
  * If the value is not a promise it's simply returned
  */
-export function checkResolved<T extends Promise<T>>(value: T): Promise<T> | T {
+export function checkResolved<T extends PromiseLike<any>>(
+  value: T,
+): Promise<Awaited<T> | Unresolved>;
+export function checkResolved<T>(
+  value: T,
+): T extends PromiseLike<any> ? never : T;
+export function checkResolved<T>(
+  value: T,
+): Promise<Awaited<T> | Unresolved> | T {
   if (!isPromise(value)) {
     return value;
   }
@@ -31,15 +41,15 @@ export function checkResolved<T extends Promise<T>>(value: T): Promise<T> | T {
   return ret;
 }
 
-export function isResolved<T>(value: T | Record<string, unknown>): value is T {
+export function isResolved<T>(value: T | Unresolved): value is T {
   return value !== UNRESOLVED;
 }
 
-function accumulateRouteValuesImpl(
+function accumulateRouteValuesImpl<TValue>(
   routeValues: RouteMatch[],
   routeIndices: RouteIndices,
-  callback: (...args: any[]) => Record<string, unknown>,
-  initialValue: Record<string, unknown>,
+  callback: (...args: any[]) => TValue,
+  initialValue: TValue,
 ) {
   const accumulated = [];
   let value = initialValue;
@@ -65,12 +75,12 @@ function accumulateRouteValuesImpl(
   return accumulated;
 }
 
-export function accumulateRouteValues(
+export function accumulateRouteValues<TValue = Record<string, unknown>>(
   routeValues: RouteMatch[],
   routeIndices: RouteIndices,
   // TODO: type this better
-  callback: (...args: any[]) => Record<string, unknown>,
-  initialValue: Record<string, unknown>,
+  callback: (...args: any[]) => TValue,
+  initialValue: TValue,
 ) {
   return accumulateRouteValuesImpl(
     [...routeValues],
@@ -88,10 +98,12 @@ export function getRouteMatches(match: Match) {
   }));
 }
 
-export function getRouteValue(
+export function getRouteValue<TResult>(
   match: RouteMatch,
-  getGetter: (route: RouteObjectBase) => RouteObjectBase['getData'],
-  getValue: (route: RouteObjectBase) => RouteObjectBase['data'],
+  getGetter: (
+    route: RouteObjectBase,
+  ) => ((match: RouteMatch) => TResult) | undefined,
+  getValue: (route: RouteObjectBase) => TResult,
 ) {
   const { route } = match;
   const getter = getGetter(route);
@@ -99,10 +111,12 @@ export function getRouteValue(
 }
 
 // This is a little more versatile than if we only passed in keys.
-export function getRouteValues(
+export function getRouteValues<TResult>(
   routeMatches: RouteMatch[],
-  getGetter: (route: RouteObjectBase) => RouteObjectBase['getData'],
-  getValue: (route: RouteObjectBase) => RouteObjectBase['data'],
+  getGetter: (
+    route: RouteObjectBase,
+  ) => ((match: RouteMatch) => TResult) | undefined,
+  getValue: (route: RouteObjectBase) => TResult,
 ) {
   return routeMatches.map((match) =>
     getRouteValue(match, getGetter, getValue),
@@ -129,4 +143,16 @@ function getRouteComponent(route: RouteObjectBase) {
 // This should be common to most resolvers, so make it available here.
 export function getComponents(routeMatches: RouteMatch[]) {
   return getRouteValues(routeMatches, getRouteGetComponent, getRouteComponent);
+}
+
+function getRouteGetData(route: RouteObjectBase) {
+  return route.getData;
+}
+
+function getRouteData(route: RouteObjectBase) {
+  return route.data;
+}
+
+export function getDatum(routeMatch: RouteMatch) {
+  return getRouteValue(routeMatch, getRouteGetData, getRouteData);
 }

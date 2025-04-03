@@ -63,36 +63,6 @@ export default class Matcher {
     return this.getRoutesFromIndices(routeIndices, this.routeConfig);
   }
 
-  protected joinPaths(basePath: string, path?: string | null) {
-    if (!path) {
-      return basePath;
-    }
-
-    if (basePath.charAt(basePath.length - 1) === '/') {
-      basePath = basePath.slice(0, -1);
-    }
-
-    return `${basePath}${this.getCanonicalPattern(path)}`;
-  }
-
-  isActive(
-    { location: matchLocation }: Match,
-    location: LocationDescriptorObject,
-    { exact = false }: IsActiveOptions = {},
-  ) {
-    return (
-      this.isPathnameActive(
-        matchLocation.pathname,
-        location.pathname,
-        exact,
-      ) && this.isQueryActive(matchLocation.query, location.query)
-    );
-  }
-
-  format(pattern: string, params: ParamsDescriptor): string {
-    return compile(pattern)(params);
-  }
-
   protected matchRoutes(
     routeConfig: RouteConfig,
     pathname: string,
@@ -209,7 +179,7 @@ export default class Matcher {
     return groups;
   }
 
-  protected getCanonicalPattern(pattern: string) {
+  getCanonicalPattern(pattern: string) {
     return pattern.charAt(0) === '/' ? pattern : `/${pattern}`;
   }
 
@@ -304,6 +274,36 @@ export default class Matcher {
       route,
       ...this.getRoutesFromIndices(routeIndices.slice(1), route.children),
     ];
+  }
+
+  joinPaths(basePath: string, path?: string | null) {
+    if (!path) {
+      return basePath;
+    }
+
+    if (basePath.charAt(basePath.length - 1) === '/') {
+      basePath = basePath.slice(0, -1);
+    }
+
+    return `${basePath}${this.getCanonicalPattern(path)}`;
+  }
+
+  isActive(
+    { location: matchLocation }: Match,
+    location: LocationDescriptorObject,
+    { exact = false }: IsActiveOptions = {},
+  ) {
+    return (
+      this.isPathnameActive(
+        matchLocation.pathname,
+        location.pathname,
+        exact,
+      ) && this.isQueryActive(matchLocation.query, location.query)
+    );
+  }
+
+  format(pattern: string, params: ParamsDescriptor): string {
+    return compile(pattern)(params);
   }
 
   isPathnameActive(matchPathname: string, pathname: string, exact?: boolean) {

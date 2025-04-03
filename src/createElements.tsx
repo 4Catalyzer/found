@@ -1,7 +1,7 @@
 import React from 'react';
 import warning from 'tiny-warning';
 
-import { isResolved } from './ResolverUtils';
+import { isResolved, Unresolved } from './ResolverUtils';
 import {
   type Match,
   type ResolvedElement,
@@ -22,13 +22,13 @@ import {
  */
 export default function createElements(
   routeMatches: Array<RouteMatch>,
-  Components: React.ComponentType<any>[],
+  Components: (React.ComponentType<any> | Unresolved | undefined)[],
   matchData: any,
 ): Array<ResolvedElement | undefined> {
   return routeMatches.map((match, i) => {
     const { router, route } = match;
 
-    const Component: React.ComponentType<any> = Components[i];
+    const Component = Components[i];
     const data: any = matchData[i];
 
     const isComponentResolved = isResolved(Component);

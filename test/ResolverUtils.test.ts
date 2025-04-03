@@ -1,5 +1,5 @@
 import delay from 'delay';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, expectTypeOf, it } from 'vitest';
 
 import Matcher from '../src/Matcher';
 import {
@@ -9,10 +9,12 @@ import {
   getRouteMatches,
   getRouteValues,
   isResolved,
+  Unresolved,
 } from '../src/ResolverUtils';
+import { Match } from '../src';
 
 describe('ResolverUtils', () => {
-  let match;
+  let match: Match;
 
   const Foo = () => null;
   const Bar = () => null;
@@ -27,7 +29,7 @@ describe('ResolverUtils', () => {
           {
             path: 'bar',
             getComponent: () => Bar,
-            getValue: ({ params }) => params.quux,
+            getValue: ({ params }: any) => params.quux,
             children: {
               nav: [{ path: '(.*)?' }],
               main: [{ path: 'baz' }, { path: 'qux/:quux' }],
@@ -37,16 +39,22 @@ describe('ResolverUtils', () => {
       },
     ]);
 
-    match = matcher.match({ pathname: '/foo/bar/qux/a' });
-    match.routes = matcher.getRoutes(match);
+    match = matcher.match({ pathname: '/foo/bar/qux/a' }) as any;
+    match.routes = matcher.getRoutes(match)!;
   });
 
   describe('checkResolved, isResolved', () => {
     it('should return true for non-promises', async () => {
-      expect(isResolved(await checkResolved({}))).toBe(true);
+      expectTypeOf(checkResolved(10)).toEqualTypeOf<number>();
+
+      expect(isResolved(checkResolved(10))).toBe(true);
     });
 
     it('should return true for resolved promises', async () => {
+      expectTypeOf(checkResolved(Promise.resolve(10))).toEqualTypeOf<
+        Promise<number | Unresolved>
+      >();
+
       expect(isResolved(await checkResolved(Promise.resolve({})))).toBe(true);
 
       expect(
@@ -67,9 +75,20 @@ describe('ResolverUtils', () => {
         ),
       ).toBe(false);
 
-      expect(isResolved(await checkResolved(new Promise(() => {})))).toBe(
-        false,
-      );
+      const unresolvedPromise = new Promise<number>(() => {});
+
+      const checked = checkResolved(unresolvedPromise);
+
+      expectTypeOf(checked).toEqualTypeOf<Promise<number | Unresolved>>();
+
+      const result = await checked;
+      if (isResolved(result)) {
+        expectTypeOf(result).toEqualTypeOf<number>();
+      } else {
+        expectTypeOf(result).toEqualTypeOf<Unresolved>();
+      }
+
+      expect(isResolved(result)).toBe(false);
     });
   });
 
