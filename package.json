@@ -85,8 +85,8 @@
     "@testing-library/react": "^16.3.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "@typescript-eslint/eslint-plugin": "^8.43.0",
-    "@typescript-eslint/parser": "^8.43.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
     "@vitest/coverage-v8": "3.2.4",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-dev-expression": "^0.2.3",
@@ -94,7 +94,7 @@
     "codecov": "^3.8.3",
     "delay": "^6.0.0",
     "doctoc": "^2.2.1",
-    "eslint": "^9.35.0",
+    "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
@@ -107,7 +107,7 @@
     "react-dom": "^19.1.1",
     "react-test-renderer": "^19.1.1",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.43.0",
+    "typescript-eslint": "^8.44.0",
     "vitest": "^3.2.4",
     "yalc": "^1.0.0-pre.53"
   },
@@ -115,5 +115,5 @@
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
-  "packageManager": "yarn@4.9.4+sha512.7b1cb0b62abba6a537b3a2ce00811a843bea02bcf53138581a6ae5b1bf563f734872bd47de49ce32a9ca9dcaff995aa789577ffb16811da7c603dcf69e73750b"
+  "packageManager": "yarn@4.10.0+sha512.8dd111dbb1658cf17089636e5bf490795958158755f36cb75c5a2db0bda6be4d84b95447753627f3330d1457cb6f7e8c1e466eaed959073c82be0242c2cd41e7"
 }
