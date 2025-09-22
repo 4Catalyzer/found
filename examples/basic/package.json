@@ -13,7 +13,7 @@
   "devDependencies": {
     "yalc": "^1.0.0-pre.53",
     "@vitejs/plugin-react": "^2.0.1",
-    "vite": "^3.0.7"
+    "vite": "^5.4.20"
   },
   "browserslist": [
     ">0.2%",
