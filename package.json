@@ -92,7 +92,7 @@
     "babel-plugin-dev-expression": "^0.2.3",
     "cherry-pick": "^0.5.0",
     "codecov": "^3.8.3",
-    "delay": "^6.0.0",
+    "delay": "^7.0.0",
     "doctoc": "^2.2.1",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
