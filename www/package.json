@@ -41,8 +41,8 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.9.2",
-    "@tsconfig/docusaurus": "^2.0.4",
+    "@docusaurus/module-type-aliases": "^3.10.2",
+    "@tsconfig/docusaurus": "^2.0.9",
     "typescript": "^4.9.5"
   }
 }
