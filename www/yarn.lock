@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 10
   cacheKey: 10c0
 
 "@algolia/autocomplete-core@npm:1.17.9":
@@ -2427,11 +2427,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/module-type-aliases@npm:^3.9.2":
-  version: 3.9.2
-  resolution: "@docusaurus/module-type-aliases@npm:3.9.2"
+"@docusaurus/module-type-aliases@npm:^3.10.2":
+  version: 3.10.2
+  resolution: "@docusaurus/module-type-aliases@npm:3.10.2"
   dependencies:
-    "@docusaurus/types": "npm:3.9.2"
+    "@docusaurus/types": "npm:3.10.2"
     "@types/history": "npm:^4.7.11"
     "@types/react": "npm:*"
     "@types/react-router-config": "npm:*"
@@ -2441,7 +2441,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: 10c0/60f163ff9004bb1fcbbad94b18200b6bca967da14576f78f5c533f8535aae0a3a723245cb28e1ca93f9d5881d3f1077e03ebf12bbad59d0e1c6916300d086642
+  checksum: 10c0/3a6a4cc350c48a4e4ba6826976f24e15fc833509533a958252f84b71f7b742d2d65813dde2bb0bc84f44b6918c891997b0fc4174d4b83edb0ef6aeed3330ca13
   languageName: node
   linkType: hard
 
@@ -2785,6 +2785,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@docusaurus/types@npm:3.10.2":
+  version: 3.10.2
+  resolution: "@docusaurus/types@npm:3.10.2"
+  dependencies:
+    "@mdx-js/mdx": "npm:^3.0.0"
+    "@types/history": "npm:^4.7.11"
+    "@types/mdast": "npm:^4.0.2"
+    "@types/react": "npm:*"
+    commander: "npm:^5.1.0"
+    joi: "npm:^17.9.2"
+    react-helmet-async: "npm:@slorber/react-helmet-async@1.3.0"
+    utility-types: "npm:^3.10.0"
+    webpack: "npm:^5.95.0"
+    webpack-merge: "npm:^5.9.0"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  checksum: 10c0/29672542109c69c7527a14767f0acbfac6635e650be6da75998f97cda7987deda30f402c04438879492a798975c9484265139f603631a2df0575a49f29a7345d
+  languageName: node
+  linkType: hard
+
 "@docusaurus/types@npm:3.7.0":
   version: 3.7.0
   resolution: "@docusaurus/types@npm:3.7.0"
@@ -2802,27 +2823,6 @@ __metadata:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
   checksum: 10c0/256d3b579e0f663096d915cfd34851564a243dd3b587901f0b8de7988ea021bf4c9f9bcb9d632f52cddb37f53959be8d93728421ddbba7f9c98a36f0dec454cd
-  languageName: node
-  linkType: hard
-
-"@docusaurus/types@npm:3.9.2":
-  version: 3.9.2
-  resolution: "@docusaurus/types@npm:3.9.2"
-  dependencies:
-    "@mdx-js/mdx": "npm:^3.0.0"
-    "@types/history": "npm:^4.7.11"
-    "@types/mdast": "npm:^4.0.2"
-    "@types/react": "npm:*"
-    commander: "npm:^5.1.0"
-    joi: "npm:^17.9.2"
-    react-helmet-async: "npm:@slorber/react-helmet-async@1.3.0"
-    utility-types: "npm:^3.10.0"
-    webpack: "npm:^5.95.0"
-    webpack-merge: "npm:^5.9.0"
-  peerDependencies:
-    react: ^18.0.0 || ^19.0.0
-    react-dom: ^18.0.0 || ^19.0.0
-  checksum: 10c0/e50a9931e97944d39375a97a45ded13bc35baf3c9c14fe66d30944ebe1203df7748a7631291f937bef1a7a98db73c23505620cd8f03d109fbbdfa83725fb2857
   languageName: node
   linkType: hard
 
@@ -3533,10 +3533,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/docusaurus@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "@tsconfig/docusaurus@npm:2.0.4"
-  checksum: 10c0/ac062d51d046385bc8778cfacf5e52a6e7ac7f68f3a07e9c8a28d8b064ff7e8f492a9758b676d6f54b4aa3a096bc20218f68fd486fb81025842ffc6d28ab782a
+"@tsconfig/docusaurus@npm:^2.0.9":
+  version: 2.0.9
+  resolution: "@tsconfig/docusaurus@npm:2.0.9"
+  checksum: 10c0/a7ab5fc9d0688b3b2e44414df66ef55ebcbf48eaf9221ac876e1efe48a9ef60f4b2e284147e3e82c29d26620debd3ca33dabc201440e655fca4a6d059c173552
   languageName: node
   linkType: hard
 
@@ -7560,12 +7560,12 @@ __metadata:
     "@codesandbox/sandpack-react": "npm:^2.20.0"
     "@codesandbox/sandpack-themes": "npm:^1.19.0"
     "@docusaurus/core": "npm:3.7.0"
-    "@docusaurus/module-type-aliases": "npm:^3.9.2"
+    "@docusaurus/module-type-aliases": "npm:^3.10.2"
     "@docusaurus/preset-classic": "npm:^3.7.0"
     "@docusaurus/theme-common": "npm:^3.7.0"
     "@docusaurus/theme-live-codeblock": "npm:^3.7.0"
     "@docusaurus/theme-mermaid": "npm:^3.7.0"
-    "@tsconfig/docusaurus": "npm:^2.0.4"
+    "@tsconfig/docusaurus": "npm:^2.0.9"
     clsx: "npm:^2.1.1"
     docusaurus-theme-jarle-codeblock: "npm:^1.7.4"
     found: "npm:^1.3.0"
@@ -12884,14 +12884,14 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.1.6#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.14.2#optional!builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#optional!builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#optional!builtin<compat/resolve>::version=1.22.1&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.9.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10c0/0d8ccceba5537769c42aa75e4aa75ae854aac866a11d7e9ffdb1663f0158ee646a0d48fc2818ed5e7fb364d64220a1fb9092a160e11e00cbdd5fbab39a13092c
+  checksum: 10c0/9c8aebb446738574ce107f4afc16bff822b794120322422c77ff7291706b73ecb9b9081205dfc8f2bcecc42bcf6f4d6bec33fa4b963a37a6e0b825232e830e74
   languageName: node
   linkType: hard
 
